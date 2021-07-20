@@ -1,0 +1,26 @@
+{
+  "name": "sharedb-example-leaderboard",
+  "version": "1.0.0",
+  "description": "React Leaderboard backed by ShareDB",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "zhenyu duan",
+  "license": "MIT",
+  "dependencies": {
+    "@teamwork/websocket-json-stream": "^2.0.0",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "reconnecting-websocket": "^4.2.0",
+    "sharedb": "^1.8.3",
+    "sharedb-mingo-memory": "^1.1.4",
+    "ws": "^7.5.3"
+  },
+  "devDependencies": {
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.3.0",
+    "browserify": "^16.5.0"
+  }
+}
