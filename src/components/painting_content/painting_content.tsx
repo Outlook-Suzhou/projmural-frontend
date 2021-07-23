@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
 import doc from '../../client/client';
-import Rectangle from '../shapes/Rectangle';
+import Rectangle from '../shapes/rectangle';
 
 const PaitingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
