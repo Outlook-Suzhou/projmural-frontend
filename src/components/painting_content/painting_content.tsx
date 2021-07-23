@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { Stage, Layer, Rect } from 'react-konva';
+import { Stage, Layer } from 'react-konva';
 import doc from '../../client/client';
+import Rectangle from '../shapes/Rectangle';
 
 const PaitingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -23,25 +24,15 @@ const PaitingContent: React.FC<{}> = () => {
     <Stage width={window.innerWidth} height={window.innerHeight}>
       <Layer>
         {
-          list.map((item: any, index: number) => (
-            <Rect
-              {...item}
-              // eslint-disable-next-line react/no-array-index-key
-              key={index}
-              fill="blue"
-              draggable
-              onDragMove={(e) => {
-                const afterE = {
-                  width: e.target.width(),
-                  height: e.target.height(),
-                  x: e.target.x(),
-                  y: e.target.y(),
-                  type: 'RECTANGLE',
-                };
-                doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
-              }}
-            />
-          ))
+          list.map((item: any, index: number) => {
+            switch (item.type) {
+              default:
+                return;
+              case 'RECTANGLE':
+                // eslint-disable-next-line consistent-return
+                return <Rectangle item={item} index={index} />;
+            }
+          })
         }
       </Layer>
     </Stage>
