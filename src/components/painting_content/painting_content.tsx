@@ -12,6 +12,13 @@ const PaitingContent: React.FC<{}> = () => {
       }
     });
   }, []);
+  useEffect(() => {
+    doc.on('op', () => {
+      if (doc?.data?.shapes) {
+        setList([...doc.data.shapes]);
+      }
+    });
+  }, []);
   return (
     <Stage width={window.innerWidth} height={window.innerHeight}>
       <Layer>
