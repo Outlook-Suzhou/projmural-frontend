@@ -1,18 +1,21 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
 // import toolList from './tool_list';
 // import AddShape from './tools/add_shape';
 import './tool_bar.scss';
 
-interface toolComponent {
-  Component: React.FC<any>,
-  currentShape?: any,
-  currentIndex?: number
-}
+// interface toolComponent {
+//   Component: React.FC<any>,
+//   currentShape?: any,
+//   currentIndex?: number
+// }
 
 interface toolBarAttribute{
   width: number,
   height: number,
-  list: toolComponent[],
+  list: React.FC<any>[],
+  currentShape?: any,
+  currentIndex?: number
 }
 
 const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
@@ -21,9 +24,9 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
   return (
     <div className="toolbar" style={{ width, height }}>
       {
-        list.map((item) => (
+        list.map((Item) => (
           <div className="tool">
-            <item.Component currentShape={item.currentShape} currentIndex={item.currentIndex} />
+            <Item currentShape={props.currentShape} currentIndex={props.currentIndex} />
           </div>
         ))
       }

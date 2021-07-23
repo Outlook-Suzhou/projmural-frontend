@@ -27,7 +27,7 @@ const PaitingContent: React.FC<{}> = () => {
   }, []);
   return (
     <>
-      <ToolBar width={800} height={200} list={[{ Component: AddShape, currentShape: currentItem, currentIndex }]} />
+      <ToolBar width={800} height={200} list={[AddShape]} currentShape={currentItem} currentIndex={currentIndex} />
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
           {

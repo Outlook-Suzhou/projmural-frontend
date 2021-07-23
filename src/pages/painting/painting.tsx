@@ -5,7 +5,7 @@ import ToolBar from '../../components/tool_bar/tool_bar';
 import AddShape from '../../components/tool_bar/tools/add_shape';
 import addRectangle from '../../utils/add_rectangle';
 const Paiting: React.FC<{}> = () => {
-  const list: any[] = [{Component:AddShape}, {Component:AddShape}];
+  const list: any[] = [AddShape];
   return (
     <div className="paiting">
       <ToolBar width={800} height={200} list={list} />
