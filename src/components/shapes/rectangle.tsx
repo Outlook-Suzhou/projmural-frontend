@@ -3,7 +3,7 @@ import doc from '../../client/client';
 
 // @ts-ignore
 // eslint-disable-next-line react/prop-types
-const Rectangle = ({ item, index }) => (
+const Rectangle = ({ item, index, click }) => (
   // eslint-disable-next-line react/react-in-jsx-scope
   <Rect
        // eslint-disable-next-line react/jsx-props-no-spreading
@@ -11,6 +11,7 @@ const Rectangle = ({ item, index }) => (
     key={index}
     fill="blue"
     draggable
+    onClick={click}
     onDragMove={(e) => {
       const afterE = {
         width: e.target.width(),

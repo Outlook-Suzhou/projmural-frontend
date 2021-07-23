@@ -3,10 +3,16 @@ import React from 'react';
 // import AddShape from './tools/add_shape';
 import './tool_bar.scss';
 
+interface toolComponent {
+  Component: React.FC<any>,
+  currentShape?: any,
+  currentIndex?: number
+}
+
 interface toolBarAttribute{
   width: number,
   height: number,
-  list: React.FC<any>[],
+  list: toolComponent[],
 }
 
 const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
@@ -14,11 +20,10 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
   // const showList: any[] = list.map((item) => <li>{toolList[item]}</li>);
   return (
     <div className="toolbar" style={{ width, height }}>
-
       {
-        list.map((Item) => (
+        list.map((item) => (
           <div className="tool">
-            <Item />
+            <item.Component currentShape={item.currentShape} currentIndex={item.currentIndex} />
           </div>
         ))
       }
