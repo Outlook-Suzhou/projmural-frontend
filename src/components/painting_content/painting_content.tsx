@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
 import doc from '../../client/client';
+import Ellipse from '../shapes/ellipse';
 import Rectangle from '../shapes/rectangle';
+import Diamond from '../shapes/diamond';
+import Circle from '../shapes/circle';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
-import Img from '../shapes/image';
-import AddImage from '../tool_bar/tools/add_images';
 
 const PaitingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -28,10 +29,8 @@ const PaitingContent: React.FC<{}> = () => {
     });
   }, []);
   return (
-    <div>
-      <div>
-        <ToolBar width={80} height={200} list={[AddShape, AddImage]} currentShape={currentItem} currentIndex={currentIndex} />
-      </div>
+    <>
+      <ToolBar width={800} height={200} list={[AddShape]} currentShape={currentItem} currentIndex={currentIndex} />
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
           {
@@ -44,17 +43,27 @@ const PaitingContent: React.FC<{}> = () => {
                   return (
                     <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
                   );
-                case 'IMAGE':
+                case 'CIRCLE':
                   // eslint-disable-next-line consistent-return
                   return (
-                    <Img item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                    <Circle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                  );
+                case 'ELLIPSE':
+                  // eslint-disable-next-line consistent-return
+                  return (
+                    <Ellipse item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                  );
+                case 'DIAMOND':
+                  // eslint-disable-next-line consistent-return
+                  return (
+                    <Diamond item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
                   );
               }
             })
           }
         </Layer>
       </Stage>
-    </div>
+    </>
   );
 };
 export default PaitingContent;
