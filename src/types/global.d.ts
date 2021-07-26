@@ -1,10 +1,25 @@
+import Ellipse from "../components/shapes/ellipse";
+
 /* eslint-disable no-unused-vars */
 declare namespace BaseShapes {
-  interface Rectangle {
-    width: number,
-    height: number,
+  interface Position {
     x: number,
     y: number,
+  }
+  interface Rectangle extends Position {
+    width: number,
+    height: number,
     type: 'RECTANGLE'
+  }
+  interface Circle extends Position {
+    radius: number,
+    type: 'CIRCLE'
+  }
+  interface Ellipse extends Position {
+    radius: Position,
+    type: "ELLIPSE"
+  }
+  interface Diamond extends Ellipse {
+    Ellipse,
   }
 }
