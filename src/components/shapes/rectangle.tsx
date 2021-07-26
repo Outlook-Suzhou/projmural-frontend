@@ -25,6 +25,11 @@ const Rectangle = ({ item, index, click }) => (
       };
       doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
     }}
+    onDblClick={() => {
+      const afterE = {
+      };
+      doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+    }}
   />
 );
 
