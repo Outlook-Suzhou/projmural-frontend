@@ -6,4 +6,3 @@ const shapeConfig = {
 };
 
 export default shapeConfig;
- 

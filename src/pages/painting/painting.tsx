@@ -11,7 +11,6 @@ import addDiamond from '../../utils/add_diamond';
 const Paiting: React.FC<{}> = () => {
   return (
     <div className="paiting" >
-      <ToolBar width={800} height={200} list={list} />
       <button type="button" onClick={() => addRectangle({width: 20, height: 50, x: 30, y: 40, type: 'RECTANGLE'})}>rect</button>
       <button type="button" onClick={() => addCircle({radius: 30, x: 30, y: 40, type: 'CIRCLE'})}>circle</button>
       <button type="button" onClick={() => addEllipse({radius: {x: 20, y: 30}, x: 30, y: 40, type: 'ELLIPSE'})}>ellipse</button>
