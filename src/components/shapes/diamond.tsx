@@ -1,31 +1,33 @@
-import { Rect } from 'react-konva';
+import { Line } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 
 // @ts-ignore
 // eslint-disable-next-line react/prop-types
-const Rectangle = ({ item, index, click }) => (
+const Diamond = ({ item, index, click }) => (
   // eslint-disable-next-line react/react-in-jsx-scope
-  <Rect
+  <Line
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...item}
+    /* eslint-disable-next-line react/prop-types */
+    points={[0, item.radius.y, item.radius.x, 0, 0, -item.radius.y, -item.radius.x, 0]}
+    closed
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...shapeConfig}
     key={index}
-    fill="blue"
+    fill="pink"
     draggable
     onClick={click}
     onDragMove={(e) => {
       const afterE = {
-        width: e.target.width(),
-        height: e.target.height(),
+        radius: e.target.attrs.radius,
         x: e.target.x(),
         y: e.target.y(),
-        type: 'RECTANGLE',
+        type: 'DIAMOND',
       };
       doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
     }}
   />
 );
 
-export default Rectangle;
+export default Diamond;
