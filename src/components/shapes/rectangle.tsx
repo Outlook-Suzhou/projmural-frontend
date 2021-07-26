@@ -1,16 +1,13 @@
 import { Rect } from 'react-konva';
 import doc from '../../client/client';
-import shapeConfig from './shape_config';
 
 // @ts-ignore
 // eslint-disable-next-line react/prop-types
 const Rectangle = ({ item, index, click }) => (
   // eslint-disable-next-line react/react-in-jsx-scope
   <Rect
-    // eslint-disable-next-line react/jsx-props-no-spreading
+       // eslint-disable-next-line react/jsx-props-no-spreading
     {...item}
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...shapeConfig}
     key={index}
     fill="blue"
     draggable
