@@ -9,9 +9,8 @@ import addEllipse from '../../utils/add_circle';
 import addDiamond from '../../utils/add_diamond';
 
 const Paiting: React.FC<{}> = () => {
-  const list: any[] = [AddShape];
   return (
-    <div className="paiting">
+    <div className="paiting" >
       <ToolBar width={800} height={200} list={list} />
       <button type="button" onClick={() => addRectangle({width: 20, height: 50, x: 30, y: 40, type: 'RECTANGLE'})}>rect</button>
       <button type="button" onClick={() => addCircle({radius: 30, x: 30, y: 40, type: 'CIRCLE'})}>circle</button>

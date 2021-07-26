@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@fluentui/react": "^8.23.8",
     "@teamwork/websocket-json-stream": "^2.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -26,6 +27,7 @@
     "sharedb": "^1.8.3",
     "sharedb-mingo-memory": "^1.1.4",
     "typescript": "^4.1.2",
+    "use-image": "^1.0.8",
     "web-vitals": "^1.0.1",
     "ws": "^7.5.3"
   },
