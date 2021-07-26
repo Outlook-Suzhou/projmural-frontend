@@ -19,7 +19,8 @@ declare namespace BaseShapes {
     radius: Position,
     type: "ELLIPSE"
   }
-  interface Diamond extends Ellipse {
-    Ellipse,
+  interface Diamond extends Position {
+    radius: Position,
+    type: "DIAMOND"
   }
 }
