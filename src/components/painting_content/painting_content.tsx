@@ -3,7 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
 import doc from '../../client/client';
+import Ellipse from '../shapes/ellipse';
 import Rectangle from '../shapes/rectangle';
+import Diamond from '../shapes/diamond';
+import Circle from '../shapes/circle';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
 import Img from '../shapes/image';
@@ -44,6 +47,20 @@ const PaitingContent: React.FC<{}> = () => {
                   return (
                     <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
                   );
+                case 'CIRCLE':
+                  // eslint-disable-next-line consistent-return
+                  return (
+                    <Circle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                  );
+                case 'ELLIPSE':
+                  // eslint-disable-next-line consistent-return
+                  return (
+                    <Ellipse item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                  );
+                case 'DIAMOND':
+                  // eslint-disable-next-line consistent-return
+                  return (
+                    <Diamond item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
                 case 'IMAGE':
                   // eslint-disable-next-line consistent-return
                   return (
