@@ -1,5 +1,3 @@
-import Ellipse from "../components/shapes/ellipse";
-
 /* eslint-disable no-unused-vars */
 declare namespace BaseShapes {
   interface Position {
