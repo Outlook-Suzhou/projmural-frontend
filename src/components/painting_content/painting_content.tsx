@@ -2,7 +2,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
-import { Row, Col, Modal } from 'antd';
+import {
+  Row, Col, Modal, Input,
+} from 'antd';
 
 import doc from '../../client/client';
 import Ellipse from '../shapes/ellipse';
@@ -106,7 +108,7 @@ const PaintingContent: React.FC<{}> = () => {
                     case 'TEXT':
                       // eslint-disable-next-line consistent-return
                       return (
-                          <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} ondblclick={() => { setText(item.text); setCurrentItem(item); setCurrentIndex(index); console.log(item); showModal(); }} />
+                        <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} ondblclick={() => { setText(item.text); setCurrentItem(item); setCurrentIndex(index); console.log(item); showModal(); }} />
                       );
                   }
                 })
@@ -116,7 +118,8 @@ const PaintingContent: React.FC<{}> = () => {
         </Col>
       </Row>
       <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <input type="text" defaultValue={text} onChange={(e) => setText(e.target.value)} />
+        <br />
+        <Input type="text" defaultValue={text} onChange={(e) => setText(e.target.value)} />
       </Modal>
     </>
   );
