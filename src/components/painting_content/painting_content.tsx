@@ -8,6 +8,7 @@ import Ellipse from '../shapes/ellipse';
 import Rectangle from '../shapes/rectangle';
 import Diamond from '../shapes/diamond';
 import Circle from '../shapes/circle';
+import Line from '../shapes/line';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
 import Img from '../shapes/image';
@@ -89,6 +90,11 @@ const PaintingContent: React.FC<{}> = () => {
                       // eslint-disable-next-line consistent-return
                       return (
                         <Triangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                      );
+                    case 'LINE':
+                      // eslint-disable-next-line consistent-return
+                      return (
+                        <Line item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
                       );
                     case 'TEXT':
                       // eslint-disable-next-line consistent-return
