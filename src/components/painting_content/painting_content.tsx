@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
+import { Row, Col } from 'antd';
 import doc from '../../client/client';
 import Ellipse from '../shapes/ellipse';
 import Rectangle from '../shapes/rectangle';
@@ -31,48 +32,50 @@ const PaitingContent: React.FC<{}> = () => {
     });
   }, []);
   return (
-    <div>
-      <div>
+    <Row style={{ width: '100%' }}>
+      <Col span={3}>
         <ToolBar width={80} height={200} list={[AddShape, AddImage]} currentShape={currentItem} currentIndex={currentIndex} />
-      </div>
-      <Stage width={window.innerWidth} height={window.innerHeight}>
-        <Layer>
-          {
-            list.map((item: any, index: number) => {
-              switch (item.type) {
-                default:
-                  return;
-                case 'RECTANGLE':
-                  // eslint-disable-next-line consistent-return
-                  return (
-                    <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                  );
-                case 'CIRCLE':
-                  // eslint-disable-next-line consistent-return
-                  return (
-                    <Circle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                  );
-                case 'ELLIPSE':
-                  // eslint-disable-next-line consistent-return
-                  return (
-                    <Ellipse item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                  );
-                case 'DIAMOND':
-                  // eslint-disable-next-line consistent-return
-                  return (
-                    <Diamond item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                  );
-                case 'IMAGE':
-                  // eslint-disable-next-line consistent-return
-                  return (
-                    <Img item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                  );
-              }
-            })
-          }
-        </Layer>
-      </Stage>
-    </div>
+      </Col>
+      <Col span={21} style={{ padding: '40px' }}>
+        <Stage width={window.innerWidth} height={window.innerHeight} style={{ backgroundColor: '#e1dfdd', borderRadius: '25px' }}>
+          <Layer>
+            {
+              list.map((item: any, index: number) => {
+                switch (item.type) {
+                  default:
+                    return;
+                  case 'RECTANGLE':
+                    // eslint-disable-next-line consistent-return
+                    return (
+                      <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                    );
+                  case 'CIRCLE':
+                    // eslint-disable-next-line consistent-return
+                    return (
+                      <Circle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                    );
+                  case 'ELLIPSE':
+                    // eslint-disable-next-line consistent-return
+                    return (
+                      <Ellipse item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                    );
+                  case 'DIAMOND':
+                    // eslint-disable-next-line consistent-return
+                    return (
+                      <Diamond item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                    );
+                  case 'IMAGE':
+                    // eslint-disable-next-line consistent-return
+                    return (
+                      <Img item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                    );
+                }
+              })
+            }
+          </Layer>
+        </Stage>
+      </Col>
+    </Row>
   );
 };
 export default PaitingContent;
