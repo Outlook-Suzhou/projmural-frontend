@@ -1,7 +1,10 @@
 /* eslint-disable max-len */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
-import { Row, Col, Modal } from 'antd';
+import {
+  Row, Col, Modal, Input,
+} from 'antd';
 
 import doc from '../../client/client';
 import Ellipse from '../shapes/ellipse';
@@ -19,14 +22,20 @@ import AddText from '../tool_bar/tools/add_text';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
-  const [currentItem, setCurrentItem] = useState({});
+  const [currentItem, setCurrentItem] = useState({
+    text: '',
+  });
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // const showModal = () => {
-  //   setIsModalVisible(true);
-  // };
+  const [text, setText] = useState('');
+
+  const showModal = () => {
+    console.log(text);
+    setIsModalVisible(true);
+  };
 
   const handleOk = () => {
+    currentItem.text = text;
     setIsModalVisible(false);
   };
 
@@ -99,7 +108,7 @@ const PaintingContent: React.FC<{}> = () => {
                     case 'TEXT':
                       // eslint-disable-next-line consistent-return
                       return (
-                        <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                        <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} ondblclick={() => { setText(item.text); setCurrentItem(item); setCurrentIndex(index); console.log(item); showModal(); }} />
                       );
                   }
                 })
@@ -109,7 +118,8 @@ const PaintingContent: React.FC<{}> = () => {
         </Col>
       </Row>
       <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        abcd
+        <br />
+        <Input type="text" defaultValue={text} onChange={(e) => setText(e.target.value)} />
       </Modal>
     </>
   );
