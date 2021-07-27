@@ -11,6 +11,7 @@ import addRectangle from '../../../utils/add_rectangle';
 import addCircle from '../../../utils/add_circle';
 // @ts-ignore
 import addEllipse from '../../../utils/add_ellipse';
+import addTriangle from '../../../utils/add_triangle';
 
 initializeIcons();
 
@@ -51,8 +52,8 @@ const shapes: React.FC<{}> = () => (
       <Icon
         iconName="TriangleShape"
         style={{ fontSize: '20px' }}
-        onClick={() => addRectangle({
-          width: 20, height: 50, x: 30, y: 40, type: 'RECTANGLE',
+        onClick={() => addTriangle({
+          x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE',
         })}
       />
     </Card.Grid>
