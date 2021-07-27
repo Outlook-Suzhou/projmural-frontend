@@ -17,7 +17,10 @@ const Ellipse = ({ item, index, click }) => (
     onClick={click}
     onDragMove={(e) => {
       const afterE = {
-        radius: e.target.attrs.radius,
+        radius: {
+          x: e.target.attrs.radiusX,
+          y: e.target.attrs.radiusY,
+        },
         x: e.target.x(),
         y: e.target.y(),
         type: 'ELLIPSE',
