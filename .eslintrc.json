@@ -35,7 +35,9 @@
     ],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
-    "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ]
+    "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],
+    "react/jsx-props-no-spreading": [0],
+    "linebreak-style": "off"
   },
   "globals": {
     "BaseShapes": "readonly"
