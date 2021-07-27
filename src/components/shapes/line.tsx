@@ -49,12 +49,12 @@ const Line = ({ item, index, click }) => {
             x: e.target.attrs.x,
             y: e.target.attrs.y,
             end: {
-              x: e.target.attrs.end.x, // + e.evt.movementX,
-              y: e.target.attrs.end.y, // + e.evt.movementY,
+              x: e.target.attrs.end.x,
+              y: e.target.attrs.end.y,
             },
             start: {
-              x: e.target.attrs.start.x, // + e.evt.movementX,
-              y: e.target.attrs.start.y, // + e.evt.movementY,
+              x: e.target.attrs.start.x,
+              y: e.target.attrs.start.y,
             },
             type: 'LINE',
           };
