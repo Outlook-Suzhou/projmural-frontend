@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
 import { Modal } from 'antd';
@@ -12,10 +11,11 @@ import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
 import Img from '../shapes/image';
 import AddImage from '../tool_bar/tools/add_images';
+import Triangle from '../shapes/triangle';
 import Text from '../shapes/text';
 import AddText from '../tool_bar/tools/add_text';
 
-const PaitingContent: React.FC<{}> = () => {
+const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const [currentItem, setCurrentItem] = useState({});
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -60,7 +60,7 @@ const PaitingContent: React.FC<{}> = () => {
                 case 'RECTANGLE':
                   // eslint-disable-next-line consistent-return
                   return (
-                    <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                    <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(doc); }} />
                   );
                 case 'CIRCLE':
                   // eslint-disable-next-line consistent-return
@@ -82,6 +82,11 @@ const PaitingContent: React.FC<{}> = () => {
                   return (
                     <Img item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
                   );
+                case 'TRIANGLE':
+                  // eslint-disable-next-line consistent-return
+                  return (
+                    <Triangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                  );
                 case 'TEXT':
                   // eslint-disable-next-line consistent-return
                   return (
@@ -98,4 +103,4 @@ const PaitingContent: React.FC<{}> = () => {
     </div>
   );
 };
-export default PaitingContent;
+export default PaintingContent;
