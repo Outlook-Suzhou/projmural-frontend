@@ -31,7 +31,7 @@ const Line = ({ item, index, click }) => {
   // eslint-disable-next-line react/prop-types
   const pts = getRect(item.start, item.end, item.weight);
   return (
-    <div>
+    <>
       <KonvaLine
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...item}
@@ -101,7 +101,7 @@ const Line = ({ item, index, click }) => {
         }}
         fill="blue"
       />
-    </div>
+    </>
   );
 };
 
