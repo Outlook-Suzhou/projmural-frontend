@@ -47,63 +47,65 @@ const PaintingContent: React.FC<{}> = () => {
     });
   }, []);
   return (
-    <Row style={{ width: '100%' }}>
-      <Col span={3}>
-        <ToolBar width={80} height={200} list={[AddShape, AddImage, AddText]} currentShape={currentItem} currentIndex={currentIndex} />
-      </Col>
-      <Col span={21} style={{ padding: '40px' }}>
-        <Stage width={window.innerWidth} height={window.innerHeight}>
-          <Layer>
-            {
-              list.map((item: any, index: number) => {
-                switch (item.type) {
-                  default:
-                    return;
-                  case 'RECTANGLE':
-                    // eslint-disable-next-line consistent-return
-                    return (
-                      <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(doc); }} />
-                    );
-                  case 'CIRCLE':
-                    // eslint-disable-next-line consistent-return
-                    return (
-                      <Circle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                    );
-                  case 'ELLIPSE':
-                    // eslint-disable-next-line consistent-return
-                    return (
-                      <Ellipse item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                    );
-                  case 'DIAMOND':
-                    // eslint-disable-next-line consistent-return
-                    return (
-                      <Diamond item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                    );
-                  case 'IMAGE':
-                    // eslint-disable-next-line consistent-return
-                    return (
-                      <Img item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                    );
-                  case 'TRIANGLE':
-                    // eslint-disable-next-line consistent-return
-                    return (
-                      <Triangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                    );
-                  case 'TEXT':
-                    // eslint-disable-next-line consistent-return
-                    return (
-                      <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                    );
-                }
-              })
-            }
-          </Layer>
-        </Stage>
-      </Col>
-    </Row>
-    <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+    <>
+      <Row style={{ width: '100%' }}>
+        <Col span={3}>
+          <ToolBar width={80} height={200} list={[AddShape, AddImage, AddText]} currentShape={currentItem} currentIndex={currentIndex} />
+        </Col>
+        <Col span={21} style={{ padding: '40px' }}>
+          <Stage width={window.innerWidth} height={window.innerHeight}>
+            <Layer>
+              {
+                list.map((item: any, index: number) => {
+                  switch (item.type) {
+                    default:
+                      return;
+                    case 'RECTANGLE':
+                      // eslint-disable-next-line consistent-return
+                      return (
+                        <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(doc); }} />
+                      );
+                    case 'CIRCLE':
+                      // eslint-disable-next-line consistent-return
+                      return (
+                        <Circle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                      );
+                    case 'ELLIPSE':
+                      // eslint-disable-next-line consistent-return
+                      return (
+                        <Ellipse item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                      );
+                    case 'DIAMOND':
+                      // eslint-disable-next-line consistent-return
+                      return (
+                        <Diamond item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                      );
+                    case 'IMAGE':
+                      // eslint-disable-next-line consistent-return
+                      return (
+                        <Img item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                      );
+                    case 'TRIANGLE':
+                      // eslint-disable-next-line consistent-return
+                      return (
+                        <Triangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                      );
+                    case 'TEXT':
+                      // eslint-disable-next-line consistent-return
+                      return (
+                        <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                      );
+                  }
+                })
+              }
+            </Layer>
+          </Stage>
+        </Col>
+      </Row>
+      <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         abcd
-    </Modal>
+      </Modal>
+    </>
   );
 };
 export default PaintingContent;
