@@ -4,19 +4,19 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 // eslint-disable-next-line no-unused-vars
 import { Icon } from '@fluentui/react/lib/Icon';
-import addImg from '../../../utils/add_img';
+import addText from '../../../utils/add_text';
 
-const AddImage: React.FC<{}> = () => (
+const AddText: React.FC<{}> = () => (
   // eslint-disable-next-line object-curly-newline
-  <div className="tool_icon" style={{ textAlign: 'center' }}>
+  <div className="tool_icon">
     <Icon
-      iconName="PictureFill"
+      iconName="Edit"
       style={{ fontSize: '40px', margin: 'auto' }}
-      onClick={() => addImg({
-        width: 20, height: 50, x: 300, y: 300, type: 'IMAGE', url: 'https://konvajs.org/assets/lion.png',
+      onClick={() => addText({
+        width: 20, height: 50, x: 300, y: 300, type: 'TEXT', text: '请输入文字',
       })}
     />
   </div>
 
 );
-export default AddImage;
+export default AddText;
