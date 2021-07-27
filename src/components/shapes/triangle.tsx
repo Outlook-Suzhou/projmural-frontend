@@ -13,7 +13,9 @@ const Triangle: React.FC<Props> = (props: Props) => {
   const { item, index, click } = props;
   return (
     <Line
+    // eslint-disable-next-line react/jsx-props-no-spreading
       {...item}
+    // eslint-disable-next-line react/jsx-props-no-spreading
       {...shapeConfig}
       key={index}
       stroke="black"

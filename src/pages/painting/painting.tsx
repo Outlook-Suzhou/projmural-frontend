@@ -8,6 +8,7 @@ import addCircle from '../../utils/add_circle';
 import addEllipse from '../../utils/add_circle';
 import addDiamond from '../../utils/add_diamond';
 import addTriangle from '../../utils/add_triangle';
+import addLine from '../../utils/add_line';
 import {Modal} from "antd";
 
 const Painting: React.FC<{}> = () => {
