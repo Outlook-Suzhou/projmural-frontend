@@ -3,6 +3,7 @@ import { Image } from 'react-konva';
 import useImage from 'use-image';
 import React from 'react';
 import doc from '../../client/client';
+import shapeConfig from './shape_config';
 
 // @ts-ignore
 // eslint-disable-next-line react/prop-types
@@ -12,12 +13,12 @@ const Img = ({ item, index, click }) => {
   return (
   // eslint-disable-next-line react/react-in-jsx-scope
     <Image
-            // eslint-disable-next-line react/prop-types
+        // eslint-disable-next-line react/prop-types
       x={item.x}
-            // eslint-disable-next-line react/prop-types
+        // eslint-disable-next-line react/prop-types
       y={item.y}
-            // @ts-ignore
-            // eslint-disable-next-line react/prop-types,no-unused-vars
+        // eslint-disable-next-line react/jsx-props-no-spreading
+      {...shapeConfig}
       image={img}
       key={index}
       draggable

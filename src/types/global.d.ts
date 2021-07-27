@@ -15,10 +15,14 @@ declare namespace BaseShapes {
   }
   interface Ellipse extends Position {
     radius: Position,
-    type: "ELLIPSE"
+    type: 'ELLIPSE'
   }
   interface Diamond extends Position {
     radius: Position,
-    type: "DIAMOND"
+    type: 'DIAMOND'
+  }
+  interface Triangle extends Position {
+    points: number[6];
+    type: 'TRIANGLE';
   }
 }

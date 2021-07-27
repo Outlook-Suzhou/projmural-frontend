@@ -8,7 +8,7 @@ import addImg from '../../../utils/add_img';
 
 const AddImage: React.FC<{}> = () => (
   // eslint-disable-next-line object-curly-newline
-  <div className="tool_icon">
+  <div className="tool_icon" style={{ textAlign: 'center' }}>
     <Icon
       iconName="PictureFill"
       style={{ fontSize: '40px', margin: 'auto' }}
