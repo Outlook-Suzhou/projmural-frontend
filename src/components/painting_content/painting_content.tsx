@@ -17,14 +17,20 @@ import AddText from '../tool_bar/tools/add_text';
 
 const PaitingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
-  const [currentItem, setCurrentItem] = useState({});
+  const [currentItem, setCurrentItem] = useState({
+    text: '',
+  });
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // const showModal = () => {
-  //   setIsModalVisible(true);
-  // };
+  const [text, setText] = useState('');
+
+  const showModal = () => {
+    console.log(text);
+    setIsModalVisible(true);
+  };
 
   const handleOk = () => {
+    currentItem.text = text;
     setIsModalVisible(false);
   };
 
@@ -85,7 +91,7 @@ const PaitingContent: React.FC<{}> = () => {
                 case 'TEXT':
                   // eslint-disable-next-line consistent-return
                   return (
-                    <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                    <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} ondblclick={() => { setText(item.text); setCurrentItem(item); setCurrentIndex(index); console.log(item); showModal(); }} />
                   );
               }
             })
@@ -93,7 +99,7 @@ const PaitingContent: React.FC<{}> = () => {
         </Layer>
       </Stage>
       <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        abcd
+        <input type="text" defaultValue={text} onChange={(e) => setText(e.target.value)} />
       </Modal>
     </div>
   );
