@@ -7,6 +7,7 @@ import addRectangle from '../../utils/add_rectangle';
 import addCircle from '../../utils/add_circle';
 import addEllipse from '../../utils/add_circle';
 import addDiamond from '../../utils/add_diamond';
+import addLine from '../../utils/add_line'
 
 const Paiting: React.FC<{}> = () => {
   return (
@@ -15,6 +16,7 @@ const Paiting: React.FC<{}> = () => {
       <button type="button" onClick={() => addCircle({radius: 30, x: 30, y: 40, type: 'CIRCLE'})}>circle</button>
       <button type="button" onClick={() => addEllipse({radius: {x: 20, y: 30}, x: 30, y: 40, type: 'ELLIPSE'})}>ellipse</button>
       <button type="button" onClick={() => addDiamond({radius: {x: 40, y: 25}, x: 30, y: 40, type: 'DIAMOND'})}>diamond</button>
+      <button type="button" onClick={() => addLine(start: {x: 20, y: 30}, end: {x: 50, y: 40}, weight: 5, type: 'LINE'})}>line</button>
       <PaitingContent />
     </div>
   );

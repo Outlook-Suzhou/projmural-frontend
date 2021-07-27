@@ -9,7 +9,7 @@ const Diamond = ({ item, index, click }) => (
   <Line
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...item}
-    /* eslint-disable-next-line react/prop-types */
+    // eslint-disable-next-line react/prop-types
     points={[0, item.radius.y, item.radius.x, 0, 0, -item.radius.y, -item.radius.x, 0]}
     closed
     // eslint-disable-next-line react/jsx-props-no-spreading
