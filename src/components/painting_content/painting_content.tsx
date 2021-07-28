@@ -5,7 +5,7 @@ import { Row, Col, Modal } from 'antd';
 
 import doc from '../../client/client';
 import Ellipse from '../shapes/ellipse';
-import Rectangle from '../shapes/rectangle';
+import Rectangle1 from '../shapes/transform_rect';
 import Diamond from '../shapes/diamond';
 import Circle from '../shapes/circle';
 import Line from '../shapes/line';
@@ -22,6 +22,14 @@ const PaintingContent: React.FC<{}> = () => {
   const [currentItem, setCurrentItem] = useState({});
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedId, selectShape] = useState(null);
+  const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
+    // deselect when clicked on empty area
+    const clickedOnEmpty = e.target === e.target.getStage();
+    if (clickedOnEmpty) {
+      selectShape(null);
+    }
+  };
   // const showModal = () => {
   //   setIsModalVisible(true);
   // };
@@ -54,7 +62,7 @@ const PaintingContent: React.FC<{}> = () => {
           <ToolBar width={80} height={200} list={[AddShape, AddImage, AddText]} currentShape={currentItem} currentIndex={currentIndex} />
         </Col>
         <Col span={21} style={{ padding: '40px' }}>
-          <Stage width={window.innerWidth} height={window.innerHeight}>
+          <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
             <Layer>
               {
                 list.map((item: any, index: number) => {
@@ -64,7 +72,8 @@ const PaintingContent: React.FC<{}> = () => {
                     case 'RECTANGLE':
                       // eslint-disable-next-line consistent-return
                       return (
-                        <Rectangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(doc); }} />
+                      // @ts-ignore
+                        <Rectangle1 item={item} index={index} isSelected={index === selectedId} onSelect={() => { selectShape(index); }} />
                       );
                     case 'CIRCLE':
                       // eslint-disable-next-line consistent-return

@@ -8,6 +8,7 @@ declare namespace BaseShapes {
     width: number,
     height: number,
     type: 'RECTANGLE'
+    rotation: number
   }
   interface Circle extends Position {
     radius: number,
