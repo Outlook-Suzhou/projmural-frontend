@@ -30,12 +30,17 @@ const TEXT = ({
         draggable
         onClick={click}
         onDblClick={ondblclick}
+          // @ts-ignore
+          // eslint-disable-next-line react/prop-types,no-unused-vars
+        fontSize={item.fontSize}
         onDragMove={(e) => {
           const afterE = {
             width: e.target.width(),
             height: e.target.height(),
             x: e.target.x(),
             y: e.target.y(),
+            // eslint-disable-next-line react/prop-types
+            fontSize: item.fontSize,
             type: 'TEXT',
             // eslint-disable-next-line react/prop-types
             text: item.text,
