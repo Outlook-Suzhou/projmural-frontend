@@ -15,7 +15,7 @@ function createDoc(callback) {
     if (doc.type === null) {
       doc.create({
         shapes: [{
-          x: 20, y: 50, width: 100, height: 100, type: 'RECTANGLE',
+          x: 20, y: 50, width: 100, height: 100, type: 'RECTANGLE', rotation: 0,
         }, {
           x: 20, y: 50, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE',
         }],
