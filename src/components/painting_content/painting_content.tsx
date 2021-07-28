@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
 import {
-  Row, Col, Modal, Input,
+  Row, Col, Modal, Input, InputNumber,
 } from 'antd';
 
+import { FontSizeOutlined } from '@ant-design/icons';
 import doc from '../../client/client';
 import Ellipse from '../shapes/ellipse';
 import Rectangle from '../shapes/rectangle';
@@ -23,25 +24,34 @@ import AddText from '../tool_bar/tools/add_text';
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const [currentItem, setCurrentItem] = useState({
-    text: '',
+    text: '', fontSize: 10,
+
   });
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [text, setText] = useState('');
+  const [fontSize, setFontSize] = useState(10);
 
   const showModal = () => {
-    console.log(text);
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
     currentItem.text = text;
+    currentItem.fontSize = fontSize;
+    console.log(fontSize);
     setIsModalVisible(false);
+    doc.submitOp([{ p: ['shapes', currentIndex], ld: doc.data.shapes[currentIndex], li: currentItem }]);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  function onChange(value: any) {
+    setFontSize(value);
+  }
+
   useEffect(() => {
     doc.subscribe(() => {
       if (doc?.data?.shapes) {
@@ -56,6 +66,7 @@ const PaintingContent: React.FC<{}> = () => {
       }
     });
   }, []);
+  // @ts-ignore
   return (
     <>
       <Row style={{ width: '100%' }}>
@@ -108,7 +119,7 @@ const PaintingContent: React.FC<{}> = () => {
                     case 'TEXT':
                       // eslint-disable-next-line consistent-return
                       return (
-                        <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} ondblclick={() => { setText(item.text); setCurrentItem(item); setCurrentIndex(index); console.log(item); showModal(); }} />
+                        <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} ondblclick={() => { setText(item.text); setFontSize(item.fontSize); setCurrentItem(item); setCurrentIndex(index); console.log(item); showModal(); }} />
                       );
                   }
                 })
@@ -118,6 +129,10 @@ const PaintingContent: React.FC<{}> = () => {
         </Col>
       </Row>
       <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <br />
+        <FontSizeOutlined />
+        <InputNumber style={{ marginInlineStart: '10' }} min={5} max={40} defaultValue={fontSize} onChange={onChange} />
+        <br />
         <br />
         <Input type="text" defaultValue={text} onChange={(e) => setText(e.target.value)} />
       </Modal>
