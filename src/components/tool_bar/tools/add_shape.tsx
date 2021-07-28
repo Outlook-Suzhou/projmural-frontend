@@ -4,11 +4,7 @@ import { initializeIcons } from '@fluentui/font-icons-mdl2';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { Popover, Card } from 'antd';
 import 'antd/dist/antd.css';
-import addRectangle from '../../../utils/add_rectangle';
-import addCircle from '../../../utils/add_circle';
-import addEllipse from '../../../utils/add_ellipse';
-import addTriangle from '../../../utils/add_triangle';
-import addLine from '../../../utils/add_line';
+import addObject from '../../../utils/add_object';
 
 initializeIcons();
 
@@ -22,7 +18,7 @@ const shapes: React.FC<{}> = () => (
       <Icon
         iconName="RectangleShape"
         style={{ fontSize: '20px' }}
-        onClick={() => addRectangle({
+        onClick={() => addObject({
           width: 20, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0,
         })}
       />
@@ -31,7 +27,7 @@ const shapes: React.FC<{}> = () => (
       <Icon
         iconName="Line"
         style={{ fontSize: '20px' }}
-        onClick={() => addLine({
+        onClick={() => addObject({
           x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 50, y: 40 }, weight: 5, type: 'LINE',
         })}
       />
@@ -40,7 +36,7 @@ const shapes: React.FC<{}> = () => (
       <Icon
         iconName="CircleRing"
         style={{ fontSize: '20px' }}
-        onClick={() => addCircle({
+        onClick={() => addObject({
           radius: 30, x: 30, y: 40, type: 'CIRCLE',
         })}
       />
@@ -49,7 +45,7 @@ const shapes: React.FC<{}> = () => (
       <Icon
         iconName="TriangleShape"
         style={{ fontSize: '20px' }}
-        onClick={() => addTriangle({
+        onClick={() => addObject({
           x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE',
         })}
       />
@@ -58,7 +54,7 @@ const shapes: React.FC<{}> = () => (
       <Icon
         iconName="Ellipse"
         style={{ fontSize: '20px' }}
-        onClick={() => addEllipse({
+        onClick={() => addObject({
           radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE',
         })}
       />
