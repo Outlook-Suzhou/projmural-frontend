@@ -41,7 +41,7 @@ function startServer() {
   });
 
   server.listen(8080);
-  console.log('Listening on http://localhost:8080');
+  console.log('ShareDB is listening on http://localhost:8080');
 }
 createDoc(startServer);
 
@@ -54,3 +54,4 @@ app.get('/*', (req, res) => {
 });
 
 app.listen(8000);
+console.log('HTTPServer is lisening on http://localhost:8000');
