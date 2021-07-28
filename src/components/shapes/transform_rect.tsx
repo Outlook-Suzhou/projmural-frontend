@@ -4,7 +4,7 @@ import doc from '../../client/client';
 
 interface Props {
   item: BaseShapes.Rectangle,
-  isSelected: any,
+  isSelected: boolean,
   onSelect: any,
   index: number,
 }
