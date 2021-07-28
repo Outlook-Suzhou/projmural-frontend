@@ -3,6 +3,7 @@ const express = require('express');
 const ShareDB = require('sharedb');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
+const path = require('path');
 
 const backend = new ShareDB();
 
@@ -40,7 +41,17 @@ function startServer() {
   });
 
   server.listen(8080);
-  console.log('Listening on http://localhost:8080');
+  console.log('ShareDB is listening on http://localhost:8080');
 }
-
 createDoc(startServer);
+
+// HTTP server
+const app = express();
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.listen(8000);
+console.log('HTTPServer is lisening on http://localhost:8000');
