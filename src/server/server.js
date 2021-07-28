@@ -3,6 +3,7 @@ const express = require('express');
 const ShareDB = require('sharedb');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
+const path = require('path');
 
 const backend = new ShareDB();
 
@@ -15,7 +16,7 @@ function createDoc(callback) {
     if (doc.type === null) {
       doc.create({
         shapes: [{
-          x: 20, y: 50, width: 100, height: 100, type: 'RECTANGLE',
+          x: 20, y: 50, width: 100, height: 100, type: 'RECTANGLE', rotation: 0,
         }, {
           x: 20, y: 50, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE',
         }],
@@ -42,5 +43,14 @@ function startServer() {
   server.listen(8080);
   console.log('Listening on http://localhost:8080');
 }
-
 createDoc(startServer);
+
+// HTTP server
+const app = express();
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.listen(8000);
