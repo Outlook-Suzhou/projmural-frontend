@@ -38,7 +38,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
         onDragMove={(e) => {
-          const afterE = {
+          const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),
             height: e.target.height(),
             x: e.target.x(),
@@ -60,7 +60,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           // we will reset it back
           node.scaleX(1);
           node.scaleY(1);
-          const afterE = {
+          const afterE: BaseShapes.Rectangle = {
             ...item,
             x: node.x(),
             y: node.y(),
@@ -70,6 +70,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             type: 'RECTANGLE',
             rotation: node.rotation(),
           };
+
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
       />
