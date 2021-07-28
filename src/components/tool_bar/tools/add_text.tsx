@@ -13,7 +13,7 @@ const AddText: React.FC<{}> = () => (
       iconName="Edit"
       style={{ fontSize: '40px', margin: 'auto' }}
       onClick={() => addText({
-        width: 20, height: 50, x: 300, y: 300, type: 'TEXT', text: '请输入文字',
+        width: 20, height: 50, x: 300, y: 300, type: 'TEXT', text: '请输入文字', fontSize: 15,
       })}
     />
   </div>

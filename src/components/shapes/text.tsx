@@ -7,7 +7,11 @@ import doc from '../../client/client';
 
 // @ts-ignore
 // eslint-disable-next-line react/prop-types
-const TEXT = ({ item, index, click }) =>
+const TEXT = ({
+// @ts-ignore
+  // eslint-disable-next-line react/prop-types
+  item, index, click, ondblclick,
+}) =>
   // @ts-ignore
 // eslint-disable-next-line implicit-arrow-linebreak
   (
@@ -25,28 +29,21 @@ const TEXT = ({ item, index, click }) =>
         key={index}
         draggable
         onClick={click}
+        onDblClick={ondblclick}
+          // @ts-ignore
+          // eslint-disable-next-line react/prop-types,no-unused-vars
+        fontSize={item.fontSize}
         onDragMove={(e) => {
           const afterE = {
             width: e.target.width(),
             height: e.target.height(),
             x: e.target.x(),
             y: e.target.y(),
+            // eslint-disable-next-line react/prop-types
+            fontSize: item.fontSize,
             type: 'TEXT',
             // eslint-disable-next-line react/prop-types
             text: item.text,
-          };
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
-        }}
-        onDblClick={(e) => {
-          // @ts-ignore
-          const afterE = {
-            width: e.target.width(),
-            height: e.target.height(),
-            x: e.target.x(),
-            y: e.target.y(),
-            type: 'TEXT',
-            // eslint-disable-next-line react/prop-types
-            text: '修改后',
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
