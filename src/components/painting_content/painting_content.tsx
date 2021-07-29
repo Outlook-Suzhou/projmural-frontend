@@ -21,6 +21,7 @@ import AddImage from '../tool_bar/tools/add_images';
 import Triangle from '../shapes/triangle';
 import Text from '../shapes/text';
 import AddText from '../tool_bar/tools/add_text';
+import FloatToolBar from '../tool_bar/float_tool_bar';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -31,12 +32,12 @@ const PaintingContent: React.FC<{}> = () => {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const [selectedId, selectShape] = useState(null);
+  const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
-      selectShape(null);
+      selectShape(-1);
     }
   };
   const DelEle: React.FC<{}> = () => (
@@ -89,6 +90,7 @@ const PaintingContent: React.FC<{}> = () => {
   // @ts-ignore
   return (
     <>
+      {selectedId === -1 ? null : <FloatToolBar index={selectedId} item={doc.data.shapes[selectedId]} />}
       <Row style={{ width: '100%' }}>
         <Col span={3}>
           <ToolBar width={80} height={300} list={[AddShape, AddImage, AddText, DelEle]} currentShape={currentItem} currentIndex={currentIndex} />
@@ -160,4 +162,5 @@ const PaintingContent: React.FC<{}> = () => {
     </>
   );
 };
+
 export default PaintingContent;
