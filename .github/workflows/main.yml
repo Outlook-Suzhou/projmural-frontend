@@ -36,7 +36,7 @@ jobs:
             cd deploy 
             git clone git@github.com:Outlook-Suzhou/projmural-frontend.git
             cd projmural-frontend
-            docker image build -t projmural .
-            docker container run --rm -p 8000:8000 -p 8080:8080 -it projmural
+            sudo docker image build -t projmural .
+            sudo docker container run --rm -p 8000:8000 -p 8080:8080 -it projmural
             
 
