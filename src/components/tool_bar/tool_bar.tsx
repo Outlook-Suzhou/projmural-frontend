@@ -26,7 +26,7 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
     <Row
       className="toolbar"
       style={{
-        width, height, margin: '300px auto', border: 'solid', boxShadow: '5px 5px 5px #888888',
+        width, height, margin: '100px auto', border: 'solid', boxShadow: '5px 5px 5px #888888',
       }}
     >
       {
