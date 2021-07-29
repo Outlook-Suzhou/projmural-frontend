@@ -5,8 +5,8 @@ import { TwitterPicker } from 'react-color';
 import changeColor from '../../../utils/change_color';
 
 interface Props {
-    index: number,
-    item: BaseShapes.Rectangle,
+  index: number,
+  item: BaseShapes.Rectangle,
 }
 const SelectColor = (props: Props) => {
   const { index, item } = props;
