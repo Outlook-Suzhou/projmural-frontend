@@ -23,7 +23,7 @@ const shapes: React.FC<{}> = () => (
         iconName="RectangleShape"
         style={{ fontSize: '20px' }}
         onClick={() => addRectangle({
-          width: 20, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0,
+          width: 20, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0, fill: 'blue',
         })}
       />
     </Card.Grid>

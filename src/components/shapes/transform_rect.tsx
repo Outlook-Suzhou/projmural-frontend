@@ -26,7 +26,6 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
   return (
     <>
       <Rect
-        fill="blue"
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
@@ -45,6 +44,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             y: e.target.y(),
             type: 'RECTANGLE',
             rotation: item.rotation,
+            fill: item.fill,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
