@@ -33,7 +33,7 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
         list.map((Item) => (
           <Col
             className="tool"
-            style={{ width: '100%', textAlign: 'center' }}
+            style={{ width: '100%', textAlign: 'center', cursor: 'pointer' }}
           >
             <Item currentShape={props.currentShape} currentIndex={props.currentIndex} />
           </Col>
