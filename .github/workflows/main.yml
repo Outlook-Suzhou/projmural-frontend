@@ -37,7 +37,7 @@ jobs:
             rm -rf deploy
             mkdir deploy
             cd deploy 
-            git clone -b renxinwang_add_new_workflow git@github.com:Outlook-Suzhou/projmural-frontend.git
+            git clone git@github.com:Outlook-Suzhou/projmural-frontend.git
             cd projmural-frontend
             sudo docker image build -t projmural .
             nohup sudo docker container run --rm -p 8000:8000 -p 8080:8080 projmural > ./output.log 2>&1 &
