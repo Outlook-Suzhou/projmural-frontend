@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
 import doc from '../../client/client';
+import shapeConfig from './shape_config';
 
 interface Props {
   item: BaseShapes.Rectangle,
@@ -30,6 +31,8 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         onTap={onSelect}
         ref={shapeRef}
         {...item}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+        {...shapeConfig}
         draggable
         onDragMove={(e) => {
           const afterE: BaseShapes.Rectangle = {
