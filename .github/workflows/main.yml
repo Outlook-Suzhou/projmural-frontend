@@ -39,6 +39,6 @@ jobs:
             cd deploy 
             git clone -b renxinwang_add_new_workflow git@github.com:Outlook-Suzhou/projmural-frontend.git
             cd projmural-frontend
-            nohup sh ./start_server.sh &
+            nohup sh ./start_server.sh > ./output.log 2>&1 &
             
 
