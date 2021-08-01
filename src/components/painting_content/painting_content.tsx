@@ -24,7 +24,7 @@ import AddText from '../tool_bar/tools/add_text';
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const [currentItem, setCurrentItem] = useState({
-    text: '', fontSize: 10,
+    text: '', fontSize: 10, x: 0, y: 0,
 
   });
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -45,7 +45,44 @@ const PaintingContent: React.FC<{}> = () => {
   const [fontSize, setFontSize] = useState(10);
 
   const showModal = () => {
-    setIsModalVisible(true);
+    const textarea = document.createElement('textarea');
+    console.log(currentItem);
+    document.body.appendChild(textarea);
+    textarea.style.position = 'absolute';
+    textarea.value = currentItem.text;
+    currentItem.text = '';
+    doc.submitOp([{ p: ['shapes', currentIndex], ld: doc.data.shapes[currentIndex], li: currentItem }]);
+    textarea.style.top = `${currentItem.y + 62}px`;
+    textarea.style.left = `${currentItem.x + 198}px`;
+    textarea.style.fontSize = `${currentItem.fontSize}px`;
+    textarea.style.width = '1000px';
+    textarea.style.border = 'none';
+    textarea.style.padding = '0px';
+    textarea.style.margin = '0px';
+    textarea.style.overflow = 'hidden';
+    textarea.style.background = 'none';
+    textarea.style.outline = 'none';
+    textarea.style.resize = 'none';
+    textarea.style.transformOrigin = 'left top';
+    textarea.focus();
+    function removeTextarea() {
+      // @ts-ignore
+      textarea.parentNode.removeChild(textarea);
+      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      window.removeEventListener('click', handleOutsideClick);
+      doc.submitOp([{ p: ['shapes', currentIndex], ld: doc.data.shapes[currentIndex], li: currentItem }]);
+    }
+    function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
+      if (e.target !== textarea) {
+        currentItem.text = textarea.value;
+        removeTextarea();
+      }
+    }
+    setTimeout(() => {
+      // @ts-ignore
+      window.addEventListener('click', handleOutsideClick);
+    });
   };
 
   const handleOk = () => {
