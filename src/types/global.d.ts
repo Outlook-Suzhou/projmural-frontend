@@ -34,5 +34,9 @@ declare namespace BaseShapes {
     url: string,
     rotation: number,
   }
-  type Shapes = Circle | Triangle;
+  interface Text extends Position {
+    type: 'TEXT',
+    text: string,
+    fontSize: number
+  }
 }
