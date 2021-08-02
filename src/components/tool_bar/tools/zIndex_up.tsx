@@ -1,4 +1,5 @@
 import { Icon } from '@fluentui/react/lib/Icon';
+import React from 'react';
 import doc from '../../../client/client';
 
 interface Props {
@@ -9,9 +10,7 @@ const ZIndexUp = (props: Props) => {
   const { index, item } = props;
 
   return (
-    // eslint-disable-next-line react/react-in-jsx-scope
     <div className="tool_icon">
-      {/* eslint-disable-next-line react/react-in-jsx-scope */}
       <Icon
         iconName="Up"
         style={{ fontSize: '40px', margin: 'auto' }}
