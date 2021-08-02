@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { Text } from 'react-konva';
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
+import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import doc from '../../client/client';
 
@@ -15,7 +15,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
   const {
     item, index, click,
   } = props;
-
+  const [visible, setVisible] = useState(true);
   return (
     <>
       <Text
@@ -25,19 +25,20 @@ const TEXT: React.FC<Props> = (props: Props) => {
         key={index}
         draggable
         onClick={click}
+        visible={visible}
         onDblClick={() => {
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);
           textarea.style.position = 'absolute';
           textarea.value = item.text;
-          item.text = '';
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+          setVisible(false);
           // @ts-ignore
           const stage = document.getElementById('stage').getBoundingClientRect();
           textarea.style.top = `${item.y + stage.top + 36}px`;
           textarea.style.left = `${item.x + stage.left + 40}px`;
           textarea.style.fontSize = `${item.fontSize}px`;
           textarea.style.width = '1000px';
+          textarea.style.height = '1000px';
           textarea.style.border = 'none';
           textarea.style.padding = '0px';
           textarea.style.margin = '0px';
@@ -47,6 +48,10 @@ const TEXT: React.FC<Props> = (props: Props) => {
           textarea.style.resize = 'none';
           textarea.style.transformOrigin = 'left top';
           textarea.focus();
+          textarea.addEventListener('keydown', () => {
+            item.text = textarea.value;
+            doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+          });
           function removeTextarea() {
             // @ts-ignore
             textarea.parentNode.removeChild(textarea);
@@ -54,6 +59,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             window.removeEventListener('click', handleOutsideClick);
             doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+            setVisible(true);
           }
           function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
             if (e.target !== textarea) {

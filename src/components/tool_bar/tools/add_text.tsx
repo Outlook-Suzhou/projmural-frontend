@@ -10,7 +10,7 @@ const AddText: React.FC<{}> = () => (
   // eslint-disable-next-line object-curly-newline
   <div className="tool_icon">
     <Icon
-      iconName="Edit"
+      iconName="FontColorA"
       style={{ fontSize: '40px', margin: 'auto' }}
       onClick={() => addText({
         width: 20, height: 50, x: 300, y: 300, type: 'TEXT', text: '双击编辑文字', fontSize: 15,

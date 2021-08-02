@@ -1,41 +1,97 @@
-// eslint-disable-next-line no-unused-vars
-import { Image } from 'react-konva';
+import { Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 
-// @ts-ignore
-// eslint-disable-next-line react/prop-types
-const Img = ({ item, index, click }) => {
-  // eslint-disable-next-line react/prop-types
+interface Props {
+  item: BaseShapes.Image,
+  isSelected: boolean,
+  onSelect: any,
+  index: number,
+}
+const Img: React.FC<Props> = (props: Props) => {
+  const {
+    item, isSelected, onSelect, index,
+  } = props;
+  const shapeRef = useRef<any>();
+  const trRef = useRef<any>();
+  useEffect(() => {
+    // we need to attach transformer manually
+    if (isSelected) {
+      // we need to attach transformer manually
+      trRef.current.nodes([shapeRef.current]);
+      trRef.current.getLayer().batchDraw();
+    }
+  }, [isSelected]);
   const [img] = useImage(item.url);
   return (
-  // eslint-disable-next-line react/react-in-jsx-scope
-    <Image
-        // eslint-disable-next-line react/prop-types
-      x={item.x}
-        // eslint-disable-next-line react/prop-types
-      y={item.y}
-        // eslint-disable-next-line react/jsx-props-no-spreading
-      {...shapeConfig}
-      image={img}
-      key={index}
-      draggable
-      onClick={click}
-      onDragMove={(e) => {
-        const afterE = {
-          width: e.target.width(),
-          height: e.target.height(),
-          x: e.target.x(),
-          y: e.target.y(),
-          type: 'IMAGE',
-          // eslint-disable-next-line react/prop-types
-          url: item.url,
-        };
-        doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
-      }}
-    />
+    <>
+      <Image
+        onClick={onSelect}
+        onTap={onSelect}
+        x={item.x}
+        y={item.y}
+        width={item.width}
+        height={item.height}
+        ref={shapeRef}
+        {...shapeConfig}
+        image={img}
+        rotation={item.rotation}
+        key={index}
+        draggable
+        onDragMove={(e) => {
+          const afterE: BaseShapes.Image = {
+            width: e.target.width(),
+            height: e.target.height(),
+            x: e.target.x(),
+            y: e.target.y(),
+            type: 'IMAGE',
+            url: item.url,
+            rotation: item.rotation,
+          };
+          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+        }}
+        onTransform={() => {
+          // transformer is changing scale of the node
+          // and NOT its width or height
+          // but in the store we have only width and height
+          // to match the data better we w  ill reset scale on transform end
+          const node = shapeRef.current;
+          const scaleX = node.scaleX();
+          const scaleY = node.scaleY();
+
+          // we will reset it back
+          node.scaleX(1);
+          node.scaleY(1);
+          const afterE: BaseShapes.Image = {
+            ...item,
+            x: node.x(),
+            y: node.y(),
+            // set minimal value
+            width: Math.max(5, node.width() * scaleX),
+            height: Math.max(node.height() * scaleY),
+            type: 'IMAGE',
+            url: item.url,
+            rotation: node.rotation(),
+          };
+
+          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+        }}
+      />
+      {isSelected && (
+        <Transformer
+          ref={trRef}
+          boundBoxFunc={(oldBox: any, newBox: { width: number; height: number; }) => {
+            // limit resize
+            if (newBox.width < 5 || newBox.height < 5) {
+              return oldBox;
+            }
+            return newBox;
+          }}
+        />
+      )}
+    </>
   );
 };
 

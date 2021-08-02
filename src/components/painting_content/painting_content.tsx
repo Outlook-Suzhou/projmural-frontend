@@ -45,7 +45,7 @@ const PaintingContent: React.FC<{}> = () => {
       <Icon
         iconName="Delete"
         style={{ fontSize: '40px', margin: 'auto' }}
-        onClick={() => doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem, li: {} }])}
+        onClick={() => doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }])}
       />
     </div>
   );
@@ -108,7 +108,7 @@ const PaintingContent: React.FC<{}> = () => {
                       case 'IMAGE':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Img item={item} index={index} click={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
+                          <Img item={item} index={index} isSelected={index === selectedId} onSelect={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                       case 'TRIANGLE':
                         // eslint-disable-next-line consistent-return
