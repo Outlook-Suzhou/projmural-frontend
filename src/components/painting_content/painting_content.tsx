@@ -44,49 +44,6 @@ const PaintingContent: React.FC<{}> = () => {
   const [text, setText] = useState('');
   const [fontSize, setFontSize] = useState(10);
 
-  const showModal = () => {
-    const textarea = document.createElement('textarea');
-    console.log(currentItem);
-    document.body.appendChild(textarea);
-    textarea.style.position = 'absolute';
-    textarea.value = currentItem.text;
-    currentItem.text = '';
-    doc.submitOp([{ p: ['shapes', currentIndex], ld: doc.data.shapes[currentIndex], li: currentItem }]);
-    // @ts-ignore
-    const stage = document.getElementById('stage').getBoundingClientRect();
-    textarea.style.top = `${currentItem.y + stage.top + 36}px`;
-    textarea.style.left = `${currentItem.x + stage.left + 40}px`;
-    textarea.style.fontSize = `${currentItem.fontSize}px`;
-    textarea.style.width = '1000px';
-    textarea.style.border = 'none';
-    textarea.style.padding = '0px';
-    textarea.style.margin = '0px';
-    textarea.style.overflow = 'hidden';
-    textarea.style.background = 'none';
-    textarea.style.outline = 'none';
-    textarea.style.resize = 'none';
-    textarea.style.transformOrigin = 'left top';
-    textarea.focus();
-    function removeTextarea() {
-      // @ts-ignore
-      textarea.parentNode.removeChild(textarea);
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      window.removeEventListener('click', handleOutsideClick);
-      doc.submitOp([{ p: ['shapes', currentIndex], ld: doc.data.shapes[currentIndex], li: currentItem }]);
-    }
-    function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
-      if (e.target !== textarea) {
-        currentItem.text = textarea.value;
-        removeTextarea();
-      }
-    }
-    setTimeout(() => {
-      // @ts-ignore
-      window.addEventListener('click', handleOutsideClick);
-    });
-  };
-
   const handleOk = () => {
     currentItem.text = text;
     currentItem.fontSize = fontSize;
@@ -171,7 +128,7 @@ const PaintingContent: React.FC<{}> = () => {
                     case 'TEXT':
                       // eslint-disable-next-line consistent-return
                       return (
-                        <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} ondblclick={() => { setText(item.text); setFontSize(item.fontSize); setCurrentItem(item); setCurrentIndex(index); console.log(item); showModal(); }} />
+                        <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
                       );
                   }
                 })
