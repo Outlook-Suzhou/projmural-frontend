@@ -3,10 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
 import {
-  Row, Col, Modal, Input, InputNumber,
+  Row, Col,
 } from 'antd';
-
-import { FontSizeOutlined } from '@ant-design/icons';
 import { Icon } from '@fluentui/react/lib/Icon';
 import doc from '../../client/client';
 import Ellipse from '../shapes/ellipse';
@@ -25,12 +23,8 @@ import FloatToolBar from '../tool_bar/float_tool_bar';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
-  const [currentItem, setCurrentItem] = useState({
-    text: '', fontSize: 10, x: 0, y: 0,
-
-  });
+  const [currentItem, setCurrentItem] = useState({});
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
@@ -50,24 +44,6 @@ const PaintingContent: React.FC<{}> = () => {
       />
     </div>
   );
-  const [text, setText] = useState('');
-  const [fontSize, setFontSize] = useState(10);
-
-  const handleOk = () => {
-    currentItem.text = text;
-    currentItem.fontSize = fontSize;
-    console.log(fontSize);
-    setIsModalVisible(false);
-    doc.submitOp([{ p: ['shapes', currentIndex], ld: doc.data.shapes[currentIndex], li: currentItem }]);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  function onChange(value: any) {
-    setFontSize(value);
-  }
 
   useEffect(() => {
     doc.subscribe(() => {
@@ -147,14 +123,6 @@ const PaintingContent: React.FC<{}> = () => {
           </Stage>
         </Col>
       </Row>
-      <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <br />
-        <FontSizeOutlined />
-        <InputNumber style={{ marginInlineStart: '10' }} min={5} max={40} defaultValue={fontSize} onChange={onChange} />
-        <br />
-        <br />
-        <Input type="text" defaultValue={text} onChange={(e) => setText(e.target.value)} />
-      </Modal>
     </>
   );
 };
