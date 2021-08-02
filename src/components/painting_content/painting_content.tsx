@@ -52,8 +52,10 @@ const PaintingContent: React.FC<{}> = () => {
     textarea.value = currentItem.text;
     currentItem.text = '';
     doc.submitOp([{ p: ['shapes', currentIndex], ld: doc.data.shapes[currentIndex], li: currentItem }]);
-    textarea.style.top = `${currentItem.y + 62}px`;
-    textarea.style.left = `${currentItem.x + 198}px`;
+    // @ts-ignore
+    const stage = document.getElementById('stage').getBoundingClientRect();
+    textarea.style.top = `${currentItem.y + stage.top + 36}px`;
+    textarea.style.left = `${currentItem.x + stage.left + 40}px`;
     textarea.style.fontSize = `${currentItem.fontSize}px`;
     textarea.style.width = '1000px';
     textarea.style.border = 'none';
@@ -122,7 +124,7 @@ const PaintingContent: React.FC<{}> = () => {
         <Col span={3}>
           <ToolBar width={80} height={200} list={[AddShape, AddImage, AddText]} currentShape={currentItem} currentIndex={currentIndex} />
         </Col>
-        <Col span={21} style={{ padding: '40px' }}>
+        <Col id="stage" span={21} style={{ padding: '40px' }}>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
             <Layer>
               {

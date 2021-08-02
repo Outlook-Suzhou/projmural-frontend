@@ -12,18 +12,6 @@ import addLine from '../../utils/add_line';
 import {Modal} from "antd";
 
 const Painting: React.FC<{}> = () => {
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal=()=>{
-        setIsModalVisible(true);
-    }
   return (
     <div className="paiting" >
       <button type="button" onClick={() => addRectangle({width: 20, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0})}>rect</button>
@@ -32,9 +20,6 @@ const Painting: React.FC<{}> = () => {
       <button type="button" onClick={() => addDiamond({radius: {x: 40, y: 25}, x: 30, y: 40, type: 'DIAMOND'})}>diamond</button>
       <button type="button" onClick={() => addLine({x: 0, y: 0, start: {x: 20, y: 20}, end: {x: 50, y: 40}, weight: 5, type: 'LINE'})}>line</button>
       <button type="button" onClick={() => addTriangle({x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE'})}>triangle</button>
-        <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-            abcd
-        </Modal>
       <PaitingContent />
     </div>
   );
