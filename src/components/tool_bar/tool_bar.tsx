@@ -26,14 +26,14 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
     <Row
       className="toolbar"
       style={{
-        width, height, margin: '300px auto', border: 'solid', boxShadow: '5px 5px 5px #888888',
+        width, height, margin: '100px auto', border: 'solid', boxShadow: '5px 5px 5px #888888',
       }}
     >
       {
         list.map((Item) => (
           <Col
             className="tool"
-            style={{ width: '100%', textAlign: 'center' }}
+            style={{ width: '100%', textAlign: 'center', cursor: 'pointer' }}
           >
             <Item currentShape={props.currentShape} currentIndex={props.currentIndex} />
           </Col>

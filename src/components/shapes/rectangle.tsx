@@ -7,9 +7,9 @@ import shapeConfig from './shape_config';
 const Rectangle = ({ item, index, click }) => (
   // eslint-disable-next-line react/react-in-jsx-scope
   <Rect
-    // eslint-disable-next-line react/jsx-props-no-spreading
+        // eslint-disable-next-line react/jsx-props-no-spreading
     {...item}
-    // eslint-disable-next-line react/jsx-props-no-spreading
+        // eslint-disable-next-line react/jsx-props-no-spreading
     {...shapeConfig}
     key={index}
     fill="blue"
@@ -22,11 +22,6 @@ const Rectangle = ({ item, index, click }) => (
         x: e.target.x(),
         y: e.target.y(),
         type: 'RECTANGLE',
-      };
-      doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
-    }}
-    onDblClick={() => {
-      const afterE = {
       };
       doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
     }}
