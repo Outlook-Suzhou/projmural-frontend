@@ -23,14 +23,16 @@ import FloatToolBar from '../tool_bar/float_tool_bar';
 import { useStore } from '../../store/store';
 
 const PaintingContent: React.FC<{}> = () => {
-  const [state] = useStore();
+  const [state, updateState] = useStore();
   const [list, setList] = useState(doc?.data?.shapes || []);
-  const [currentItem, setCurrentItem] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(-1);
+  // const [currentItem, setCurrentItem] = useState({});
+  // const [currentIndex, setCurrentIndex] = useState(-1);
   const [selectedId, selectShape] = useState(-1);
-  useEffect(() => {
-    console.log(state);
-  }, []);
+  // useEffect(() => {
+  //   console.log(state);
+  //   updateState('setCurrentItem', 'testItem', { test: 23 });
+  //   console.log(state);
+  // }, []);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -43,7 +45,7 @@ const PaintingContent: React.FC<{}> = () => {
       <Icon
         iconName="Delete"
         style={{ fontSize: '40px', margin: 'auto' }}
-        onClick={() => doc.submitOp([{ p: ['shapes', currentIndex], ld: currentItem, li: {} }])}
+        onClick={() => doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem, li: {} }])}
       />
     </div>
   );
@@ -65,10 +67,14 @@ const PaintingContent: React.FC<{}> = () => {
   // @ts-ignore
   return (
     <>
+      <div>
+        {JSON.stringify(state)}
+        {2312312}
+      </div>
       {selectedId === -1 ? null : <FloatToolBar index={selectedId} item={doc.data.shapes[selectedId]} />}
       <Row style={{ width: '100%' }}>
         <Col span={3}>
-          <ToolBar width={80} height={300} list={[AddShape, AddImage, AddText, DelEle]} currentShape={currentItem} currentIndex={currentIndex} />
+          <ToolBar width={80} height={300} list={[AddShape, AddImage, AddText, DelEle]} currentShape={state.currentItem} currentIndex={state.currentIndex} />
         </Col>
         <Col id="stage" span={21} style={{ padding: '40px' }}>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
@@ -82,42 +88,42 @@ const PaintingContent: React.FC<{}> = () => {
                         // eslint-disable-next-line consistent-return
                         return (
                         // @ts-ignore
-                          <Rectangle1 item={item} index={index} isSelected={index === selectedId} onSelect={() => { selectShape(index); setCurrentItem(item); setCurrentIndex(index); }} />
+                          <Rectangle1 item={item} index={index} isSelected={index === selectedId} onSelect={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                       case 'CIRCLE':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Circle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                          <Circle item={item} index={index} click={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                       case 'ELLIPSE':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Ellipse item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                          <Ellipse item={item} index={index} click={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                       case 'DIAMOND':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Diamond item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                          <Diamond item={item} index={index} click={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                       case 'IMAGE':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Img item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                          <Img item={item} index={index} click={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                       case 'TRIANGLE':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Triangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                          <Triangle item={item} index={index} click={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                       case 'LINE':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Line item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                          <Line item={item} index={index} click={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                       case 'TEXT':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                          <Text item={item} index={index} click={() => { updateState('setValue', 'currentItem', item); updateState('setValue', 'currentIndex', index); console.log(item); }} />
                         );
                     }
                   })

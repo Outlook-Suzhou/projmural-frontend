@@ -1,23 +1,44 @@
+/* eslint-disable prefer-object-spread */
+/* eslint-disable no-param-reassign */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/prop-types */
-import React, { createContext, useState, useContext } from 'react';
+import React, {
+  createContext, useState, useContext, useRef,
+} from 'react';
 
-const Context = createContext([{}, () => {}]);
+interface globalState {
+  currentItem: any,
+  currentIndex: number
+}
+type globalStateContext = [globalState, any];
+const Context = createContext<globalStateContext>([{
+  currentItem: {},
+  currentIndex: -1,
+}, () => {}]);
 
-function useStore() {
+function useStore(): [any, any] {
   return useContext(Context);
 }
-
-function StoreProvider(props: any) {
-  // eslint-disable-next-line prefer-destructuring
-  // eslint-disable-next-line react/destructuring-assignment
-  const children = props.children;
-  const [state, setState] = useState({
-    testItem: {},
+function StoreProvider({ children }: { children: any}) {
+  const [state, setState] = useState<globalState>({
+    currentItem: {},
+    currentIndex: -1,
   });
+  const stateCurrent: any = useRef(state);
+
+  const updateState = (action: string, name: string, payload: any) => {
+    switch (action) {
+      case 'setValue':
+        setState(Object.assign({}, { ...stateCurrent.current }, { [`${name}`]: payload }));
+        break;
+      default:
+        break;
+    }
+    stateCurrent.current = Object.assign({}, { ...stateCurrent.current }, { [`${name}`]: payload });
+  };
 
   return (
-    <Context.Provider value={[state, setState]}>
+    <Context.Provider value={[state, updateState]}>
       { children }
     </Context.Provider>
   );
