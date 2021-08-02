@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
 import doc from '../../client/client';
+import shapeConfig from './shape_config';
 
 interface Props {
   item: BaseShapes.Rectangle,
@@ -26,17 +27,13 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
   return (
     <>
       <Rect
-        fill="blue"
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
         {...item}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+        {...shapeConfig}
         draggable
-        onDblClick={() => {
-          const afterE = {
-          };
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
-        }}
         onDragMove={(e) => {
           const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),
@@ -45,6 +42,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             y: e.target.y(),
             type: 'RECTANGLE',
             rotation: item.rotation,
+            fill: item.fill,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
@@ -75,16 +73,16 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         }}
       />
       {isSelected && (
-      <Transformer
-        ref={trRef}
-        boundBoxFunc={(oldBox: any, newBox: { width: number; height: number; }) => {
-          // limit resize
-          if (newBox.width < 5 || newBox.height < 5) {
-            return oldBox;
-          }
-          return newBox;
-        }}
-      />
+        <Transformer
+          ref={trRef}
+          boundBoxFunc={(oldBox: any, newBox: { width: number; height: number; }) => {
+            // limit resize
+            if (newBox.width < 5 || newBox.height < 5) {
+              return oldBox;
+            }
+            return newBox;
+          }}
+        />
       )}
     </>
   );
