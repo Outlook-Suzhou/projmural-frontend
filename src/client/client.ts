@@ -5,7 +5,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 const sharedb = require('sharedb/lib/client');
 
 // Open WebSocket connection to ShareDB server
-const socket = new ReconnectingWebSocket('ws://40.83.97.177:8080');
+const socket = new ReconnectingWebSocket('ws://localhost:8080');
 const connection = new sharedb.Connection(socket);
 
 // Create local Doc instance mapped to 'examples' collection document with id 'counter'

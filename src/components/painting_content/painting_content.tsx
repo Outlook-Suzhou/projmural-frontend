@@ -20,13 +20,17 @@ import Triangle from '../shapes/triangle';
 import Text from '../shapes/text';
 import AddText from '../tool_bar/tools/add_text';
 import FloatToolBar from '../tool_bar/float_tool_bar';
+import { useStore } from '../../store/store';
 
 const PaintingContent: React.FC<{}> = () => {
+  const [state] = useStore();
   const [list, setList] = useState(doc?.data?.shapes || []);
   const [currentItem, setCurrentItem] = useState({});
   const [currentIndex, setCurrentIndex] = useState(-1);
-
   const [selectedId, selectShape] = useState(-1);
+  useEffect(() => {
+    console.log(state);
+  }, []);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
