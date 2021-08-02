@@ -39,7 +39,7 @@ const PaintingContent: React.FC<{}> = () => {
       <Icon
         iconName="Delete"
         style={{ fontSize: '40px', margin: 'auto' }}
-        onClick={() => doc.submitOp([{ p: ['shapes', currentIndex], ld: currentItem, li: {} }])}
+        onClick={() => {}}
       />
     </div>
   );
