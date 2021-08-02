@@ -98,7 +98,7 @@ const PaintingContent: React.FC<{}> = () => {
                       case 'IMAGE':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Img item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
+                          <Img item={item} index={index} isSelected={index === selectedId} onSelect={() => { selectShape(index); setCurrentItem(item); setCurrentIndex(index); }} />
                         );
                       case 'TRIANGLE':
                         // eslint-disable-next-line consistent-return
