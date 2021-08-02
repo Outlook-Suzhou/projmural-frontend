@@ -35,7 +35,6 @@ const PaintingContent: React.FC<{}> = () => {
     }
   };
   const DelEle: React.FC<{}> = () => (
-    // eslint-disable-next-line object-curly-newline
     <div className="tool_icon">
       <Icon
         iconName="Delete"

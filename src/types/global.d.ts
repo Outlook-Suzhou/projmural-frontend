@@ -27,4 +27,9 @@ declare namespace BaseShapes {
     points: number[6];
     type: 'TRIANGLE';
   }
+  interface Text extends Position {
+    type: 'TEXT',
+    text: string,
+    fontSize: number
+  }
 }

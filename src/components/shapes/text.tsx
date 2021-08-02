@@ -5,26 +5,22 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import doc from '../../client/client';
 
-// @ts-ignore
-// eslint-disable-next-line react/prop-types
-const TEXT = ({
-// @ts-ignore
-  // eslint-disable-next-line react/prop-types
-  item, index, click,
-}) =>
-  // @ts-ignore
-// eslint-disable-next-line implicit-arrow-linebreak
-  (
-  // eslint-disable-next-line react/jsx-no-comment-textnodes
-  // eslint-disable-next-line react/react-in-jsx-scope
+interface Props {
+  item: BaseShapes.Text,
+  index: number,
+  click: any
+}
+
+const TEXT: React.FC<Props> = (props: Props) => {
+  const {
+    item, index, click,
+  } = props;
+
+  return (
     <>
       <Text
-            // eslint-disable-next-line react/prop-types
         x={item.x}
-            // eslint-disable-next-line react/prop-types
         y={item.y}
-            // @ts-ignore
-            // eslint-disable-next-line react/prop-types,no-unused-vars
         text={item.text}
         key={index}
         draggable
@@ -33,18 +29,13 @@ const TEXT = ({
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);
           textarea.style.position = 'absolute';
-          // eslint-disable-next-line react/prop-types
           textarea.value = item.text;
-          // eslint-disable-next-line no-param-reassign,react/prop-types
           item.text = '';
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
           // @ts-ignore
           const stage = document.getElementById('stage').getBoundingClientRect();
-          // eslint-disable-next-line react/prop-types
           textarea.style.top = `${item.y + stage.top + 36}px`;
-          // eslint-disable-next-line react/prop-types
           textarea.style.left = `${item.x + stage.left + 40}px`;
-          // eslint-disable-next-line react/prop-types
           textarea.style.fontSize = `${item.fontSize}px`;
           textarea.style.width = '1000px';
           textarea.style.border = 'none';
@@ -66,7 +57,6 @@ const TEXT = ({
           }
           function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
             if (e.target !== textarea) {
-              // eslint-disable-next-line no-param-reassign,react/prop-types
               item.text = textarea.value;
               removeTextarea();
             }
@@ -76,8 +66,6 @@ const TEXT = ({
             window.addEventListener('click', handleOutsideClick);
           });
         }}
-          // @ts-ignore
-          // eslint-disable-next-line react/prop-types,no-unused-vars
         fontSize={item.fontSize}
         onDragMove={(e) => {
           const afterE = {
@@ -85,10 +73,8 @@ const TEXT = ({
             height: e.target.height(),
             x: e.target.x(),
             y: e.target.y(),
-            // eslint-disable-next-line react/prop-types
             fontSize: item.fontSize,
             type: 'TEXT',
-            // eslint-disable-next-line react/prop-types
             text: item.text,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
@@ -96,4 +82,5 @@ const TEXT = ({
       />
     </>
   );
+};
 export default TEXT;
