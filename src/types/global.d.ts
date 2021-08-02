@@ -9,7 +9,7 @@ declare namespace BaseShapes {
     height: number,
     type: 'RECTANGLE',
     rotation: number,
-    fill: 'blue'
+    fill: string
   }
   interface Circle extends Position {
     radius: number,
@@ -27,4 +27,12 @@ declare namespace BaseShapes {
     points: number[6];
     type: 'TRIANGLE';
   }
+  interface Image extends Position {
+    width: number,
+    height: number,
+    type: 'IMAGE',
+    url: string,
+    rotation: number,
+  }
+  type Shapes = Circle | Triangle;
 }
