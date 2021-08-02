@@ -1,5 +1,7 @@
 import React from 'react';
 import SelectColor from './tools/select_color';
+import ZIndexUp from './tools/zIndex_up';
+import ZIndexDown from './tools/zIndex_down';
 
 interface Props {
     index: number,
@@ -8,7 +10,7 @@ interface Props {
 
 const FloatToolBar: React.FC<Props> = (props: Props) => {
   const { index, item } = props;
-  const tools = [SelectColor];
+  const tools = [SelectColor, ZIndexUp, ZIndexDown];
   // fix the float tool bar, not rotating with the shape
   return (
     <>
