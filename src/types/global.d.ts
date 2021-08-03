@@ -4,40 +4,46 @@ declare namespace BaseShapes {
     x: number,
     y: number,
   }
-  interface Rectangle extends Position {
+  interface Size {
     width: number,
     height: number,
+  }
+  interface Rectangle extends Position, Size {
     type: 'RECTANGLE',
     rotation: number,
-    fill: string
+    fill: string,
   }
   interface Circle extends Position {
     radius: number,
-    type: 'CIRCLE'
+    type: 'CIRCLE',
   }
   interface Ellipse extends Position {
     radius: Position,
-    type: 'ELLIPSE'
+    type: 'ELLIPSE',
   }
   interface Diamond extends Position {
     radius: Position,
-    type: 'DIAMOND'
+    type: 'DIAMOND',
   }
   interface Triangle extends Position {
-    points: number[6];
-    type: 'TRIANGLE';
+    points: number[6],
+    type: 'TRIANGLE',
   }
-  interface Image extends Position {
-    width: number,
-    height: number,
+  interface Image extends Position, Size {
     type: 'IMAGE',
     url: string,
     rotation: number,
   }
-  interface Text extends Position {
+  interface Text extends Position, Size {
     type: 'TEXT',
     text: string,
-    fontSize: number
+    fontSize: number,
   }
-  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text;
+  interface Line extends Position {
+    start: Position,
+    end: Position,
+    weight: number,
+    type: 'LINE',
+  }
+  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line;
 }

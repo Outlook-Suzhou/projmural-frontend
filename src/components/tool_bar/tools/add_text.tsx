@@ -4,7 +4,7 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 // eslint-disable-next-line no-unused-vars
 import { Icon } from '@fluentui/react/lib/Icon';
-import addText from '../../../utils/add_text';
+import addShape from '../../../utils/add_shape';
 
 const AddText: React.FC<{}> = () => (
   // eslint-disable-next-line object-curly-newline
@@ -12,7 +12,7 @@ const AddText: React.FC<{}> = () => (
     <Icon
       iconName="FontColorA"
       style={{ fontSize: '40px', margin: 'auto' }}
-      onClick={() => addText({
+      onClick={() => addShape({
         width: 20, height: 50, x: 300, y: 300, type: 'TEXT', text: '双击编辑文字', fontSize: 15,
       })}
     />
