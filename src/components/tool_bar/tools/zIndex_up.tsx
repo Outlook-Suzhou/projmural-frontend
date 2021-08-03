@@ -3,18 +3,18 @@ import React from 'react';
 import doc from '../../../client/client';
 
 interface Props {
-  index: number,
-  item: BaseShapes.Rectangle,
+  currentIndex: number,
+  currentItem: BaseShapes.Rectangle,
 }
 const ZIndexUp = (props: Props) => {
-  const { index, item } = props;
+  const { currentItem, currentIndex } = props;
 
   return (
     <div className="tool_icon">
       <Icon
         iconName="Up"
         style={{ fontSize: '40px', margin: 'auto' }}
-        onClick={() => { doc.submitOp([{ p: ['shapes', index], ld: item }]); doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: item }]); }}
+        onClick={() => { doc.submitOp([{ p: ['shapes', currentIndex], ld: currentItem }]); doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: currentItem }]); }}
       />
     </div>
   );

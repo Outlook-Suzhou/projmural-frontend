@@ -5,16 +5,16 @@ import { TwitterPicker } from 'react-color';
 import changeColor from '../../../utils/change_color';
 
 interface Props {
-  index: number,
-  item: BaseShapes.Rectangle,
+  currentIndex: number,
+  currentItem: BaseShapes.Rectangle,
 }
 const SelectColor = (props: Props) => {
-  const { index, item } = props;
+  const { currentIndex, currentItem } = props;
   // @ts-ignore
   const [isClicked, setClicked] = useState(false);
   const handlePickComplete = (color:any) => {
-    item.fill = color.hex;
-    changeColor(index, item);
+    currentItem.fill = color.hex;
+    changeColor(currentIndex, currentItem);
     setClicked(false);
   };
 
@@ -26,7 +26,7 @@ const SelectColor = (props: Props) => {
         onClick={() => { setClicked(true); }}
       />
       {/* eslint-disable-next-line max-len */}
-      { isClicked ? <TwitterPicker color={item.fill} onChangeComplete={handlePickComplete} /> : null}
+      { isClicked ? <TwitterPicker color={currentItem.fill} onChangeComplete={handlePickComplete} /> : null}
     </div>
   );
 };
