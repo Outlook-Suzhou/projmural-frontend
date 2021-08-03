@@ -3,7 +3,7 @@ import React from 'react';
 // import toolList from './tool_list';
 // import AddShape from './tools/add_shape';
 import './tool_bar.scss';
-import { Row, Col } from 'antd';
+// import { Row, Col } from 'antd';
 
 // interface toolComponent {
 //   Component: React.FC<any>,
@@ -15,31 +15,34 @@ interface toolBarAttribute{
   width: number,
   height: number,
   list: React.FC<any>[],
-  currentShape?: any,
+  isFloatBar: Boolean,
+  currentItem?: any,
   currentIndex?: number
+  setCurrentItem?: any,
+  setCurrentIndex?: any,
 }
 
 const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
-  const { width, height, list } = props;
+  const {
+    width, height, list, isFloatBar, currentItem, currentIndex, setCurrentItem, setCurrentIndex,
+  } = props;
   // const showList: any[] = list.map((item) => <li>{toolList[item]}</li>);
   return (
-    <Row
-      className="toolbar"
+    <div
+      className={['toolbar', (isFloatBar ? 'float_tool_bar' : 'left_tool_bar')].join(' ')}
       style={{
-        width, height, margin: '100px auto', border: 'solid', boxShadow: '5px 5px 5px #888888',
+        width,
+        height,
+        left: currentItem.x + 200,
+        top: currentItem.y - 100,
       }}
     >
       {
         list.map((Item) => (
-          <Col
-            className="tool"
-            style={{ width: '100%', textAlign: 'center', cursor: 'pointer' }}
-          >
-            <Item currentShape={props.currentShape} currentIndex={props.currentIndex} />
-          </Col>
+          <Item currentItem={currentItem} currentIndex={currentIndex} setCurrentItem={setCurrentItem} setCurrentIndex={setCurrentIndex} />
         ))
       }
-    </Row>
+    </div>
   );
 };
 export default ToolBar;

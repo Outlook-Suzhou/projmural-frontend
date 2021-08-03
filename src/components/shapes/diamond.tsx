@@ -34,7 +34,6 @@ const Diamond: React.FC<Props> = (props: Props) => {
         closed
         {...shapeConfig}
         key={index}
-        draggable
         onDragMove={(e) => {
           const afterE: BaseShapes.Diamond = {
             radius: e.target.attrs.radius,

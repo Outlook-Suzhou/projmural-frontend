@@ -33,13 +33,13 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         {...item}
           // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
-        draggable
         onDragMove={(e) => {
           const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),
             height: e.target.height(),
             x: e.target.x(),
             y: e.target.y(),
+            draggable: true,
             type: 'RECTANGLE',
             rotation: item.rotation,
             fill: item.fill,

@@ -34,7 +34,6 @@ const Ellipse: React.FC<Props> = (props: Props) => {
         radiusY={item.radius.y}
         {...shapeConfig}
         key={index}
-        draggable
         onDragMove={(e) => {
           const afterE: BaseShapes.Ellipse = {
             radius: {

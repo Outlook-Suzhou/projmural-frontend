@@ -5,12 +5,7 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import { Popover, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import { BsDiamond } from 'react-icons/bs';
-import addRectangle from '../../../utils/add_rectangle';
-import addCircle from '../../../utils/add_circle';
-import addEllipse from '../../../utils/add_ellipse';
-import addTriangle from '../../../utils/add_triangle';
-import addLine from '../../../utils/add_line';
-import addDiamond from '../../../utils/add_diamond';
+import addShape from '../../../utils/add_function';
 
 initializeIcons();
 
@@ -26,8 +21,8 @@ const shapes: React.FC<{}> = () => (
         span={8}
         role="button"
         tabIndex={0}
-        onClick={() => addRectangle({
-          width: 50, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0, fill: 'blue',
+        onClick={() => addShape({
+          width: 50, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0, fill: 'blue', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -41,8 +36,8 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={-1}
-        onClick={() => addLine({
-          x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 50, y: 40 }, weight: 5, type: 'LINE',
+        onClick={() => addShape({
+          x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 50, y: 40 }, weight: 5, type: 'LINE', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -56,8 +51,8 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={0}
-        onClick={() => addCircle({
-          radius: 30, x: 30, y: 40, type: 'CIRCLE', rotation: 0, fill: 'green',
+        onClick={() => addShape({
+          radius: 30, x: 30, y: 40, type: 'CIRCLE', draggable: true, rotation: 0, fill: 'green',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -73,8 +68,8 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={0}
-        onClick={() => addTriangle({
-          x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE',
+        onClick={() => addShape({
+          x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -88,8 +83,8 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={0}
-        onClick={() => addEllipse({
-          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE', rotation: 0, fill: 'green',
+        onClick={() => addShape({
+          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE', draggable: true, rotation: 0, fill: 'green',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -103,8 +98,8 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={0}
-        onClick={() => addDiamond({
-          radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND', rotation: 0, fill: 'pink',
+        onClick={() => addShape({
+          radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND', draggable: true, rotation: 0, fill: 'pink',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
