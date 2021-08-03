@@ -2,11 +2,11 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import doc from '../../../client/client';
 
 interface Props {
-  index: number,
-  item: BaseShapes.Rectangle,
+  currentIndex: number,
+  currentItem: BaseShapes.Rectangle,
 }
 const ZIndexDown = (props: Props) => {
-  const { index, item } = props;
+  const { currentItem, currentIndex } = props;
 
   return (
     // eslint-disable-next-line react/react-in-jsx-scope
@@ -15,7 +15,7 @@ const ZIndexDown = (props: Props) => {
       <Icon
         iconName="Down"
         style={{ fontSize: '40px', margin: 'auto' }}
-        onClick={() => { doc.submitOp([{ p: ['shapes', index], ld: item }]); doc.submitOp([{ p: ['shapes', 0], li: item }]); }}
+        onClick={() => { doc.submitOp([{ p: ['shapes', currentIndex], ld: currentItem }]); doc.submitOp([{ p: ['shapes', 0], li: currentItem }]); }}
       />
     </div>
   );
