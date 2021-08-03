@@ -29,13 +29,13 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       ShapeComponent = <Rectangle1 item={item} index={index} isSelected={index === currentIndex} onSelect={click} />;
       break;
     case 'CIRCLE':
-      ShapeComponent = <Circle item={item} index={index} click={click} />;
+      ShapeComponent = <Circle item={item} index={index} isSelected={index === currentIndex} onSelect={click} />;
       break;
     case 'ELLIPSE':
-      ShapeComponent = <Ellipse item={item} index={index} click={click} />;
+      ShapeComponent = <Ellipse item={item} index={index} isSelected={index === currentIndex} onSelect={click} />;
       break;
     case 'DIAMOND':
-      ShapeComponent = <Diamond item={item} index={index} click={click} />;
+      ShapeComponent = <Diamond item={item} index={index} isSelected={index === currentIndex} onSelect={click} />;
       break;
     case 'IMAGE':
       ShapeComponent = <Img item={item} index={index} isSelected={index === currentIndex} onSelect={click} />;

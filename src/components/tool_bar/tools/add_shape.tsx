@@ -57,7 +57,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addCircle({
-          radius: 30, x: 30, y: 40, type: 'CIRCLE',
+          radius: 30, x: 30, y: 40, type: 'CIRCLE', rotation: 0, fill: 'green',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -89,7 +89,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addEllipse({
-          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE',
+          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE', rotation: 0, fill: 'green',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -104,7 +104,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addDiamond({
-          radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND',
+          radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND', rotation: 0, fill: 'pink',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
