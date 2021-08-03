@@ -13,7 +13,7 @@ const AddText: React.FC<{}> = () => (
       iconName="FontColorA"
       style={{ fontSize: '40px', margin: 'auto' }}
       onClick={() => addShape({
-        width: 20, height: 50, x: 300, y: 300, type: 'TEXT', text: '双击编辑文字', fontSize: 15,
+        width: 20, height: 50, x: 300, y: 300, type: 'TEXT', text: '双击编辑文字', fontSize: 15, draggable: true,
       })}
     />
   </div>

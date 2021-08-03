@@ -39,13 +39,13 @@ const Img: React.FC<Props> = (props: Props) => {
         image={img}
         rotation={item.rotation}
         key={index}
-        draggable
         onDragMove={(e) => {
           const afterE: BaseShapes.Image = {
             width: e.target.width(),
             height: e.target.height(),
             x: e.target.x(),
             y: e.target.y(),
+            draggable: true,
             type: 'IMAGE',
             url: item.url,
             rotation: item.rotation,

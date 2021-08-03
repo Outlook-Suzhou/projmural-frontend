@@ -13,7 +13,6 @@ const Ellipse = ({ item, index, click }) => (
     {...shapeConfig}
     key={index}
     fill="yellow"
-    draggable
     onClick={click}
     onDragMove={(e) => {
       const afterE = {

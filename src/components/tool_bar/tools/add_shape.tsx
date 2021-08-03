@@ -22,7 +22,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          width: 50, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0, fill: 'blue',
+          width: 50, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0, fill: 'blue', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -37,7 +37,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={-1}
         onClick={() => addShape({
-          x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 50, y: 40 }, weight: 5, type: 'LINE',
+          x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 50, y: 40 }, weight: 5, type: 'LINE', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -52,7 +52,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          radius: 30, x: 30, y: 40, type: 'CIRCLE',
+          radius: 30, x: 30, y: 40, type: 'CIRCLE', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -69,7 +69,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE',
+          x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -84,7 +84,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE',
+          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -99,7 +99,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND',
+          radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}

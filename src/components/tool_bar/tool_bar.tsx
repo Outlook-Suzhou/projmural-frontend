@@ -18,11 +18,13 @@ interface toolBarAttribute{
   isFloatBar: Boolean,
   currentItem?: any,
   currentIndex?: number
+  setCurrentItem?: any,
+  setCurrentIndex?: any,
 }
 
 const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
   const {
-    width, height, list, isFloatBar, currentItem, currentIndex,
+    width, height, list, isFloatBar, currentItem, currentIndex, setCurrentItem, setCurrentIndex,
   } = props;
   // const showList: any[] = list.map((item) => <li>{toolList[item]}</li>);
   return (
@@ -37,7 +39,7 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
     >
       {
         list.map((Item) => (
-          <Item currentItem={currentItem} currentIndex={currentIndex} />
+          <Item currentItem={currentItem} currentIndex={currentIndex} setCurrentItem={setCurrentItem} setCurrentIndex={setCurrentIndex} />
         ))
       }
     </div>

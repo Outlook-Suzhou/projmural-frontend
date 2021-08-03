@@ -13,7 +13,7 @@ const AddImage: React.FC<{}> = () => (
       iconName="PictureFill"
       style={{ fontSize: '40px', margin: 'auto' }}
       onClick={() => addShape({
-        width: 50, height: 50, x: 300, y: 300, type: 'IMAGE', url: 'https://konvajs.org/assets/lion.png', rotation: 0,
+        width: 50, height: 50, x: 300, y: 300, type: 'IMAGE', url: 'https://konvajs.org/assets/lion.png', rotation: 0, draggable: true,
       })}
     />
   </div>

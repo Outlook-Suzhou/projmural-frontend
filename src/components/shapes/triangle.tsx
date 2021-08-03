@@ -21,13 +21,13 @@ const Triangle: React.FC<Props> = (props: Props) => {
       stroke="black"
       tension={0}
       closed
-      draggable
       onClick={click}
       onDragMove={(e) => {
         const afterE: BaseShapes.Triangle = {
           x: e.target.x(),
           y: e.target.y(),
           points: item.points,
+          draggable: true,
           type: 'TRIANGLE',
         };
         doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);

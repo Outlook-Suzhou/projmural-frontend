@@ -8,38 +8,41 @@ declare namespace BaseShapes {
     width: number,
     height: number,
   }
-  interface Rectangle extends Position, Size {
+  interface Lock {
+    draggable: boolean
+  }
+  interface Rectangle extends Position, Size, Lock {
     type: 'RECTANGLE',
     rotation: number,
     fill: string,
   }
-  interface Circle extends Position {
+  interface Circle extends Position, Lock {
     radius: number,
     type: 'CIRCLE',
   }
-  interface Ellipse extends Position {
+  interface Ellipse extends Position, Lock {
     radius: Position,
     type: 'ELLIPSE',
   }
-  interface Diamond extends Position {
+  interface Diamond extends Position, Lock {
     radius: Position,
     type: 'DIAMOND',
   }
-  interface Triangle extends Position {
+  interface Triangle extends Position, Lock {
     points: number[6],
     type: 'TRIANGLE',
   }
-  interface Image extends Position, Size {
+  interface Image extends Position, Size, Lock {
     type: 'IMAGE',
     url: string,
     rotation: number,
   }
-  interface Text extends Position, Size {
+  interface Text extends Position, Size, Lock {
     type: 'TEXT',
     text: string,
     fontSize: number,
   }
-  interface Line extends Position {
+  interface Line extends Position, Lock {
     start: Position,
     end: Position,
     weight: number,
