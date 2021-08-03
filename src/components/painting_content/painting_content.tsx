@@ -7,19 +7,20 @@ import {
 } from 'antd';
 import { Icon } from '@fluentui/react/lib/Icon';
 import doc from '../../client/client';
-import Ellipse from '../shapes/ellipse';
-import Rectangle1 from '../shapes/transform_rect';
-import Diamond from '../shapes/diamond';
-import Circle from '../shapes/circle';
-import Line from '../shapes/line';
+// import Ellipse from '../shapes/ellipse';
+// import Rectangle1 from '../shapes/transform_rect';
+// import Diamond from '../shapes/diamond';
+// import Circle from '../shapes/circle';
+// import Line from '../shapes/line';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
-import Img from '../shapes/image';
+// import Img from '../shapes/image';
 import AddImage from '../tool_bar/tools/add_images';
-import Triangle from '../shapes/triangle';
-import Text from '../shapes/text';
+// import Triangle from '../shapes/triangle';
+// import Text from '../shapes/text';
 import AddText from '../tool_bar/tools/add_text';
 import FloatToolBar from '../tool_bar/float_tool_bar';
+import BaseShape from '../shapes/baseshape';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -70,54 +71,16 @@ const PaintingContent: React.FC<{}> = () => {
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
             <Layer>
               {
-                  list.map((item: any, index: number) => {
-                    switch (item.type) {
-                      default:
-                        return;
-                      case 'RECTANGLE':
-                        // eslint-disable-next-line consistent-return
-                        return (
-                        // @ts-ignore
-                          <Rectangle1 item={item} index={index} isSelected={index === currentIndex} onSelect={() => { setCurrentItem(item); setCurrentIndex(index); }} />
-                        );
-                      case 'CIRCLE':
-                        // eslint-disable-next-line consistent-return
-                        return (
-                          <Circle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                        );
-                      case 'ELLIPSE':
-                        // eslint-disable-next-line consistent-return
-                        return (
-                          <Ellipse item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                        );
-                      case 'DIAMOND':
-                        // eslint-disable-next-line consistent-return
-                        return (
-                          <Diamond item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                        );
-                      case 'IMAGE':
-                        // eslint-disable-next-line consistent-return
-                        return (
-                          <Img item={item} index={index} isSelected={index === currentIndex} onSelect={() => { setCurrentItem(item); setCurrentIndex(index); }} />
-                        );
-                      case 'TRIANGLE':
-                        // eslint-disable-next-line consistent-return
-                        return (
-                          <Triangle item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                        );
-                      case 'LINE':
-                        // eslint-disable-next-line consistent-return
-                        return (
-                          <Line item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                        );
-                      case 'TEXT':
-                        // eslint-disable-next-line consistent-return
-                        return (
-                          <Text item={item} index={index} click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }} />
-                        );
-                    }
-                  })
-                }
+                list.map((item: any, index: number) => (
+                  <BaseShape
+                    item={item}
+                    index={index}
+                    currentItem={currentItem}
+                    currentIndex={currentIndex}
+                    click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }}
+                  />
+                ))
+              }
             </Layer>
           </Stage>
         </Col>
