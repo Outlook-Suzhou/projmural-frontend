@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@fluentui/react/lib/Icon';
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 import deleteAll from '../../../utils/delete_function';
 
 const DeleteAll: React.FC<{}> = () => {
@@ -13,6 +13,7 @@ const DeleteAll: React.FC<{}> = () => {
   const handleOk = () => {
     setIsModalVisible(false);
     deleteAll();
+    message.info('画板中的元素已经被全部删除');
   };
 
   const handleCancel = () => {
