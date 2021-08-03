@@ -1,7 +1,5 @@
 /* eslint-disable prefer-object-spread */
-/* eslint-disable no-param-reassign */
 /* eslint-disable prefer-destructuring */
-/* eslint-disable react/prop-types */
 import React, {
   createContext, useState, useContext, useRef,
 } from 'react';
