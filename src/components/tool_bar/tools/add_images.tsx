@@ -4,7 +4,7 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 // eslint-disable-next-line no-unused-vars
 import { Icon } from '@fluentui/react/lib/Icon';
-import addShape from '../../../utils/add_shape';
+import addShape from '../../../utils/add_function';
 
 const AddImage: React.FC<{}> = () => (
   // eslint-disable-next-line object-curly-newline

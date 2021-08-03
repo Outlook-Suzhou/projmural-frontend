@@ -5,7 +5,7 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import { Popover, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import { BsDiamond } from 'react-icons/bs';
-import addShape from '../../../utils/add_shape';
+import addShape from '../../../utils/add_function';
 
 initializeIcons();
 
