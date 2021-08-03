@@ -5,12 +5,7 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import { Popover, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import { BsDiamond } from 'react-icons/bs';
-import addRectangle from '../../../utils/add_rectangle';
-import addCircle from '../../../utils/add_circle';
-import addEllipse from '../../../utils/add_ellipse';
-import addTriangle from '../../../utils/add_triangle';
-import addLine from '../../../utils/add_line';
-import addDiamond from '../../../utils/add_diamond';
+import addShape from '../../../utils/add_function';
 
 initializeIcons();
 
@@ -26,7 +21,7 @@ const shapes: React.FC<{}> = () => (
         span={8}
         role="button"
         tabIndex={0}
-        onClick={() => addRectangle({
+        onClick={() => addShape({
           width: 50, height: 50, x: 30, y: 40, type: 'RECTANGLE', rotation: 0, fill: 'blue',
         })}
         onKeyDown={() => {}}
@@ -41,7 +36,7 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={-1}
-        onClick={() => addLine({
+        onClick={() => addShape({
           x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 50, y: 40 }, weight: 5, type: 'LINE',
         })}
         onKeyDown={() => {}}
@@ -56,7 +51,7 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={0}
-        onClick={() => addCircle({
+        onClick={() => addShape({
           radius: 30, x: 30, y: 40, type: 'CIRCLE',
         })}
         onKeyDown={() => {}}
@@ -73,7 +68,7 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={0}
-        onClick={() => addTriangle({
+        onClick={() => addShape({
           x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE',
         })}
         onKeyDown={() => {}}
@@ -88,7 +83,7 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={0}
-        onClick={() => addEllipse({
+        onClick={() => addShape({
           radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE',
         })}
         onKeyDown={() => {}}
@@ -103,7 +98,7 @@ const shapes: React.FC<{}> = () => (
         className="chooseShapeButton"
         role="button"
         tabIndex={0}
-        onClick={() => addDiamond({
+        onClick={() => addShape({
           radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND',
         })}
         onKeyDown={() => {}}
