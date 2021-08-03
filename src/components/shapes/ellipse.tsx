@@ -45,6 +45,7 @@ const Ellipse: React.FC<Props> = (props: Props) => {
             type: 'ELLIPSE',
             fill: item.fill,
             rotation: item.rotation,
+            draggable: item.draggable,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
@@ -68,6 +69,7 @@ const Ellipse: React.FC<Props> = (props: Props) => {
             type: 'ELLIPSE',
             rotation: node.rotation(),
             fill: item.fill,
+            draggable: item.draggable,
           };
 
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);

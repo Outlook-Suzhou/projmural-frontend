@@ -34,7 +34,6 @@ declare namespace BaseShapes {
     rotation: number,
     fill: string,
   }
-  }
   interface Triangle extends Position, Lock {
     points: number[6],
     type: 'TRIANGLE',
