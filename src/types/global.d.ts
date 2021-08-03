@@ -19,14 +19,21 @@ declare namespace BaseShapes {
   interface Circle extends Position, Lock {
     radius: number,
     type: 'CIRCLE',
+    rotation: number,
+    fill: string,
   }
   interface Ellipse extends Position, Lock {
     radius: Position,
     type: 'ELLIPSE',
+    rotation: number,
+    fill: string,
   }
   interface Diamond extends Position, Lock {
     radius: Position,
     type: 'DIAMOND',
+    rotation: number,
+    fill: string,
+  }
   }
   interface Triangle extends Position, Lock {
     points: number[6],
