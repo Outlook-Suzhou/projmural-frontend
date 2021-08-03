@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
@@ -26,8 +26,20 @@ function getRect(start: vector, end: vector, weight: number) {
 }
 
 // @ts-ignore
-// eslint-disable-next-line react/prop-types
-const Line = ({ item, index, click }) => {
+const Line = (props) => {
+  const {
+    // eslint-disable-next-line react/prop-types
+    item, index, click, isSelected,
+  } = props;
+
+  const [circleOpacity, setCircleOpacity] = useState(1);
+  useEffect(() => {
+    if (circleOpacity === 0) setCircleOpacity(1);
+    else setCircleOpacity(0);
+    console.log('change opacity');
+    console.log(circleOpacity);
+  }, [isSelected]);
+
   // eslint-disable-next-line react/prop-types
   const pts = getRect(item.start, item.end, item.weight);
   return (
@@ -68,8 +80,9 @@ const Line = ({ item, index, click }) => {
         y={doc.data.shapes[index].start.y + doc.data.shapes[index].y}
         // eslint-disable-next-line react/prop-types
         radius={doc.data.shapes[index].weight}
-        opacity={0.5}
+        opacity={circleOpacity}
         draggable
+        onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {
             start: {
@@ -79,7 +92,8 @@ const Line = ({ item, index, click }) => {
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
-        fill="blue"
+        fill="white"
+        stroke="1"
       />
       <Circle
         // eslint-disable-next-line react/prop-types
@@ -88,8 +102,9 @@ const Line = ({ item, index, click }) => {
         y={doc.data.shapes[index].end.y + doc.data.shapes[index].y}
         // eslint-disable-next-line react/prop-types
         radius={doc.data.shapes[index].weight}
-        opacity={0.5}
+        opacity={circleOpacity}
         draggable
+        onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {
             end: {
@@ -99,7 +114,8 @@ const Line = ({ item, index, click }) => {
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
-        fill="blue"
+        fill="white"
+        stroke="1"
       />
     </>
   );
