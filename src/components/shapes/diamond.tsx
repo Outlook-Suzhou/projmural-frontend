@@ -16,7 +16,6 @@ const Diamond = ({ item, index, click }) => (
     {...shapeConfig}
     key={index}
     fill="pink"
-    draggable
     onClick={click}
     onDragMove={(e) => {
       const afterE = {

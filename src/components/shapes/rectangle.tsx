@@ -13,7 +13,6 @@ const Rectangle = ({ item, index, click }) => (
     {...shapeConfig}
     key={index}
     fill="blue"
-    draggable
     onClick={click}
     onDragMove={(e) => {
       const afterE = {

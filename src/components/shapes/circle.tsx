@@ -13,7 +13,6 @@ const Circle = ({ item, index, click }) => (
     {...shapeConfig}
     key={index}
     fill="green"
-    draggable
     onClick={click}
     onDragMove={(e) => {
       const afterE = {

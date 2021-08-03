@@ -23,6 +23,7 @@ import BaseShape from '../shapes/baseshape';
 import SelectColor from '../tool_bar/tools/select_color';
 import ZIndexUp from '../tool_bar/tools/zIndex_up';
 import ZIndexDown from '../tool_bar/tools/zIndex_down';
+import Lock from '../tool_bar/tools/lock';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -61,13 +62,12 @@ const PaintingContent: React.FC<{}> = () => {
       }
     });
   }, []);
-  // @ts-ignore
   return (
     <>
-      {currentIndex === -1 ? null : <ToolBar width={300} height={80} list={[SelectColor, ZIndexUp, ZIndexDown]} currentItem={currentItem} currentIndex={currentIndex} isFloatBar />}
+      {currentIndex === -1 ? null : <ToolBar width={300} height={80} list={[SelectColor, ZIndexUp, ZIndexDown, Lock]} currentItem={currentItem} currentIndex={currentIndex} setCurrentItem={setCurrentItem} setCurrentIndex={setCurrentIndex} isFloatBar />}
       <Row style={{ width: '100%' }}>
         <Col span={3}>
-          <ToolBar width={80} height={300} list={[AddShape, AddImage, AddText, DelEle]} currentItem={currentItem} currentIndex={currentIndex} isFloatBar={false} />
+          <ToolBar width={80} height={300} list={[AddShape, AddImage, AddText, DelEle]} currentItem={currentItem} currentIndex={currentIndex} setCurrentItem={setCurrentItem} setCurrentIndex={setCurrentIndex} isFloatBar={false} />
         </Col>
         <Col id="stage" span={21} style={{ padding: '40px' }}>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
