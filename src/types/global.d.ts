@@ -39,4 +39,5 @@ declare namespace BaseShapes {
     text: string,
     fontSize: number
   }
+  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text;
 }
