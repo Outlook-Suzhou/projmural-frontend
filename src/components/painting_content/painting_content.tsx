@@ -26,12 +26,12 @@ const PaintingContent: React.FC<{}> = () => {
   const [currentItem, setCurrentItem] = useState({});
   const [currentIndex, setCurrentIndex] = useState(-1);
 
-  const [selectedId, selectShape] = useState(-1);
+  // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
-      selectShape(-1);
+      setCurrentIndex(-1);
     }
   };
   const DelEle: React.FC<{}> = () => (
@@ -61,7 +61,7 @@ const PaintingContent: React.FC<{}> = () => {
   // @ts-ignore
   return (
     <>
-      {selectedId === -1 ? null : <FloatToolBar index={selectedId} item={doc.data.shapes[selectedId]} />}
+      {currentIndex === -1 ? null : <FloatToolBar index={currentIndex} item={doc.data.shapes[currentIndex]} />}
       <Row style={{ width: '100%' }}>
         <Col span={3}>
           <ToolBar width={80} height={300} list={[AddShape, AddImage, AddText, DelEle]} currentShape={currentItem} currentIndex={currentIndex} />
@@ -78,7 +78,7 @@ const PaintingContent: React.FC<{}> = () => {
                         // eslint-disable-next-line consistent-return
                         return (
                         // @ts-ignore
-                          <Rectangle1 item={item} index={index} isSelected={index === selectedId} onSelect={() => { selectShape(index); setCurrentItem(item); setCurrentIndex(index); }} />
+                          <Rectangle1 item={item} index={index} isSelected={index === currentIndex} onSelect={() => { setCurrentItem(item); setCurrentIndex(index); }} />
                         );
                       case 'CIRCLE':
                         // eslint-disable-next-line consistent-return
@@ -98,7 +98,7 @@ const PaintingContent: React.FC<{}> = () => {
                       case 'IMAGE':
                         // eslint-disable-next-line consistent-return
                         return (
-                          <Img item={item} index={index} isSelected={index === selectedId} onSelect={() => { selectShape(index); setCurrentItem(item); setCurrentIndex(index); }} />
+                          <Img item={item} index={index} isSelected={index === currentIndex} onSelect={() => { setCurrentItem(item); setCurrentIndex(index); }} />
                         );
                       case 'TRIANGLE':
                         // eslint-disable-next-line consistent-return
