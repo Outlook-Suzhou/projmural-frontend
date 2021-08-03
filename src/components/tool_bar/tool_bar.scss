@@ -1,17 +1,28 @@
 .toolbar {
   width: 500px;
   height: 100px;
+  border: solid;
+  box-shadow: '5px 5px 5px #888888';
   // background-color: rgba(89, 66, 173, 0.849);
   display: flex;
-
-  .tool {
+  flex-wrap: wrap;
     //background-color: green;
     //width: 64px;
     //height: 64px;
     //display: flex;
-    .tool_icon {
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
+  .tool_icon {
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+  } 
+}
+.left_tool_bar {
+  margin: 100px auto;
+}
+.float_tool_bar {
+  position: absolute;
+  z-index: 5;
+  height: auto; 
+  width: auto;
+  display: flex;
 }
