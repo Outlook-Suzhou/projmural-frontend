@@ -83,6 +83,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             fontSize: item.fontSize,
             type: 'TEXT',
             text: item.text,
+            fill: item.fill,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
