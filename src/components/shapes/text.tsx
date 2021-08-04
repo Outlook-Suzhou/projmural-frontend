@@ -73,6 +73,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
           });
         }}
         fontSize={item.fontSize}
+        fill={item.fill}
         onDragMove={(e) => {
           const afterE = {
             width: e.target.width(),
@@ -89,4 +90,5 @@ const TEXT: React.FC<Props> = (props: Props) => {
     </>
   );
 };
+
 export default TEXT;
