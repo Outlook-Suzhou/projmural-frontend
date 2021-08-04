@@ -32,14 +32,14 @@ const PaintingContent: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [currentItem] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [currentIndex] = useState(-1);
 
   // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
-      setCurrentIndex(-1);
+      dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
   };
   const DelEle: React.FC<{}> = () => (
