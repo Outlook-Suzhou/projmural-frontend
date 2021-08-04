@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 
 interface globalState {
-  currentItem: BaseShapes.Shape | {},
+  currentItem: any,
   currentIndex: number
 }
 interface actionType {

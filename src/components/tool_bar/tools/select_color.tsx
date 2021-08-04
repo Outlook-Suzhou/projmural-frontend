@@ -3,18 +3,18 @@ import { Icon } from '@fluentui/react/lib/Icon';
 // @ts-ignore
 import { TwitterPicker } from 'react-color';
 import changeColor from '../../../utils/change_color';
+import { useStateStore, useDispatchStore } from '../../../store/store';
 
-interface Props {
-  currentIndex: number,
-  currentItem: BaseShapes.Rectangle,
-}
-const SelectColor = (props: Props) => {
-  const { currentIndex, currentItem } = props;
+const SelectColor = () => {
   // @ts-ignore
+  const state = useStateStore();
+  const dispatch = useDispatchStore();
   const [isClicked, setClicked] = useState(false);
-  const handlePickComplete = (color:any) => {
-    currentItem.fill = color.hex;
-    changeColor(currentIndex, currentItem);
+  const handlePickComplete = (color: any) => {
+    state.currentItem.fill = color.hex;
+    dispatch({ type: 'setCurrentItem', payload: { ...state.currentItem, fill: color.hex } });
+    console.log(color.hex);
+    changeColor(state.currentIndex, state.currentItem);
     setClicked(false);
   };
 
@@ -26,7 +26,7 @@ const SelectColor = (props: Props) => {
         onClick={() => { setClicked(true); }}
       />
       {/* eslint-disable-next-line max-len */}
-      { isClicked ? <TwitterPicker color={currentItem.fill} onChangeComplete={handlePickComplete} /> : null}
+      { isClicked ? <TwitterPicker color={state.currentItem.fill} onChangeComplete={handlePickComplete} /> : null}
     </div>
   );
 };
