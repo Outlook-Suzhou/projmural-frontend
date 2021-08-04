@@ -46,6 +46,7 @@ declare namespace BaseShapes {
     rotation: number,
   }
   interface Text extends Position, Size, Lock {
+    fill: string;
     type: 'TEXT',
     text: string,
     fontSize: number,
