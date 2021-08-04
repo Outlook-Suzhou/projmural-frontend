@@ -51,7 +51,6 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           // and NOT its width or height
           // but in the store we have only width and height
           // to match the data better we will reset scale on transform end
-          if (!item.draggable) return;
           const node = shapeRef.current;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();

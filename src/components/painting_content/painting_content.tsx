@@ -81,8 +81,8 @@ const PaintingContent: React.FC<{}> = () => {
                   <BaseShape
                     item={item}
                     index={index}
-                    currentItem={currentItem}
-                    currentIndex={currentIndex}
+                    currentItem={state.currentItem}
+                    currentIndex={state.currentIndex}
                     click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
                   />
                 ))
