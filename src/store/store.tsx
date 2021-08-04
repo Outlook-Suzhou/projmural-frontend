@@ -1,45 +1,55 @@
-/* eslint-disable prefer-object-spread */
-/* eslint-disable prefer-destructuring */
 import React, {
-  createContext, useState, useContext, useRef,
+  createContext, useContext, useReducer,
 } from 'react';
 
 interface globalState {
   currentItem: any,
   currentIndex: number
 }
-type globalStateContext = [globalState, any];
-const Context = createContext<globalStateContext>([{
+interface actionType {
+  type: string,
+  payload: any,
+}
+
+const initialState: globalState = {
   currentItem: {},
   currentIndex: -1,
-}, () => {}]);
+};
 
-function useStore(): [any, any] {
-  return useContext(Context);
+function reducer(state: globalState = initialState, action: actionType) {
+  switch (action.type) {
+    case 'setCurrentItem':
+      return { ...state, currentItem: action.payload };
+    case 'setCurrentIndex':
+      return { ...state, currentIndex: action.payload };
+    default:
+      throw new Error();
+  }
+}
+
+const StateContext = createContext<globalState>({
+  currentItem: {},
+  currentIndex: -1,
+});
+const DispatchContext = createContext<Function>(() => {});
+
+function useStateStore() {
+  return useContext(StateContext);
+}
+
+function useDispatchStore() {
+  return useContext(DispatchContext);
 }
 function StoreProvider({ children }: { children: any}) {
-  const [state, setState] = useState<globalState>({
-    currentItem: {},
-    currentIndex: -1,
-  });
-  const stateCurrent: any = useRef(state);
-
-  const updateState = (action: string, name: string, payload: any) => {
-    switch (action) {
-      case 'setValue':
-        setState(Object.assign({}, { ...stateCurrent.current }, { [`${name}`]: payload }));
-        break;
-      default:
-        break;
-    }
-    stateCurrent.current = Object.assign({}, { ...stateCurrent.current }, { [`${name}`]: payload });
-  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <Context.Provider value={[state, updateState]}>
-      { children }
-    </Context.Provider>
+    <StateContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+        { children }
+      </DispatchContext.Provider>
+    </StateContext.Provider>
   );
 }
 
-export { useStore, StoreProvider };
+export { useStateStore, useDispatchStore, StoreProvider };
