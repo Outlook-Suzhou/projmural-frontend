@@ -73,6 +73,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
           });
         }}
         fontSize={item.fontSize}
+        fill={item.fill}
         onDragMove={(e) => {
           const afterE = {
             width: e.target.width(),
@@ -82,6 +83,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             fontSize: item.fontSize,
             type: 'TEXT',
             text: item.text,
+            fill: item.fill,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
@@ -89,4 +91,5 @@ const TEXT: React.FC<Props> = (props: Props) => {
     </>
   );
 };
+
 export default TEXT;
