@@ -3,6 +3,7 @@ import React from 'react';
 // import toolList from './tool_list';
 // import AddShape from './tools/add_shape';
 import './tool_bar.scss';
+import { useStateStore } from '../../store/store';
 // import { Row, Col } from 'antd';
 
 // interface toolComponent {
@@ -16,16 +17,13 @@ interface toolBarAttribute{
   height: number,
   list: React.FC<any>[],
   isFloatBar: Boolean,
-  currentItem?: any,
-  currentIndex?: number
-  setCurrentItem?: any,
-  setCurrentIndex?: any,
 }
 
 const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
   const {
-    width, height, list, isFloatBar, currentItem, currentIndex, setCurrentItem, setCurrentIndex,
+    width, height, list, isFloatBar,
   } = props;
+  const state = useStateStore();
   // const showList: any[] = list.map((item) => <li>{toolList[item]}</li>);
   return (
     <div
@@ -33,13 +31,13 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
       style={{
         width,
         height,
-        left: currentItem.x + 200,
-        top: currentItem.y - 100,
+        left: state.currentItem.x + 200,
+        top: state.currentItem.y - 100,
       }}
     >
       {
         list.map((Item) => (
-          <Item currentItem={currentItem} currentIndex={currentIndex} setCurrentItem={setCurrentItem} setCurrentIndex={setCurrentIndex} />
+          <Item />
         ))
       }
     </div>

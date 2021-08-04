@@ -25,10 +25,13 @@ import SelectColor from '../tool_bar/tools/select_color';
 import ZIndexUp from '../tool_bar/tools/zIndex_up';
 import ZIndexDown from '../tool_bar/tools/zIndex_down';
 import Lock from '../tool_bar/tools/lock';
+import { useStateStore, useDispatchStore } from '../../store/store';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
-  const [currentItem, setCurrentItem] = useState({});
+  const state = useStateStore();
+  const dispatch = useDispatchStore();
+  const [currentItem] = useState({});
   const [currentIndex, setCurrentIndex] = useState(-1);
 
   // const [selectedId, selectShape] = useState(-1);
@@ -65,10 +68,10 @@ const PaintingContent: React.FC<{}> = () => {
   }, []);
   return (
     <>
-      {currentIndex === -1 ? null : <ToolBar width={300} height={80} list={[SelectColor, ZIndexUp, ZIndexDown, Lock]} currentItem={currentItem} currentIndex={currentIndex} setCurrentItem={setCurrentItem} setCurrentIndex={setCurrentIndex} isFloatBar />}
+      {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={[SelectColor, ZIndexUp, ZIndexDown, Lock]} isFloatBar />}
       <Row style={{ width: '100%' }}>
         <Col span={3}>
-          <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DelEle, DeleteAll]} currentItem={currentItem} currentIndex={currentIndex} isFloatBar={false} />
+          <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DelEle, DeleteAll]} isFloatBar={false} />
         </Col>
         <Col id="stage" span={21} style={{ padding: '40px' }}>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
@@ -80,7 +83,7 @@ const PaintingContent: React.FC<{}> = () => {
                     index={index}
                     currentItem={currentItem}
                     currentIndex={currentIndex}
-                    click={() => { setCurrentItem(item); setCurrentIndex(index); console.log(item); }}
+                    click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
                   />
                 ))
               }
