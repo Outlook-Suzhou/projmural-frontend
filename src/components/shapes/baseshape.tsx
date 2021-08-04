@@ -41,7 +41,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       ShapeComponent = <Img item={item} index={index} isSelected={index === currentIndex} onSelect={click} />;
       break;
     case 'TRIANGLE':
-      ShapeComponent = <Triangle item={item} index={index} click={click} />;
+      ShapeComponent = <Triangle item={item} index={index} isSelected={index === currentIndex} onSelect={click} />;
       break;
     case 'LINE':
       ShapeComponent = <Line item={item} index={index} click={click} />;
