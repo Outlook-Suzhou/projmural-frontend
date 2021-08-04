@@ -69,7 +69,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE', draggable: true,
+          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'TRIANGLE', draggable: true, rotation: 0, fill: 'yellow',
         })}
         onKeyDown={() => {}}
         style={gridStyle}

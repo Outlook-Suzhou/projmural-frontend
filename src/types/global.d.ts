@@ -35,8 +35,10 @@ declare namespace BaseShapes {
     fill: string,
   }
   interface Triangle extends Position, Lock {
-    points: number[6],
+    radius: Position,
     type: 'TRIANGLE',
+    rotation: number,
+    fill: string,
   }
   interface Image extends Position, Size, Lock {
     type: 'IMAGE',
