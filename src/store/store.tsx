@@ -22,6 +22,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, currentItem: action.payload };
     case 'setCurrentIndex':
       return { ...state, currentIndex: action.payload };
+    case 'reset':
+      return { ...initialState };
     default:
       throw new Error();
   }
