@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 
 interface globalState {
-  currentItem: any,
+  currentItem: BaseShapes.Shape | {},
   currentIndex: number
 }
 interface actionType {
@@ -16,7 +16,7 @@ const initialState: globalState = {
   currentIndex: -1,
 };
 
-function reducer(state: globalState = initialState, action: actionType) {
+function reducer(state: globalState = initialState, action: actionType): globalState {
   switch (action.type) {
     case 'setCurrentItem':
       return { ...state, currentItem: action.payload };
