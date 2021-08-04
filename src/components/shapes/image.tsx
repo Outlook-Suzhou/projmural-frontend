@@ -38,6 +38,7 @@ const Img: React.FC<Props> = (props: Props) => {
         {...shapeConfig}
         image={img}
         rotation={item.rotation}
+        draggable={item.draggable}
         key={index}
         onDragMove={(e) => {
           const afterE: BaseShapes.Image = {
@@ -45,10 +46,10 @@ const Img: React.FC<Props> = (props: Props) => {
             height: e.target.height(),
             x: e.target.x(),
             y: e.target.y(),
-            draggable: true,
             type: 'IMAGE',
             url: item.url,
             rotation: item.rotation,
+            draggable: item.draggable,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
@@ -74,6 +75,7 @@ const Img: React.FC<Props> = (props: Props) => {
             type: 'IMAGE',
             url: item.url,
             rotation: node.rotation(),
+            draggable: item.draggable,
           };
 
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
