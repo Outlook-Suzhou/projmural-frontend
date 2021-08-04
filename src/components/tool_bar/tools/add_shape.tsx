@@ -52,7 +52,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          radius: 30, x: 30, y: 40, type: 'CIRCLE', draggable: true,
+          radius: 30, x: 30, y: 40, type: 'CIRCLE', draggable: true, rotation: 0, fill: 'green',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -69,7 +69,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          x: 30, y: 40, points: [0, 0, 100, 0, 100, 100], type: 'TRIANGLE', draggable: true,
+          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'TRIANGLE', draggable: true, rotation: 0, fill: 'yellow',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -84,7 +84,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE', draggable: true,
+          radius: { x: 20, y: 30 }, x: 30, y: 40, type: 'ELLIPSE', draggable: true, rotation: 0, fill: 'green',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -99,7 +99,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={0}
         onClick={() => addShape({
-          radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND', draggable: true,
+          radius: { x: 40, y: 25 }, x: 30, y: 40, type: 'DIAMOND', draggable: true, rotation: 0, fill: 'pink',
         })}
         onKeyDown={() => {}}
         style={gridStyle}
