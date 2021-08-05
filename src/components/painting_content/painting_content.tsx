@@ -6,17 +6,9 @@ import {
   Row, Col,
 } from 'antd';
 import doc from '../../client/client';
-// import Ellipse from '../shapes/ellipse';
-// import Rectangle1 from '../shapes/transform_rect';
-// import Diamond from '../shapes/diamond';
-// import Circle from '../shapes/circle';
-// import Line from '../shapes/line';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
-// import Img from '../shapes/image';
 import AddImage from '../tool_bar/tools/add_images';
-// import Triangle from '../shapes/triangle';
-// import Text from '../shapes/text';
 import AddText from '../tool_bar/tools/add_text';
 import DeleteAll from '../tool_bar/tools/delete_all';
 import BaseShape from '../shapes/baseshape';
@@ -24,7 +16,8 @@ import SelectColor from '../tool_bar/tools/select_color';
 import Lock from '../tool_bar/tools/lock';
 import { useStateStore, useDispatchStore } from '../../store/store';
 import DelEle from '../tool_bar/tools/del_ele';
-import ZIndex from '../tool_bar/tools/zIndex_up';
+import ZIndex from '../tool_bar/tools/zIndex';
+import FontSize from '../tool_bar/tools/font_size';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -38,6 +31,13 @@ const PaintingContent: React.FC<{}> = () => {
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
+  };
+  const getFloatBar = () => {
+    const tools = [SelectColor, ZIndex, Lock, DelEle];
+    if (state.currentItem.type === 'TEXT') {
+      tools.push(FontSize);
+    }
+    return tools;
   };
   useEffect(() => {
     doc.subscribe(() => {
@@ -55,7 +55,7 @@ const PaintingContent: React.FC<{}> = () => {
   }, []);
   return (
     <>
-      {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={[SelectColor, ZIndex, Lock, DelEle]} isFloatBar />}
+      {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
       <Row style={{ width: '100%' }}>
         <Col span={3}>
           <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll]} isFloatBar={false} />

@@ -48,8 +48,10 @@ declare namespace BaseShapes {
   interface Text extends Position, Size, Lock {
     fill: string;
     type: 'TEXT',
+    rotation: number,
     text: string,
     fontSize: number,
+    scaleX: number,
   }
   interface Line extends Position, Lock {
     start: Position,
