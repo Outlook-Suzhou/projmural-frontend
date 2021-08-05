@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
 import doc from '../../client/client';
@@ -29,8 +30,32 @@ function getRect(start: vector, end: vector, weight: number) {
   return ret;
 }
 
-function getArrow(start: vector, end: vector, weight: number, arrowSize: number) {
+function getArrow(start:vector, end: vector, weight: number, arrowSize: number) {
   const startToEnd = Vector.init(Vector.sub(end, start));
+  let direction = Vector.rotate(startToEnd, (-3 * Math.PI) / 4);
+  let now = end;
+  let ret: number[] = [];
+  ret = ret.concat(Vector.toList(now));
+
+  now = Vector.add(now, Vector.mulN(direction, arrowSize));
+  ret = ret.concat(Vector.toList(now));
+
+  direction = Vector.rotate(direction, -Math.PI / 2);
+  now = Vector.add(now, Vector.mulN(direction, weight));
+  ret = ret.concat(Vector.toList(now));
+
+  direction = Vector.rotate(direction, -Math.PI / 2);
+  now = Vector.add(now, Vector.mulN(direction, arrowSize - weight));
+  ret = ret.concat(Vector.toList(now));
+
+  direction = Vector.rotate(direction, Math.PI / 2);
+  now = Vector.add(now, Vector.mulN(direction, arrowSize - weight));
+  ret = ret.concat(Vector.toList(now));
+
+  direction = Vector.rotate(direction, -Math.PI / 2);
+  now = Vector.add(now, Vector.mulN(direction, weight));
+  ret = ret.concat(Vector.toList(now));
+  return ret;
 }
 
 // @ts-ignore
@@ -52,6 +77,13 @@ const Arrow = (props) => {
   const pts = getRect(item.start, item.end, item.weight);
   return (
     <>
+      <KonvaLine
+        {...item}
+        // eslint-disable-next-line react/prop-types
+        points={getArrow(item.start, item.end, item.weight, item.arrowSize)}
+        {...shapeConfig}
+        fill="black"
+      />
       <KonvaLine
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...item}

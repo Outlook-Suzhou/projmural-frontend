@@ -96,4 +96,12 @@ declare namespace Vector{
       y: a.y / len,
     };
   };
+  const rotate = (v: vector, deg: number): vector => ({
+    x: v.x * Math.cos(deg) - v.y * Math.sin(deg),
+    y: v.x * Math.sin(deg) + v.y * Math.cos(deg),
+  });
+  const toList = (v: vector) => ([v.x, v.y]);
+  export {
+    size, add, sub, mulV, mulN, init, rotate, toList,
+  };
 }
