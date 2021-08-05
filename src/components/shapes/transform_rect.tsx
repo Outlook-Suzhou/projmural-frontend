@@ -23,7 +23,6 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
       trRef.current.getLayer().batchDraw();
     }
   }, [isSelected]);
-
   return (
     <>
       <Rect

@@ -11,10 +11,10 @@ const SelectColor = () => {
   const dispatch = useDispatchStore();
   const [isClicked, setClicked] = useState(false);
   const handlePickComplete = (color: any) => {
-    state.currentItem.fill = color.hex;
-    dispatch({ type: 'setCurrentItem', payload: { ...state.currentItem, fill: color.hex } });
+    const afterItem = { ...state.currentItem, fill: color.hex };
+    dispatch({ type: 'setCurrentItem', payload: afterItem });
     console.log(color.hex);
-    changeColor(state.currentIndex, state.currentItem);
+    changeColor(state.currentIndex, afterItem);
     setClicked(false);
   };
 

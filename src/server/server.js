@@ -31,7 +31,8 @@ function startServer() {
 
   // Connect any incoming WebSocket connection to ShareDB
   const wss = new WebSocket.Server({ server });
-  wss.on('connection', (ws) => {
+  wss.on('connection', (ws, req) => {
+    console.log(req.socket.remoteAddress);
     const stream = new WebSocketJSONStream(ws);
     backend.listen(stream);
   });
