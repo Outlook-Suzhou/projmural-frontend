@@ -58,7 +58,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
           // @ts-ignore
           const stage = document.getElementById('stage').getBoundingClientRect();
           textarea.style.transformOrigin = 'left top';
-          textarea.style.top = `${item.y + stage.top + 36}px`;
+          textarea.style.top = `${item.y + stage.top + 40}px`;
           textarea.style.left = `${item.x + stage.left + 40}px`;
           textarea.style.fontSize = `${item.fontSize}px`;
           textarea.style.width = '1000px';

@@ -59,5 +59,11 @@ declare namespace BaseShapes {
     weight: number,
     type: 'LINE',
   }
+  interface CurveLine extends Position, Lock {
+    fill: string,
+    points: any,
+    type: 'CURVELINE',
+    composite: undefined,
+  }
   type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line;
 }

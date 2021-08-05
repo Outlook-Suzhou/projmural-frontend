@@ -18,6 +18,7 @@ import { useStateStore, useDispatchStore } from '../../store/store';
 import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
+import FreeDrawing from '../tool_bar/tools/free_drawing';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -58,7 +59,7 @@ const PaintingContent: React.FC<{}> = () => {
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
       <Row style={{ width: '100%' }}>
         <Col span={3}>
-          <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll]} isFloatBar={false} />
+          <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
         </Col>
         <Col id="stage" span={21} style={{ padding: '40px' }}>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
