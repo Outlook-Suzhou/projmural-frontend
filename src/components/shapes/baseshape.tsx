@@ -47,7 +47,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       ShapeComponent = <Line item={item} index={index} click={click} isSelected={index === currentIndex} />;
       break;
     case 'TEXT':
-      ShapeComponent = <Text item={item} index={index} click={click} />;
+      ShapeComponent = <Text item={item} index={index} click={click} isSelected={index === currentIndex} />;
       break;
     default:
       return ShapeComponent;
