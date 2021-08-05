@@ -19,6 +19,7 @@ const initialState: globalState = {
 function reducer(state: globalState = initialState, action: actionType): globalState {
   switch (action.type) {
     case 'setCurrentItem':
+      console.log('setitem...');
       return { ...state, currentItem: action.payload };
     case 'setCurrentIndex':
       return { ...state, currentIndex: action.payload };

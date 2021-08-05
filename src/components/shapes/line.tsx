@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+import { useDispatchStore } from '../../store/store';
 
 interface vector {
   x: number;
@@ -36,9 +37,9 @@ const Line = (props) => {
   useEffect(() => {
     if (circleOpacity === 0) setCircleOpacity(1);
     else setCircleOpacity(0);
-    console.log('change opacity');
-    console.log(circleOpacity);
   }, [isSelected]);
+
+  const globalDispatch = useDispatchStore();
 
   // eslint-disable-next-line react/prop-types
   const pts = getRect(item.start, item.end, item.weight);
@@ -71,6 +72,7 @@ const Line = (props) => {
             type: 'LINE',
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          globalDispatch({ type: 'setCurrentItem', payload: afterE });
         }}
       />
       <Circle
@@ -91,6 +93,7 @@ const Line = (props) => {
             },
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          globalDispatch({ type: 'setCurrentItem', payload: afterE });
         }}
         fill="white"
         stroke="1"
@@ -113,6 +116,7 @@ const Line = (props) => {
             },
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          globalDispatch({ type: 'setCurrentItem', payload: afterE });
         }}
         fill="white"
         stroke="1"

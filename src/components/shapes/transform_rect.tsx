@@ -1,8 +1,34 @@
 import React, { useEffect, useRef } from 'react';
-import { Rect, Transformer } from 'react-konva';
+import { Rect, Transformer, Circle } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+import { useStateStore } from '../../store/store';
 
+interface Point {
+  x: number,
+  y: number,
+}
+
+function getVertex(center: Point, width: number, height: number, degree: number): Array<Point> {
+  const realDegree = (degree * 2 * Math.PI) / 360;
+  const rotate = (vector: Point, deg: number): Point => ({
+    x: vector.x * Math.cos(deg) - vector.y * Math.sin(deg),
+    y: vector.x * Math.sin(deg) + vector.y * Math.cos(deg),
+  });
+  const add = (a: Point, b: Point): Point => ({
+    x: a.x + b.x,
+    y: a.y + b.y,
+  });
+  let ret = [
+    { x: width / 2, y: 0 },
+    { x: width / 2, y: height },
+    { x: 0, y: height / 2 },
+    { x: width, y: height / 2 },
+  ];
+  ret = ret.map((item: Point) => (rotate(item, realDegree)));
+  ret = ret.map((item: Point) => (add(item, center)));
+  return ret;
+}
 interface Props {
   item: BaseShapes.Rectangle,
   isSelected: boolean,
@@ -13,6 +39,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
   const {
     item, isSelected, onSelect, index,
   } = props;
+
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
   useEffect(() => {
@@ -23,6 +50,16 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
       trRef.current.getLayer().batchDraw();
     }
   }, [isSelected]);
+
+  const vectexs = getVertex(
+    { x: item.x, y: item.y },
+    item.width, item.height, item.rotation,
+  );
+
+  const [globalState] = [useStateStore()];
+  useEffect(() => {
+    console.log(globalState.currentItem);
+  }, globalState.currentItem);
 
   return (
     <>
@@ -64,7 +101,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             y: node.y(),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
-            height: Math.max(node.height() * scaleY),
+            height: Math.max(5, node.height() * scaleY),
             type: 'RECTANGLE',
             rotation: node.rotation(),
           };
@@ -84,6 +121,16 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           }}
         />
       )}
+      {
+        vectexs.map((obj: Point) => (
+          <Circle
+            x={obj.x}
+            y={obj.y}
+            radius={4}
+            fill="red"
+          />
+        ))
+      }
     </>
   );
 };
