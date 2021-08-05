@@ -1,3 +1,5 @@
+import Base from "antd/lib/typography/Base";
+
 /* eslint-disable no-unused-vars */
 declare namespace BaseShapes {
   interface Position {
@@ -51,11 +53,49 @@ declare namespace BaseShapes {
     text: string,
     fontSize: number,
   }
-  interface Line extends Position, Lock {
+  interface BaseLine extends Position, Lock {
     start: Position,
     end: Position,
     weight: number,
+  }
+  interface Line extends BaseLine {
     type: 'LINE',
   }
-  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line;
+  interface Arrow extends BaseLine {
+    arrowSize: number,
+    type: 'ARROW',
+  }
+  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow;
+}
+
+declare namespace Vector{
+  interface vector {
+    x: number,
+    y: number,
+  }
+  const size = (a: vector): number => (
+    Math.sqrt(a.x * a.x + a.y * a.y)
+  );
+  const add = (a: vector, b: vector): vector => ({
+    x: a.x + b.x,
+    y: a.x + b.x,
+  });
+  const sub = (a: vector, b: vector): vector => ({
+    x: a.x - b.x,
+    y: a.y - b.y,
+  });
+  const mulV = (a: vector, b: vector): number => (
+    a.x * b.x + a.y * b.y
+  );
+  const mulN = (a: vector, b: number): vector => ({
+    x: a.x * b,
+    y: a.y * b,
+  });
+  const init = (a: vector): vector => {
+    const len: number = Math.sqrt(a.x * a.x + a.y * a.y);
+    return {
+      x: a.x / len,
+      y: a.y / len,
+    };
+  };
 }
