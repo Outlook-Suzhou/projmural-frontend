@@ -1,5 +1,3 @@
-import Base from "antd/lib/typography/Base";
-
 /* eslint-disable no-unused-vars */
 declare namespace BaseShapes {
   interface Position {
