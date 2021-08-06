@@ -135,29 +135,30 @@ const PaintingContent: React.FC<{}> = () => {
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
       <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
-      <Stage
-        x={stagePos.x}
-        y={stagePos.y}
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onWheel={handleWheel}
-        scaleX={stageScale}
-        scaleY={stageScale}
-        onMouseDown={checkDeselect}
-        onTouchStart={checkDeselect}
-        draggable
-        onDragEnd={(e) => {
-          setStagePos(e.currentTarget.position());
-        }}
-        onMouseMove={mouseMove}
-        onMouseUp={() => {
-          setIsPainting(false);
-          doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
-        }}
-      >
-        <Layer>
-          {gridComponents}
-          {
+      <div id="stage">
+        <Stage
+          x={stagePos.x}
+          y={stagePos.y}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          onWheel={handleWheel}
+          scaleX={stageScale}
+          scaleY={stageScale}
+          onMouseDown={checkDeselect}
+          onTouchStart={checkDeselect}
+          draggable
+          onDragEnd={(e) => {
+            setStagePos(e.currentTarget.position());
+          }}
+          onMouseMove={mouseMove}
+          onMouseUp={() => {
+            setIsPainting(false);
+            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+          }}
+        >
+          <Layer>
+            {gridComponents}
+            {
             list.map((item: any, index: number) => (
               <BaseShape
                 item={item}
@@ -168,14 +169,15 @@ const PaintingContent: React.FC<{}> = () => {
               />
             ))
           }
-          <Line
-              // @ts-ignore
-            globalCompositeOperation={lastLine.composite}
-            stroke={lastLine.fill}
-            points={lastLine.points}
-          />
-        </Layer>
-      </Stage>
+            <Line
+            // @ts-ignore
+              globalCompositeOperation={lastLine.composite}
+              stroke={lastLine.fill}
+              points={lastLine.points}
+            />
+          </Layer>
+        </Stage>
+      </div>
     </>
   );
 };
