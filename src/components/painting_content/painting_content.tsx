@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { Stage, Layer } from 'react-konva';
+import { Stage, Layer, Line } from 'react-konva';
 import {
   Row, Col,
 } from 'antd';
@@ -26,12 +26,21 @@ const PaintingContent: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
   const [lastLine, setLastLine] = useState({
     fill: '#df4b26',
-    globalCompositeOperation: 'source-over',
-    points: [1, 2],
+    composite: 'source-over',
+    points: [0, 0],
     type: 'CURVELINE',
   });
   const [isPainting, setIsPainting] = useState(false);
-
+  function startDraw(e: { target: any; }) {
+    const pos = e.target.getStage().getPointerPosition();
+    setLastLine({
+      fill: '#df4b26',
+      composite: state.drawing === 1 ? 'source-over' : 'destination-out',
+      points: [pos.x, pos.y],
+      type: 'CURVELINE',
+    });
+    setIsPainting(true);
+  }
   // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
     // deselect when clicked on empty area
@@ -39,29 +48,20 @@ const PaintingContent: React.FC<{}> = () => {
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
-    const pos = e.target.getStage().getPointerPosition();
-    setLastLine({
-      fill: '#df4b26',
-      globalCompositeOperation: 'source-over',
-      points: [pos.x, pos.y],
-      type: 'CURVELINE',
-    });
-    doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
-    setIsPainting(true);
+    if (state.drawing !== 0) {
+      startDraw(e);
+    }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
-    if (isPainting) {
+    if (isPainting && state.drawing !== 0) {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
       const newPoints = lastLine.points.concat([pos.x, pos.y]);
       // @ts-ignore
       setLastLine({
-        type: 'CURVELINE',
-        fill: '#df4b26',
-        globalCompositeOperation: 'source-over',
+        ...lastLine,
         points: newPoints,
       });
-      doc.submitOp([{ p: ['shapes', doc.data.shapes.length - 1], li: lastLine }]);
     }
   };
   const getFloatBar = () => {
@@ -99,7 +99,10 @@ const PaintingContent: React.FC<{}> = () => {
             onMouseDown={checkDeselect}
             onTouchStart={checkDeselect}
             onMouseMove={mouseMove}
-            onMouseUp={() => setIsPainting(false)}
+            onMouseUp={() => {
+              setIsPainting(false);
+              doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+            }}
           >
             <Layer>
               {
@@ -109,10 +112,20 @@ const PaintingContent: React.FC<{}> = () => {
                     index={index}
                     currentItem={state.currentItem}
                     currentIndex={state.currentIndex}
-                    click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
+                    click={() => {
+                      dispatch({ type: 'setCurrentItem', payload: item });
+                      dispatch({ type: 'setCurrentIndex', payload: index });
+                      console.log(state);
+                    }}
                   />
                 ))
               }
+              <Line
+                // @ts-ignore
+                globalCompositeOperation={lastLine.composite}
+                stroke={lastLine.fill}
+                points={lastLine.points}
+              />
             </Layer>
           </Stage>
         </Col>

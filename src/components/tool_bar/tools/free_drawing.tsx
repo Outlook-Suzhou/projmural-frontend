@@ -1,7 +1,7 @@
 import { Icon } from '@fluentui/react/lib/Icon';
 import React from 'react';
 import {
-  Col, Popover, Row, Tooltip,
+  Col, Popover, Tooltip,
 } from 'antd';
 import { useDispatchStore } from '../../../store/store';
 
@@ -14,70 +14,58 @@ const Content: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
   return (
     <>
-      <Row
-        style={{
-          width: '120px',
-          height: 'auto',
+      <Col
+        span={8}
+        role="button"
+        tabIndex={0}
+        onClick={() => {
+          dispatch({ type: 'setDrawing', payload: 1 });
         }}
-        gutter={16}
+        style={gridStyle}
       >
-        <Col
-          span={8}
-          role="button"
-          tabIndex={0}
-          onClick={() => {
-            dispatch({ type: 'setDrawing', payload: 1 });
-            // const stage = document.getElementById('stage');
-            // let lastLine: { points: any; fill?: string; globalCompositeOperation?: string; type?: string;};
-            // // @ts-ignore
-            // stage.addEventListener('onmousedown', () => {
-            //   // @ts-ignore
-            //   const pos = stage.getPointerPosition();
-            //   console.log('mousedown');
-            //   lastLine = {
-            //     fill: '#df4b26',
-            //     globalCompositeOperation: 'source-over',
-            //     points: [pos.x, pos.y],
-            //     type: 'CURVELINE',
-            //   };
-            //   doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
-            // });
-            // // @ts-ignore
-            // stage.addEventListener('onmousemove', () => {
-            //   // @ts-ignore
-            //   const pos = stage.getPointerPosition();
-            //   const newPoints = lastLine.points().concat([pos.x, pos.y]);
-            //   lastLine.points(newPoints);
-            //   doc.submitOp([{ p: ['shapes', doc.data.shapes.length - 1], li: lastLine }]);
-            // });
-          }}
-          style={gridStyle}
-        >
+        <Tooltip title="画笔">
           <Icon
             iconName="edit"
           />
-        </Col>
-        <Col
-          span={8}
-          className="chooseShapeButton"
-          role="button"
-          tabIndex={-1}
-          onClick={() => {
-            dispatch({ type: 'setDrawing', payload: 2 });
-          }}
-          style={gridStyle}
-        >
+        </Tooltip>
+      </Col>
+      <Col
+        span={8}
+        className="chooseShapeButton"
+        role="button"
+        tabIndex={-1}
+        onClick={() => {
+          dispatch({ type: 'setDrawing', payload: 2 });
+        }}
+        style={gridStyle}
+      >
+        <Tooltip title="橡皮">
           <Icon
             iconName="WipePhone"
           />
-        </Col>
-      </Row>
+        </Tooltip>
+      </Col>
+      <Col
+        span={8}
+        role="button"
+        tabIndex={0}
+        onClick={() => {
+          dispatch({ type: 'setDrawing', payload: 0 });
+        }}
+        style={gridStyle}
+      >
+        <Tooltip title="退出">
+          <Icon
+            iconName="clear"
+          />
+        </Tooltip>
+      </Col>
     </>
   );
 };
 const FreeDrawing: React.FC<{}> = () => (
   <div className="tool_icon">
-    <Popover trigger="click" placement="right" content={Content}>
+    <Popover trigger="click" placement="rightBottom" content={Content}>
       <Tooltip title="自由画笔">
         <Icon
           iconName="EditCreate"
