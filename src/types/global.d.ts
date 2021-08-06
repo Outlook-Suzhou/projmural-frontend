@@ -61,9 +61,15 @@ namespace BaseShapes {
   interface Line extends BaseLine {
     type: 'LINE',
   }
+  interface CurveLine extends Position, Lock {
+    fill: string,
+    points: any,
+    type: 'CURVELINE',
+    composite: undefined,
+  }
   interface Arrow extends BaseLine {
     arrowSize: number,
     type: 'ARROW',
   }
-  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow;
+  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine;
 }
