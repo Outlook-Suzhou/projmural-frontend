@@ -24,6 +24,13 @@ const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
+  const [lastLine, setLastLine] = useState({
+    fill: '#df4b26',
+    globalCompositeOperation: 'source-over',
+    points: [1, 2],
+    type: 'CURVELINE',
+  });
+  const [isPainting, setIsPainting] = useState(false);
 
   // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
@@ -31,6 +38,30 @@ const PaintingContent: React.FC<{}> = () => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
+    }
+    const pos = e.target.getStage().getPointerPosition();
+    setLastLine({
+      fill: '#df4b26',
+      globalCompositeOperation: 'source-over',
+      points: [pos.x, pos.y],
+      type: 'CURVELINE',
+    });
+    doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+    setIsPainting(true);
+  };
+  const mouseMove = (e: { target: { getStage: () => any; }; }) => {
+    if (isPainting) {
+      const pos = e.target.getStage().getPointerPosition();
+      // @ts-ignore
+      const newPoints = lastLine.points.concat([pos.x, pos.y]);
+      // @ts-ignore
+      setLastLine({
+        type: 'CURVELINE',
+        fill: '#df4b26',
+        globalCompositeOperation: 'source-over',
+        points: newPoints,
+      });
+      doc.submitOp([{ p: ['shapes', doc.data.shapes.length - 1], li: lastLine }]);
     }
   };
   const getFloatBar = () => {
@@ -62,7 +93,14 @@ const PaintingContent: React.FC<{}> = () => {
           <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
         </Col>
         <Col id="stage" span={21} style={{ padding: '40px' }}>
-          <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
+          <Stage
+            width={window.innerWidth}
+            height={window.innerHeight}
+            onMouseDown={checkDeselect}
+            onTouchStart={checkDeselect}
+            onMouseMove={mouseMove}
+            onMouseUp={() => setIsPainting(false)}
+          >
             <Layer>
               {
                 list.map((item: any, index: number) => (

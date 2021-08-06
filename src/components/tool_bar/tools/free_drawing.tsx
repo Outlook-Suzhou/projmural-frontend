@@ -74,7 +74,7 @@ const Content: React.FC<{}> = () => {
       </Row>
     </>
   );
-}
+};
 const FreeDrawing: React.FC<{}> = () => (
   <div className="tool_icon">
     <Popover trigger="click" placement="right" content={Content}>
