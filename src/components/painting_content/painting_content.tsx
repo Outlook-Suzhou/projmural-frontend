@@ -30,12 +30,13 @@ const PaintingContent: React.FC<{}> = () => {
     type: 'CURVELINE',
   });
   const [isPainting, setIsPainting] = useState(false);
+  const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   function startDraw(e: { target: any; }) {
     const pos = e.target.getStage().getPointerPosition();
     setLastLine({
       fill: '#df4b26',
       composite: state.drawing === 1 ? 'source-over' : 'destination-out',
-      points: [pos.x, pos.y],
+      points: [pos.x - stagePos.x, pos.y - stagePos.y],
       type: 'CURVELINE',
     });
     setIsPainting(true);
@@ -55,7 +56,7 @@ const PaintingContent: React.FC<{}> = () => {
     if (isPainting && state.drawing !== 0) {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
-      const newPoints = lastLine.points.concat([pos.x, pos.y]);
+      const newPoints = lastLine.points.concat([pos.x - stagePos.x, pos.y - stagePos.y]);
       // @ts-ignore
       setLastLine({
         ...lastLine,
@@ -88,11 +89,11 @@ const PaintingContent: React.FC<{}> = () => {
   const WIDTH = 100;// size for background rect
   const HEIGHT = 100;
   const [stageScale, setstageScale] = React.useState(1);
-  const startX = Math.floor((-state.stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
-  const endX = Math.floor((-state.stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
+  const startX = Math.floor((-stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
+  const endX = Math.floor((-stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
 
-  const startY = Math.floor((-state.stagePos.y - window.innerHeight) / HEIGHT) * HEIGHT;
-  const endY = Math.floor((-state.stagePos.y + window.innerHeight * 2) / HEIGHT) * HEIGHT;
+  const startY = Math.floor((-stagePos.y - window.innerHeight) / HEIGHT) * HEIGHT;
+  const endY = Math.floor((-stagePos.y + window.innerHeight * 2) / HEIGHT) * HEIGHT;
 
   const gridComponents = [];
 
@@ -108,12 +109,9 @@ const PaintingContent: React.FC<{}> = () => {
 
     const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
     setstageScale(newScale);
-    dispatch({
-      type: 'setStagePos',
-      payload: {
-        x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-        y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
-      },
+    setStagePos({
+      x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
     });
   };
 
@@ -139,8 +137,8 @@ const PaintingContent: React.FC<{}> = () => {
       <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
-          x={state.stagePos.x}
-          y={state.stagePos.y}
+          x={stagePos.x}
+          y={stagePos.y}
           width={window.innerWidth}
           height={window.innerHeight}
           onWheel={handleWheel}
@@ -148,12 +146,9 @@ const PaintingContent: React.FC<{}> = () => {
           scaleY={stageScale}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
-          draggable
+          draggable={!isPainting}
           onDragEnd={(e) => {
-            dispatch({
-              type: 'setStagePos',
-              payload: e.currentTarget.position(),
-            });
+            setStagePos(e.currentTarget.position());
           }}
           onMouseMove={mouseMove}
           onMouseUp={() => {
@@ -170,7 +165,17 @@ const PaintingContent: React.FC<{}> = () => {
                 index={index}
                 currentItem={state.currentItem}
                 currentIndex={state.currentIndex}
-                click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
+                click={() => {
+                  if (item.type === 'TEXT') {
+                    const afterE = {
+                      ...item,
+                      shift: stagePos,
+                    };
+                    doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                  }
+                  dispatch({ type: 'setCurrentItem', payload: item });
+                  dispatch({ type: 'setCurrentIndex', payload: index });
+                }}
               />
             ))
           }

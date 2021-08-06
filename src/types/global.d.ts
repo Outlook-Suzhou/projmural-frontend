@@ -52,6 +52,7 @@ namespace BaseShapes {
     text: string,
     fontSize: number,
     scaleX: number,
+    shift: any,
   }
   interface BaseLine extends Position, Lock {
     start: Position,
