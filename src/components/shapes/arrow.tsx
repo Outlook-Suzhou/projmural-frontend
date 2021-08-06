@@ -17,23 +17,18 @@ function getRect(start: vector, end: vector, weight: number) {
   const cos = dx / dxy;
   const sin = dy / dxy;
 
-  const realEnd = {
-    x: end.x - cos * weight,
-    y: end.y - sin * weight,
-  };
-
   let ret: Array<number> = [];
   ret = ret.concat(vectorAdd(start, { x: -(weight * sin) / 2, y: (weight * cos) / 2 }));
   ret = ret.concat(vectorAdd(start, { x: (weight * sin) / 2, y: -(weight * cos) / 2 }));
-  ret = ret.concat(vectorAdd(realEnd, { x: (weight * sin) / 2, y: -(weight * cos) / 2 }));
-  ret = ret.concat(vectorAdd(realEnd, { x: -(weight * sin) / 2, y: (weight * cos) / 2 }));
+  ret = ret.concat(vectorAdd(end, { x: (weight * sin) / 2, y: -(weight * cos) / 2 }));
+  ret = ret.concat(vectorAdd(end, { x: -(weight * sin) / 2, y: (weight * cos) / 2 }));
   return ret;
 }
 
 function getArrow(start:vector, end: vector, weight: number, arrowSize: number) {
   const startToEnd = Vector.init(Vector.sub(end, start));
   let direction = Vector.rotate(startToEnd, (-3 * Math.PI) / 4);
-  let now = end;
+  let now = Vector.add(end, Vector.mulN(startToEnd, weight / 2));
   let ret: number[] = [];
   ret = ret.concat(Vector.toList(now));
 
@@ -41,6 +36,7 @@ function getArrow(start:vector, end: vector, weight: number, arrowSize: number) 
   ret = ret.concat(Vector.toList(now));
 
   direction = Vector.rotate(direction, -Math.PI / 2);
+  const tailPoint1: vector = Vector.add(now, Vector.mulN(direction, weight / 2));
   now = Vector.add(now, Vector.mulN(direction, weight));
   ret = ret.concat(Vector.toList(now));
 
@@ -53,9 +49,13 @@ function getArrow(start:vector, end: vector, weight: number, arrowSize: number) 
   ret = ret.concat(Vector.toList(now));
 
   direction = Vector.rotate(direction, -Math.PI / 2);
+  const tailPoint2: vector = Vector.add(now, Vector.mulN(direction, weight / 2));
   now = Vector.add(now, Vector.mulN(direction, weight));
   ret = ret.concat(Vector.toList(now));
-  return ret;
+  return {
+    tailPoints: [tailPoint1, tailPoint2],
+    arrowPoints: ret,
+  };
 }
 
 // @ts-ignore
@@ -67,17 +67,20 @@ const Arrow = (props) => {
 
   const [circleOpacity, setCircleOpacity] = useState(1);
   useEffect(() => {
-    if (circleOpacity === 0) setCircleOpacity(1);
+    if (isSelected === true) setCircleOpacity(1);
     else setCircleOpacity(0);
   }, [isSelected]);
+  // eslint-disable-next-line react/prop-types
+  const { arrowPoints, tailPoints } = getArrow(item.start, item.end, item.weight, item.arrowSize);
   return (
     <>
       <KonvaLine
         {...item}
         {...shapeConfig}
         // eslint-disable-next-line react/prop-types
-        points={getArrow(item.start, item.end, item.weight, item.arrowSize)}
+        points={arrowPoints}
         closed
+        draggable={false}
         fill="black"
       />
       <KonvaLine
@@ -102,11 +105,11 @@ const Arrow = (props) => {
       />
       <Circle
         // eslint-disable-next-line react/prop-types
-        x={doc.data.shapes[index].start.x + doc.data.shapes[index].x}
+        x={item.start.x + item.x}
         // eslint-disable-next-line react/prop-types
-        y={doc.data.shapes[index].start.y + doc.data.shapes[index].y}
+        y={item.start.y + item.y}
         // eslint-disable-next-line react/prop-types
-        radius={doc.data.shapes[index].weight}
+        radius={item.weight}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -124,11 +127,11 @@ const Arrow = (props) => {
       />
       <Circle
         // eslint-disable-next-line react/prop-types
-        x={doc.data.shapes[index].end.x + doc.data.shapes[index].x}
+        x={item.end.x + item.x}
         // eslint-disable-next-line react/prop-types
-        y={doc.data.shapes[index].end.y + doc.data.shapes[index].y}
+        y={item.end.y + item.y}
         // eslint-disable-next-line react/prop-types
-        radius={doc.data.shapes[index].weight}
+        radius={item.weight}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -144,6 +147,45 @@ const Arrow = (props) => {
         fill="white"
         stroke="1"
       />
+      {
+        tailPoints.map((obj, ind) => (
+          <Circle
+            // eslint-disable-next-line react/prop-types
+            x={obj.x + item.x}
+            // eslint-disable-next-line react/prop-types
+            y={obj.y + item.y}
+            // eslint-disable-next-line react/prop-types
+            radius={item.weight}
+            opacity={circleOpacity}
+            draggable
+            onDragMove={(e) => {
+              console.log(e);
+              const position = {
+                x: e.target.attrs.x,
+                y: e.target.attrs.y,
+              };
+              // eslint-disable-next-line react/prop-types
+              const center = { x: item.x, y: item.y };
+              // eslint-disable-next-line react/prop-types
+              const { start, end } = item;
+              let direction = Vector.init(Vector.sub(end, start));
+              if (ind === 0) direction = Vector.rotate(direction, (-Math.PI * 3) / 4);
+              else direction = Vector.rotate(direction, (Math.PI * 3) / 4);
+              // eslint-disable-next-line react/prop-types
+              let newArrowSize = Math.max(Vector.mulV(direction, Vector.sub(position, Vector.add(center, end))), item.weight);
+              // eslint-disable-next-line react/prop-types
+              newArrowSize = (newArrowSize + item.arrowSize) / 2;
+              console.log(newArrowSize);
+              const afterE = Object.assign(doc.data.shapes[index], {
+                arrowSize: newArrowSize,
+              });
+              doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+            }}
+            fill="white"
+            stroke="1"
+          />
+        ))
+      }
     </>
   );
 };
