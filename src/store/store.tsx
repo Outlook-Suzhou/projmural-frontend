@@ -6,6 +6,7 @@ interface globalState {
   currentItem: any,
   currentIndex: number
   drawing: number // 0为非自由画板模式，1为画笔，2为橡皮
+  stagePos: any
 }
 interface actionType {
   type: string,
@@ -16,6 +17,7 @@ const initialState: globalState = {
   currentItem: {},
   currentIndex: -1,
   drawing: 0,
+  stagePos: { x: 0, y: 0 },
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -26,6 +28,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, currentIndex: action.payload };
     case 'setDrawing':
       return { ...state, drawing: action.payload };
+    case 'setStagePos':
+      return { ...state, stagePos: action.payload };
     case 'reset':
       return { ...initialState };
     default:
@@ -37,6 +41,7 @@ const StateContext = createContext<globalState>({
   currentItem: {},
   currentIndex: -1,
   drawing: 0,
+  stagePos: { x: 0, y: 0 },
 });
 const DispatchContext = createContext<Function>(() => {});
 

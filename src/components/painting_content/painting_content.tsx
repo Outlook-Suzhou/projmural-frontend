@@ -87,13 +87,12 @@ const PaintingContent: React.FC<{}> = () => {
 
   const WIDTH = 100;// size for background rect
   const HEIGHT = 100;
-  const [stagePos, setStagePos] = React.useState({ x: 0, y: 0 });
   const [stageScale, setstageScale] = React.useState(1);
-  const startX = Math.floor((-stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
-  const endX = Math.floor((-stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
+  const startX = Math.floor((-state.stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
+  const endX = Math.floor((-state.stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
 
-  const startY = Math.floor((-stagePos.y - window.innerHeight) / HEIGHT) * HEIGHT;
-  const endY = Math.floor((-stagePos.y + window.innerHeight * 2) / HEIGHT) * HEIGHT;
+  const startY = Math.floor((-state.stagePos.y - window.innerHeight) / HEIGHT) * HEIGHT;
+  const endY = Math.floor((-state.stagePos.y + window.innerHeight * 2) / HEIGHT) * HEIGHT;
 
   const gridComponents = [];
 
@@ -109,9 +108,12 @@ const PaintingContent: React.FC<{}> = () => {
 
     const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
     setstageScale(newScale);
-    setStagePos({
-      x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-      y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    dispatch({
+      type: 'setStagePos',
+      payload: {
+        x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+        y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+      },
     });
   };
 
@@ -137,8 +139,8 @@ const PaintingContent: React.FC<{}> = () => {
       <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
-          x={stagePos.x}
-          y={stagePos.y}
+          x={state.stagePos.x}
+          y={state.stagePos.y}
           width={window.innerWidth}
           height={window.innerHeight}
           onWheel={handleWheel}
@@ -148,7 +150,10 @@ const PaintingContent: React.FC<{}> = () => {
           onTouchStart={checkDeselect}
           draggable
           onDragEnd={(e) => {
-            setStagePos(e.currentTarget.position());
+            dispatch({
+              type: 'setStagePos',
+              payload: e.currentTarget.position(),
+            });
           }}
           onMouseMove={mouseMove}
           onMouseUp={() => {
