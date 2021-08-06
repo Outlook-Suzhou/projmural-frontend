@@ -10,7 +10,7 @@ interface Props {
   item: BaseShapes.Text,
   index: number,
   click: any,
-  isSelected: boolean
+  isSelected: boolean,
 }
 
 const TEXT: React.FC<Props> = (props: Props) => {
@@ -55,11 +55,9 @@ const TEXT: React.FC<Props> = (props: Props) => {
           textarea.style.position = 'absolute';
           textarea.value = item.text;
           setVisible(false);
-          // @ts-ignore
-          const stage = document.getElementById('stage').getBoundingClientRect();
           textarea.style.transformOrigin = 'left top';
-          textarea.style.top = `${item.y + stage.top}px`;
-          textarea.style.left = `${item.x + stage.left}px`;
+          textarea.style.top = `${item.y + item.shift.y}px`;
+          textarea.style.left = `${item.x + item.shift.x}px`;
           textarea.style.fontSize = `${item.fontSize}px`;
           textarea.style.width = '1000px';
           textarea.style.height = '1000px';

@@ -30,12 +30,13 @@ const PaintingContent: React.FC<{}> = () => {
     type: 'CURVELINE',
   });
   const [isPainting, setIsPainting] = useState(false);
+  const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   function startDraw(e: { target: any; }) {
     const pos = e.target.getStage().getPointerPosition();
     setLastLine({
       fill: '#df4b26',
       composite: state.drawing === 1 ? 'source-over' : 'destination-out',
-      points: [pos.x, pos.y],
+      points: [pos.x - stagePos.x, pos.y - stagePos.y],
       type: 'CURVELINE',
     });
     setIsPainting(true);
@@ -55,7 +56,7 @@ const PaintingContent: React.FC<{}> = () => {
     if (isPainting && state.drawing !== 0) {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
-      const newPoints = lastLine.points.concat([pos.x, pos.y]);
+      const newPoints = lastLine.points.concat([pos.x - stagePos.x, pos.y - stagePos.y]);
       // @ts-ignore
       setLastLine({
         ...lastLine,
@@ -87,7 +88,6 @@ const PaintingContent: React.FC<{}> = () => {
 
   const WIDTH = 100;// size for background rect
   const HEIGHT = 100;
-  const [stagePos, setStagePos] = React.useState({ x: 0, y: 0 });
   const [stageScale, setstageScale] = React.useState(1);
   const startX = Math.floor((-stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
   const endX = Math.floor((-stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
@@ -146,7 +146,7 @@ const PaintingContent: React.FC<{}> = () => {
           scaleY={stageScale}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
-          draggable
+          draggable={!isPainting}
           onDragEnd={(e) => {
             setStagePos(e.currentTarget.position());
           }}
@@ -165,7 +165,17 @@ const PaintingContent: React.FC<{}> = () => {
                 index={index}
                 currentItem={state.currentItem}
                 currentIndex={state.currentIndex}
-                click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
+                click={() => {
+                  if (item.type === 'TEXT') {
+                    const afterE = {
+                      ...item,
+                      shift: stagePos,
+                    };
+                    doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                  }
+                  dispatch({ type: 'setCurrentItem', payload: item });
+                  dispatch({ type: 'setCurrentIndex', payload: index });
+                }}
               />
             ))
           }
