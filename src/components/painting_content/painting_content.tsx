@@ -1,10 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { Stage, Layer, Line } from 'react-konva';
 import {
-  Row, Col,
-} from 'antd';
+  Stage, Layer, Rect, Line,
+} from 'react-konva';
 import doc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
@@ -42,7 +41,7 @@ const PaintingContent: React.FC<{}> = () => {
     setIsPainting(true);
   }
   // const [selectedId, selectShape] = useState(-1);
-  const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
+  const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
@@ -85,51 +84,100 @@ const PaintingContent: React.FC<{}> = () => {
       }
     });
   }, []);
+
+  const WIDTH = 100;// size for background rect
+  const HEIGHT = 100;
+  const [stagePos, setStagePos] = React.useState({ x: 0, y: 0 });
+  const [stageScale, setstageScale] = React.useState(1);
+  const startX = Math.floor((-stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
+  const endX = Math.floor((-stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
+
+  const startY = Math.floor((-stagePos.y - window.innerHeight) / HEIGHT) * HEIGHT;
+  const endY = Math.floor((-stagePos.y + window.innerHeight * 2) / HEIGHT) * HEIGHT;
+
+  const gridComponents = [];
+
+  const handleWheel = (e: any) => {
+    e.evt.preventDefault();
+    const scaleBy = 1.05;
+    const stage = e.target.getStage();
+    const oldScale = stage.scaleX();
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    setstageScale(newScale);
+    setStagePos({
+      x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
+
+  for (let x = startX; x < endX; x += WIDTH) {
+    for (let y = startY; y < endY; y += HEIGHT) {
+      gridComponents.push(
+        <Rect
+          x={x}
+          y={y}
+          width={WIDTH}
+          height={HEIGHT}
+          fill="#F2F2F2"
+          stroke="lightGray"
+          onClick={() => { dispatch({ type: 'setCurrentIndex', payload: -1 }); }}
+        />,
+      );
+    }
+  }
+
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
-      <Row style={{ width: '100%' }}>
-        <Col span={3}>
-          <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
-        </Col>
-        <Col id="stage" span={21} style={{ padding: '40px' }}>
-          <Stage
-            width={window.innerWidth}
-            height={window.innerHeight}
-            onMouseDown={checkDeselect}
-            onTouchStart={checkDeselect}
-            onMouseMove={mouseMove}
-            onMouseUp={() => {
-              setIsPainting(false);
-              doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
-            }}
-          >
-            <Layer>
-              {
-                list.map((item: any, index: number) => (
-                  <BaseShape
-                    item={item}
-                    index={index}
-                    currentItem={state.currentItem}
-                    currentIndex={state.currentIndex}
-                    click={() => {
-                      dispatch({ type: 'setCurrentItem', payload: item });
-                      dispatch({ type: 'setCurrentIndex', payload: index });
-                      console.log(state);
-                    }}
-                  />
-                ))
-              }
-              <Line
-                // @ts-ignore
-                globalCompositeOperation={lastLine.composite}
-                stroke={lastLine.fill}
-                points={lastLine.points}
+      <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
+      <div id="stage">
+        <Stage
+          x={stagePos.x}
+          y={stagePos.y}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          onWheel={handleWheel}
+          scaleX={stageScale}
+          scaleY={stageScale}
+          onMouseDown={checkDeselect}
+          onTouchStart={checkDeselect}
+          draggable
+          onDragEnd={(e) => {
+            setStagePos(e.currentTarget.position());
+          }}
+          onMouseMove={mouseMove}
+          onMouseUp={() => {
+            setIsPainting(false);
+            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+          }}
+        >
+          <Layer>
+            {gridComponents}
+            {
+            list.map((item: any, index: number) => (
+              <BaseShape
+                item={item}
+                index={index}
+                currentItem={state.currentItem}
+                currentIndex={state.currentIndex}
+                click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
               />
-            </Layer>
-          </Stage>
-        </Col>
-      </Row>
+            ))
+          }
+            <Line
+            // @ts-ignore
+              globalCompositeOperation={lastLine.composite}
+              stroke={lastLine.fill}
+              points={lastLine.points}
+            />
+          </Layer>
+        </Stage>
+      </div>
     </>
   );
 };
