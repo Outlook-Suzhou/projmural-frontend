@@ -32,14 +32,16 @@ const PaintingContent: React.FC<{}> = () => {
   const [isPainting, setIsPainting] = useState(false);
   const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   function startDraw(e: { target: any; }) {
-    const pos = e.target.getStage().getPointerPosition();
-    setLastLine({
-      fill: '#df4b26',
-      composite: state.drawing === 1 ? 'source-over' : 'destination-out',
-      points: [pos.x - stagePos.x, pos.y - stagePos.y],
-      type: 'CURVELINE',
-    });
     setIsPainting(true);
+    if (state.drawing === 1) {
+      const pos = e.target.getStage().getPointerPosition();
+      setLastLine({
+        fill: '#df4b26',
+        composite: 'source-over',
+        points: [pos.x - stagePos.x, pos.y - stagePos.y],
+        type: 'CURVELINE',
+      });
+    }
   }
   // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: any) => {
@@ -53,7 +55,7 @@ const PaintingContent: React.FC<{}> = () => {
     }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
-    if (isPainting && state.drawing !== 0) {
+    if (isPainting && state.drawing === 1) {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
       const newPoints = lastLine.points.concat([pos.x - stagePos.x, pos.y - stagePos.y]);
@@ -102,17 +104,17 @@ const PaintingContent: React.FC<{}> = () => {
     const scaleBy = 1.05;
     const stage = e.target.getStage();
     const oldScale = stage.scaleX();
-    const mousePointTo = {
-      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
-      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
-    };
+    // const mousePointTo = {
+    //   x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+    //   y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    // };
 
     const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
     setstageScale(newScale);
-    setStagePos({
-      x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-      y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
-    });
+    // setStagePos({
+    //   x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+    //   y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    // });
   };
 
   for (let x = startX; x < endX; x += WIDTH) {
@@ -152,8 +154,10 @@ const PaintingContent: React.FC<{}> = () => {
           }}
           onMouseMove={mouseMove}
           onMouseUp={() => {
-            setIsPainting(false);
-            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+            if (isPainting && state.drawing === 1) {
+              setIsPainting(false);
+              doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+            }
           }}
         >
           <Layer>
@@ -166,6 +170,7 @@ const PaintingContent: React.FC<{}> = () => {
                 currentItem={state.currentItem}
                 currentIndex={state.currentIndex}
                 click={() => {
+                  console.log(item);
                   if (item.type === 'TEXT') {
                     const afterE = {
                       ...item,
@@ -176,6 +181,13 @@ const PaintingContent: React.FC<{}> = () => {
                   dispatch({ type: 'setCurrentItem', payload: item });
                   dispatch({ type: 'setCurrentIndex', payload: index });
                 }}
+                erase={() => {
+                  if (isPainting && state.drawing === 2) {
+                    console.log('erase');
+                    doc.submitOp([{ p: ['shapes', index], ld: item }]);
+                    dispatch({ type: 'setCurrentIndex', payload: -1 });
+                  }
+                }}
               />
             ))
           }
@@ -184,6 +196,7 @@ const PaintingContent: React.FC<{}> = () => {
               globalCompositeOperation={lastLine.composite}
               stroke={lastLine.fill}
               points={lastLine.points}
+              strokeWidth={5}
             />
           </Layer>
         </Stage>
