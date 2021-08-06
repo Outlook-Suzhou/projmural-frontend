@@ -37,7 +37,7 @@ const shapes: React.FC<{}> = () => (
         role="button"
         tabIndex={-1}
         onClick={() => addShape({
-          x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 50, y: 40 }, weight: 5, type: 'LINE', draggable: true,
+          x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 100, y: 100 }, weight: 5, type: 'LINE', draggable: true,
         })}
         onKeyDown={() => {}}
         style={gridStyle}
@@ -105,6 +105,23 @@ const shapes: React.FC<{}> = () => (
         style={gridStyle}
       >
         <BsDiamond />
+      </Col>
+    </Row>
+    <Row style={{ width: '120px', height: 'auto' }} gutter={16}>
+      <Col
+        span={8}
+        className="chooseShapeButton"
+        role="button"
+        tabIndex={0}
+        onClick={() => addShape({
+          x: 0, y: 0, start: { x: 20, y: 20 }, end: { x: 100, y: 100 }, weight: 5, arrowSize: 20, type: 'ARROW', draggable: true,
+        })}
+        onKeyDown={() => {}}
+        style={gridStyle}
+      >
+        <Icon
+          iconName="ArrowTallUpRight"
+        />
       </Col>
     </Row>
   </>

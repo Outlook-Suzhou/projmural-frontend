@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-declare namespace BaseShapes {
+namespace BaseShapes {
   interface Position {
     x: number,
     y: number,
@@ -53,11 +53,23 @@ declare namespace BaseShapes {
     fontSize: number,
     scaleX: number,
   }
-  interface Line extends Position, Lock {
+  interface BaseLine extends Position, Lock {
     start: Position,
     end: Position,
     weight: number,
+  }
+  interface Line extends BaseLine {
     type: 'LINE',
   }
-  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line;
+  interface CurveLine extends Position, Lock {
+    fill: string,
+    points: any,
+    type: 'CURVELINE',
+    composite: undefined,
+  }
+  interface Arrow extends BaseLine {
+    arrowSize: number,
+    type: 'ARROW',
+  }
+  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine;
 }

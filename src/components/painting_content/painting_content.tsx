@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { Stage, Layer, Rect } from 'react-konva';
+import { Stage, Layer, Rect, Line } from 'react-konva';
 import doc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
@@ -20,13 +20,44 @@ const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
-
+  const [lastLine, setLastLine] = useState({
+    fill: '#df4b26',
+    composite: 'source-over',
+    points: [0, 0],
+    type: 'CURVELINE',
+  });
+  const [isPainting, setIsPainting] = useState(false);
+  function startDraw(e: { target: any; }) {
+    const pos = e.target.getStage().getPointerPosition();
+    setLastLine({
+      fill: '#df4b26',
+      composite: state.drawing === 1 ? 'source-over' : 'destination-out',
+      points: [pos.x, pos.y],
+      type: 'CURVELINE',
+    });
+    setIsPainting(true);
+  }
   // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
+    }
+    if (state.drawing !== 0) {
+      startDraw(e);
+    }
+  };
+  const mouseMove = (e: { target: { getStage: () => any; }; }) => {
+    if (isPainting && state.drawing !== 0) {
+      const pos = e.target.getStage().getPointerPosition();
+      // @ts-ignore
+      const newPoints = lastLine.points.concat([pos.x, pos.y]);
+      // @ts-ignore
+      setLastLine({
+        ...lastLine,
+        points: newPoints,
+      });
     }
   };
   const getFloatBar = () => {
@@ -115,6 +146,11 @@ const PaintingContent: React.FC<{}> = () => {
         onDragEnd={(e) => {
           setStagePos(e.currentTarget.position());
         }}
+        onMouseMove={mouseMove}
+        onMouseUp={() => {
+          setIsPainting(false);
+          doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+        }}
       >
         <Layer>
           {gridComponents}
@@ -129,6 +165,12 @@ const PaintingContent: React.FC<{}> = () => {
               />
             ))
           }
+          <Line
+              // @ts-ignore
+              globalCompositeOperation={lastLine.composite}
+              stroke={lastLine.fill}
+              points={lastLine.points}
+          />
         </Layer>
       </Stage>
     </>
