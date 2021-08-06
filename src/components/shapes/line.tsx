@@ -56,20 +56,10 @@ const Line = (props) => {
         draggable
         onClick={click}
         onDragMove={(e) => {
-          const afterE = {
-            weight: e.target.attrs.weight,
+          const afterE = Object.assign(doc.data.shapes[index], {
             x: e.target.attrs.x,
             y: e.target.attrs.y,
-            end: {
-              x: e.target.attrs.end.x,
-              y: e.target.attrs.end.y,
-            },
-            start: {
-              x: e.target.attrs.start.x,
-              y: e.target.attrs.start.y,
-            },
-            type: 'LINE',
-          };
+          });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
       />

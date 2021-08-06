@@ -1,6 +1,6 @@
-/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
+import Vector from './vector';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 
@@ -69,25 +69,22 @@ const Arrow = (props) => {
   useEffect(() => {
     if (circleOpacity === 0) setCircleOpacity(1);
     else setCircleOpacity(0);
-    console.log('change opacity');
-    console.log(circleOpacity);
   }, [isSelected]);
-
-  // eslint-disable-next-line react/prop-types
-  const pts = getRect(item.start, item.end, item.weight);
   return (
     <>
       <KonvaLine
         {...item}
+        {...shapeConfig}
         // eslint-disable-next-line react/prop-types
         points={getArrow(item.start, item.end, item.weight, item.arrowSize)}
-        {...shapeConfig}
+        closed
         fill="black"
       />
       <KonvaLine
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...item}
-        points={pts}
+        // eslint-disable-next-line react/prop-types
+        points={getRect(item.start, item.end, item.weight)}
         closed
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
@@ -96,20 +93,10 @@ const Arrow = (props) => {
         draggable
         onClick={click}
         onDragMove={(e) => {
-          const afterE = {
-            weight: e.target.attrs.weight,
+          const afterE = Object.assign(doc.data.shapes[index], {
             x: e.target.attrs.x,
             y: e.target.attrs.y,
-            end: {
-              x: e.target.attrs.end.x,
-              y: e.target.attrs.end.y,
-            },
-            start: {
-              x: e.target.attrs.start.x,
-              y: e.target.attrs.start.y,
-            },
-            type: 'LINE',
-          };
+          });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
       />
