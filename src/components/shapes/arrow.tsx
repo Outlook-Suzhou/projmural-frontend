@@ -177,7 +177,8 @@ const Arrow = (props) => {
               newArrowSize = (newArrowSize + item.arrowSize) / 2;
               console.log(newArrowSize);
               const afterE = Object.assign(doc.data.shapes[index], {
-                arrowSize: newArrowSize,
+                // make sure circle flush when over darg
+                arrowSize: newArrowSize + Math.random() * 0.0001,
               });
               doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
             }}
