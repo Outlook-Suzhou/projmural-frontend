@@ -1,7 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { Stage, Layer, Rect, Line } from 'react-konva';
+import {
+  Stage, Layer, Rect, Line,
+} from 'react-konva';
 import doc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
@@ -15,6 +17,7 @@ import { useStateStore, useDispatchStore } from '../../store/store';
 import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
+import FreeDrawing from '../tool_bar/tools/free_drawing';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -131,7 +134,7 @@ const PaintingContent: React.FC<{}> = () => {
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
-      <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll]} isFloatBar={false} />
+      <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <Stage
         x={stagePos.x}
         y={stagePos.y}
@@ -167,9 +170,9 @@ const PaintingContent: React.FC<{}> = () => {
           }
           <Line
               // @ts-ignore
-              globalCompositeOperation={lastLine.composite}
-              stroke={lastLine.fill}
-              points={lastLine.points}
+            globalCompositeOperation={lastLine.composite}
+            stroke={lastLine.fill}
+            points={lastLine.points}
           />
         </Layer>
       </Stage>
