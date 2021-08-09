@@ -3,6 +3,7 @@ import { Line as KonvaLine, Circle } from 'react-konva';
 import Vector from './vector';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+import checkAdsorptionPoint from './adsorption';
 
 interface vector {
   x: number;
@@ -72,8 +73,21 @@ const Arrow = (props) => {
   }, [isSelected]);
   // eslint-disable-next-line react/prop-types
   const { arrowPoints, tailPoints } = getArrow(item.start, item.end, item.weight, item.arrowSize);
+  const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
+  const miniDistance = 20;
   return (
     <>
+      {
+        adsorptionPoints.map((point) => (
+          <Circle
+            x={point.x}
+            y={point.y}
+            radius={5}
+            fill="red"
+            stroke="1"
+          />
+        ))
+      }
       <KonvaLine
         {...item}
         {...shapeConfig}
@@ -114,10 +128,23 @@ const Arrow = (props) => {
         draggable
         onClick={click}
         onDragMove={(e) => {
+          const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
+          let newPoint = mouse;
+          let flag = false;
+          doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+            if (flag || ind === index) return;
+            const res = checkAdsorptionPoint(mouse, shape, miniDistance);
+            if (res.flag === true) {
+              newPoint = res.adsorptionVertex;
+              setAdsorptionPoints(res.adsorptionPoints);
+              flag = true;
+            }
+          });
+          if (!flag) setAdsorptionPoints([]);
           const afterE = Object.assign(doc.data.shapes[index], {
             start: {
-              x: e.target.attrs.x - doc.data.shapes[index].x,
-              y: e.target.attrs.y - doc.data.shapes[index].y,
+              x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
+              y: newPoint.y - doc.data.shapes[index].y + Math.random() * 0.000001,
             },
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
@@ -136,10 +163,23 @@ const Arrow = (props) => {
         draggable
         onClick={click}
         onDragMove={(e) => {
+          const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
+          let newPoint = mouse;
+          let flag = false;
+          doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+            if (flag || ind === index) return;
+            const res = checkAdsorptionPoint(mouse, shape, miniDistance);
+            if (res.flag === true) {
+              newPoint = res.adsorptionVertex;
+              setAdsorptionPoints(res.adsorptionPoints);
+              flag = true;
+            }
+          });
+          if (!flag) setAdsorptionPoints([]);
           const afterE = Object.assign(doc.data.shapes[index], {
             end: {
-              x: e.target.attrs.x - doc.data.shapes[index].x,
-              y: e.target.attrs.y - doc.data.shapes[index].y,
+              x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
+              y: newPoint.y - doc.data.shapes[index].y + Math.random() * 0.000001,
             },
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);

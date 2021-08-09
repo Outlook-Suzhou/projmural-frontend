@@ -40,7 +40,6 @@ const Vector = {
   toList: (v: vector) => ([v.x, v.y]),
   distancePP: (a: vector, b: vector): number => (Vector.length({ x: a.x - b.x, y: a.y - b.y })),
   distancePL: (P: vector, A: vector, B: vector): distanceAndPoint => {
-    console.log([P, A, B]);
     const AP = Vector.sub(P, A);
     const AB = Vector.sub(B, A);
     const r = Vector.mulV(AP, AB) / (AB.x * AB.x + AB.y * AB.y);

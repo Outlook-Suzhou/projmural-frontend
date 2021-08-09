@@ -35,7 +35,6 @@ const checkAdsorptionPoint = (mouse: Point, shape: BaseShapes.Shape, miniDistanc
           line = [p, vertexs[ind + 1]];
         }
         const res = Vector.distancePL(mouse, line[0], line[1]);
-        console.log(res.distance);
         if (res.distance < miniDistance) {
           flag = true;
           if (miniRes.distance > res.distance) {
