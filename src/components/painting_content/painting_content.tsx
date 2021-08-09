@@ -24,9 +24,8 @@ const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
-
-  useEffect(() => { useCopyer(); }, []);
-
+  const [copyItem, setCopySelectItem] = useCopyer();
+  console.log(copyItem);
   // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
     // deselect when clicked on empty area
@@ -73,7 +72,7 @@ const PaintingContent: React.FC<{}> = () => {
                     index={index}
                     currentItem={state.currentItem}
                     currentIndex={state.currentIndex}
-                    click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
+                    click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); setCopySelectItem(item); }}
                   />
                 ))
               }
