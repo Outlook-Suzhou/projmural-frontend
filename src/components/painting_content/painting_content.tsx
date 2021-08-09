@@ -28,7 +28,7 @@ const PaintingContent: React.FC<{}> = () => {
   const [lastLine, setLastLine] = useState({
     fill: '#df4b26',
     composite: 'source-over',
-    points: [0, 0],
+    points: [0],
     type: 'CURVELINE',
   });
   const [isPainting, setIsPainting] = useState(false);
@@ -38,7 +38,8 @@ const PaintingContent: React.FC<{}> = () => {
     setLastLine({
       fill: '#df4b26',
       composite: 'source-over',
-      points: [pos.x - state.stagePos.x, pos.y - state.stagePos.y],
+      // @ts-ignore
+      points: [(pos.x - state.stagePos.x) / state.stageScale, (pos.y - state.stagePos.y) / state.stageScale],
       type: 'CURVELINE',
     });
     setIsPainting(true);
@@ -156,7 +157,7 @@ const PaintingContent: React.FC<{}> = () => {
             if (isPainting) {
               setIsPainting(false);
               if (state.drawing === 1) {
-                console.log('add newLine');
+                console.log(lastLine);
                 doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
                 setLastLine({
                   fill: '#df4b26',
