@@ -50,15 +50,15 @@ const TEXT: React.FC<Props> = (props: Props) => {
             y: 80,
             fontSize: 20,
             draggable: true,
-            width: 200,
+            width: 1000,
           });
+          textarea.style.fontSize = `${item.fontSize * item.shift.scale}px`;
           textarea.style.position = 'absolute';
           textarea.value = item.text;
           setVisible(false);
           textarea.style.transformOrigin = 'left top';
-          textarea.style.top = `${item.y + item.shift.y}px`;
-          textarea.style.left = `${item.x + item.shift.x}px`;
-          textarea.style.fontSize = `${item.fontSize}px`;
+          textarea.style.top = `${item.y * item.shift.scale + item.shift.y}px`;
+          textarea.style.left = `${item.x * item.shift.scale + item.shift.x}px`;
           textarea.style.width = '1000px';
           textarea.style.height = '1000px';
           textarea.style.border = 'none';

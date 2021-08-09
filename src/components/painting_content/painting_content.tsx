@@ -35,7 +35,7 @@ const PaintingContent: React.FC<{}> = () => {
     const pos = e.target.getStage().getPointerPosition();
     setLastLine({
       fill: '#df4b26',
-      composite: state.drawing === 1 ? 'source-over' : 'destination-out',
+      composite: 'source-over',
       points: [pos.x - stagePos.x, pos.y - stagePos.y],
       type: 'CURVELINE',
     });
@@ -56,7 +56,8 @@ const PaintingContent: React.FC<{}> = () => {
     if (isPainting && state.drawing === 1) {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
-      const newPoints = lastLine.points.concat([pos.x - stagePos.x, pos.y - stagePos.y]);
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      const newPoints = lastLine.points.concat([(pos.x - stagePos.x) / stageScale, (pos.y - stagePos.y) / stageScale]);
       // @ts-ignore
       setLastLine({
         ...lastLine,
@@ -176,11 +177,14 @@ const PaintingContent: React.FC<{}> = () => {
                 index={index}
                 currentItem={state.currentItem}
                 currentIndex={state.currentIndex}
-                click={() => {
+                click={(e: any) => {
+                  console.log(stagePos);
+                  console.log(stageScale);
+                  console.log((e.target.getStage().getPointerPosition().x - stagePos.x) / stageScale);
                   if (item.type === 'TEXT') {
                     const afterE = {
                       ...item,
-                      shift: stagePos,
+                      shift: { x: stagePos.x, y: stagePos.y, scale: stageScale },
                     };
                     doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
                   }
