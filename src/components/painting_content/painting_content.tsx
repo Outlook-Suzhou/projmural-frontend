@@ -19,12 +19,14 @@ import {
 import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
+import useCopyer from '../../hook/copyer';
 import FreeDrawing from '../tool_bar/tools/free_drawing';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
+  const [, setCopySelectItem] = useCopyer();
   const [lastLine, setLastLine] = useState({
     fill: '#df4b26',
     composite: 'source-over',
@@ -132,7 +134,7 @@ const PaintingContent: React.FC<{}> = () => {
       );
     }
   }
-  console.log(state);
+  // console.log(state);
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
@@ -193,6 +195,7 @@ const PaintingContent: React.FC<{}> = () => {
                         }
                         dispatch({ type: 'setCurrentItem', payload: item });
                         dispatch({ type: 'setCurrentIndex', payload: index });
+                        setCopySelectItem(item);
                       }}
                       del={() => {
                         if (state.drawing === 2 && isPainting) {
