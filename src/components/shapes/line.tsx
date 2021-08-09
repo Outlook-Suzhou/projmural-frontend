@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+import { useStateStore } from '../../store/store';
 
 interface vector {
   x: number;
@@ -33,6 +34,7 @@ const Line = (props) => {
   } = props;
 
   const [circleOpacity, setCircleOpacity] = useState(1);
+  const state = useStateStore();
   useEffect(() => {
     if (circleOpacity === 0) setCircleOpacity(1);
     else setCircleOpacity(0);
@@ -53,7 +55,7 @@ const Line = (props) => {
         {...shapeConfig}
         key={index}
         fill="black"
-        draggable
+        draggable={state.drawing === 0}
         onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {

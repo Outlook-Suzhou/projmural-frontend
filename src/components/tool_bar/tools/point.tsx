@@ -5,6 +5,7 @@ import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Icon } from '@fluentui/react/lib/Icon';
 import { mergeStyles, mergeStyleSets } from '@fluentui/react/lib/Styling';
+import { useDispatchStore, useStateStore } from '../../../store/store';
 
 const iconClass = mergeStyles({
   fontSize: 50,
@@ -14,18 +15,25 @@ const iconClass = mergeStyles({
 });
 const classNames = mergeStyleSets({
   deepSkyBlue: [{ color: 'deepskyblue' }, iconClass],
+  common: [{ color: 'unset' }, iconClass],
 });
+const Point: React.FC<{}> = () => {
+  const state = useStateStore();
+  const dispatch = useDispatchStore();
+  return (
+    // eslint-disable-next-line object-curly-newline
+    <div className="tool_icon">
+      <Icon
+        iconName="TouchPointer"
+        style={{ fontSize: '40px', margin: 'auto' }}
+        color="deepskyblue"
+        className={state.drawing === 0 ? classNames.deepSkyBlue : classNames.common}
+        onClick={() => {
+          dispatch({ type: 'setDrawing', payload: 0 });
+        }}
+      />
+    </div>
 
-const Point: React.FC<{}> = () => (
-  // eslint-disable-next-line object-curly-newline
-  <div className="tool_icon">
-    <Icon
-      iconName="TouchPointer"
-      style={{ fontSize: '40px', margin: 'auto' }}
-      color="deepskyblue"
-      className={classNames.deepSkyBlue}
-    />
-  </div>
-
-);
+  );
+};
 export default Point;

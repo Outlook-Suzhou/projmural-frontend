@@ -2,6 +2,7 @@ import { Line, Transformer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+import { useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Diamond,
@@ -15,6 +16,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
+  const state = useStateStore();
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -29,7 +31,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
-        {...item}
+        draggable={item.draggable && state.drawing === 0}
         points={[0, item.radius.y, item.radius.x, 0, 0, -item.radius.y, -item.radius.x, 0]}
         closed
         {...shapeConfig}

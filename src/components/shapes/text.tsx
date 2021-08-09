@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import Konva from 'konva';
 import doc from '../../client/client';
+import { useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Text,
@@ -20,6 +21,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
   const [visible, setVisible] = useState(true);
   const shapeRef = React.useRef<any>();
   const trRef = React.useRef<any>();
+  const state = useStateStore();
   React.useEffect(() => {
     if (isSelected) {
       // we need to attach transformer manually
@@ -35,7 +37,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
         text={item.text}
         ref={shapeRef}
         key={index}
-        draggable
+        draggable={state.drawing === 0}
         onClick={click}
         onTap={click}
         visible={visible}
