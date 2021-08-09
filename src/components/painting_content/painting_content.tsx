@@ -22,7 +22,9 @@ import DeleteAll from '../tool_bar/tools/delete_all';
 import BaseShape from '../shapes/baseshape';
 import SelectColor from '../tool_bar/tools/select_color';
 import Lock from '../tool_bar/tools/lock';
-import { useStateStore, useDispatchStore } from '../../store/store';
+import {
+  useStateStore, useDispatchStore, StateContext, DispatchContext,
+} from '../../store/store';
 import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex_up';
 
@@ -30,7 +32,7 @@ const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
-
+  // console.log(dispatch);
   // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
     // deselect when clicked on empty area
@@ -62,19 +64,21 @@ const PaintingContent: React.FC<{}> = () => {
         </Col>
         <Col id="stage" span={21} style={{ padding: '40px' }}>
           <Stage width={window.innerWidth} height={window.innerHeight} onMouseDown={checkDeselect} onTouchStart={checkDeselect}>
-            <Layer>
-              {
-                list.map((item: any, index: number) => (
-                  <BaseShape
-                    item={item}
-                    index={index}
-                    currentItem={state.currentItem}
-                    currentIndex={state.currentIndex}
-                    click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
-                  />
-                ))
-              }
-            </Layer>
+            <StateContext.Provider value={state}>
+              <DispatchContext.Provider value={dispatch}>
+                <Layer>
+                  {
+                    list.map((item: any, index: number) => (
+                      <BaseShape
+                        item={item}
+                        index={index}
+                        click={() => { dispatch({ type: 'setCurrentItem', payload: item }); dispatch({ type: 'setCurrentIndex', payload: index }); console.log(state); }}
+                      />
+                    ))
+                  }
+                </Layer>
+              </DispatchContext.Provider>
+            </StateContext.Provider>
           </Stage>
         </Col>
       </Row>

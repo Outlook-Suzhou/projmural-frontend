@@ -5,6 +5,7 @@ import {
   Route,
 } from 'react-router-dom';
 import Painting from './pages/painting/painting';
+import { StoreProvider } from './store/store';
 
 const App: React.FC<{}> = () => (
   <Router>
@@ -16,7 +17,9 @@ const App: React.FC<{}> = () => (
         dashboard
       </Route>
       <Route path="/painting">
-        <Painting />
+        <StoreProvider>
+          <Painting />
+        </StoreProvider>
       </Route>
       <Route path="/">
         login
