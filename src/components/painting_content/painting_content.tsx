@@ -53,7 +53,7 @@ const PaintingContent: React.FC<{}> = () => {
     }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
-    if (isPainting && state.drawing !== 0) {
+    if (isPainting && state.drawing === 1) {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
       const newPoints = lastLine.points.concat([pos.x - stagePos.x, pos.y - stagePos.y]);
@@ -152,8 +152,19 @@ const PaintingContent: React.FC<{}> = () => {
           }}
           onMouseMove={mouseMove}
           onMouseUp={() => {
-            setIsPainting(false);
-            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+            if (isPainting) {
+              setIsPainting(false);
+              if (state.drawing === 1) {
+                console.log('add newLine');
+                doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+                setLastLine({
+                  fill: '#df4b26',
+                  composite: 'source-over',
+                  points: [0, 0],
+                  type: 'CURVELINE',
+                });
+              }
+            }
           }}
         >
           <Layer>
@@ -176,6 +187,11 @@ const PaintingContent: React.FC<{}> = () => {
                   dispatch({ type: 'setCurrentItem', payload: item });
                   dispatch({ type: 'setCurrentIndex', payload: index });
                 }}
+                del={() => {
+                  if (state.drawing === 2 && isPainting) {
+                    doc.submitOp([{ p: ['shapes', index], ld: item }]);
+                  }
+                }}
               />
             ))
           }
@@ -183,6 +199,7 @@ const PaintingContent: React.FC<{}> = () => {
             // @ts-ignore
               globalCompositeOperation={lastLine.composite}
               stroke={lastLine.fill}
+              strokeWidth={5}
               points={lastLine.points}
             />
           </Layer>
