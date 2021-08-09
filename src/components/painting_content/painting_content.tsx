@@ -37,7 +37,7 @@ const PaintingContent: React.FC<{}> = () => {
     const pos = e.target.getStage().getPointerPosition();
     setLastLine({
       fill: '#df4b26',
-      composite: state.drawing === 1 ? 'source-over' : 'destination-out',
+      composite: 'source-over',
       points: [pos.x - stagePos.x, pos.y - stagePos.y],
       type: 'CURVELINE',
     });
@@ -55,10 +55,11 @@ const PaintingContent: React.FC<{}> = () => {
     }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
-    if (isPainting && state.drawing !== 0) {
+    if (isPainting && state.drawing === 1) {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
-      const newPoints = lastLine.points.concat([pos.x - stagePos.x, pos.y - stagePos.y]);
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      const newPoints = lastLine.points.concat([(pos.x - stagePos.x) / stageScale, (pos.y - stagePos.y) / stageScale]);
       // @ts-ignore
       setLastLine({
         ...lastLine,
@@ -149,8 +150,19 @@ const PaintingContent: React.FC<{}> = () => {
           }}
           onMouseMove={mouseMove}
           onMouseUp={() => {
-            setIsPainting(false);
-            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+            if (isPainting) {
+              setIsPainting(false);
+              if (state.drawing === 1) {
+                console.log('add newLine');
+                doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+                setLastLine({
+                  fill: '#df4b26',
+                  composite: 'source-over',
+                  points: [0, 0],
+                  type: 'CURVELINE',
+                });
+              }
+            }
           }}
         >
           <StateContext.Provider value={state}>
@@ -164,16 +176,24 @@ const PaintingContent: React.FC<{}> = () => {
                       index={index}
                       currentItem={state.currentItem}
                       currentIndex={state.currentIndex}
-                      click={() => {
+                      click={(e: any) => {
+                        console.log(stagePos);
+                        console.log(stageScale);
+                        console.log((e.target.getStage().getPointerPosition().x - stagePos.x) / stageScale);
                         if (item.type === 'TEXT') {
                           const afterE = {
                             ...item,
-                            shift: stagePos,
+                            shift: { x: stagePos.x, y: stagePos.y, scale: stageScale },
                           };
                           doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
                         }
                         dispatch({ type: 'setCurrentItem', payload: item });
                         dispatch({ type: 'setCurrentIndex', payload: index });
+                      }}
+                      del={() => {
+                        if (state.drawing === 2 && isPainting) {
+                          doc.submitOp([{ p: ['shapes', index], ld: item }]);
+                        }
                       }}
                     />
                   ))

@@ -19,11 +19,12 @@ interface Shape {
   currentIndex?: any;
   setCurrentItem?: Function;
   setCurrentIndex?: Function;
+  del: Function;
 }
 
 const BaseShape: React.FC<Shape> = (props: Shape) => {
   const {
-    item, index, click, currentIndex,
+    item, index, click, currentIndex, del,
   } = props;
   let ShapeComponent: any;
   switch (item.type) {
@@ -55,7 +56,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       ShapeComponent = <Text item={item} index={index} click={click} isSelected={index === currentIndex} />;
       break;
     case 'CURVELINE':
-      ShapeComponent = <CurveLine item={item} index={index} onSelect={click} />;
+      ShapeComponent = <CurveLine item={item} index={index} onSelect={click} onMouseOver={del} />;
       break;
     default:
       return ShapeComponent;
