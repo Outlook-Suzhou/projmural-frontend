@@ -83,7 +83,14 @@ class AliyunOSSUpload extends React.Component {
       const myUrl = `https://proj-mural.oss-cn-shanghai.aliyuncs.com/${fileList[fileList.length - 1].originFileObj.url}`;
       setTimeout(() => {
         addShape({
-          width: 50, height: 50, x: 300, y: 300, type: 'IMAGE', url: myUrl, rotation: 0, draggable: true,
+          width: fileList[fileList.length - 1].originFileObj.width,
+          height: fileList[fileList.length - 1].originFileObj.height,
+          x: 300,
+          y: 300,
+          type: 'IMAGE',
+          url: myUrl,
+          rotation: 0,
+          draggable: true,
         });
       }, 2000);
     }

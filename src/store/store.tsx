@@ -5,6 +5,9 @@ import React, {
 interface globalState {
   currentItem: any,
   currentIndex: number
+  drawing: number // 0为非自由画板模式，1为画笔，2为橡皮
+  stagePos: any
+  stageScale: number
 }
 interface actionType {
   type: string,
@@ -14,6 +17,9 @@ interface actionType {
 const initialState: globalState = {
   currentItem: {},
   currentIndex: -1,
+  drawing: 0,
+  stagePos: { x: 0, y: 0 },
+  stageScale: 1,
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -22,6 +28,12 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, currentItem: action.payload };
     case 'setCurrentIndex':
       return { ...state, currentIndex: action.payload };
+    case 'setDrawing':
+      return { ...state, drawing: action.payload };
+    case 'setStagePos':
+      return { ...state, stagePos: action.payload };
+    case 'setStageScale':
+      return { ...state, stageScale: action.payload };
     case 'reset':
       return { ...initialState };
     default:
@@ -32,6 +44,9 @@ function reducer(state: globalState = initialState, action: actionType): globalS
 const StateContext = createContext<globalState>({
   currentItem: {},
   currentIndex: -1,
+  drawing: 0,
+  stagePos: { x: 0, y: 0 },
+  stageScale: 1,
 });
 const DispatchContext = createContext<Function>(() => {});
 
@@ -54,4 +69,6 @@ function StoreProvider({ children }: { children: any}) {
   );
 }
 
-export { useStateStore, useDispatchStore, StoreProvider };
+export {
+  useStateStore, useDispatchStore, StoreProvider, StateContext, DispatchContext,
+};

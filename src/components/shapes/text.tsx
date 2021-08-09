@@ -10,7 +10,7 @@ interface Props {
   item: BaseShapes.Text,
   index: number,
   click: any,
-  isSelected: boolean
+  isSelected: boolean,
 }
 
 const TEXT: React.FC<Props> = (props: Props) => {
@@ -50,17 +50,15 @@ const TEXT: React.FC<Props> = (props: Props) => {
             y: 80,
             fontSize: 20,
             draggable: true,
-            width: 200,
+            width: 1000,
           });
+          textarea.style.fontSize = `${item.fontSize * item.shift.scale}px`;
           textarea.style.position = 'absolute';
           textarea.value = item.text;
           setVisible(false);
-          // @ts-ignore
-          const stage = document.getElementById('stage').getBoundingClientRect();
           textarea.style.transformOrigin = 'left top';
-          textarea.style.top = `${item.y + stage.top + 36}px`;
-          textarea.style.left = `${item.x + stage.left + 40}px`;
-          textarea.style.fontSize = `${item.fontSize}px`;
+          textarea.style.top = `${item.y * item.shift.scale + item.shift.y}px`;
+          textarea.style.left = `${item.x * item.shift.scale + item.shift.x}px`;
           textarea.style.width = '1000px';
           textarea.style.height = '1000px';
           textarea.style.border = 'none';
