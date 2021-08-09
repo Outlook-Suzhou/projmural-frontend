@@ -35,7 +35,7 @@ const Line = (props) => {
 
   const [circleOpacity, setCircleOpacity] = useState(1);
   useEffect(() => {
-    if (circleOpacity === 0) setCircleOpacity(1);
+    if (isSelected === true) setCircleOpacity(1);
     else setCircleOpacity(0);
   }, [isSelected]);
 

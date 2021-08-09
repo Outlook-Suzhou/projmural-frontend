@@ -3,6 +3,7 @@ import { Rect, Transformer, Circle } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 import { useStateStore } from '../../store/store';
+import Vector from './vector';
 
 interface Point {
   x: number,
@@ -11,22 +12,14 @@ interface Point {
 
 function getVertex(center: Point, width: number, height: number, degree: number): Array<Point> {
   const realDegree = (degree * 2 * Math.PI) / 360;
-  const rotate = (vector: Point, deg: number): Point => ({
-    x: vector.x * Math.cos(deg) - vector.y * Math.sin(deg),
-    y: vector.x * Math.sin(deg) + vector.y * Math.cos(deg),
-  });
-  const add = (a: Point, b: Point): Point => ({
-    x: a.x + b.x,
-    y: a.y + b.y,
-  });
   let ret = [
     { x: width / 2, y: 0 },
     { x: width / 2, y: height },
     { x: 0, y: height / 2 },
     { x: width, y: height / 2 },
   ];
-  ret = ret.map((item: Point) => (rotate(item, realDegree)));
-  ret = ret.map((item: Point) => (add(item, center)));
+  ret = ret.map((item: Point) => (Vector.rotate(item, realDegree)));
+  ret = ret.map((item: Point) => (Vector.add(item, center)));
   return ret;
 }
 interface Props {
