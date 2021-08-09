@@ -59,4 +59,6 @@ function StoreProvider({ children }: { children: any}) {
   );
 }
 
-export { useStateStore, useDispatchStore, StoreProvider };
+export {
+  useStateStore, useDispatchStore, StoreProvider, StateContext, DispatchContext,
+};

@@ -13,7 +13,9 @@ import DeleteAll from '../tool_bar/tools/delete_all';
 import BaseShape from '../shapes/baseshape';
 import SelectColor from '../tool_bar/tools/select_color';
 import Lock from '../tool_bar/tools/lock';
-import { useStateStore, useDispatchStore } from '../../store/store';
+import {
+  useStateStore, useDispatchStore, StateContext, DispatchContext,
+} from '../../store/store';
 import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
@@ -130,7 +132,7 @@ const PaintingContent: React.FC<{}> = () => {
       );
     }
   }
-
+  console.log(state);
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
@@ -156,36 +158,40 @@ const PaintingContent: React.FC<{}> = () => {
             doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
           }}
         >
-          <Layer>
-            {gridComponents}
-            {
-            list.map((item: any, index: number) => (
-              <BaseShape
-                item={item}
-                index={index}
-                currentItem={state.currentItem}
-                currentIndex={state.currentIndex}
-                click={() => {
-                  if (item.type === 'TEXT') {
-                    const afterE = {
-                      ...item,
-                      shift: stagePos,
-                    };
-                    doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
-                  }
-                  dispatch({ type: 'setCurrentItem', payload: item });
-                  dispatch({ type: 'setCurrentIndex', payload: index });
-                }}
-              />
-            ))
-          }
-            <Line
-            // @ts-ignore
-              globalCompositeOperation={lastLine.composite}
-              stroke={lastLine.fill}
-              points={lastLine.points}
-            />
-          </Layer>
+          <StateContext.Provider value={state}>
+            <DispatchContext.Provider value={dispatch}>
+              <Layer>
+                {gridComponents}
+                {
+                  list.map((item: any, index: number) => (
+                    <BaseShape
+                      item={item}
+                      index={index}
+                      currentItem={state.currentItem}
+                      currentIndex={state.currentIndex}
+                      click={() => {
+                        if (item.type === 'TEXT') {
+                          const afterE = {
+                            ...item,
+                            shift: stagePos,
+                          };
+                          doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                        }
+                        dispatch({ type: 'setCurrentItem', payload: item });
+                        dispatch({ type: 'setCurrentIndex', payload: index });
+                      }}
+                    />
+                  ))
+                }
+                <Line
+                // @ts-ignore
+                  globalCompositeOperation={lastLine.composite}
+                  stroke={lastLine.fill}
+                  points={lastLine.points}
+                />
+              </Layer>
+            </DispatchContext.Provider>
+          </StateContext.Provider>
         </Stage>
       </div>
     </>
