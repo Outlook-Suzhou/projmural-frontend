@@ -155,7 +155,7 @@ const PaintingContent: React.FC<{}> = () => {
           onMouseMove={mouseMove}
           onMouseUp={() => {
             setIsPainting(false);
-            // doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
+            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
           }}
         >
           <StateContext.Provider value={state}>
