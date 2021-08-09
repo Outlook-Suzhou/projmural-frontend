@@ -32,14 +32,12 @@ const Line = (props) => {
     // eslint-disable-next-line react/prop-types
     item, index, click, isSelected,
   } = props;
-
+  const globalDispatch = useDispatchStore();
   const [circleOpacity, setCircleOpacity] = useState(1);
   useEffect(() => {
     if (isSelected === true) setCircleOpacity(1);
     else setCircleOpacity(0);
   }, [isSelected]);
-
-  const globalDispatch = useDispatchStore();
 
   // eslint-disable-next-line react/prop-types
   const pts = getRect(item.start, item.end, item.weight);
@@ -83,7 +81,6 @@ const Line = (props) => {
             },
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
-          globalDispatch({ type: 'setCurrentItem', payload: afterE });
         }}
         fill="white"
         stroke="1"
