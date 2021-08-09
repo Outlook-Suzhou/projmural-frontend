@@ -2,6 +2,7 @@ import { Circle as KonvaCircle, Transformer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+import { useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Circle,
@@ -15,6 +16,7 @@ const Circle: React.FC<Props> = (props: Props) => {
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
+  const state = useStateStore();
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -32,6 +34,7 @@ const Circle: React.FC<Props> = (props: Props) => {
         {...item}
         {...shapeConfig}
         key={index}
+        draggable={item.draggable && (state.drawing === 0)}
         onDragMove={(e) => {
           const afterE: BaseShapes.Circle = {
             radius: e.target.attrs.radius,

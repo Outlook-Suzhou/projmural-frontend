@@ -21,6 +21,7 @@ import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
 import useCopyer from '../../hook/copyer';
 import FreeDrawing from '../tool_bar/tools/free_drawing';
+import Point from '../tool_bar/tools/point';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -138,7 +139,7 @@ const PaintingContent: React.FC<{}> = () => {
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
-      <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
+      <ToolBar width={80} height={400} list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
           x={state.stagePos.x}
@@ -159,7 +160,6 @@ const PaintingContent: React.FC<{}> = () => {
             if (isPainting) {
               setIsPainting(false);
               if (state.drawing === 1) {
-                console.log(lastLine);
                 doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
                 setLastLine({
                   fill: '#df4b26',
@@ -182,20 +182,19 @@ const PaintingContent: React.FC<{}> = () => {
                       index={index}
                       currentItem={state.currentItem}
                       currentIndex={state.currentIndex}
-                      click={(e: any) => {
-                        console.log(state.stagePos);
-                        console.log(state.stageScale);
-                        console.log((e.target.getStage().getPointerPosition().x - state.stagePos.x) / state.stageScale);
-                        if (item.type === 'TEXT') {
-                          const afterE = {
-                            ...item,
-                            shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
-                          };
-                          doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                      click={() => {
+                        if (state.drawing === 0) {
+                          if (item.type === 'TEXT') {
+                            const afterE = {
+                              ...item,
+                              shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
+                            };
+                            doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                          }
+                          dispatch({ type: 'setCurrentItem', payload: item });
+                          dispatch({ type: 'setCurrentIndex', payload: index });
+                          setCopySelectItem(item);
                         }
-                        dispatch({ type: 'setCurrentItem', payload: item });
-                        dispatch({ type: 'setCurrentIndex', payload: index });
-                        setCopySelectItem(item);
                       }}
                       del={() => {
                         if (state.drawing === 2 && isPainting) {
