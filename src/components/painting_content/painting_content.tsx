@@ -18,11 +18,14 @@ import { useStateStore, useDispatchStore } from '../../store/store';
 import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
+import useCopyer from '../../hook/copyer';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
+
+  useEffect(() => { useCopyer(); }, []);
 
   // const [selectedId, selectShape] = useState(-1);
   const checkDeselect = (e: { target: { getStage: () => any; }; }) => {
