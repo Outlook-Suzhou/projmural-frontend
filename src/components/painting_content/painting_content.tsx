@@ -88,14 +88,9 @@ const PaintingContent: React.FC<{}> = () => {
     });
   }, []);
 
-  const WIDTH = 100;// size for background rect
-  const HEIGHT = 100;
+  const WIDTH = 300;// size for background rect
+  const HEIGHT = 300;
   const [stageScale, setstageScale] = React.useState(1);
-  const startX = Math.floor((-stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
-  const endX = Math.floor((-stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
-
-  const startY = Math.floor((-stagePos.y - window.innerHeight) / HEIGHT) * HEIGHT;
-  const endY = Math.floor((-stagePos.y + window.innerHeight * 2) / HEIGHT) * HEIGHT;
 
   const gridComponents = [];
 
@@ -117,8 +112,8 @@ const PaintingContent: React.FC<{}> = () => {
     });
   };
 
-  for (let x = startX; x < endX; x += WIDTH) {
-    for (let y = startY; y < endY; y += HEIGHT) {
+  for (let x = -2000; x < 2000; x += WIDTH) {
+    for (let y = -2000; y < 2000; y += HEIGHT) {
       gridComponents.push(
         <Rect
           x={x}
