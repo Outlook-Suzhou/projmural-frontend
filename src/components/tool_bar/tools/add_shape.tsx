@@ -133,7 +133,7 @@ const AddShape: React.FC<{}> = () => {
     <div className="tool_icon" style={{ textAlign: 'center' }}>
       <Popover trigger="click" placement="right" content={shapes}>
         <div ref={nodeRef} />
-        <Icon iconName="stop" style={{ fontSize: '50px' }} />
+        <Icon iconName="Shapes" style={{ fontSize: '40px' }} />
       </Popover>
     </div>
   );

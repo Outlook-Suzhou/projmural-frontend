@@ -16,7 +16,7 @@ const Content: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
   return (
     <>
-      <Row style={{ width: '120px', height: 'auto' }} gutter={16}>
+      <Row style={{ width: 'auto', height: 'auto' }} gutter={16}>
         <Col
           span={8}
           role="button"
@@ -60,7 +60,7 @@ const ZIndex = () => (
     <Popover trigger="click" placement="top" content={Content}>
       <Tooltip title="置于底层/顶层">
         <Icon
-          iconName="SwitcherStartEnd"
+          iconName="ScrollUpDown"
           style={{ fontSize: '40px', margin: 'auto' }}
         />
       </Tooltip>

@@ -9,6 +9,7 @@ import Circle from './circle';
 import Line from './line';
 import Arrow from './arrow';
 import Img from './image';
+import CurveLine from './curveline';
 
 interface Shape {
   item: any;
@@ -52,6 +53,9 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       break;
     case 'TEXT':
       ShapeComponent = <Text item={item} index={index} click={click} isSelected={index === currentIndex} />;
+      break;
+    case 'CURVELINE':
+      ShapeComponent = <CurveLine item={item} index={index} onSelect={click} />;
       break;
     default:
       return ShapeComponent;
