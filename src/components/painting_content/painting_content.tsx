@@ -127,7 +127,6 @@ const PaintingContent: React.FC<{}> = () => {
       );
     }
   }
-  console.log(state);
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}

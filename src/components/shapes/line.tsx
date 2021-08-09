@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
-import { useDispatchStore } from '../../store/store';
+import checkAdsorptionPoint from './adsorption';
 
 interface vector {
   x: number;
@@ -32,21 +32,32 @@ const Line = (props) => {
     // eslint-disable-next-line react/prop-types
     item, index, click, isSelected,
   } = props;
-  const globalDispatch = useDispatchStore();
   const [circleOpacity, setCircleOpacity] = useState(1);
   useEffect(() => {
     if (isSelected === true) setCircleOpacity(1);
     else setCircleOpacity(0);
   }, [isSelected]);
 
-  // eslint-disable-next-line react/prop-types
-  const pts = getRect(item.start, item.end, item.weight);
+  const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
+  const miniDistance = 20;
   return (
     <>
+      {
+        adsorptionPoints.map((point) => (
+          <Circle
+            x={point.x}
+            y={point.y}
+            radius={5}
+            fill="red"
+            stroke="1"
+          />
+        ))
+      }
       <KonvaLine
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...item}
-        points={pts}
+        // eslint-disable-next-line react/prop-types
+        points={getRect(item.start, item.end, item.weight)}
         closed
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
@@ -60,7 +71,6 @@ const Line = (props) => {
             y: e.target.attrs.y,
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
-          globalDispatch({ type: 'setCurrentItem', payload: afterE });
         }}
       />
       <Circle
@@ -74,10 +84,23 @@ const Line = (props) => {
         draggable
         onClick={click}
         onDragMove={(e) => {
+          const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
+          let newPoint = mouse;
+          let flag = false;
+          doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+            if (flag || ind === index) return;
+            const res = checkAdsorptionPoint(mouse, shape, miniDistance);
+            if (res.flag === true) {
+              newPoint = res.adsorptionVertex;
+              setAdsorptionPoints(res.adsorptionPoints);
+              flag = true;
+            }
+          });
+          if (!flag) setAdsorptionPoints([]);
           const afterE = Object.assign(doc.data.shapes[index], {
             start: {
-              x: e.target.attrs.x - doc.data.shapes[index].x,
-              y: e.target.attrs.y - doc.data.shapes[index].y,
+              x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
+              y: newPoint.y - doc.data.shapes[index].y + Math.random() * 0.000001,
             },
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
@@ -96,14 +119,26 @@ const Line = (props) => {
         draggable
         onClick={click}
         onDragMove={(e) => {
+          const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
+          let newPoint = mouse;
+          let flag = false;
+          doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+            if (flag || ind === index) return;
+            const res = checkAdsorptionPoint(mouse, shape, miniDistance);
+            if (res.flag === true) {
+              newPoint = res.adsorptionVertex;
+              setAdsorptionPoints(res.adsorptionPoints);
+              flag = true;
+            }
+          });
+          if (!flag) setAdsorptionPoints([]);
           const afterE = Object.assign(doc.data.shapes[index], {
             end: {
-              x: e.target.attrs.x - doc.data.shapes[index].x,
-              y: e.target.attrs.y - doc.data.shapes[index].y,
+              x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
+              y: newPoint.y - doc.data.shapes[index].y + Math.random() * 0.000001,
             },
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
-          globalDispatch({ type: 'setCurrentItem', payload: afterE });
         }}
         fill="white"
         stroke="1"

@@ -1,27 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { Rect, Transformer, Circle } from 'react-konva';
+import { Rect, Transformer } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 import { useStateStore } from '../../store/store';
-import Vector from './vector';
 
-interface Point {
-  x: number,
-  y: number,
-}
-
-function getVertex(center: Point, width: number, height: number, degree: number): Array<Point> {
-  const realDegree = (degree * 2 * Math.PI) / 360;
-  let ret = [
-    { x: width / 2, y: 0 },
-    { x: width / 2, y: height },
-    { x: 0, y: height / 2 },
-    { x: width, y: height / 2 },
-  ];
-  ret = ret.map((item: Point) => (Vector.rotate(item, realDegree)));
-  ret = ret.map((item: Point) => (Vector.add(item, center)));
-  return ret;
-}
 interface Props {
   item: BaseShapes.Rectangle,
   isSelected: boolean,
@@ -43,11 +25,6 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
       trRef.current.getLayer().batchDraw();
     }
   }, [isSelected]);
-
-  const vectexs = getVertex(
-    { x: item.x, y: item.y },
-    item.width, item.height, item.rotation,
-  );
 
   const [globalState] = [useStateStore()];
   useEffect(() => {
@@ -114,16 +91,6 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           }}
         />
       )}
-      {
-        vectexs.map((obj: Point) => (
-          <Circle
-            x={obj.x}
-            y={obj.y}
-            radius={4}
-            fill="red"
-          />
-        ))
-      }
     </>
   );
 };
