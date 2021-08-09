@@ -31,8 +31,8 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
       style={{
         width,
         height,
-        left: isFloatBar ? state.currentItem.x + 50 : 50,
-        top: isFloatBar ? state.currentItem.y - 200 : 200,
+        left: isFloatBar ? state.currentItem.x * state.stageScale + state.stagePos.x - 50 : 50,
+        top: isFloatBar ? state.currentItem.y * state.stageScale + state.stagePos.y - 200 : 200,
       }}
     >
       {
