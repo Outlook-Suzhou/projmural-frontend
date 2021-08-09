@@ -32,13 +32,13 @@ const PaintingContent: React.FC<{}> = () => {
     type: 'CURVELINE',
   });
   const [isPainting, setIsPainting] = useState(false);
-  const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
+  // const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   function startDraw(e: { target: any; }) {
     const pos = e.target.getStage().getPointerPosition();
     setLastLine({
       fill: '#df4b26',
       composite: 'source-over',
-      points: [pos.x - stagePos.x, pos.y - stagePos.y],
+      points: [pos.x - state.stagePos.x, pos.y - state.stagePos.y],
       type: 'CURVELINE',
     });
     setIsPainting(true);
@@ -59,7 +59,7 @@ const PaintingContent: React.FC<{}> = () => {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      const newPoints = lastLine.points.concat([(pos.x - stagePos.x) / stageScale, (pos.y - stagePos.y) / stageScale]);
+      const newPoints = lastLine.points.concat([(pos.x - state.stagePos.x) / state.stageScale, (pos.y - state.stagePos.y) / state.stageScale]);
       // @ts-ignore
       setLastLine({
         ...lastLine,
@@ -91,7 +91,7 @@ const PaintingContent: React.FC<{}> = () => {
 
   const WIDTH = 300;// size for background rect
   const HEIGHT = 300;
-  const [stageScale, setstageScale] = React.useState(1);
+  // const [stageScale, setstageScale] = React.useState(1);
 
   const gridComponents = [];
 
@@ -106,10 +106,13 @@ const PaintingContent: React.FC<{}> = () => {
     };
 
     const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-    setstageScale(newScale);
-    setStagePos({
-      x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-      y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    dispatch({ type: 'setStageScale', payload: newScale });
+    dispatch({
+      type: 'setStagePos',
+      payload: {
+        x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+        y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+      },
     });
   };
 
@@ -135,18 +138,18 @@ const PaintingContent: React.FC<{}> = () => {
       <ToolBar width={80} height={400} list={[AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
-          x={stagePos.x}
-          y={stagePos.y}
+          x={state.stagePos.x}
+          y={state.stagePos.y}
           width={window.innerWidth}
           height={window.innerHeight}
           onWheel={handleWheel}
-          scaleX={stageScale}
-          scaleY={stageScale}
+          scaleX={state.stageScale}
+          scaleY={state.stageScale}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
           draggable={!isPainting}
           onDragEnd={(e) => {
-            setStagePos(e.currentTarget.position());
+            dispatch({ type: 'setStagePos', payload: e.currentTarget.position() });
           }}
           onMouseMove={mouseMove}
           onMouseUp={() => {
@@ -177,13 +180,13 @@ const PaintingContent: React.FC<{}> = () => {
                       currentItem={state.currentItem}
                       currentIndex={state.currentIndex}
                       click={(e: any) => {
-                        console.log(stagePos);
-                        console.log(stageScale);
-                        console.log((e.target.getStage().getPointerPosition().x - stagePos.x) / stageScale);
+                        console.log(state.stagePos);
+                        console.log(state.stageScale);
+                        console.log((e.target.getStage().getPointerPosition().x - state.stagePos.x) / state.stageScale);
                         if (item.type === 'TEXT') {
                           const afterE = {
                             ...item,
-                            shift: { x: stagePos.x, y: stagePos.y, scale: stageScale },
+                            shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
                           };
                           doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
                         }
