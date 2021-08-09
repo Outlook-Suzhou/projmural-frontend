@@ -26,8 +26,7 @@ const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
-  const [copyItem, setCopySelectItem] = useCopyer();
-  console.log(copyItem);
+  const [, setCopySelectItem] = useCopyer();
   const [lastLine, setLastLine] = useState({
     fill: '#df4b26',
     composite: 'source-over',
@@ -135,7 +134,7 @@ const PaintingContent: React.FC<{}> = () => {
       );
     }
   }
-  console.log(state);
+  // console.log(state);
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}

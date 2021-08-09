@@ -12,6 +12,7 @@ import addShape from '../utils/add_function';
 // };
 // throttle;
 function useCopyer(): [BaseShapes.Shape | null, Function] {
+  const [mouse, setMouse] = useState<BaseShapes.Position>({ x: 0, y: 0 });
   const [item, setItem] = useState<BaseShapes.Shape | null>(null);
   const [selectItem, setSelectItem] = useState<BaseShapes.Shape | null>(null);
   useEffect(() => {
@@ -25,7 +26,7 @@ function useCopyer(): [BaseShapes.Shape | null, Function] {
         if (item != null) {
           console.log('ctrl+v');
           const newItem = {
-            ...item, x: item.x - 50, y: item.y - 50,
+            ...item, x: mouse.x, y: mouse.y,
           };
           addShape(newItem);
         }
@@ -37,11 +38,19 @@ function useCopyer(): [BaseShapes.Shape | null, Function] {
         }
       }
     };
+    const mouseListener = (e: any) => {
+      setMouse({
+        x: e.x,
+        y: e.y,
+      });
+    };
     document.addEventListener('keydown', copyListener);
+    document.addEventListener('mousemove', mouseListener);
     return () => {
       document.removeEventListener('keydown', copyListener);
+      document.removeEventListener('mousemove', mouseListener);
     };
-  }, [item, selectItem]);
+  }, [item, selectItem, mouse]);
   return [item, setSelectItem];
 }
 
