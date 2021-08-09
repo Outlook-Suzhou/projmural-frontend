@@ -13,7 +13,9 @@ import DeleteAll from '../tool_bar/tools/delete_all';
 import BaseShape from '../shapes/baseshape';
 import SelectColor from '../tool_bar/tools/select_color';
 import Lock from '../tool_bar/tools/lock';
-import { useStateStore, useDispatchStore } from '../../store/store';
+import {
+  useStateStore, useDispatchStore, StateContext, DispatchContext,
+} from '../../store/store';
 import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
@@ -87,14 +89,9 @@ const PaintingContent: React.FC<{}> = () => {
     });
   }, []);
 
-  const WIDTH = 100;// size for background rect
-  const HEIGHT = 100;
+  const WIDTH = 300;// size for background rect
+  const HEIGHT = 300;
   const [stageScale, setstageScale] = React.useState(1);
-  const startX = Math.floor((-stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
-  const endX = Math.floor((-stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
-
-  const startY = Math.floor((-stagePos.y - window.innerHeight) / HEIGHT) * HEIGHT;
-  const endY = Math.floor((-stagePos.y + window.innerHeight * 2) / HEIGHT) * HEIGHT;
 
   const gridComponents = [];
 
@@ -116,8 +113,8 @@ const PaintingContent: React.FC<{}> = () => {
     });
   };
 
-  for (let x = startX; x < endX; x += WIDTH) {
-    for (let y = startY; y < endY; y += HEIGHT) {
+  for (let x = -2000; x < 2000; x += WIDTH) {
+    for (let y = -2000; y < 2000; y += HEIGHT) {
       gridComponents.push(
         <Rect
           x={x}
@@ -131,7 +128,7 @@ const PaintingContent: React.FC<{}> = () => {
       );
     }
   }
-
+  console.log(state);
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
@@ -168,45 +165,48 @@ const PaintingContent: React.FC<{}> = () => {
             }
           }}
         >
-          <Layer>
-            {gridComponents}
-            {
-            list.map((item: any, index: number) => (
-              <BaseShape
-                item={item}
-                index={index}
-                currentItem={state.currentItem}
-                currentIndex={state.currentIndex}
-                click={(e: any) => {
-                  console.log(stagePos);
-                  console.log(stageScale);
-                  console.log((e.target.getStage().getPointerPosition().x - stagePos.x) / stageScale);
-                  if (item.type === 'TEXT') {
-                    const afterE = {
-                      ...item,
-                      shift: { x: stagePos.x, y: stagePos.y, scale: stageScale },
-                    };
-                    doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
-                  }
-                  dispatch({ type: 'setCurrentItem', payload: item });
-                  dispatch({ type: 'setCurrentIndex', payload: index });
-                }}
-                del={() => {
-                  if (state.drawing === 2 && isPainting) {
-                    doc.submitOp([{ p: ['shapes', index], ld: item }]);
-                  }
-                }}
-              />
-            ))
-          }
-            <Line
-            // @ts-ignore
-              globalCompositeOperation={lastLine.composite}
-              stroke={lastLine.fill}
-              strokeWidth={5}
-              points={lastLine.points}
-            />
-          </Layer>
+          <StateContext.Provider value={state}>
+            <DispatchContext.Provider value={dispatch}>
+              <Layer>
+                {gridComponents}
+                {
+                  list.map((item: any, index: number) => (
+                    <BaseShape
+                      item={item}
+                      index={index}
+                      currentItem={state.currentItem}
+                      currentIndex={state.currentIndex}
+                      click={(e: any) => {
+                        console.log(stagePos);
+                        console.log(stageScale);
+                        console.log((e.target.getStage().getPointerPosition().x - stagePos.x) / stageScale);
+                        if (item.type === 'TEXT') {
+                          const afterE = {
+                            ...item,
+                            shift: { x: stagePos.x, y: stagePos.y, scale: stageScale },
+                          };
+                          doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                        }
+                        dispatch({ type: 'setCurrentItem', payload: item });
+                        dispatch({ type: 'setCurrentIndex', payload: index });
+                      }}
+                      del={() => {
+                        if (state.drawing === 2 && isPainting) {
+                          doc.submitOp([{ p: ['shapes', index], ld: item }]);
+                        }
+                      }}
+                    />
+                  ))
+                }
+                <Line
+                // @ts-ignore
+                  globalCompositeOperation={lastLine.composite}
+                  stroke={lastLine.fill}
+                  points={lastLine.points}
+                />
+              </Layer>
+            </DispatchContext.Provider>
+          </StateContext.Provider>
         </Stage>
       </div>
     </>
