@@ -55,7 +55,7 @@ const Line = (props) => {
         {...shapeConfig}
         key={index}
         fill="black"
-        draggable={state.drawing === 0}
+        draggable={state.selectShape === 'FREE'}
         onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {

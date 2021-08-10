@@ -19,7 +19,7 @@ const Content: React.FC<{}> = () => {
         role="button"
         tabIndex={0}
         onClick={() => {
-          dispatch({ type: 'setDrawing', payload: 1 });
+          dispatch({ type: 'setSelectShape', payload: 'PEN' });
         }}
         style={gridStyle}
       >
@@ -35,7 +35,7 @@ const Content: React.FC<{}> = () => {
         role="button"
         tabIndex={-1}
         onClick={() => {
-          dispatch({ type: 'setDrawing', payload: 2 });
+          dispatch({ type: 'setSelectShape', payload: 'ERASER' });
         }}
         style={gridStyle}
       >
@@ -50,7 +50,7 @@ const Content: React.FC<{}> = () => {
         role="button"
         tabIndex={0}
         onClick={() => {
-          dispatch({ type: 'setDrawing', payload: 0 });
+          dispatch({ type: 'setSelectShape', payload: 'FREE' });
         }}
         style={gridStyle}
       >

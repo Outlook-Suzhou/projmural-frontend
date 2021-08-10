@@ -1,10 +1,4 @@
-import { useStateStore } from '../store/store';
-
-export const calcZoomX = (x:number) => {
-  const state = useStateStore();
-  return x * state.stageScale + state.stagePos.x;
-};
-export const calcZoomY = (y:number) => {
-  const state = useStateStore();
-  return y * state.stageScale + state.stagePos.y;
-};
+export const calcZoomX = (x:number, scale: number, posX: number) => x * scale + posX; // calc x,y after zoom
+export const calcZoomY = (y:number, scale: number, posY: number) => y * scale + posY;
+export const calcX = (x:number, scale: number, posX: number) => (x - posX) / scale; // calc x,y before zoom
+export const calcY = (y:number, scale: number, posY: number) => (y - posY) / scale;
