@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { Popover, Row, Col } from 'antd';
-import 'antd/dist/antd.css';
 import { BsDiamond } from 'react-icons/bs';
 import addShape from '../../../utils/add_function';
 
