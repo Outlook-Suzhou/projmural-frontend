@@ -14,6 +14,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
   const {
     item, isSelected, onSelect, index,
   } = props;
+
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
   const state = useStateStore();
@@ -25,6 +26,11 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
       trRef.current.getLayer().batchDraw();
     }
   }, [isSelected]);
+
+  const [globalState] = [useStateStore()];
+  useEffect(() => {
+    console.log(globalState.currentItem);
+  }, globalState.currentItem);
 
   return (
     <>
@@ -67,7 +73,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             y: node.y(),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
-            height: Math.max(node.height() * scaleY),
+            height: Math.max(5, node.height() * scaleY),
             type: 'RECTANGLE',
             rotation: node.rotation(),
           };

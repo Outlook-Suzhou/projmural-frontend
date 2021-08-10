@@ -187,8 +187,6 @@ const PaintingContent: React.FC<{}> = () => {
                     <BaseShape
                       item={item}
                       index={index}
-                      currentItem={state.currentItem}
-                      currentIndex={state.currentIndex}
                       click={() => {
                         if (state.selectShape === 'FREE') {
                           if (item.type === 'TEXT') {
