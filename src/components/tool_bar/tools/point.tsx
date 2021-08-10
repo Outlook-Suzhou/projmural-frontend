@@ -30,6 +30,7 @@ const Point: React.FC<{}> = () => {
         className={state.drawing === 0 ? classNames.deepSkyBlue : classNames.common}
         onClick={() => {
           dispatch({ type: 'setDrawing', payload: 0 });
+          dispatch({ type: 'setSelectShape', payload: 'FREE' });
         }}
       />
     </div>

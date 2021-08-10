@@ -31,11 +31,12 @@ const Diamond: React.FC<Props> = (props: Props) => {
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
-        draggable={item.draggable && state.drawing === 0}
+        {...item}
         points={[0, item.radius.y, item.radius.x, 0, 0, -item.radius.y, -item.radius.x, 0]}
         closed
         {...shapeConfig}
         key={index}
+        draggable={item.draggable && state.drawing === 0}
         onDragMove={(e) => {
           const afterE: BaseShapes.Diamond = {
             radius: e.target.attrs.radius,
@@ -52,7 +53,6 @@ const Diamond: React.FC<Props> = (props: Props) => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
-
           // we will reset it back
           node.scaleX(1);
           node.scaleY(1);
@@ -70,24 +70,22 @@ const Diamond: React.FC<Props> = (props: Props) => {
             fill: item.fill,
             draggable: item.draggable,
           };
-
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
       />
       {isSelected && (
-      <Transformer
-        ref={trRef}
-        boundBoxFunc={(oldBox: any, newBox: { width: number; height: number; }) => {
-          // limit resize
-          if (newBox.width < 5 || newBox.height < 5) {
-            return oldBox;
-          }
-          return newBox;
-        }}
-      />
+        <Transformer
+          ref={trRef}
+          boundBoxFunc={(oldBox: any, newBox: { width: number; height: number; }) => {
+            // limit resize
+            if (newBox.width < 5 || newBox.height < 5) {
+              return oldBox;
+            }
+            return newBox;
+          }}
+        />
       )}
     </>
   );
 };
-
 export default Diamond;

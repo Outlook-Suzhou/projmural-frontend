@@ -22,6 +22,8 @@ import FontSize from '../tool_bar/tools/font_size';
 import useCopyer from '../../hook/copyer';
 import FreeDrawing from '../tool_bar/tools/free_drawing';
 import Point from '../tool_bar/tools/point';
+import handleLayerClick from './handle_layer_click';
+import { calcX, calcY } from '../../utils/calc_zoom_position';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -136,6 +138,11 @@ const PaintingContent: React.FC<{}> = () => {
     }
   }
   // console.log(state);
+  const handleClick = (e: any) => {
+    handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
+    dispatch({ type: 'setSelectShape', payload: 'FREE' });
+  };
+
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
@@ -173,7 +180,7 @@ const PaintingContent: React.FC<{}> = () => {
         >
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
-              <Layer>
+              <Layer onClick={handleClick}>
                 {gridComponents}
                 {
                   list.map((item: any, index: number) => (

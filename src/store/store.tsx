@@ -8,6 +8,7 @@ interface globalState {
   drawing: number // 0为非自由画板模式，1为画笔，2为橡皮
   stagePos: any
   stageScale: number
+  selectShape: string
 }
 interface actionType {
   type: string,
@@ -20,6 +21,7 @@ const initialState: globalState = {
   drawing: 0,
   stagePos: { x: 0, y: 0 },
   stageScale: 1,
+  selectShape: 'FREE',
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -34,6 +36,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, stagePos: action.payload };
     case 'setStageScale':
       return { ...state, stageScale: action.payload };
+    case 'setSelectShape':
+      return { ...state, selectShape: action.payload };
     case 'reset':
       return { ...initialState };
     default:
@@ -47,6 +51,7 @@ const StateContext = createContext<globalState>({
   drawing: 0,
   stagePos: { x: 0, y: 0 },
   stageScale: 1,
+  selectShape: 'FREE',
 });
 const DispatchContext = createContext<Function>(() => {});
 
