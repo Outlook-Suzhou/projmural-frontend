@@ -2,7 +2,6 @@
 import { Text, Transformer } from 'react-konva';
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import 'antd/dist/antd.css';
 import Konva from 'konva';
 import doc from '../../client/client';
 import { useStateStore } from '../../store/store';
