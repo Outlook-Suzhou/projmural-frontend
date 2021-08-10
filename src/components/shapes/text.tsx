@@ -44,6 +44,9 @@ const TEXT: React.FC<Props> = (props: Props) => {
         rotation={item.rotation}
         scaleX={item.scaleX}
         onDblClick={() => {
+          if (state.drawing !== 0) {
+            return;
+          }
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);
           const textNode = new Konva.Text({

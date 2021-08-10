@@ -31,11 +31,12 @@ const Diamond: React.FC<Props> = (props: Props) => {
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
-        draggable={item.draggable && state.drawing === 0}
+        {...item}
         points={[0, item.radius.y, item.radius.x, 0, 0, -item.radius.y, -item.radius.x, 0]}
         closed
         {...shapeConfig}
         key={index}
+        draggable={item.draggable && state.drawing === 0}
         onDragMove={(e) => {
           const afterE: BaseShapes.Diamond = {
             radius: e.target.attrs.radius,
@@ -75,16 +76,16 @@ const Diamond: React.FC<Props> = (props: Props) => {
         }}
       />
       {isSelected && (
-      <Transformer
-        ref={trRef}
-        boundBoxFunc={(oldBox: any, newBox: { width: number; height: number; }) => {
-          // limit resize
-          if (newBox.width < 5 || newBox.height < 5) {
-            return oldBox;
-          }
-          return newBox;
-        }}
-      />
+        <Transformer
+          ref={trRef}
+          boundBoxFunc={(oldBox: any, newBox: { width: number; height: number; }) => {
+            // limit resize
+            if (newBox.width < 5 || newBox.height < 5) {
+              return oldBox;
+            }
+            return newBox;
+          }}
+        />
       )}
     </>
   );
