@@ -67,8 +67,20 @@ const checkAdsorptionPoint = (mouse: Point, shape: BaseShapes.Shape, miniDistanc
       if (miniRes.distance < miniDistance) adsorptionVertex = miniRes.point;
       return { flag, adsorptionPoints, adsorptionVertex };
     }
-    case 'CIRCLE':
-      break;
+    case 'CIRCLE': {
+      const {
+        radius, x, y,
+      } = shape;
+      const center = { x, y };
+      const dist = Vector.distancePP(center, mouse);
+      let flag = false;
+      let adsorptionVertex = { x: 0, y: 0 };
+      if (Math.abs(dist - radius) < miniDistance) {
+        flag = true;
+        adsorptionVertex = Vector.add(center, Vector.mulN(Vector.init(Vector.sub(mouse, center)), radius));
+      }
+      return { flag, adsorptionVertex, adsorptionPoints: [] };
+    }
     case 'ELLIPSE':
       break;
     case 'DIAMOND':
