@@ -37,6 +37,11 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
         x, y, start: { x: 0, y: 0 }, end: { x: 100, y: 100 }, weight: 5, arrowSize: 20, type: 'ARROW', draggable: true,
       });
       break;
+    case 'TEXT':
+      addShape({
+        width: 200, height: 50, x, y, type: 'TEXT', text: '双击编辑文字', fontSize: 25, draggable: true, fill: '#000000', rotation: 0, scaleX: 1, shift: { x: 0, y: 0 },
+      });
+      break;
     default:
       break;
   }

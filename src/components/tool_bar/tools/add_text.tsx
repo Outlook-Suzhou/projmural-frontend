@@ -4,19 +4,20 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 // eslint-disable-next-line no-unused-vars
 import { Icon } from '@fluentui/react/lib/Icon';
-import addShape from '../../../utils/add_function';
+import { useDispatchStore } from '../../../store/store';
 
-const AddText: React.FC<{}> = () => (
-  // eslint-disable-next-line object-curly-newline
-  <div className="tool_icon">
-    <Icon
-      iconName="FontColorA"
-      style={{ fontSize: '40px', margin: 'auto' }}
-      onClick={() => addShape({
-        width: 200, height: 50, x: 300, y: 300, type: 'TEXT', text: '双击编辑文字', fontSize: 25, draggable: true, fill: '#000000', rotation: 0, scaleX: 1, shift: { x: 0, y: 0 },
-      })}
-    />
-  </div>
+const AddText: React.FC<{}> = () => {
+  const dispatch = useDispatchStore();
+  return (
+    // eslint-disable-next-line object-curly-newline
+    <div className="tool_icon">
+      <Icon
+        iconName="FontColorA"
+        style={{ fontSize: '40px', margin: 'auto' }}
+        onClick={() => dispatch({ type: 'setSelectShape', payload: 'TEXT' })}
+      />
+    </div>
 
-);
+  );
+};
 export default AddText;
