@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@azure/msal-browser": "^2.16.1",
+    "@azure/msal-react": "^1.0.1",
     "@fluentui/react": "^8.23.8",
     "@teamwork/websocket-json-stream": "^2.0.0",
     "@testing-library/jest-dom": "^5.11.4",
