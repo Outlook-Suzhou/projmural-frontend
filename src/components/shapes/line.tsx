@@ -34,13 +34,13 @@ const Line = (props) => {
     item, index, click, isSelected,
   } = props;
   const [circleOpacity, setCircleOpacity] = useState(1);
-  const store = useStateStore();
+  const state = useStateStore();
   useEffect(() => {
     if (isSelected === true) setCircleOpacity(1);
     else setCircleOpacity(0);
   }, [isSelected]);
   const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
-  useEffect(() => { if (store.currentIndex !== index) setAdsorptionPoints([]); }, [store.currentIndex]);
+  useEffect(() => { if (state.currentIndex !== index) setAdsorptionPoints([]); }, [state.currentIndex]);
   const miniDistance = 20;
   return (
     <>
@@ -65,7 +65,7 @@ const Line = (props) => {
         {...shapeConfig}
         key={index}
         fill="black"
-        draggable={store.drawing === 0}
+        draggable={state.selectShape === 'FREE'}
         onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {

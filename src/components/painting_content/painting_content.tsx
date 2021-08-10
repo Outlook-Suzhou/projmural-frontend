@@ -22,6 +22,8 @@ import FontSize from '../tool_bar/tools/font_size';
 import useCopyer from '../../hook/copyer';
 import FreeDrawing from '../tool_bar/tools/free_drawing';
 import Point from '../tool_bar/tools/point';
+import handleLayerClick from './handle_layer_click';
+import { calcX, calcY } from '../../utils/calc_zoom_position';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -54,12 +56,12 @@ const PaintingContent: React.FC<{}> = () => {
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
-    if (state.drawing !== 0) {
+    if (state.selectShape === 'ERASER' || state.selectShape === 'PEN') {
       startDraw(e);
     }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
-    if (isPainting && state.drawing === 1) {
+    if (isPainting && state.selectShape === 'PEN') {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -135,6 +137,12 @@ const PaintingContent: React.FC<{}> = () => {
       );
     }
   }
+  // console.log(state);
+  const handleClick = (e: any) => {
+    handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
+    dispatch({ type: 'setSelectShape', payload: 'FREE' });
+  };
+
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
@@ -158,7 +166,7 @@ const PaintingContent: React.FC<{}> = () => {
           onMouseUp={() => {
             if (isPainting) {
               setIsPainting(false);
-              if (state.drawing === 1) {
+              if (state.selectShape === 'PEN') {
                 doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
                 setLastLine({
                   fill: '#df4b26',
@@ -172,7 +180,7 @@ const PaintingContent: React.FC<{}> = () => {
         >
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
-              <Layer>
+              <Layer onClick={handleClick}>
                 {gridComponents}
                 {
                   list.map((item: any, index: number) => (
@@ -180,7 +188,7 @@ const PaintingContent: React.FC<{}> = () => {
                       item={item}
                       index={index}
                       click={() => {
-                        if (state.drawing === 0) {
+                        if (state.selectShape === 'FREE') {
                           if (item.type === 'TEXT') {
                             const afterE = {
                               ...item,
@@ -194,7 +202,7 @@ const PaintingContent: React.FC<{}> = () => {
                         }
                       }}
                       del={() => {
-                        if (state.drawing === 2 && isPainting) {
+                        if (state.selectShape === 'ERASER' && isPainting) {
                           doc.submitOp([{ p: ['shapes', index], ld: item }]);
                         }
                       }}
