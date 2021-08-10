@@ -19,7 +19,7 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
       break;
     case 'TRIANGLE':
       addShape({
-        radius: { x: 30, y: 20 }, x, y, type: 'TRIANGLE', draggable: true, rotation: 0, fill: 'yellow',
+        radius: { x: 30, y: 30 }, x, y, type: 'TRIANGLE', draggable: true, rotation: 0, fill: 'yellow',
       });
       break;
     case 'ELLIPSE':
