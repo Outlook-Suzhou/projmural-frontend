@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Rectangle,
@@ -17,7 +17,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
 
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const state = useStateStore();
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -42,6 +42,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         draggable={item.draggable && state.selectShape === 'FREE'}
           // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onDragMove={(e) => {
           const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),
