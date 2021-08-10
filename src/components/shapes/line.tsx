@@ -3,6 +3,7 @@ import { Line as KonvaLine, Circle } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
+import { useStateStore } from '../../store/store';
 
 interface vector {
   x: number;
@@ -33,12 +34,13 @@ const Line = (props) => {
     item, index, click, isSelected,
   } = props;
   const [circleOpacity, setCircleOpacity] = useState(1);
+  const store = useStateStore();
   useEffect(() => {
     if (isSelected === true) setCircleOpacity(1);
     else setCircleOpacity(0);
   }, [isSelected]);
-
   const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
+  useEffect(() => { if (store.currentIndex !== index) setAdsorptionPoints([]); }, [store.currentIndex]);
   const miniDistance = 20;
   return (
     <>
@@ -63,7 +65,7 @@ const Line = (props) => {
         {...shapeConfig}
         key={index}
         fill="black"
-        draggable
+        draggable={store.drawing === 0}
         onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {

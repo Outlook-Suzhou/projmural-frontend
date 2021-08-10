@@ -2,9 +2,9 @@
 import { Text, Transformer } from 'react-konva';
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import 'antd/dist/antd.css';
 import Konva from 'konva';
 import doc from '../../client/client';
+import { useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Text,
@@ -20,6 +20,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
   const [visible, setVisible] = useState(true);
   const shapeRef = React.useRef<any>();
   const trRef = React.useRef<any>();
+  const state = useStateStore();
   React.useEffect(() => {
     if (isSelected) {
       // we need to attach transformer manually
@@ -35,7 +36,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
         text={item.text}
         ref={shapeRef}
         key={index}
-        draggable
+        draggable={state.drawing === 0}
         onClick={click}
         onTap={click}
         visible={visible}
@@ -50,15 +51,15 @@ const TEXT: React.FC<Props> = (props: Props) => {
             y: 80,
             fontSize: 20,
             draggable: true,
-            width: 200,
+            width: 1000,
           });
+          textarea.style.fontSize = `${item.fontSize * item.shift.scale}px`;
           textarea.style.position = 'absolute';
           textarea.value = item.text;
           setVisible(false);
           textarea.style.transformOrigin = 'left top';
-          textarea.style.top = `${item.y + item.shift.y}px`;
-          textarea.style.left = `${item.x + item.shift.x}px`;
-          textarea.style.fontSize = `${item.fontSize}px`;
+          textarea.style.top = `${item.y * item.shift.scale + item.shift.y}px`;
+          textarea.style.left = `${item.x * item.shift.scale + item.shift.x}px`;
           textarea.style.width = '1000px';
           textarea.style.height = '1000px';
           textarea.style.border = 'none';

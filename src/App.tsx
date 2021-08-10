@@ -4,14 +4,16 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
+import Login from './pages/login/login';
 import Painting from './pages/painting/painting';
 import { StoreProvider } from './store/store';
+import 'antd/dist/antd.css';
 
 const App: React.FC<{}> = () => (
   <Router>
     <Switch>
       <Route path="/login">
-        login
+        <Login />
       </Route>
       <Route path="/dashboard">
         dashboard
@@ -22,7 +24,7 @@ const App: React.FC<{}> = () => (
         </StoreProvider>
       </Route>
       <Route path="/">
-        login
+        <Login />
       </Route>
     </Switch>
   </Router>

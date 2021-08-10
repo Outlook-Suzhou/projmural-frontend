@@ -4,6 +4,7 @@ import React from 'react';
 // import AddShape from './tools/add_shape';
 import './tool_bar.scss';
 import { useStateStore } from '../../store/store';
+import { calcZoomX, calcZoomY } from '../../utils/calc_zoom_position';
 // import { Row, Col } from 'antd';
 
 // interface toolComponent {
@@ -31,8 +32,8 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
       style={{
         width,
         height,
-        left: isFloatBar ? state.currentItem.x + 50 : 50,
-        top: isFloatBar ? state.currentItem.y - 200 : 200,
+        left: isFloatBar ? calcZoomX(state.currentItem.x) - 50 : 50,
+        top: isFloatBar ? calcZoomY(state.currentItem.y) - 200 : 200,
       }}
     >
       {

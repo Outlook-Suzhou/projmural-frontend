@@ -6,10 +6,11 @@ interface Props {
   item: BaseShapes.CurveLine,
   onSelect: any,
   index: number,
+  onMouseOver: any,
 }
 const CurveLine: React.FC<Props> = (props: Props) => {
   const {
-    item, onSelect, index,
+    item, onSelect, index, onMouseOver,
   } = props;
   return (
     <>
@@ -17,6 +18,7 @@ const CurveLine: React.FC<Props> = (props: Props) => {
         name={`line${index}`}
         globalCompositeOperation={item.composite}
         stroke={item.fill}
+        strokeWidth={5}
         onClick={onSelect}
         onTap={onSelect}
         {...item}
@@ -30,6 +32,7 @@ const CurveLine: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onMouseOver={onMouseOver}
       />
     </>
   );

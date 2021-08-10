@@ -15,16 +15,17 @@ const checkAdsorptionPoint = (mouse: Point, shape: BaseShapes.Shape, miniDistanc
   switch (shape.type) {
     case 'RECTANGLE': {
       const {
-        // eslint-disable-next-line no-unused-vars
         rotation, width, height, x, y,
       } = shape;
       const center = { x, y };
-      const vertexs = [
-        center,
-        Vector.add(center, { x: width, y: 0 }),
-        Vector.add(center, { x: width, y: height }),
-        Vector.add(center, { x: 0, y: height }),
+      let vertexs = [
+        { x: 0, y: 0 },
+        { x: width, y: 0 },
+        { x: width, y: height },
+        { x: 0, y: height },
       ];
+      const realDegree = (rotation * 2 * Math.PI) / 360;
+      vertexs = vertexs.map((vertex) => (Vector.add(center, Vector.rotate(vertex, realDegree))));
       let flag = false;
       let miniRes = { distance: miniDistance + 1, point: { x: 0, y: 0 } };
       vertexs.forEach((p: Point, ind: number) => {
@@ -43,12 +44,13 @@ const checkAdsorptionPoint = (mouse: Point, shape: BaseShapes.Shape, miniDistanc
         }
       });
       let adsorptionVertex = miniRes.point;
-      const adsorptionPoints = [
-        Vector.add(center, { x: width / 2, y: 0 }),
-        Vector.add(center, { x: width, y: height / 2 }),
-        Vector.add(center, { x: width / 2, y: height }),
-        Vector.add(center, { x: 0, y: height / 2 }),
+      let adsorptionPoints = [
+        { x: width / 2, y: 0 },
+        { x: width, y: height / 2 },
+        { x: width / 2, y: height },
+        { x: 0, y: height / 2 },
       ];
+      adsorptionPoints = adsorptionPoints.map((vertex) => (Vector.add(center, Vector.rotate(vertex, realDegree))));
 
       miniRes = { distance: miniDistance + 1, point: { x: 0, y: 0 } };
       adsorptionPoints.forEach((point) => {
