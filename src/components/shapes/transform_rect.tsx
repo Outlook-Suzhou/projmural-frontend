@@ -29,7 +29,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
 
   const [globalState] = [useStateStore()];
   useEffect(() => {
-    console.log(globalState.currentItem);
+    // console.log(globalState.currentItem);
   }, globalState.currentItem);
 
   return (
