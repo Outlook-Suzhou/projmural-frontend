@@ -4,13 +4,14 @@ const ShareDB = require('sharedb');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
 const path = require('path');
+const db = require('sharedb-mongo')('mongodb://localhost:27017/test', { mongoOptions: {} });
 
-const backend = new ShareDB();
+const backend = new ShareDB({ db });
 
 // Create initial document then fire callback
 function createDoc(callback) {
   const connection = backend.connect();
-  const doc = connection.get('examples', 'counter');
+  const doc = connection.get('projectmural', 'test');
   doc.fetch((err) => {
     if (err) throw err;
     if (doc.type === null) {

@@ -11,7 +11,7 @@ const socket = new ReconnectingWebSocket(`ws://${ipAddress}`);
 const connection = new sharedb.Connection(socket);
 
 // Create local Doc instance mapped to 'examples' collection document with id 'counter'
-const doc = connection.get('examples', 'counter');
+const doc = connection.get('projectmural', 'test');
 doc.subscribe();
 
 export default doc;
