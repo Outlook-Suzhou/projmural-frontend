@@ -36,7 +36,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
         closed
         {...shapeConfig}
         key={index}
-        draggable={item.draggable && state.drawing === 0}
+        draggable={item.draggable && state.selectShape === 'FREE'}
         onDragMove={(e) => {
           const afterE: BaseShapes.Diamond = {
             radius: e.target.attrs.radius,

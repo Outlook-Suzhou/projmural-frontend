@@ -34,7 +34,7 @@ const Triangle: React.FC<Props> = (props: Props) => {
         ref={shapeRef}
         {...item}
         {...shapeConfig}
-        draggable={item.draggable && state.drawing === 0}
+        draggable={item.draggable && state.selectShape === 'FREE'}
         points={[item.radius.x, 0, 0, item.radius.y, -item.radius.x, 0]}
         key={index}
         closed

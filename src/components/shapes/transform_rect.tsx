@@ -33,7 +33,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         onTap={onSelect}
         ref={shapeRef}
         {...item}
-        draggable={item.draggable && state.drawing === 0}
+        draggable={item.draggable && state.selectShape === 'FREE'}
           // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
         onDragMove={(e) => {

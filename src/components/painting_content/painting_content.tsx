@@ -56,12 +56,12 @@ const PaintingContent: React.FC<{}> = () => {
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
-    if (state.drawing !== 0) {
+    if (state.selectShape === 'ERASER' || state.selectShape === 'PEN') {
       startDraw(e);
     }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
-    if (isPainting && state.drawing === 1) {
+    if (isPainting && state.selectShape === 'PEN') {
       const pos = e.target.getStage().getPointerPosition();
       // @ts-ignore
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -166,7 +166,7 @@ const PaintingContent: React.FC<{}> = () => {
           onMouseUp={() => {
             if (isPainting) {
               setIsPainting(false);
-              if (state.drawing === 1) {
+              if (state.selectShape === 'PEN') {
                 doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
                 setLastLine({
                   fill: '#df4b26',
@@ -190,7 +190,7 @@ const PaintingContent: React.FC<{}> = () => {
                       currentItem={state.currentItem}
                       currentIndex={state.currentIndex}
                       click={() => {
-                        if (state.drawing === 0) {
+                        if (state.selectShape === 'FREE') {
                           if (item.type === 'TEXT') {
                             const afterE = {
                               ...item,
@@ -204,7 +204,7 @@ const PaintingContent: React.FC<{}> = () => {
                         }
                       }}
                       del={() => {
-                        if (state.drawing === 2 && isPainting) {
+                        if (state.selectShape === 'ERASER' && isPainting) {
                           doc.submitOp([{ p: ['shapes', index], ld: item }]);
                         }
                       }}

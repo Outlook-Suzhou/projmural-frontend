@@ -37,7 +37,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
         text={item.text}
         ref={shapeRef}
         key={index}
-        draggable={state.drawing === 0}
+        draggable={state.selectShape === 'FREE'}
         onClick={click}
         onTap={click}
         visible={visible}

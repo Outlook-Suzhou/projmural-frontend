@@ -34,7 +34,7 @@ const Circle: React.FC<Props> = (props: Props) => {
         {...item}
         {...shapeConfig}
         key={index}
-        draggable={item.draggable && (state.drawing === 0)}
+        draggable={item.draggable && (state.selectShape === 'FREE')}
         onDragMove={(e) => {
           const afterE: BaseShapes.Circle = {
             radius: e.target.attrs.radius,
