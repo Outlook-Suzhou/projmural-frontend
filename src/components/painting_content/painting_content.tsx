@@ -24,6 +24,7 @@ import FreeDrawing from '../tool_bar/tools/free_drawing';
 import Point from '../tool_bar/tools/point';
 import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
+import CursorShape from './cursor_shape';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -37,6 +38,7 @@ const PaintingContent: React.FC<{}> = () => {
     type: 'CURVELINE',
   });
   const [isPainting, setIsPainting] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   // const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   function startDraw(e: { target: any; }) {
     const pos = e.target.getStage().getPointerPosition();
@@ -44,7 +46,7 @@ const PaintingContent: React.FC<{}> = () => {
       fill: '#df4b26',
       composite: 'source-over',
       // @ts-ignore
-      points: [(pos.x - state.stagePos.x) / state.stageScale, (pos.y - state.stagePos.y) / state.stageScale],
+      points: [calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)],
       type: 'CURVELINE',
     });
     setIsPainting(true);
@@ -61,17 +63,15 @@ const PaintingContent: React.FC<{}> = () => {
     }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
+    const pos = e.target.getStage().getPointerPosition();
     if (isPainting && state.selectShape === 'PEN') {
-      const pos = e.target.getStage().getPointerPosition();
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      const newPoints = lastLine.points.concat([(pos.x - state.stagePos.x) / state.stageScale, (pos.y - state.stagePos.y) / state.stageScale]);
-      // @ts-ignore
+      const newPoints = lastLine.points.concat([calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)]);
       setLastLine({
         ...lastLine,
         points: newPoints,
       });
     }
+    setCursorPos({ x: pos.x, y: pos.y });
   };
   const getFloatBar = () => {
     const tools = [SelectColor, ZIndex, Lock, DelEle];
@@ -217,6 +217,7 @@ const PaintingContent: React.FC<{}> = () => {
                   stroke={lastLine.fill}
                   points={lastLine.points}
                 />
+                {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
               </Layer>
             </DispatchContext.Provider>
           </StateContext.Provider>
