@@ -40,7 +40,7 @@ const Img: React.FC<Props> = (props: Props) => {
         {...shapeConfig}
         image={img}
         rotation={item.rotation}
-        draggable={item.draggable && state.drawing === 0}
+        draggable={item.draggable && state.selectShape === 'FREE'}
         key={index}
         onDragMove={(e) => {
           const afterE: BaseShapes.Image = {

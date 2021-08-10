@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Rectangle,
@@ -14,9 +14,10 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
   const {
     item, isSelected, onSelect, index,
   } = props;
+
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const state = useStateStore();
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -26,6 +27,11 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
     }
   }, [isSelected]);
 
+  const [globalState] = [useStateStore()];
+  useEffect(() => {
+    console.log(globalState.currentItem);
+  }, globalState.currentItem);
+
   return (
     <>
       <Rect
@@ -33,9 +39,10 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         onTap={onSelect}
         ref={shapeRef}
         {...item}
-        draggable={item.draggable && state.drawing === 0}
+        draggable={item.draggable && state.selectShape === 'FREE'}
           // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onDragMove={(e) => {
           const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),
@@ -67,7 +74,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             y: node.y(),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
-            height: Math.max(node.height() * scaleY),
+            height: Math.max(5, node.height() * scaleY),
             type: 'RECTANGLE',
             rotation: node.rotation(),
           };
