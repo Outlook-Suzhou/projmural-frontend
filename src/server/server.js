@@ -25,11 +25,20 @@ function createDoc(callback) {
   });
 }
 
+const privateKey = fs.readFileSync('./privkey.pem', 'utf8');
+const certificate = fs.readFileSync('./fullchain.pem', 'utf8');
+
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: certificate,
+};
+
 function startServer() {
   // Create a web server to serve files and listen to WebSocket connections
   const app = express();
   app.use(express.static('static'));
-  const server = http.createServer(app);
+  const server = http.createServer(credentials, app);
 
   // Connect any incoming WebSocket connection to ShareDB
   const wss = new WebSocket.Server({ server });
@@ -44,14 +53,6 @@ function startServer() {
 createDoc(startServer);
 
 // HTTP server
-const privateKey = fs.readFileSync('./privkey.pem', 'utf8');
-const certificate = fs.readFileSync('./fullchain.pem', 'utf8');
-
-const credentials = {
-  key: privateKey,
-  cert: certificate,
-  ca: certificate,
-};
 
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
