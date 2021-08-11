@@ -4,6 +4,7 @@ import Vector from './vector';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
+import { useStateStore } from '../../store/store';
 
 interface vector {
   x: number;
@@ -74,6 +75,8 @@ const Arrow = (props) => {
   // eslint-disable-next-line react/prop-types
   const { arrowPoints, tailPoints } = getArrow(item.start, item.end, item.weight, item.arrowSize);
   const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
+  const state = useStateStore();
+  useEffect(() => { if (state.currentIndex !== index) setAdsorptionPoints([]); }, [state.currentIndex]);
   const miniDistance = 20;
   return (
     <>

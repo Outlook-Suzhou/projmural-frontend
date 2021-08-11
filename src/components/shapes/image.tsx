@@ -3,7 +3,7 @@ import useImage from 'use-image';
 import React, { useEffect, useRef } from 'react';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
-import { useStateStore } from '../../store/store';
+import { useStateStore, useDispatchStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Image,
@@ -17,7 +17,7 @@ const Img: React.FC<Props> = (props: Props) => {
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const state = useStateStore();
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -42,6 +42,7 @@ const Img: React.FC<Props> = (props: Props) => {
         rotation={item.rotation}
         draggable={item.draggable && state.selectShape === 'FREE'}
         key={index}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onDragMove={(e) => {
           const afterE: BaseShapes.Image = {
             width: e.target.width(),
