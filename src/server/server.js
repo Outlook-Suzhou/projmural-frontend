@@ -49,5 +49,5 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(8000);
+app.listen(80);
 console.log('HTTPServer is lisening on http://localhost:8000');
