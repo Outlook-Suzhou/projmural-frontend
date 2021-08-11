@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import addShape from '../utils/add_function';
+import { calcX, calcY } from '../utils/calc_zoom_position';
+import { useStateStore } from '../store/store';
 
 // const throttle = (fn: Function, rateTime: number) => {
 //   let prev = Date.now() - rateTime;
@@ -15,6 +17,7 @@ function useCopyer(): [BaseShapes.Shape | null, Function] {
   const [mouse, setMouse] = useState<BaseShapes.Position>({ x: 0, y: 0 });
   const [item, setItem] = useState<BaseShapes.Shape | null>(null);
   const [selectItem, setSelectItem] = useState<BaseShapes.Shape | null>(null);
+  const state = useStateStore();
   useEffect(() => {
     const copyListener = (e: any) => {
       if (e.ctrlKey && e.keyCode === 67) {
@@ -26,7 +29,7 @@ function useCopyer(): [BaseShapes.Shape | null, Function] {
         if (item != null) {
           console.log('ctrl+v');
           const newItem = {
-            ...item, x: mouse.x, y: mouse.y,
+            ...item, x: calcX(mouse.x, state.stageScale, state.stagePos.x), y: calcY(mouse.y, state.stageScale, state.stagePos.y),
           };
           addShape(newItem);
         }

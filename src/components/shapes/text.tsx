@@ -36,13 +36,14 @@ const TEXT: React.FC<Props> = (props: Props) => {
         text={item.text}
         ref={shapeRef}
         key={index}
-        draggable={state.selectShape === 'FREE'}
+        draggable={state.selectShape === 'FREE' && item.draggable}
         onClick={click}
         onTap={click}
         visible={visible}
         rotation={item.rotation}
         scaleX={item.scaleX}
         onDblClick={() => {
+          console.log(item);
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);
           const textNode = new Konva.Text({
@@ -79,6 +80,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
           textarea.addEventListener('keydown', () => {
             item.text = textarea.value;
             doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+            console.log(item);
           });
           function removeTextarea() {
             // @ts-ignore
@@ -105,14 +107,9 @@ const TEXT: React.FC<Props> = (props: Props) => {
         fill={item.fill}
         onDragMove={(e) => {
           const afterE = {
-            width: e.target.width(),
-            height: e.target.height(),
+            ...item,
             x: e.target.x(),
             y: e.target.y(),
-            fontSize: item.fontSize,
-            type: 'TEXT',
-            text: item.text,
-            fill: item.fill,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
@@ -125,10 +122,8 @@ const TEXT: React.FC<Props> = (props: Props) => {
             y: node.y(),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
-            type: 'TEXT',
-            fill: item.fill,
+            height: node.height(),
             rotation: node.rotation(),
-            draggable: item.draggable,
             scaleX: 1,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);

@@ -16,7 +16,7 @@ const CurveLine: React.FC<Props> = (props: Props) => {
     <>
       <Line
         name={`line${index}`}
-        globalCompositeOperation={item.composite}
+        globalCompositeOperation="source-over"
         stroke={item.fill}
         strokeWidth={3}
         onClick={onSelect}
