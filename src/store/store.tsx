@@ -8,6 +8,7 @@ interface globalState {
   stagePos: any
   stageScale: number
   selectShape: string
+  penColor: string
 }
 interface actionType {
   type: string,
@@ -20,6 +21,7 @@ const initialState: globalState = {
   stagePos: { x: 0, y: 0 },
   stageScale: 1,
   selectShape: 'FREE',
+  penColor: '#df4b26',
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -34,6 +36,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, stageScale: action.payload };
     case 'setSelectShape':
       return { ...state, selectShape: action.payload };
+    case 'setPenColor':
+      return { ...state, penColor: action.payload };
     case 'reset':
       return { ...initialState };
     default:
@@ -47,6 +51,7 @@ const StateContext = createContext<globalState>({
   stagePos: { x: 0, y: 0 },
   stageScale: 1,
   selectShape: 'FREE',
+  penColor: '#df4b26',
 });
 const DispatchContext = createContext<Function>(() => {});
 
