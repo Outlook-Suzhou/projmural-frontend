@@ -122,10 +122,8 @@ const TEXT: React.FC<Props> = (props: Props) => {
             y: node.y(),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
-            type: 'TEXT',
-            fill: item.fill,
+            height: node.height(),
             rotation: node.rotation(),
-            draggable: item.draggable,
             scaleX: 1,
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
