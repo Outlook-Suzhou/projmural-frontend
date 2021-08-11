@@ -2,9 +2,13 @@ import React from 'react';
 import { Menu } from 'antd';
 import './login_header.scss';
 
-const LoginHeader: React.FC<{}> = () => {
-  const a = 1;
-  console.log(a);
+interface Props {
+  handleSignIn: any,
+  handleSignOut: any,
+  isAuthenticated: any,
+}
+const LoginHeader: React.FC<Props> = (props: Props) => {
+  const { handleSignIn, handleSignOut, isAuthenticated } = props;
   return (
     <>
       <div className="logo">
@@ -24,7 +28,11 @@ const LoginHeader: React.FC<{}> = () => {
               Windows
             </a>
           </Menu.Item>
-          <Menu.Item key={4} className="login_button">Login</Menu.Item>
+          {
+            !isAuthenticated
+              ? <Menu.Item key={4} className="login_button" onClick={handleSignIn}>Sign In</Menu.Item>
+              : <Menu.Item key={5} className="login_button" onClick={handleSignOut}>Sign Out</Menu.Item>
+          }
         </Menu>
       </div>
     </>

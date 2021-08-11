@@ -24,6 +24,8 @@ import FreeDrawing from '../tool_bar/tools/free_drawing';
 import Point from '../tool_bar/tools/point';
 import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
+import CursorShape from './cursor_shape';
+import './painting_content.scss';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -32,19 +34,18 @@ const PaintingContent: React.FC<{}> = () => {
   const [, setCopySelectItem] = useCopyer();
   const [lastLine, setLastLine] = useState({
     fill: '#df4b26',
-    composite: 'source-over',
     points: [0],
     type: 'CURVELINE',
   });
   const [isPainting, setIsPainting] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   // const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   function startDraw(e: { target: any; }) {
     const pos = e.target.getStage().getPointerPosition();
     setLastLine({
       fill: '#df4b26',
-      composite: 'source-over',
       // @ts-ignore
-      points: [(pos.x - state.stagePos.x) / state.stageScale, (pos.y - state.stagePos.y) / state.stageScale],
+      points: [calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)],
       type: 'CURVELINE',
     });
     setIsPainting(true);
@@ -61,17 +62,15 @@ const PaintingContent: React.FC<{}> = () => {
     }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
+    const pos = e.target.getStage().getPointerPosition();
     if (isPainting && state.selectShape === 'PEN') {
-      const pos = e.target.getStage().getPointerPosition();
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      const newPoints = lastLine.points.concat([(pos.x - state.stagePos.x) / state.stageScale, (pos.y - state.stagePos.y) / state.stageScale]);
-      // @ts-ignore
+      const newPoints = lastLine.points.concat([calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)]);
       setLastLine({
         ...lastLine,
         points: newPoints,
       });
     }
+    setCursorPos({ x: pos.x, y: pos.y });
   };
   const getFloatBar = () => {
     const tools = [SelectColor, ZIndex, Lock, DelEle];
@@ -139,8 +138,10 @@ const PaintingContent: React.FC<{}> = () => {
   }
   // console.log(state);
   const handleClick = (e: any) => {
-    handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
-    dispatch({ type: 'setSelectShape', payload: 'FREE' });
+    if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN') {
+      handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
+      dispatch({ type: 'setSelectShape', payload: 'FREE' });
+    }
   };
 
   return (
@@ -149,6 +150,7 @@ const PaintingContent: React.FC<{}> = () => {
       <ToolBar width={80} height={400} list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
+          className={state.selectShape}
           x={state.stagePos.x}
           y={state.stagePos.y}
           width={window.innerWidth}
@@ -170,7 +172,6 @@ const PaintingContent: React.FC<{}> = () => {
                 doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
                 setLastLine({
                   fill: '#df4b26',
-                  composite: 'source-over',
                   points: [0, 0],
                   type: 'CURVELINE',
                 });
@@ -215,6 +216,7 @@ const PaintingContent: React.FC<{}> = () => {
                   stroke={lastLine.fill}
                   points={lastLine.points}
                 />
+                {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
               </Layer>
             </DispatchContext.Provider>
           </StateContext.Provider>
