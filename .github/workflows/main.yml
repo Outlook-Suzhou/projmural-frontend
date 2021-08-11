@@ -41,6 +41,6 @@ jobs:
             cd projmural-frontend
             npm run prepare
             sudo docker image build -t projmural .
-            nohup sudo docker container run --rm -p 80:80 -p: 443:443 -p 8080:8080 projmural > ./output.log 2>&1 &
+            nohup sudo docker container run --rm -p 80:80 -p 443:443 -p 8080:8080 projmural > ./output.log 2>&1 &
             
 
