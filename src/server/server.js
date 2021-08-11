@@ -38,7 +38,7 @@ function startServer() {
   // Create a web server to serve files and listen to WebSocket connections
   const app = express();
   app.use(express.static('static'));
-  const server = http.createServer(credentials, app);
+  const server = https.createServer(credentials, app);
 
   // Connect any incoming WebSocket connection to ShareDB
   const wss = new WebSocket.Server({ server });
