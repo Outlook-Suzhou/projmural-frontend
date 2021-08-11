@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ renxinwang_add_oa_login ]
+    branches: [ renxinwang_add_https ]
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -37,9 +37,10 @@ jobs:
             rm -rf deploy
             mkdir deploy
             cd deploy 
-            git clone -b renxinwang_add_oa_login git@github.com:Outlook-Suzhou/projmural-frontend.git
+            git clone -b renxinwang_add_https git@github.com:Outlook-Suzhou/projmural-frontend.git
             cd projmural-frontend
+            npm run prepare
             sudo docker image build -t projmural .
-            nohup sudo docker container run --rm -p 80:80 -p 8080:8080 projmural > ./output.log 2>&1 &
+            nohup sudo docker container run --rm -p 80:80 -p: 443:443 -p 8080:8080 projmural > ./output.log 2>&1 &
             
 
