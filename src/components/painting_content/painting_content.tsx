@@ -34,7 +34,6 @@ const PaintingContent: React.FC<{}> = () => {
   const [, setCopySelectItem] = useCopyer();
   const [lastLine, setLastLine] = useState({
     fill: '#df4b26',
-    composite: 'source-over',
     points: [0],
     type: 'CURVELINE',
   });
@@ -45,7 +44,6 @@ const PaintingContent: React.FC<{}> = () => {
     const pos = e.target.getStage().getPointerPosition();
     setLastLine({
       fill: '#df4b26',
-      composite: 'source-over',
       // @ts-ignore
       points: [calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)],
       type: 'CURVELINE',
@@ -174,7 +172,6 @@ const PaintingContent: React.FC<{}> = () => {
                 doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
                 setLastLine({
                   fill: '#df4b26',
-                  composite: 'source-over',
                   points: [0, 0],
                   type: 'CURVELINE',
                 });
