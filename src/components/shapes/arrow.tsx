@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Line as KonvaLine, Circle } from 'react-konva';
+import { Line as KonvaLine, Circle, Layer } from 'react-konva';
 import Vector from './vector';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
 import { useStateStore } from '../../store/store';
+import globalConfig from './global_config';
 
 interface vector {
   x: number;
@@ -77,7 +78,7 @@ const Arrow = (props) => {
   const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
   const state = useStateStore();
   useEffect(() => { if (state.currentIndex !== index) setAdsorptionPoints([]); }, [state.currentIndex]);
-  const miniDistance = 20;
+  const miniDistance = globalConfig.miniAbsorbDistance;
   return (
     <>
       {
@@ -85,9 +86,9 @@ const Arrow = (props) => {
           <Circle
             x={point.x}
             y={point.y}
-            radius={5}
+            radius={globalConfig.auxiliaryPointSize / state.stageScale}
             fill="red"
-            stroke="1"
+            stroke={(1 / state.stageScale).toString()}
           />
         ))
       }
@@ -126,7 +127,6 @@ const Arrow = (props) => {
         // eslint-disable-next-line react/prop-types
         y={item.start.y + item.y}
         // eslint-disable-next-line react/prop-types
-        radius={item.weight}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -152,8 +152,9 @@ const Arrow = (props) => {
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        radius={globalConfig.auxiliaryPointSize / state.stageScale}
         fill="white"
-        stroke="1"
+        stroke={(1 / state.stageScale).toString()}
       />
       <Circle
         // eslint-disable-next-line react/prop-types
@@ -161,7 +162,6 @@ const Arrow = (props) => {
         // eslint-disable-next-line react/prop-types
         y={item.end.y + item.y}
         // eslint-disable-next-line react/prop-types
-        radius={item.weight}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -187,8 +187,9 @@ const Arrow = (props) => {
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        radius={globalConfig.auxiliaryPointSize / state.stageScale}
         fill="white"
-        stroke="1"
+        stroke={(1 / state.stageScale).toString()}
       />
       {
         tailPoints.map((obj, ind) => (
@@ -198,7 +199,6 @@ const Arrow = (props) => {
             // eslint-disable-next-line react/prop-types
             y={obj.y + item.y}
             // eslint-disable-next-line react/prop-types
-            radius={item.weight}
             opacity={circleOpacity}
             draggable
             onDragMove={(e) => {
@@ -225,8 +225,9 @@ const Arrow = (props) => {
               });
               doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
             }}
+            radius={globalConfig.auxiliaryPointSize / state.stageScale}
             fill="white"
-            stroke="1"
+            stroke={(1 / state.stageScale).toString()}
           />
         ))
       }

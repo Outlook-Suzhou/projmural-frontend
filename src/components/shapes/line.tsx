@@ -4,6 +4,7 @@ import doc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
 import { useStateStore } from '../../store/store';
+import globalConfig from './global_config';
 
 interface vector {
   x: number;
@@ -41,7 +42,7 @@ const Line = (props) => {
   }, [isSelected]);
   const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
   useEffect(() => { if (state.currentIndex !== index) setAdsorptionPoints([]); }, [state.currentIndex]);
-  const miniDistance = 20;
+  const miniDistance = globalConfig.miniAbsorbDistance;
   return (
     <>
       {
@@ -49,9 +50,9 @@ const Line = (props) => {
           <Circle
             x={point.x}
             y={point.y}
-            radius={5}
+            radius={globalConfig.auxiliaryPointSize / state.stageScale}
             fill="red"
-            stroke="1"
+            stroke={(1 / state.stageScale).toString()}
           />
         ))
       }
@@ -81,7 +82,7 @@ const Line = (props) => {
         // eslint-disable-next-line react/prop-types
         y={doc.data.shapes[index].start.y + doc.data.shapes[index].y}
         // eslint-disable-next-line react/prop-types
-        radius={doc.data.shapes[index].weight}
+        radius={globalConfig.auxiliaryPointSize / state.stageScale}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -108,7 +109,7 @@ const Line = (props) => {
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
         fill="white"
-        stroke="1"
+        stroke={(1 / state.stageScale).toString()}
       />
       <Circle
         // eslint-disable-next-line react/prop-types
@@ -116,7 +117,7 @@ const Line = (props) => {
         // eslint-disable-next-line react/prop-types
         y={doc.data.shapes[index].end.y + doc.data.shapes[index].y}
         // eslint-disable-next-line react/prop-types
-        radius={doc.data.shapes[index].weight}
+        radius={globalConfig.auxiliaryPointSize / state.stageScale}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -143,7 +144,7 @@ const Line = (props) => {
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
         fill="white"
-        stroke="1"
+        stroke={(1 / state.stageScale).toString()}
       />
     </>
   );
