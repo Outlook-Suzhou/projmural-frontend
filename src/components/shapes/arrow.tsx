@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Line as KonvaLine, Circle, Layer } from 'react-konva';
+import { Line as KonvaLine, Circle } from 'react-konva';
 import Vector from './vector';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
