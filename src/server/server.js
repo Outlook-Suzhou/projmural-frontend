@@ -1,4 +1,6 @@
 const http = require('http');
+const fs = require('fs');
+const https = require('https');
 const express = require('express');
 const ShareDB = require('sharedb');
 const WebSocket = require('ws');
@@ -42,12 +44,28 @@ function startServer() {
 createDoc(startServer);
 
 // HTTP server
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/www.projmural.com-0001/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/www.projmural.com-0001/fullchain.pem', 'utf8');
+
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: certificate
+};
+
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
+const httpsServer = https.createServer(credentials, app);
+
+//..
+httpsServer.listen(443, () => {
+  console.log('HTTPS Server running on port 443');
+});
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(80);
+app.listen(8000);
 console.log('HTTPServer is lisening on http://localhost:8000');
+
