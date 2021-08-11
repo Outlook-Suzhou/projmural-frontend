@@ -25,6 +25,7 @@ import Point from '../tool_bar/tools/point';
 import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
 import CursorShape from './cursor_shape';
+import './painting_content.scss';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -139,8 +140,10 @@ const PaintingContent: React.FC<{}> = () => {
   }
   // console.log(state);
   const handleClick = (e: any) => {
-    handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
-    dispatch({ type: 'setSelectShape', payload: 'FREE' });
+    if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN') {
+      handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
+      dispatch({ type: 'setSelectShape', payload: 'FREE' });
+    }
   };
 
   return (
@@ -149,6 +152,7 @@ const PaintingContent: React.FC<{}> = () => {
       <ToolBar width={80} height={400} list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
+          className={state.selectShape}
           x={state.stagePos.x}
           y={state.stagePos.y}
           width={window.innerWidth}

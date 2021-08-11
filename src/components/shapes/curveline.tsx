@@ -18,7 +18,7 @@ const CurveLine: React.FC<Props> = (props: Props) => {
         name={`line${index}`}
         globalCompositeOperation={item.composite}
         stroke={item.fill}
-        strokeWidth={5}
+        strokeWidth={3}
         onClick={onSelect}
         onTap={onSelect}
         {...item}
