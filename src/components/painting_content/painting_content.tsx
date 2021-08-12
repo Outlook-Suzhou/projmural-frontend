@@ -161,6 +161,13 @@ const PaintingContent: React.FC<{}> = () => {
                       index={index}
                       click={() => {
                         if (state.selectShape === 'FREE') {
+                          if (item.type === 'TEXT') {
+                            const afterE = {
+                              ...item,
+                              shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
+                            };
+                            doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                          }
                           dispatch({ type: 'setCurrentItem', payload: item });
                           dispatch({ type: 'setCurrentIndex', payload: index });
                           setCopySelectItem(item);
