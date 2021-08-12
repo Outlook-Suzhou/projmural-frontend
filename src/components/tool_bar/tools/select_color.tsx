@@ -21,7 +21,6 @@ const SelectColor = () => {
     <div className="tool_icon">
       <Icon
         iconName="Color"
-        style={{ fontSize: '40px', margin: 'auto' }}
         onClick={() => { setClicked(true); }}
       />
       { isClicked ? <TwitterPicker color={state.currentItem.fill} onChangeComplete={handlePickComplete} /> : null}
