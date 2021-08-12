@@ -169,8 +169,9 @@ class AliyunOSSUpload extends React.Component {
     return (
       <Upload {...props}>
         <Icon
+          className="tool_icon"
           iconName="PictureFill"
-          style={{ fontSize: '40px', margin: 'auto' }}
+          style={{ fontSize: '30px', margin: 'auto' }}
         />
       </Upload>
     );
@@ -178,7 +179,7 @@ class AliyunOSSUpload extends React.Component {
 }
 const AddImage: React.FC<{}> = () => (
   // eslint-disable-next-line object-curly-newline
-  <div className="tool_icon" style={{ textAlign: 'center' }}>
+  <div className="tool_icon">
     <AliyunOSSUpload />
   </div>
 );

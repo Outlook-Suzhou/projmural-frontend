@@ -13,7 +13,7 @@ const FontSize: React.FC<{}> = () => {
   }
   return (
     <Tooltip title="字体大小">
-      <InputNumber min={5} max={50} value={state.currentItem.fontSize} onChange={onChange} style={{ height: '35px', marginTop: '15px', width: '60px' }} />
+      <InputNumber min={5} max={50} value={state.currentItem.fontSize} onChange={onChange} style={{ height: '35px', margin: '15px', width: '50px' }} />
     </Tooltip>
   );
 };

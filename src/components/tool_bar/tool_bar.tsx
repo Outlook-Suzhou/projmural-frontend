@@ -14,24 +14,18 @@ import { calcZoomX, calcZoomY } from '../../utils/calc_zoom_position';
 // }
 
 interface toolBarAttribute{
-  width: number,
-  height: number,
   list: React.FC<any>[],
   isFloatBar: Boolean,
 }
 
 const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
-  const {
-    width, height, list, isFloatBar,
-  } = props;
+  const { list, isFloatBar } = props;
   const state = useStateStore();
   // const showList: any[] = list.map((item) => <li>{toolList[item]}</li>);
   return (
     <div
       className={['toolbar', (isFloatBar ? 'float_tool_bar' : 'left_tool_bar')].join(' ')}
       style={{
-        width,
-        height,
         left: isFloatBar ? calcZoomX(state.currentItem.x, state.stageScale, state.stagePos.x) - 50 : 50,
         top: isFloatBar ? calcZoomY(state.currentItem.y, state.stageScale, state.stagePos.y) - 200 : 200,
       }}
