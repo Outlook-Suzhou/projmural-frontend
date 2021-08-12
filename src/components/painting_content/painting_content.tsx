@@ -32,6 +32,7 @@ const PaintingContent: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
+  useEffect(() => { dispatch({ type: 'setAdsorptionPointsList', payload: [] }); }, [state.currentIndex]);
   const [lastLine, setLastLine] = useState({
     fill: '#df4b26',
     points: [0],
