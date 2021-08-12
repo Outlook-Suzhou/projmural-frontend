@@ -26,48 +26,32 @@ import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
 import CursorShape from './cursor_shape';
 import './painting_content.scss';
+import useDrawing from '../../hook/freeDrawing';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
-  const [lastLine, setLastLine] = useState({
-    fill: '#df4b26',
-    points: [0],
-    type: 'CURVELINE',
-  });
-  const [isPainting, setIsPainting] = useState(false);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  // const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
-  function startDraw(e: { target: any; }) {
-    const pos = e.target.getStage().getPointerPosition();
-    setLastLine({
-      fill: '#df4b26',
-      // @ts-ignore
-      points: [calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)],
-      type: 'CURVELINE',
-    });
-    setIsPainting(true);
-  }
-  // const [selectedId, selectShape] = useState(-1);
+  useDrawing();
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
-    if (state.selectShape === 'ERASER' || state.selectShape === 'PEN') {
-      startDraw(e);
-    }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
     const pos = e.target.getStage().getPointerPosition();
-    if (isPainting && state.selectShape === 'PEN') {
-      const newPoints = lastLine.points.concat([calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)]);
-      setLastLine({
-        ...lastLine,
-        points: newPoints,
+    if (state.isPainting && state.selectShape === 'PEN') {
+      const newPoints = state.lastLine.points.concat([calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)]);
+      dispatch({
+        type: 'setLastLine',
+        payload: {
+          ...state.lastLine,
+          points: newPoints,
+        },
       });
     }
     setCursorPos({ x: pos.x, y: pos.y });
@@ -160,24 +144,11 @@ const PaintingContent: React.FC<{}> = () => {
           scaleY={state.stageScale}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
-          draggable={!isPainting}
+          draggable={!state.isPainting}
           onDragEnd={(e) => {
             dispatch({ type: 'setStagePos', payload: e.currentTarget.position() });
           }}
           onMouseMove={mouseMove}
-          onMouseUp={() => {
-            if (isPainting) {
-              setIsPainting(false);
-              if (state.selectShape === 'PEN') {
-                doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
-                setLastLine({
-                  fill: '#df4b26',
-                  points: [0, 0],
-                  type: 'CURVELINE',
-                });
-              }
-            }
-          }}
         >
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
@@ -190,20 +161,13 @@ const PaintingContent: React.FC<{}> = () => {
                       index={index}
                       click={() => {
                         if (state.selectShape === 'FREE') {
-                          if (item.type === 'TEXT') {
-                            const afterE = {
-                              ...item,
-                              shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
-                            };
-                            doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
-                          }
                           dispatch({ type: 'setCurrentItem', payload: item });
                           dispatch({ type: 'setCurrentIndex', payload: index });
                           setCopySelectItem(item);
                         }
                       }}
                       del={() => {
-                        if (state.selectShape === 'ERASER' && isPainting) {
+                        if (state.selectShape === 'ERASER' && state.isPainting) {
                           doc.submitOp([{ p: ['shapes', index], ld: item }]);
                         }
                       }}
@@ -212,9 +176,9 @@ const PaintingContent: React.FC<{}> = () => {
                 }
                 <Line
                 // @ts-ignore
-                  globalCompositeOperation={lastLine.composite}
-                  stroke={lastLine.fill}
-                  points={lastLine.points}
+                  globalCompositeOperation={state.lastLine.composite}
+                  stroke={state.lastLine.fill}
+                  points={state.lastLine.points}
                 />
                 {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
               </Layer>

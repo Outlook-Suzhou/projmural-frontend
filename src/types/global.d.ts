@@ -52,7 +52,6 @@ namespace BaseShapes {
     text: string,
     fontSize: number,
     scaleX: number,
-    shift: any,
   }
   interface BaseLine extends Position, Lock {
     start: Position,
@@ -64,7 +63,7 @@ namespace BaseShapes {
   }
   interface CurveLine extends Position, Lock {
     fill: string,
-    points: any,
+    points: Array,
     type: 'CURVELINE',
   }
   interface Arrow extends BaseLine {
