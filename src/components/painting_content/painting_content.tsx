@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import {
-  Stage, Layer, Rect, Line,
+  Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
 import doc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
@@ -26,6 +26,7 @@ import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
 import CursorShape from './cursor_shape';
 import './painting_content.scss';
+import globalConfig from '../shapes/global_config';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -220,6 +221,17 @@ const PaintingContent: React.FC<{}> = () => {
                   points={lastLine.points}
                 />
                 {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
+                {
+                  state.adsorptionPointsList.map((point) => (
+                    <Circle
+                      x={point.x}
+                      y={point.y}
+                      radius={globalConfig.auxiliaryPointSize / state.stageScale}
+                      fill="red"
+                      stroke={(1 / state.stageScale).toString()}
+                    />
+                  ))
+                }
               </Layer>
             </DispatchContext.Provider>
           </StateContext.Provider>

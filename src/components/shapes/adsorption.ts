@@ -229,8 +229,34 @@ const checkAdsorptionPoint = (mouse: Point, shape: BaseShapes.Shape, miniDistanc
       const adsorptionPoints = points;
       return { flag, adsorptionVertex, adsorptionPoints };
     }
-    case 'TEXT':
-      break;
+    case 'TEXT': {
+      const {
+        rotation, width, height, x, y,
+      } = shape;
+      const center = { x, y };
+      const realDegree = (rotation * 2 * Math.PI) / 360;
+      let vertexs = [
+        { x: 0, y: 0 },
+        { x: width, y: 0 },
+        { x: width, y: height },
+        { x: 0, y: height },
+      ];
+      vertexs = vertexs.map((vertex) => (Vector.add(center, Vector.rotate(vertex, realDegree))));
+      let miniRes = miniDistanceAndPointL(mouse, vertexs, miniDistance);
+      let flag = false;
+      if (miniRes.distance < miniDistance) flag = true;
+      let adsorptionVertex = miniRes.point;
+      let adsorptionPoints = [
+        { x: width / 2, y: 0 },
+        { x: width, y: height / 2 },
+        { x: width / 2, y: height },
+        { x: 0, y: height / 2 },
+      ];
+      adsorptionPoints = adsorptionPoints.map((vertex) => (Vector.add(center, Vector.rotate(vertex, realDegree))));
+      miniRes = miniDistanceAndPointP(adsorptionVertex, adsorptionPoints, miniDistance);
+      if (miniRes.distance < miniDistance) adsorptionVertex = miniRes.point;
+      return { flag, adsorptionPoints, adsorptionVertex };
+    }
     case 'CURVELINE':
       break;
     default:
