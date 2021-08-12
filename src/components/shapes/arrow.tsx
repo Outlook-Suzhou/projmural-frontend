@@ -11,11 +11,6 @@ interface vector {
   x: number;
   y: number;
 }
-interface result {
-  flag: boolean,
-  adsorptionVertex: vector,
-  adsorptionPoints: Array<vector>,
-}
 
 function getRect(start: vector, end: vector, weight: number) {
   const vectorAdd = (a: vector, b: vector) => [a.x + b.x, a.y + b.y];
@@ -83,26 +78,6 @@ const Arrow = (props) => {
   const [state, dispatch] = [useStateStore(), useDispatchStore()];
   const miniDistance = globalConfig.miniAbsorbDistance;
   const [lastDrag, setLastDrag] = useState(Date.now());
-  const checkAdsorption = (mouse: vector): result => {
-    let ret: result = {
-      flag: false,
-      adsorptionVertex: { x: 0, y: 0 },
-      adsorptionPoints: [],
-    };
-    if (Date.now() - lastDrag < globalConfig.absorbInterval) return ret;
-    setLastDrag(Date.now());
-    console.log('check');
-    doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
-      if (ret.flag || ind === index) return;
-      const res = checkAdsorptionPoint(mouse, shape, miniDistance);
-      if (res.flag === true) {
-        // eslint-disable-next-line consistent-return
-        ret = res;
-      }
-    });
-    // eslint-disable-next-line consistent-return
-    return ret;
-  };
   return (
     <>
       <KonvaLine
@@ -146,12 +121,17 @@ const Arrow = (props) => {
         onDragMove={(e) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
           let newPoint = mouse;
-          const res = checkAdsorption(mouse);
-          if (!res.flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
-          else {
-            newPoint = res.adsorptionVertex;
-            dispatch({ type: 'setAdsorptionPointsList', payload: res.adsorptionPoints });
-          }
+          let flag = false;
+          doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+            if (flag || ind === index) return;
+            const res = checkAdsorptionPoint(mouse, shape, miniDistance);
+            if (res.flag === true) {
+              newPoint = res.adsorptionVertex;
+              dispatch({ type: 'setAdsorptionPointsList', payload: res.adsorptionPoints });
+              flag = true;
+            }
+          });
+          if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
           const afterE = Object.assign(doc.data.shapes[index], {
             start: {
               x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
@@ -174,14 +154,21 @@ const Arrow = (props) => {
         draggable
         onClick={click}
         onDragMove={(e: { target: { attrs: { x: any; y: any; }; }; }) => {
+          if (Date.now() - lastDrag < globalConfig.absorbInterval) return;
+          setLastDrag(Date.now());
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
           let newPoint = mouse;
-          const res = checkAdsorption(mouse);
-          if (!res.flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
-          else {
-            newPoint = res.adsorptionVertex;
-            dispatch({ type: 'setAdsorptionPointsList', payload: res.adsorptionPoints });
-          }
+          let flag = false;
+          doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+            if (flag || ind === index) return;
+            const res = checkAdsorptionPoint(mouse, shape, miniDistance);
+            if (res.flag === true) {
+              newPoint = res.adsorptionVertex;
+              dispatch({ type: 'setAdsorptionPointsList', payload: res.adsorptionPoints });
+              flag = true;
+            }
+          });
+          if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
           const afterE = Object.assign(doc.data.shapes[index], {
             end: {
               x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
