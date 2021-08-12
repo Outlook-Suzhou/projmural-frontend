@@ -1,5 +1,5 @@
 FROM node:14.17
-ENV NODE_ENV=production
+ENV NODE_ENV production
 COPY . ./projmural
 WORKDIR /projmural
 RUN apt-get update

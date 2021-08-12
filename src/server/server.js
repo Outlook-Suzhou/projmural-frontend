@@ -27,7 +27,25 @@ function createDoc(callback) {
   });
 }
 console.log(process.env.NODE_ENV);
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
+  function startServer() {
+    // Create a web server to serve files and listen to WebSocket connections
+    const app = express();
+    app.use(express.static('static'));
+    const server = http.createServer(app);
+
+    // Connect any incoming WebSocket connection to ShareDB
+    const wss = new WebSocket.Server({ server });
+    wss.on('connection', (ws) => {
+      const stream = new WebSocketJSONStream(ws);
+      backend.listen(stream);
+    });
+
+    server.listen(8080);
+    console.log('ShareDB is listening on http://localhost:8080');
+  }
+  createDoc(startServer);
+} else {
   const privateKey = fs.readFileSync('./privkey.pem', 'utf8');
   const certificate = fs.readFileSync('./fullchain.pem', 'utf8');
 
@@ -71,22 +89,4 @@ if (process.env.NODE_ENV === 'production') {
   httpsServer.listen(443, () => {
     console.log('HTTPS Server running on port 443');
   });
-} else {
-  function startServer() {
-    // Create a web server to serve files and listen to WebSocket connections
-    const app = express();
-    app.use(express.static('static'));
-    const server = http.createServer(app);
-
-    // Connect any incoming WebSocket connection to ShareDB
-    const wss = new WebSocket.Server({ server });
-    wss.on('connection', (ws) => {
-      const stream = new WebSocketJSONStream(ws);
-      backend.listen(stream);
-    });
-
-    server.listen(8080);
-    console.log('ShareDB is listening on http://localhost:8080');
-  }
-  createDoc(startServer);
 }
