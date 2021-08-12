@@ -27,11 +27,6 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
     }
   }, [isSelected]);
 
-  const [globalState] = [useStateStore()];
-  useEffect(() => {
-    console.log(globalState.currentItem);
-  }, globalState.currentItem);
-
   return (
     <>
       <Rect

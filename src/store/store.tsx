@@ -7,6 +7,11 @@ interface line{
   points: Array<number>,
   type: 'CURVELINE',
 }
+interface Point {
+  x: number,
+  y: number,
+}
+
 interface globalState {
   currentItem: any,
   currentIndex: number
@@ -15,6 +20,7 @@ interface globalState {
   selectShape: string
   lastLine: line
   isPainting: boolean
+  adsorptionPointsList: Array<Point>
 }
 interface actionType {
   type: string,
@@ -33,6 +39,7 @@ const initialState: globalState = {
     type: 'CURVELINE',
   },
   isPainting: false,
+  adsorptionPointsList: [],
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -51,6 +58,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, lastLine: action.payload };
     case 'setIsPainting':
       return { ...state, isPainting: action.payload };
+    case 'setAdsorptionPointsList':
+      return { ...state, adsorptionPointsList: action.payload };
     case 'reset':
       return { ...initialState };
     default:
@@ -70,6 +79,7 @@ const StateContext = createContext<globalState>({
     type: 'CURVELINE',
   },
   isPainting: false,
+  adsorptionPointsList: [],
 });
 const DispatchContext = createContext<Function>(() => {});
 

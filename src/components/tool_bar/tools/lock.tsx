@@ -12,8 +12,7 @@ const Lock: React.FC<{}> = () => {
   return (
     <div className="tool_icon">
       <Icon
-        iconName={doc.data.shapes[state.currentIndex].draggable ? 'UnLock' : 'Lock'}
-        style={{ fontSize: '40px', margin: 'auto' }}
+        iconName={doc.data.shapes.length !== 0 && doc.data.shapes[state.currentIndex].draggable ? 'UnLock' : 'Lock'}
         onClick={() => { lockItem(); }}
       />
     </div>

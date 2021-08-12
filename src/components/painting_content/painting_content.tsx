@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import {
-  Stage, Layer, Rect, Line,
+  Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
 import doc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
@@ -27,12 +27,14 @@ import { calcX, calcY } from '../../utils/calc_zoom_position';
 import CursorShape from './cursor_shape';
 import './painting_content.scss';
 import useDrawing from '../../hook/freeDrawing';
+import globalConfig from '../shapes/global_config';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
+  useEffect(() => { dispatch({ type: 'setAdsorptionPointsList', payload: [] }); }, [state.currentIndex]);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   useDrawing();
   const checkDeselect = (e: any) => {
@@ -86,7 +88,7 @@ const PaintingContent: React.FC<{}> = () => {
 
   const handleWheel = (e: any) => {
     e.evt.preventDefault();
-    const scaleBy = 1.05;
+    const scaleBy = 0.95;
     const stage = e.target.getStage();
     const oldScale = stage.scaleX();
     const mousePointTo = {
@@ -94,7 +96,9 @@ const PaintingContent: React.FC<{}> = () => {
       y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
     };
 
-    const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    let newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    newScale = Math.max(0.4, newScale);
+    newScale = Math.min(3, newScale);
     dispatch({ type: 'setStageScale', payload: newScale });
     dispatch({
       type: 'setStagePos',
@@ -106,7 +110,7 @@ const PaintingContent: React.FC<{}> = () => {
   };
 
   for (let x = -2000; x < 2000; x += WIDTH) {
-    for (let y = -2000; y < 2000; y += HEIGHT) {
+    for (let y = -1500; y < 1500; y += HEIGHT) {
       gridComponents.push(
         <Rect
           x={x}
@@ -130,8 +134,8 @@ const PaintingContent: React.FC<{}> = () => {
 
   return (
     <>
-      {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
-      <ToolBar width={80} height={400} list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
+      {state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
+      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
           className={state.selectShape}
@@ -188,6 +192,17 @@ const PaintingContent: React.FC<{}> = () => {
                   points={state.lastLine.points}
                 />
                 {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
+                {
+                  state.adsorptionPointsList.map((point) => (
+                    <Circle
+                      x={point.x}
+                      y={point.y}
+                      radius={globalConfig.auxiliaryPointSize / state.stageScale}
+                      fill="red"
+                      stroke={(1 / state.stageScale).toString()}
+                    />
+                  ))
+                }
               </Layer>
             </DispatchContext.Provider>
           </StateContext.Provider>

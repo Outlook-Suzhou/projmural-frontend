@@ -22,7 +22,6 @@ const DeleteAll: React.FC<{}> = () => {
   return (
     <div className="tool_icon">
       <Icon
-        style={{ fontSize: '40px', margin: 'auto' }}
         iconName="ClearSelectionMirrored"
         onClick={showModal}
       />

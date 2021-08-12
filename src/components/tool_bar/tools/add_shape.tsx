@@ -11,13 +11,13 @@ initializeIcons();
 const gridStyle:any = {
   textAlign: 'center',
   cursor: 'pointer',
-  fontSize: '30px',
+  fontSize: '25px',
 };
 const shapes: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
   return (
     <>
-      <Row style={{ width: '120px', height: 'auto' }} gutter={16}>
+      <Row gutter={16}>
         <Col
           span={8}
           role="button"
@@ -63,7 +63,7 @@ const shapes: React.FC<{}> = () => {
           />
         </Col>
       </Row>
-      <Row style={{ width: '120px', height: 'auto' }} gutter={16}>
+      <Row gutter={16}>
         <Col
           span={8}
           className="chooseShapeButton"
@@ -108,7 +108,7 @@ const shapes: React.FC<{}> = () => {
           <BsDiamond />
         </Col>
       </Row>
-      <Row style={{ width: '120px', height: 'auto' }} gutter={16}>
+      <Row gutter={16}>
         <Col
           span={8}
           className="chooseShapeButton"
@@ -132,10 +132,10 @@ const shapes: React.FC<{}> = () => {
 const AddShape: React.FC<{}> = () => {
   const nodeRef = useRef(null);//
   return (
-    <div className="tool_icon" style={{ textAlign: 'center' }}>
+    <div className="tool_icon">
       <Popover trigger="click" placement="right" content={shapes}>
         <div ref={nodeRef} />
-        <Icon iconName="Shapes" style={{ fontSize: '40px' }} />
+        <Icon iconName="Shapes" />
       </Popover>
     </div>
   );

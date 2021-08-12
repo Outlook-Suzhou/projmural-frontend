@@ -5,4 +5,4 @@ const shapeConfig = {
   shadowBlur: 4,
 };
 
-export default shapeConfig;
+export default { shapeConfig };

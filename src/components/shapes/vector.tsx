@@ -40,6 +40,7 @@ const Vector = {
   toList: (v: vector) => ([v.x, v.y]),
   distancePP: (a: vector, b: vector): number => (Vector.length({ x: a.x - b.x, y: a.y - b.y })),
   distancePL: (P: vector, A: vector, B: vector): distanceAndPoint => {
+    // console.log([P, A, B]);
     const AP = Vector.sub(P, A);
     const AB = Vector.sub(B, A);
     const r = Vector.mulV(AP, AB) / (AB.x * AB.x + AB.y * AB.y);
@@ -57,6 +58,37 @@ const Vector = {
       point = B;
     }
     return { distance, point };
+  },
+  // distance from point to ellipse
+  distancePE: (p: vector, a: number, b: number): distanceAndPoint => {
+    const absP = { x: Math.abs(p.x), y: Math.abs(p.y) };
+    const ellipsePoint = (x: number) => ({
+      x,
+      y: Math.sqrt(
+        (b * b * (a * a - x * x)) / (a * a),
+      ),
+    });
+    const value = (x: number) => (Vector.distancePP(ellipsePoint(x), absP));
+    let l = 0;
+    let r = a;
+    const EPS = 1e-4;
+    while (Math.abs(value(l) - value(r)) > EPS) {
+      const mid1 = l + (r - l) / 3;
+      const mid2 = r - (r - l) / 3;
+      if (value(mid1) < value(mid2)) {
+        r = mid2;
+      } else {
+        l = mid1;
+      }
+    }
+    const ans = (l + r) / 2;
+    const ansP = ellipsePoint(ans);
+    if (p.x < 0) ansP.x = -ansP.x;
+    if (p.y < 0) ansP.y = -ansP.y;
+    return {
+      distance: value(ans),
+      point: ansP,
+    };
   },
   midPoint: (a: vector, b: vector): vector => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }),
 };

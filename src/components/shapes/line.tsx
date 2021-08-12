@@ -3,7 +3,8 @@ import { Line as KonvaLine, Circle } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
+import globalConfig from './global_config';
 
 interface vector {
   x: number;
@@ -34,27 +35,14 @@ const Line = (props) => {
     item, index, click, isSelected,
   } = props;
   const [circleOpacity, setCircleOpacity] = useState(1);
-  const state = useStateStore();
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     if (isSelected === true) setCircleOpacity(1);
     else setCircleOpacity(0);
   }, [isSelected]);
-  const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
-  useEffect(() => { if (state.currentIndex !== index) setAdsorptionPoints([]); }, [state.currentIndex]);
-  const miniDistance = 20;
+  const miniDistance = globalConfig.miniAbsorbDistance;
   return (
     <>
-      {
-        adsorptionPoints.map((point) => (
-          <Circle
-            x={point.x}
-            y={point.y}
-            radius={5}
-            fill="red"
-            stroke="1"
-          />
-        ))
-      }
       <KonvaLine
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...item}
@@ -81,7 +69,7 @@ const Line = (props) => {
         // eslint-disable-next-line react/prop-types
         y={doc.data.shapes[index].start.y + doc.data.shapes[index].y}
         // eslint-disable-next-line react/prop-types
-        radius={doc.data.shapes[index].weight}
+        radius={globalConfig.auxiliaryPointSize / state.stageScale}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -94,11 +82,11 @@ const Line = (props) => {
             const res = checkAdsorptionPoint(mouse, shape, miniDistance);
             if (res.flag === true) {
               newPoint = res.adsorptionVertex;
-              setAdsorptionPoints(res.adsorptionPoints);
+              dispatch({ type: 'setAdsorptionPointsList', payload: res.adsorptionPoints });
               flag = true;
             }
           });
-          if (!flag) setAdsorptionPoints([]);
+          if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
           const afterE = Object.assign(doc.data.shapes[index], {
             start: {
               x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
@@ -108,7 +96,7 @@ const Line = (props) => {
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
         fill="white"
-        stroke="1"
+        stroke={(1 / state.stageScale).toString()}
       />
       <Circle
         // eslint-disable-next-line react/prop-types
@@ -116,7 +104,7 @@ const Line = (props) => {
         // eslint-disable-next-line react/prop-types
         y={doc.data.shapes[index].end.y + doc.data.shapes[index].y}
         // eslint-disable-next-line react/prop-types
-        radius={doc.data.shapes[index].weight}
+        radius={globalConfig.auxiliaryPointSize / state.stageScale}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -129,11 +117,11 @@ const Line = (props) => {
             const res = checkAdsorptionPoint(mouse, shape, miniDistance);
             if (res.flag === true) {
               newPoint = res.adsorptionVertex;
-              setAdsorptionPoints(res.adsorptionPoints);
+              dispatch({ type: 'setAdsorptionPointsList', payload: res.adsorptionPoints });
               flag = true;
             }
           });
-          if (!flag) setAdsorptionPoints([]);
+          if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
           const afterE = Object.assign(doc.data.shapes[index], {
             end: {
               x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
@@ -143,7 +131,7 @@ const Line = (props) => {
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
         fill="white"
-        stroke="1"
+        stroke={(1 / state.stageScale).toString()}
       />
     </>
   );

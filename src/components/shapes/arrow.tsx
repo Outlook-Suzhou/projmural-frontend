@@ -4,6 +4,8 @@ import Vector from './vector';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
+import { useDispatchStore, useStateStore } from '../../store/store';
+import globalConfig from './global_config';
 
 interface vector {
   x: number;
@@ -73,21 +75,10 @@ const Arrow = (props) => {
   }, [isSelected]);
   // eslint-disable-next-line react/prop-types
   const { arrowPoints, tailPoints } = getArrow(item.start, item.end, item.weight, item.arrowSize);
-  const [adsorptionPoints, setAdsorptionPoints] = useState<Array<vector>>([]);
-  const miniDistance = 20;
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
+  const miniDistance = globalConfig.miniAbsorbDistance;
   return (
     <>
-      {
-        adsorptionPoints.map((point) => (
-          <Circle
-            x={point.x}
-            y={point.y}
-            radius={5}
-            fill="red"
-            stroke="1"
-          />
-        ))
-      }
       <KonvaLine
         {...item}
         {...shapeConfig}
@@ -123,7 +114,6 @@ const Arrow = (props) => {
         // eslint-disable-next-line react/prop-types
         y={item.start.y + item.y}
         // eslint-disable-next-line react/prop-types
-        radius={item.weight}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -136,11 +126,11 @@ const Arrow = (props) => {
             const res = checkAdsorptionPoint(mouse, shape, miniDistance);
             if (res.flag === true) {
               newPoint = res.adsorptionVertex;
-              setAdsorptionPoints(res.adsorptionPoints);
+              dispatch({ type: 'setAdsorptionPointsList', payload: res.adsorptionPoints });
               flag = true;
             }
           });
-          if (!flag) setAdsorptionPoints([]);
+          if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
           const afterE = Object.assign(doc.data.shapes[index], {
             start: {
               x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
@@ -149,8 +139,9 @@ const Arrow = (props) => {
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        radius={globalConfig.auxiliaryPointSize / state.stageScale}
         fill="white"
-        stroke="1"
+        stroke={(1 / state.stageScale).toString()}
       />
       <Circle
         // eslint-disable-next-line react/prop-types
@@ -158,7 +149,6 @@ const Arrow = (props) => {
         // eslint-disable-next-line react/prop-types
         y={item.end.y + item.y}
         // eslint-disable-next-line react/prop-types
-        radius={item.weight}
         opacity={circleOpacity}
         draggable
         onClick={click}
@@ -171,11 +161,11 @@ const Arrow = (props) => {
             const res = checkAdsorptionPoint(mouse, shape, miniDistance);
             if (res.flag === true) {
               newPoint = res.adsorptionVertex;
-              setAdsorptionPoints(res.adsorptionPoints);
+              dispatch({ type: 'setAdsorptionPointsList', payload: res.adsorptionPoints });
               flag = true;
             }
           });
-          if (!flag) setAdsorptionPoints([]);
+          if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
           const afterE = Object.assign(doc.data.shapes[index], {
             end: {
               x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
@@ -184,8 +174,9 @@ const Arrow = (props) => {
           });
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        radius={globalConfig.auxiliaryPointSize / state.stageScale}
         fill="white"
-        stroke="1"
+        stroke={(1 / state.stageScale).toString()}
       />
       {
         tailPoints.map((obj, ind) => (
@@ -195,11 +186,9 @@ const Arrow = (props) => {
             // eslint-disable-next-line react/prop-types
             y={obj.y + item.y}
             // eslint-disable-next-line react/prop-types
-            radius={item.weight}
             opacity={circleOpacity}
             draggable
             onDragMove={(e) => {
-              console.log(e);
               const position = {
                 x: e.target.attrs.x,
                 y: e.target.attrs.y,
@@ -215,15 +204,15 @@ const Arrow = (props) => {
               let newArrowSize = Math.max(Vector.mulV(direction, Vector.sub(position, Vector.add(center, end))), item.weight);
               // eslint-disable-next-line react/prop-types
               newArrowSize = (newArrowSize + item.arrowSize) / 2;
-              console.log(newArrowSize);
               const afterE = Object.assign(doc.data.shapes[index], {
                 // make sure circle flush when over darg
                 arrowSize: newArrowSize + Math.random() * 0.0001,
               });
               doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
             }}
+            radius={globalConfig.auxiliaryPointSize / state.stageScale}
             fill="white"
-            stroke="1"
+            stroke={(1 / state.stageScale).toString()}
           />
         ))
       }
