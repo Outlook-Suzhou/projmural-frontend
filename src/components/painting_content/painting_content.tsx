@@ -225,7 +225,7 @@ const PaintingContent: React.FC<{}> = () => {
                       x={point.x}
                       y={point.y}
                       radius={globalConfig.auxiliaryPointSize / state.stageScale}
-                      fill="red"
+                      fill={globalConfig.auxiliaryPointColor}
                       stroke={(1 / state.stageScale).toString()}
                     />
                   ))
