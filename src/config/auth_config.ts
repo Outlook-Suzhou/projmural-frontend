@@ -12,9 +12,9 @@ import { LogLevel } from '@azure/msal-browser';
  */
 export const msalConfig = {
   auth: process.env.NODE_ENV === 'production' ? {
-    clientId: 'c15796a4-c87e-4ec0-9b6d-e5b84045aa32',
+    clientId: 'a9b0b27c-4aef-4429-b19a-6e3d8fb3d1fa',
     authority: 'https://login.microsoftonline.com/common',
-    redirectUri: 'http://localhost:3000',
+    redirectUri: 'https://www.projmural.com',
   } : {
     clientId: 'c15796a4-c87e-4ec0-9b6d-e5b84045aa32',
     authority: 'https://login.microsoftonline.com/common',
