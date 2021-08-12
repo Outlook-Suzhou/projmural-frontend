@@ -26,8 +26,8 @@ function createDoc(callback) {
     callback();
   });
 }
-
-if (process.env === 'production') {
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'production') {
   const privateKey = fs.readFileSync('./privkey.pem', 'utf8');
   const certificate = fs.readFileSync('./fullchain.pem', 'utf8');
 
