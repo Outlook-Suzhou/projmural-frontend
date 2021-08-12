@@ -80,8 +80,13 @@ const PaintingContent: React.FC<{}> = () => {
     });
   }, []);
 
-  const WIDTH = 300;// size for background rect
-  const HEIGHT = 300;
+  const boundFunc = (pos: any) => {
+    const x = Math.min(0, Math.max(pos.x, window.innerWidth * (1 - state.stageScale)));
+    const y = Math.min(0, Math.max(pos.y, window.innerHeight * (1 - state.stageScale)));
+    return { x, y };
+  };
+  const WIDTH = 100;// size for background rect
+  const HEIGHT = 100;
   // const [stageScale, setstageScale] = React.useState(1);
 
   const gridComponents = [];
@@ -97,20 +102,21 @@ const PaintingContent: React.FC<{}> = () => {
     };
 
     let newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-    newScale = Math.max(0.4, newScale);
-    newScale = Math.min(3, newScale);
+    newScale = Math.max(1, newScale);
+    newScale = Math.min(4, newScale);
+
+    const x = -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale;
+    const y = -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale;
+    const pos = boundFunc({ x, y });
     dispatch({ type: 'setStageScale', payload: newScale });
     dispatch({
       type: 'setStagePos',
-      payload: {
-        x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-        y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
-      },
+      payload: pos,
     });
   };
 
-  for (let x = -2000; x < 2000; x += WIDTH) {
-    for (let y = -1500; y < 1500; y += HEIGHT) {
+  for (let x = 0; x < window.innerWidth; x += WIDTH) {
+    for (let y = 0; y < window.innerHeight; y += HEIGHT) {
       gridComponents.push(
         <Rect
           x={x}
@@ -149,10 +155,8 @@ const PaintingContent: React.FC<{}> = () => {
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
           draggable={!state.isPainting}
-          onDragEnd={(e) => {
-            dispatch({ type: 'setStagePos', payload: e.currentTarget.position() });
-          }}
           onMouseMove={mouseMove}
+          dragBoundFunc={boundFunc}
         >
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
