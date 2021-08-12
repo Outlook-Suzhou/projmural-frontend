@@ -2,6 +2,11 @@ import React, {
   createContext, useContext, useReducer,
 } from 'react';
 
+interface Point {
+  x: number,
+  y: number,
+}
+
 interface globalState {
   currentItem: any,
   currentIndex: number
@@ -9,6 +14,7 @@ interface globalState {
   stageScale: number
   selectShape: string
   penColor: string
+  adsorptionPointsList: Array<Point>
 }
 interface actionType {
   type: string,
@@ -22,6 +28,7 @@ const initialState: globalState = {
   stageScale: 1,
   selectShape: 'FREE',
   penColor: '#df4b26',
+  adsorptionPointsList: [],
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -38,6 +45,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, selectShape: action.payload };
     case 'setPenColor':
       return { ...state, penColor: action.payload };
+    case 'setAdsorptionPointsList':
+      return { ...state, adsorptionPointsList: action.payload };
     case 'reset':
       return { ...initialState };
     default:
@@ -52,6 +61,7 @@ const StateContext = createContext<globalState>({
   stageScale: 1,
   selectShape: 'FREE',
   penColor: '#df4b26',
+  adsorptionPointsList: [],
 });
 const DispatchContext = createContext<Function>(() => {});
 
