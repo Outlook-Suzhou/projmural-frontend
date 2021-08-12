@@ -1,4 +1,6 @@
 const http = require('http');
+const fs = require('fs');
+const https = require('https');
 const express = require('express');
 const ShareDB = require('sharedb');
 const WebSocket = require('ws');
@@ -23,11 +25,20 @@ function createDoc(callback) {
   });
 }
 
+const privateKey = fs.readFileSync('./privkey.pem', 'utf8');
+const certificate = fs.readFileSync('./fullchain.pem', 'utf8');
+
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: certificate,
+};
+
 function startServer() {
   // Create a web server to serve files and listen to WebSocket connections
   const app = express();
   app.use(express.static('static'));
-  const server = http.createServer(app);
+  const server = https.createServer(credentials, app);
 
   // Connect any incoming WebSocket connection to ShareDB
   const wss = new WebSocket.Server({ server });
@@ -42,12 +53,18 @@ function startServer() {
 createDoc(startServer);
 
 // HTTP server
+
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(443, () => {
+  console.log('HTTPS Server running on port 443');
+});
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(80);
+app.listen(8000);
 console.log('HTTPServer is lisening on http://localhost:8000');
