@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Line, Transformer } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
-import { useStateStore } from '../../store/store';
+import { useStateStore, useDispatchStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Triangle,
@@ -17,7 +17,7 @@ const Triangle: React.FC<Props> = (props: Props) => {
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const state = useStateStore();
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -38,6 +38,7 @@ const Triangle: React.FC<Props> = (props: Props) => {
         points={[item.radius.x, 0, 0, item.radius.y, -item.radius.x, 0]}
         key={index}
         closed
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onDragMove={(e) => {
           const afterE: BaseShapes.Triangle = {
             radius: e.target.attrs.radius,

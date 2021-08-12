@@ -64,9 +64,8 @@ namespace BaseShapes {
   }
   interface CurveLine extends Position, Lock {
     fill: string,
-    points: any,
+    points: Array,
     type: 'CURVELINE',
-    composite: undefined,
   }
   interface Arrow extends BaseLine {
     arrowSize: number,

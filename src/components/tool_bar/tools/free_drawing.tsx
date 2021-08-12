@@ -69,7 +69,6 @@ const FreeDrawing: React.FC<{}> = () => (
       <Tooltip title="自由画笔">
         <Icon
           iconName="EditCreate"
-          style={{ fontSize: '40px', margin: 'auto' }}
         />
       </Tooltip>
     </Popover>

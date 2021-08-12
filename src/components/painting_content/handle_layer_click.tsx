@@ -19,7 +19,7 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
       break;
     case 'TRIANGLE':
       addShape({
-        radius: { x: 30, y: 20 }, x, y, type: 'TRIANGLE', draggable: true, rotation: 0, fill: 'yellow',
+        radius: { x: 30, y: 30 }, x, y, type: 'TRIANGLE', draggable: true, rotation: 0, fill: 'yellow',
       });
       break;
     case 'ELLIPSE':
@@ -39,7 +39,7 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
       break;
     case 'TEXT':
       addShape({
-        width: 200, height: 50, x, y, type: 'TEXT', text: '双击编辑文字', fontSize: 25, draggable: true, fill: '#000000', rotation: 0, scaleX: 1, shift: { x: 0, y: 0 },
+        width: 200, height: 25, x, y, type: 'TEXT', text: '双击编辑文字', fontSize: 25, draggable: true, fill: '#000000', rotation: 0, scaleX: 1, shift: { x: 0, y: 0 },
       });
       break;
     default:

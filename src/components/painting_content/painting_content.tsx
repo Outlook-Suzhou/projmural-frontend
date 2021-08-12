@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import {
-  Stage, Layer, Rect, Line,
+  Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
 import doc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
@@ -24,54 +24,39 @@ import FreeDrawing from '../tool_bar/tools/free_drawing';
 import Point from '../tool_bar/tools/point';
 import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
+import CursorShape from './cursor_shape';
+import './painting_content.scss';
+import useDrawing from '../../hook/freeDrawing';
+import globalConfig from '../shapes/global_config';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
-  const [lastLine, setLastLine] = useState({
-    fill: '#df4b26',
-    composite: 'source-over',
-    points: [0],
-    type: 'CURVELINE',
-  });
-  const [isPainting, setIsPainting] = useState(false);
-  // const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
-  function startDraw(e: { target: any; }) {
-    const pos = e.target.getStage().getPointerPosition();
-    setLastLine({
-      fill: '#df4b26',
-      composite: 'source-over',
-      // @ts-ignore
-      points: [(pos.x - state.stagePos.x) / state.stageScale, (pos.y - state.stagePos.y) / state.stageScale],
-      type: 'CURVELINE',
-    });
-    setIsPainting(true);
-  }
-  // const [selectedId, selectShape] = useState(-1);
+  useEffect(() => { dispatch({ type: 'setAdsorptionPointsList', payload: [] }); }, [state.currentIndex]);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  useDrawing();
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
-    if (state.selectShape === 'ERASER' || state.selectShape === 'PEN') {
-      startDraw(e);
-    }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
-    if (isPainting && state.selectShape === 'PEN') {
-      const pos = e.target.getStage().getPointerPosition();
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      const newPoints = lastLine.points.concat([(pos.x - state.stagePos.x) / state.stageScale, (pos.y - state.stagePos.y) / state.stageScale]);
-      // @ts-ignore
-      setLastLine({
-        ...lastLine,
-        points: newPoints,
+    const pos = e.target.getStage().getPointerPosition();
+    if (state.isPainting && state.selectShape === 'PEN') {
+      const newPoints = state.lastLine.points.concat([calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)]);
+      dispatch({
+        type: 'setLastLine',
+        payload: {
+          ...state.lastLine,
+          points: newPoints,
+        },
       });
     }
+    setCursorPos({ x: pos.x, y: pos.y });
   };
   const getFloatBar = () => {
     const tools = [SelectColor, ZIndex, Lock, DelEle];
@@ -103,7 +88,7 @@ const PaintingContent: React.FC<{}> = () => {
 
   const handleWheel = (e: any) => {
     e.evt.preventDefault();
-    const scaleBy = 1.05;
+    const scaleBy = 0.95;
     const stage = e.target.getStage();
     const oldScale = stage.scaleX();
     const mousePointTo = {
@@ -111,7 +96,9 @@ const PaintingContent: React.FC<{}> = () => {
       y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
     };
 
-    const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    let newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    newScale = Math.max(0.4, newScale);
+    newScale = Math.min(3, newScale);
     dispatch({ type: 'setStageScale', payload: newScale });
     dispatch({
       type: 'setStagePos',
@@ -123,7 +110,7 @@ const PaintingContent: React.FC<{}> = () => {
   };
 
   for (let x = -2000; x < 2000; x += WIDTH) {
-    for (let y = -2000; y < 2000; y += HEIGHT) {
+    for (let y = -1500; y < 1500; y += HEIGHT) {
       gridComponents.push(
         <Rect
           x={x}
@@ -139,16 +126,19 @@ const PaintingContent: React.FC<{}> = () => {
   }
   // console.log(state);
   const handleClick = (e: any) => {
-    handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
-    dispatch({ type: 'setSelectShape', payload: 'FREE' });
+    if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN') {
+      handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
+      dispatch({ type: 'setSelectShape', payload: 'FREE' });
+    }
   };
 
   return (
     <>
-      {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
-      <ToolBar width={80} height={400} list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
+      {state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
+      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
+          className={state.selectShape}
           x={state.stagePos.x}
           y={state.stagePos.y}
           width={window.innerWidth}
@@ -158,25 +148,11 @@ const PaintingContent: React.FC<{}> = () => {
           scaleY={state.stageScale}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
-          draggable={!isPainting}
+          draggable={!state.isPainting}
           onDragEnd={(e) => {
             dispatch({ type: 'setStagePos', payload: e.currentTarget.position() });
           }}
           onMouseMove={mouseMove}
-          onMouseUp={() => {
-            if (isPainting) {
-              setIsPainting(false);
-              if (state.selectShape === 'PEN') {
-                doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
-                setLastLine({
-                  fill: '#df4b26',
-                  composite: 'source-over',
-                  points: [0, 0],
-                  type: 'CURVELINE',
-                });
-              }
-            }
-          }}
         >
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
@@ -202,7 +178,7 @@ const PaintingContent: React.FC<{}> = () => {
                         }
                       }}
                       del={() => {
-                        if (state.selectShape === 'ERASER' && isPainting) {
+                        if (state.selectShape === 'ERASER' && state.isPainting) {
                           doc.submitOp([{ p: ['shapes', index], ld: item }]);
                         }
                       }}
@@ -211,10 +187,22 @@ const PaintingContent: React.FC<{}> = () => {
                 }
                 <Line
                 // @ts-ignore
-                  globalCompositeOperation={lastLine.composite}
-                  stroke={lastLine.fill}
-                  points={lastLine.points}
+                  globalCompositeOperation={state.lastLine.composite}
+                  stroke={state.lastLine.fill}
+                  points={state.lastLine.points}
                 />
+                {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
+                {
+                  state.adsorptionPointsList.map((point) => (
+                    <Circle
+                      x={point.x}
+                      y={point.y}
+                      radius={globalConfig.auxiliaryPointSize / state.stageScale}
+                      fill="red"
+                      stroke={(1 / state.stageScale).toString()}
+                    />
+                  ))
+                }
               </Layer>
             </DispatchContext.Provider>
           </StateContext.Provider>
