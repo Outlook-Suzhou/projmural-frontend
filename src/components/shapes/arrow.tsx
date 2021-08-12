@@ -77,7 +77,6 @@ const Arrow = (props) => {
   const { arrowPoints, tailPoints } = getArrow(item.start, item.end, item.weight, item.arrowSize);
   const [state, dispatch] = [useStateStore(), useDispatchStore()];
   const miniDistance = globalConfig.miniAbsorbDistance;
-  const [lastDrag, setLastDrag] = useState(Date.now());
   return (
     <>
       <KonvaLine
@@ -153,9 +152,7 @@ const Arrow = (props) => {
         opacity={circleOpacity}
         draggable
         onClick={click}
-        onDragMove={(e: { target: { attrs: { x: any; y: any; }; }; }) => {
-          if (Date.now() - lastDrag < globalConfig.absorbInterval) return;
-          setLastDrag(Date.now());
+        onDragMove={(e) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
           let newPoint = mouse;
           let flag = false;
@@ -191,9 +188,7 @@ const Arrow = (props) => {
             // eslint-disable-next-line react/prop-types
             opacity={circleOpacity}
             draggable
-            onDragMove={(e: { target: { attrs: { x: any; y: any; }; }; }) => {
-              if (Date.now() - lastDrag < globalConfig.absorbInterval) return;
-              setLastDrag(Date.now());
+            onDragMove={(e) => {
               const position = {
                 x: e.target.attrs.x,
                 y: e.target.attrs.y,
