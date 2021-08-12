@@ -11,7 +11,7 @@ function useDrawing() {
       dispatch({
         type: 'setLastLine',
         payload: {
-          fill: '#df4b26',
+          fill: '#000000',
           points: [calcX(e.x, state.stageScale, state.stagePos.x), calcY(e.y, state.stageScale, state.stagePos.y)],
           type: 'CURVELINE',
         },
@@ -27,7 +27,7 @@ function useDrawing() {
         dispatch({
           type: 'setLastLine',
           payload: {
-            fill: '#df4b26',
+            fill: '#000000',
             // @ts-ignore
             points: [0, 0],
             type: 'CURVELINE',
