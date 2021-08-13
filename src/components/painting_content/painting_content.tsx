@@ -207,6 +207,8 @@ const PaintingContent: React.FC<{}> = () => {
                   stroke={state.lastLine.fill}
                   points={state.lastLine.points}
                   strokeWidth={3}
+                  lineCap="round"
+                  tension={0.5}
                 />
                 {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
                 {
