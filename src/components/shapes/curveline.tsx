@@ -34,7 +34,6 @@ const CurveLine: React.FC<Props> = (props: Props) => {
         }}
         onMouseOver={onMouseOver}
         onMouseDown={onMouseOver}
-        onDblClick={() => { console.log(item); }}
       />
     </>
   );
