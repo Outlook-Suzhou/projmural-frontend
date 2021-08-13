@@ -44,7 +44,10 @@
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:client": "react-scripts start",
     "start:server": "node ./src/server/server.js",
-    "build": "react-scripts build && cp ./src/server/server.js ./server.js",
+    "prepare": "npm run copyserver && npm run copyhttp",
+    "build": "react-scripts build",
+    "copyserver": "cp ./src/server/server.js ./server.js",
+    "copyhttp": "sudo cp /etc/letsencrypt/live/www.projmural.com-0001/privkey.pem ./privkey.pem && sudo cp /etc/letsencrypt/live/www.projmural.com-0001/fullchain.pem ./fullchain.pem",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
