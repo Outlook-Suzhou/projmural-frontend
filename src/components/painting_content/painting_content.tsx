@@ -114,6 +114,15 @@ const PaintingContent: React.FC<{}> = () => {
       payload: pos,
     });
   };
+  const handleDragMove = (e: any) => {
+    if (state.currentIndex !== -1) {
+      return;
+    }
+    dispatch({
+      type: 'setStagePos',
+      payload: { x: e.target.x(), y: e.target.y() },
+    });
+  };
 
   for (let x = 0; x < window.innerWidth; x += WIDTH) {
     for (let y = 0; y < window.innerHeight; y += HEIGHT) {
@@ -154,14 +163,17 @@ const PaintingContent: React.FC<{}> = () => {
           scaleY={state.stageScale}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
-          draggable={!state.isPainting}
+          draggable={state.currentIndex === -1 && !state.isPainting}
           onMouseMove={mouseMove}
+          onDragMove={handleDragMove}
           dragBoundFunc={boundFunc}
         >
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
-              <Layer onClick={handleClick}>
+              <Layer>
                 {gridComponents}
+              </Layer>
+              <Layer onClick={handleClick}>
                 {
                   list.map((item: any, index: number) => (
                     <BaseShape
