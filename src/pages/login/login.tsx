@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Layout } from 'antd';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { loginRequest } from '../../config/auth_config';
@@ -18,7 +19,7 @@ const Login: React.FC<{}> = () => {
   });
   const isAuthenticated = useIsAuthenticated();
   const { instance, accounts } = useMsal();
-
+  const history = useHistory();
   const requestProfileData = () => {
     // Silently acquires an access token which is then attached to a request for MS Graph data
     instance.acquireTokenSilent({
@@ -38,7 +39,9 @@ const Login: React.FC<{}> = () => {
       postLogoutRedirectUri: '/',
     });
   };
-
+  const goToPainting = () => {
+    history.push('/painting');
+  };
   return (
     <div className="login_page">
       <Layout>
@@ -73,6 +76,9 @@ const Login: React.FC<{}> = () => {
                   {' '}
                   {graphData.id}
                 </p>
+                <button type="button" onClick={goToPainting}>
+                  Go to Painting
+                </button>
               </div>
             )
             : null }
