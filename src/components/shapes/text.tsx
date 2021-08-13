@@ -74,7 +74,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
           textarea.style.transformOrigin = 'left top';
           textarea.style.color = item.fill;
           textarea.style.height = '1000px';
-          textarea.style.width = `${item.width + 25}px`;
+          textarea.style.width = `${item.width * state.stageScale + textNode.padding() * 2}px`;
           textarea.focus();
           textarea.addEventListener('keydown', () => {
             item.text = textarea.value;
