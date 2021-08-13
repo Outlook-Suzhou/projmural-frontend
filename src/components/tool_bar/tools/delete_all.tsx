@@ -13,7 +13,7 @@ const DeleteAll: React.FC<{}> = () => {
   const handleOk = () => {
     setIsModalVisible(false);
     deleteAll();
-    message.info('画板中的元素已经被全部删除');
+    message.info('All cleared');
   };
 
   const handleCancel = () => {
@@ -22,12 +22,11 @@ const DeleteAll: React.FC<{}> = () => {
   return (
     <div className="tool_icon">
       <Icon
-        style={{ fontSize: '40px', margin: 'auto' }}
         iconName="ClearSelectionMirrored"
         onClick={showModal}
       />
-      <Modal title="警告" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <p>这将会删除画板中的所有元素，你确定吗？</p>
+      <Modal title="WARNING" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="clear" cancelText="cancel">
+        <p>Are you sure to clear all the elements?</p>
       </Modal>
     </div>
   );

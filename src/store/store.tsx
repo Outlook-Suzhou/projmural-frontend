@@ -2,6 +2,11 @@ import React, {
   createContext, useContext, useReducer,
 } from 'react';
 
+interface line{
+  fill: string,
+  points: Array<number>,
+  type: 'CURVELINE',
+}
 interface Point {
   x: number,
   y: number,
@@ -13,7 +18,8 @@ interface globalState {
   stagePos: any
   stageScale: number
   selectShape: string
-  penColor: string
+  lastLine: line
+  isPainting: boolean
   adsorptionPointsList: Array<Point>
 }
 interface actionType {
@@ -25,9 +31,14 @@ const initialState: globalState = {
   currentItem: {},
   currentIndex: -1,
   stagePos: { x: 0, y: 0 },
-  stageScale: 1,
+  stageScale: 2,
   selectShape: 'FREE',
-  penColor: '#df4b26',
+  lastLine: {
+    fill: '#000000',
+    points: [0],
+    type: 'CURVELINE',
+  },
+  isPainting: false,
   adsorptionPointsList: [],
 };
 
@@ -43,8 +54,10 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, stageScale: action.payload };
     case 'setSelectShape':
       return { ...state, selectShape: action.payload };
-    case 'setPenColor':
-      return { ...state, penColor: action.payload };
+    case 'setLastLine':
+      return { ...state, lastLine: action.payload };
+    case 'setIsPainting':
+      return { ...state, isPainting: action.payload };
     case 'setAdsorptionPointsList':
       return { ...state, adsorptionPointsList: action.payload };
     case 'reset':
@@ -58,9 +71,14 @@ const StateContext = createContext<globalState>({
   currentItem: {},
   currentIndex: -1,
   stagePos: { x: 0, y: 0 },
-  stageScale: 1,
+  stageScale: 2,
   selectShape: 'FREE',
-  penColor: '#df4b26',
+  lastLine: {
+    fill: '#000000',
+    points: [0],
+    type: 'CURVELINE',
+  },
+  isPainting: false,
   adsorptionPointsList: [],
 });
 const DispatchContext = createContext<Function>(() => {});

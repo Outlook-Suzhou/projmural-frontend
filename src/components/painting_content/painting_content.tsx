@@ -26,6 +26,7 @@ import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
 import CursorShape from './cursor_shape';
 import './painting_content.scss';
+import useDrawing from '../../hook/freeDrawing';
 import globalConfig from '../shapes/global_config';
 
 const PaintingContent: React.FC<{}> = () => {
@@ -34,42 +35,25 @@ const PaintingContent: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
   useEffect(() => { dispatch({ type: 'setAdsorptionPointsList', payload: [] }); }, [state.currentIndex]);
-  const [lastLine, setLastLine] = useState({
-    fill: '#df4b26',
-    points: [0],
-    type: 'CURVELINE',
-  });
-  const [isPainting, setIsPainting] = useState(false);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  // const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
-  function startDraw(e: { target: any; }) {
-    const pos = e.target.getStage().getPointerPosition();
-    setLastLine({
-      fill: '#df4b26',
-      // @ts-ignore
-      points: [calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)],
-      type: 'CURVELINE',
-    });
-    setIsPainting(true);
-  }
-  // const [selectedId, selectShape] = useState(-1);
+  useDrawing();
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
-    if (state.selectShape === 'ERASER' || state.selectShape === 'PEN') {
-      startDraw(e);
-    }
   };
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
     const pos = e.target.getStage().getPointerPosition();
-    if (isPainting && state.selectShape === 'PEN') {
-      const newPoints = lastLine.points.concat([calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)]);
-      setLastLine({
-        ...lastLine,
-        points: newPoints,
+    if (state.isPainting && state.selectShape === 'PEN') {
+      const newPoints = state.lastLine.points.concat([calcX(pos.x, state.stageScale, state.stagePos.x), calcY(pos.y, state.stageScale, state.stagePos.y)]);
+      dispatch({
+        type: 'setLastLine',
+        payload: {
+          ...state.lastLine,
+          points: newPoints,
+        },
       });
     }
     setCursorPos({ x: pos.x, y: pos.y });
@@ -96,15 +80,20 @@ const PaintingContent: React.FC<{}> = () => {
     });
   }, []);
 
-  const WIDTH = 300;// size for background rect
-  const HEIGHT = 300;
+  const boundFunc = (pos: any) => {
+    const x = Math.min(0, Math.max(pos.x, window.innerWidth * (1 - state.stageScale)));
+    const y = Math.min(0, Math.max(pos.y, window.innerHeight * (1 - state.stageScale)));
+    return { x, y };
+  };
+  const WIDTH = 100;// size for background rect
+  const HEIGHT = 100;
   // const [stageScale, setstageScale] = React.useState(1);
 
   const gridComponents = [];
 
   const handleWheel = (e: any) => {
     e.evt.preventDefault();
-    const scaleBy = 1.05;
+    const scaleBy = 0.95;
     const stage = e.target.getStage();
     const oldScale = stage.scaleX();
     const mousePointTo = {
@@ -112,19 +101,31 @@ const PaintingContent: React.FC<{}> = () => {
       y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
     };
 
-    const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    let newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    newScale = Math.max(1, newScale);
+    newScale = Math.min(4, newScale);
+
+    const x = -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale;
+    const y = -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale;
+    const pos = boundFunc({ x, y });
     dispatch({ type: 'setStageScale', payload: newScale });
     dispatch({
       type: 'setStagePos',
-      payload: {
-        x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-        y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
-      },
+      payload: pos,
+    });
+  };
+  const handleDragMove = (e: any) => {
+    if (state.currentIndex !== -1) {
+      return;
+    }
+    dispatch({
+      type: 'setStagePos',
+      payload: { x: e.target.x(), y: e.target.y() },
     });
   };
 
-  for (let x = -2000; x < 2000; x += WIDTH) {
-    for (let y = -2000; y < 2000; y += HEIGHT) {
+  for (let x = 0; x < window.innerWidth; x += WIDTH) {
+    for (let y = 0; y < window.innerHeight; y += HEIGHT) {
       gridComponents.push(
         <Rect
           x={x}
@@ -148,8 +149,8 @@ const PaintingContent: React.FC<{}> = () => {
 
   return (
     <>
-      {state.currentIndex === -1 ? null : <ToolBar width={300} height={80} list={getFloatBar()} isFloatBar />}
-      <ToolBar width={80} height={400} list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
+      {state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
+      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
           className={state.selectShape}
@@ -162,29 +163,17 @@ const PaintingContent: React.FC<{}> = () => {
           scaleY={state.stageScale}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
-          draggable={!isPainting}
-          onDragEnd={(e) => {
-            dispatch({ type: 'setStagePos', payload: e.currentTarget.position() });
-          }}
+          draggable={state.currentIndex === -1 && !state.isPainting}
           onMouseMove={mouseMove}
-          onMouseUp={() => {
-            if (isPainting) {
-              setIsPainting(false);
-              if (state.selectShape === 'PEN') {
-                doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: lastLine }]);
-                setLastLine({
-                  fill: '#df4b26',
-                  points: [0, 0],
-                  type: 'CURVELINE',
-                });
-              }
-            }
-          }}
+          onDragMove={handleDragMove}
+          dragBoundFunc={boundFunc}
         >
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
-              <Layer onClick={handleClick}>
+              <Layer>
                 {gridComponents}
+              </Layer>
+              <Layer onClick={handleClick}>
                 {
                   list.map((item: any, index: number) => (
                     <BaseShape
@@ -205,7 +194,7 @@ const PaintingContent: React.FC<{}> = () => {
                         }
                       }}
                       del={() => {
-                        if (state.selectShape === 'ERASER' && isPainting) {
+                        if (state.selectShape === 'ERASER' && state.isPainting) {
                           doc.submitOp([{ p: ['shapes', index], ld: item }]);
                         }
                       }}
@@ -214,9 +203,10 @@ const PaintingContent: React.FC<{}> = () => {
                 }
                 <Line
                 // @ts-ignore
-                  globalCompositeOperation={lastLine.composite}
-                  stroke={lastLine.fill}
-                  points={lastLine.points}
+                  globalCompositeOperation={state.lastLine.composite}
+                  stroke={state.lastLine.fill}
+                  points={state.lastLine.points}
+                  strokeWidth={3}
                 />
                 {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
                 {

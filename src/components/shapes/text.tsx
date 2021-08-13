@@ -4,7 +4,7 @@ import { Text, Transformer } from 'react-konva';
 import React, { useState } from 'react';
 import Konva from 'konva';
 import doc from '../../client/client';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Text,
@@ -21,6 +21,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
   const shapeRef = React.useRef<any>();
   const trRef = React.useRef<any>();
   const state = useStateStore();
+  const dispatch = useDispatchStore();
   React.useEffect(() => {
     if (isSelected) {
       // we need to attach transformer manually
@@ -61,8 +62,6 @@ const TEXT: React.FC<Props> = (props: Props) => {
           textarea.style.transformOrigin = 'left top';
           textarea.style.top = `${item.y * item.shift.scale + item.shift.y}px`;
           textarea.style.left = `${item.x * item.shift.scale + item.shift.x}px`;
-          textarea.style.width = '1000px';
-          textarea.style.height = '1000px';
           textarea.style.border = 'none';
           textarea.style.padding = '0px';
           textarea.style.margin = '0px';
@@ -75,12 +74,14 @@ const TEXT: React.FC<Props> = (props: Props) => {
           textarea.style.resize = 'none';
           textarea.style.transformOrigin = 'left top';
           textarea.style.color = item.fill;
-          textarea.style.width = `${item.width - textNode.padding() * 2}px`;
+          textarea.style.height = '1000px';
+          textarea.style.width = `${item.width * state.stageScale + textNode.padding() * 2}px`;
           textarea.focus();
           textarea.addEventListener('keydown', () => {
             item.text = textarea.value;
+            const node = shapeRef.current;
+            item.height = node.height();
             doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
-            console.log(item);
           });
           function removeTextarea() {
             // @ts-ignore
@@ -128,6 +129,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
       />
       {isSelected && (
         <Transformer

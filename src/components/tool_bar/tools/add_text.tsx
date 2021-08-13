@@ -13,7 +13,6 @@ const AddText: React.FC<{}> = () => {
     <div className="tool_icon">
       <Icon
         iconName="FontColorA"
-        style={{ fontSize: '40px', margin: 'auto' }}
         onClick={() => dispatch({ type: 'setSelectShape', payload: 'TEXT' })}
       />
     </div>

@@ -22,8 +22,9 @@ const Content: React.FC<{}> = () => {
           role="button"
           tabIndex={0}
           onClick={() => {
-            doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
-            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: state.currentItem }]);
+            const afterE: BaseShapes.Shape = { ...doc.data.shapes[state.currentIndex] };
+            doc.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
+            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: afterE }]);
             dispatch({ type: 'setCurrentIndex', payload: -1 });
           }}
           onKeyDown={() => {}}
@@ -40,8 +41,9 @@ const Content: React.FC<{}> = () => {
           tabIndex={-1}
           // eslint-disable-next-line max-len
           onClick={() => {
-            doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
-            doc.submitOp([{ p: ['shapes', 0], li: state.currentItem }]);
+            const afterE: BaseShapes.Shape = { ...doc.data.shapes[state.currentIndex] };
+            doc.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
+            doc.submitOp([{ p: ['shapes', 0], li: afterE }]);
             dispatch({ type: 'setCurrentIndex', payload: -1 });
           }}
           onKeyDown={() => {}}
@@ -61,7 +63,6 @@ const ZIndex = () => (
       <Tooltip title="置于底层/顶层">
         <Icon
           iconName="ScrollUpDown"
-          style={{ fontSize: '40px', margin: 'auto' }}
         />
       </Tooltip>
     </Popover>
