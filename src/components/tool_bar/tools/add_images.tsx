@@ -61,7 +61,7 @@ class AliyunOSSUpload extends React.Component {
     return {
       dir: 'images/', // bucket中的路径
       expire: '1577811661', // 有效时间戳'1577811661',
-      host: 'http://proj-mural.oss-cn-shanghai.aliyuncs.com',
+      host: 'https://proj-mural.oss-cn-shanghai.aliyuncs.com',
       accessId: 'LTAI4GA8GduXd1Ct1opmhJbE',
       policy: policyBase64, // you
       signature,
