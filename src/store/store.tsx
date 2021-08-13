@@ -34,7 +34,7 @@ const initialState: globalState = {
   stageScale: 1.5,
   selectShape: 'FREE',
   lastLine: {
-    fill: '#df4b26',
+    fill: '#000000',
     points: [0],
     type: 'CURVELINE',
   },
@@ -74,7 +74,7 @@ const StateContext = createContext<globalState>({
   stageScale: 1.5,
   selectShape: 'FREE',
   lastLine: {
-    fill: '#df4b26',
+    fill: '#000000',
     points: [0],
     type: 'CURVELINE',
   },

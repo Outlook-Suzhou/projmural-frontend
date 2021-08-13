@@ -18,8 +18,8 @@ const CurveLine: React.FC<Props> = (props: Props) => {
         name={`line${index}`}
         globalCompositeOperation="source-over"
         stroke={item.fill}
-        strokeWidth={3}
-        onClick={onSelect}
+        strokeWidth={5}
+        onClick={onMouseOver}
         onTap={onSelect}
         {...item}
         points={item.points}
@@ -33,6 +33,7 @@ const CurveLine: React.FC<Props> = (props: Props) => {
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
         onMouseOver={onMouseOver}
+        onMouseDown={onMouseOver}
       />
     </>
   );
