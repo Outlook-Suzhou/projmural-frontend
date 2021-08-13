@@ -4,7 +4,7 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
   switch (shape) {
     case 'RECTANGLE':
       addShape({
-        width: 50, height: 50, x, y, type: 'RECTANGLE', rotation: 0, fill: 'blue', draggable: true,
+        width: 50, height: 50, x, y, type: 'RECTANGLE', rotation: 0, fill: '#FF6900', draggable: true,
       });
       break;
     case 'LINE':
@@ -14,17 +14,17 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
       break;
     case 'CIRCLE':
       addShape({
-        radius: 30, x, y, type: 'CIRCLE', draggable: true, rotation: 0, fill: 'green',
+        radius: 30, x, y, type: 'CIRCLE', draggable: true, rotation: 0, fill: '#7BDCB5',
       });
       break;
     case 'TRIANGLE':
       addShape({
-        radius: { x: 30, y: 30 }, x, y, type: 'TRIANGLE', draggable: true, rotation: 0, fill: 'yellow',
+        radius: { x: 30, y: 30 }, x, y, type: 'TRIANGLE', draggable: true, rotation: 0, fill: '#9900EF',
       });
       break;
     case 'ELLIPSE':
       addShape({
-        radius: { x: 30, y: 20 }, x, y, type: 'ELLIPSE', draggable: true, rotation: 0, fill: 'green',
+        radius: { x: 30, y: 20 }, x, y, type: 'ELLIPSE', draggable: true, rotation: 0, fill: '#8ED1FC',
       });
       break;
     case 'DIAMOND':

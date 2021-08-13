@@ -31,7 +31,7 @@ const initialState: globalState = {
   currentItem: {},
   currentIndex: -1,
   stagePos: { x: 0, y: 0 },
-  stageScale: 1.5,
+  stageScale: 2,
   selectShape: 'FREE',
   lastLine: {
     fill: '#df4b26',
@@ -71,7 +71,7 @@ const StateContext = createContext<globalState>({
   currentItem: {},
   currentIndex: -1,
   stagePos: { x: 0, y: 0 },
-  stageScale: 1.5,
+  stageScale: 2,
   selectShape: 'FREE',
   lastLine: {
     fill: '#df4b26',
