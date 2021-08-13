@@ -99,6 +99,7 @@ const Arrow = (props) => {
         key={index}
         fill="black"
         draggable
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {

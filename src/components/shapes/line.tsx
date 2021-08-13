@@ -54,6 +54,7 @@ const Line = (props) => {
         key={index}
         fill="black"
         draggable={state.selectShape === 'FREE'}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {

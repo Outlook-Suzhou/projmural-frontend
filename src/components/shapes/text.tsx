@@ -4,7 +4,7 @@ import { Text, Transformer } from 'react-konva';
 import React, { useState } from 'react';
 import Konva from 'konva';
 import doc from '../../client/client';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Text,
@@ -21,6 +21,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
   const shapeRef = React.useRef<any>();
   const trRef = React.useRef<any>();
   const state = useStateStore();
+  const dispatch = useDispatchStore();
   React.useEffect(() => {
     if (isSelected) {
       // we need to attach transformer manually
@@ -128,6 +129,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
       />
       {isSelected && (
         <Transformer
