@@ -18,6 +18,7 @@
     "antd": "^4.16.8",
     "base-64": "^1.0.0",
     "concurrently": "^6.2.0",
+    "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
     "express": "^4.17.1",
     "http": "0.0.1-security",
@@ -41,7 +42,7 @@
     "ws": "^7.5.3"
   },
   "scripts": {
-    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start": "cross-env NODE_ENV=development concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:client": "react-scripts start",
     "start:server": "node ./src/server/server.js",
     "prepare": "npm run copyserver && npm run copyhttp",
