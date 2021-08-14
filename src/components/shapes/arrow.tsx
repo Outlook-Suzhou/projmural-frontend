@@ -86,6 +86,7 @@ const Arrow = (props) => {
         points={arrowPoints}
         closed
         draggable={false}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         fill="black"
       />
       <KonvaLine
@@ -117,6 +118,7 @@ const Arrow = (props) => {
         // eslint-disable-next-line react/prop-types
         opacity={circleOpacity}
         draggable
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onClick={click}
         onDragMove={(e) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
@@ -152,6 +154,7 @@ const Arrow = (props) => {
         // eslint-disable-next-line react/prop-types
         opacity={circleOpacity}
         draggable
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onClick={click}
         onDragMove={(e) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
@@ -189,6 +192,7 @@ const Arrow = (props) => {
             // eslint-disable-next-line react/prop-types
             opacity={circleOpacity}
             draggable
+            onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
             onDragMove={(e) => {
               const position = {
                 x: e.target.attrs.x,

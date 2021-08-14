@@ -73,6 +73,7 @@ const Line = (props) => {
         radius={globalConfig.auxiliaryPointSize / state.stageScale}
         opacity={circleOpacity}
         draggable
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onClick={click}
         onDragMove={(e) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
@@ -108,6 +109,7 @@ const Line = (props) => {
         radius={globalConfig.auxiliaryPointSize / state.stageScale}
         opacity={circleOpacity}
         draggable
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
         onClick={click}
         onDragMove={(e) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
