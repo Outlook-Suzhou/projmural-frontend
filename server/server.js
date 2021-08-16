@@ -75,7 +75,7 @@ if (process.env.NODE_ENV === 'development') {
 
   // HTTP server
   const app = express();
-  app.use(express.static(path.join(__dirname, 'build')));
+  app.use(express.static(path.join(__dirname, '../build')));
   const httpsServer = https.createServer(credentials, app);
 
   app.use('/websocket', createProxyMiddleware({
