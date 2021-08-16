@@ -66,6 +66,7 @@ namespace BaseShapes {
     fill: string,
     points: Array,
     type: 'CURVELINE',
+    size: number,
   }
   interface Arrow extends BaseLine {
     arrowSize: number,

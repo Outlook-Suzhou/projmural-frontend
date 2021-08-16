@@ -20,13 +20,12 @@ import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
 import useCopyer from '../../hook/copyer';
-import FreeDrawing from '../tool_bar/tools/free_drawing';
+import FreeDrawing, { useDrawing } from '../tool_bar/tools/free_drawing';
 import Point from '../tool_bar/tools/point';
 import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
 import CursorShape from './cursor_shape';
 import './painting_content.scss';
-import useDrawing from '../../hook/freeDrawing';
 import globalConfig from '../shapes/global_config';
 
 const PaintingContent: React.FC<{}> = () => {
@@ -206,7 +205,7 @@ const PaintingContent: React.FC<{}> = () => {
                   globalCompositeOperation={state.lastLine.composite}
                   stroke={state.lastLine.fill}
                   points={state.lastLine.points}
-                  strokeWidth={3}
+                  strokeWidth={state.lastLine.size}
                   lineCap="round"
                   tension={0.5}
                 />
