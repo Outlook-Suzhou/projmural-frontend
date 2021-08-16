@@ -77,7 +77,7 @@ const Content: React.FC<{}> = () => {
         </Tooltip>
       </Col>
       <Col
-        span={9}
+        span={10}
         className="chooseShapeButton"
         role="button"
         tabIndex={-1}
@@ -96,14 +96,14 @@ const Content: React.FC<{}> = () => {
         <Col>
           <Divider />
         </Col>
-        <Col
-          span={9}
-          className="chooseShapeButton"
-          role="button"
-          tabIndex={-1}
-          style={gridStyle}
-        >
-          <Popover trigger="click" placement="right" content={chooseColor}>
+        <Popover trigger="click" placement="right" content={chooseColor}>
+          <Col
+            span={10}
+            className="chooseShapeButton"
+            role="button"
+            tabIndex={-1}
+            style={gridStyle}
+          >
             <Tooltip title="画笔设置">
               {/* <div style={{ */}
               {/*  // eslint-disable-next-line max-len */}
@@ -117,8 +117,8 @@ const Content: React.FC<{}> = () => {
               />
               {/* </div> */}
             </Tooltip>
-          </Popover>
-        </Col>
+          </Col>
+        </Popover>
       </div>
     </>
   );
