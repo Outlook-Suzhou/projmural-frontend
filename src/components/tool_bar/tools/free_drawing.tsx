@@ -1,17 +1,63 @@
 import { Icon } from '@fluentui/react/lib/Icon';
-import React from 'react';
+// @ts-ignore
+import { TwitterPicker } from 'react-color';
+import React, { useEffect } from 'react';
 import {
-  Col, Popover, Tooltip,
+  Col, Divider, InputNumber, Popover, Row, Slider, Tooltip,
 } from 'antd';
-import { useDispatchStore } from '../../../store/store';
+import { mergeStyleSets } from '@fluentui/react/lib/Styling';
+import { useDispatchStore, useStateStore } from '../../../store/store';
+import { calcX, calcY } from '../../../utils/calc_zoom_position';
+import doc from '../../../client/client';
 
 const gridStyle: any = {
   textAlign: 'center',
   cursor: 'pointer',
   fontSize: '30px',
 };
+let penColor = '#000000';
+let penSize = 4;
+const classNames = mergeStyleSets({
+  deepSkyBlue: [{ color: 'blue' }],
+  common: [{ color: 'unset' }],
+  myColor: [{ color: penColor }],
+});
+const chooseColor: React.FC<{}> = () => {
+  const handlePickComplete = (color: any) => {
+    penColor = color.hex;
+  };
+  const onChange = (value: number) => {
+    penSize = value;
+  };
+  return (
+    <>
+      <Row>
+        <Col span={15}>
+          <Slider
+            min={1}
+            max={7}
+            onChange={onChange}
+            value={typeof penSize === 'number' ? penSize : 1}
+          />
+        </Col>
+        <Col span={2}>
+          <InputNumber
+            min={1}
+            max={7}
+            style={{ margin: '0 16px' }}
+            value={penSize}
+            onChange={onChange}
+          />
+        </Col>
+      </Row>
+      <br />
+      <TwitterPicker onChangeComplete={handlePickComplete} />
+    </>
+  );
+};
 const Content: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
+  const state = useStateStore();
   return (
     <>
       <Col
@@ -26,11 +72,12 @@ const Content: React.FC<{}> = () => {
         <Tooltip title="画笔">
           <Icon
             iconName="edit"
+            className={state.selectShape === 'PEN' ? classNames.deepSkyBlue : classNames.common}
           />
         </Tooltip>
       </Col>
       <Col
-        span={8}
+        span={9}
         className="chooseShapeButton"
         role="button"
         tabIndex={-1}
@@ -45,21 +92,34 @@ const Content: React.FC<{}> = () => {
           />
         </Tooltip>
       </Col>
-      <Col
-        span={8}
-        role="button"
-        tabIndex={0}
-        onClick={() => {
-          dispatch({ type: 'setSelectShape', payload: 'FREE' });
-        }}
-        style={gridStyle}
-      >
-        <Tooltip title="退出">
-          <Icon
-            iconName="clear"
-          />
-        </Tooltip>
-      </Col>
+      <div id="penColor" style={{ display: state.selectShape === 'PEN' ? '' : 'none' }}>
+        <Col>
+          <Divider />
+        </Col>
+        <Col
+          span={9}
+          className="chooseShapeButton"
+          role="button"
+          tabIndex={-1}
+          style={gridStyle}
+        >
+          <Popover trigger="click" placement="right" content={chooseColor}>
+            <Tooltip title="画笔设置">
+              {/* <div style={{ */}
+              {/*  // eslint-disable-next-line max-len */}
+              {/* eslint-disable-next-line max-len */}
+              {/*  width: '30px', height: '30px', lineHeight: '30px', textAlign: 'center', display: 'inline-block', background: 'white', borderRadius: '50%', alignContent: 'center', textDecoration: 'none', */}
+              {/* }} */}
+              {/* > */}
+              <Icon
+                iconName="locationdot"
+                style={{ color: penColor, fontSize: `${4 * penSize}px` }}
+              />
+              {/* </div> */}
+            </Tooltip>
+          </Popover>
+        </Col>
+      </div>
     </>
   );
 };
@@ -74,4 +134,49 @@ const FreeDrawing: React.FC<{}> = () => (
     </Popover>
   </div>
 );
+function useDrawing() {
+  const state = useStateStore();
+  const dispatch = useDispatchStore();
+  const startDraw = (e: any) => {
+    if (state.selectShape === 'ERASER' || state.selectShape === 'PEN') {
+      dispatch({
+        type: 'setLastLine',
+        payload: {
+          fill: penColor,
+          points: [calcX(e.x, state.stageScale, state.stagePos.x), calcY(e.y, state.stageScale, state.stagePos.y)],
+          type: 'CURVELINE',
+          size: penSize,
+        },
+      });
+      dispatch({ type: 'setIsPainting', payload: true });
+    }
+  };
+  const onMouseUp = () => {
+    if (state.isPainting) {
+      dispatch({ type: 'setIsPainting', payload: false });
+      if (state.selectShape === 'PEN') {
+        doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: state.lastLine }]);
+        dispatch({
+          type: 'setLastLine',
+          payload: {
+            fill: penColor,
+            // @ts-ignore
+            points: [0, 0],
+            type: 'CURVELINE',
+            size: penSize,
+          },
+        });
+      }
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('mousedown', startDraw);
+    document.addEventListener('mouseup', onMouseUp);
+    return () => {
+      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousedown', startDraw);
+    };
+  });
+}
 export default FreeDrawing;
+export { useDrawing };

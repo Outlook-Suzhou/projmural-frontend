@@ -27,7 +27,7 @@ function createDoc(callback) {
   });
 }
 console.log(process.env.NODE_ENV);
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
   function startServer() {
     // Create a web server to serve files and listen to WebSocket connections
     const app = express();
