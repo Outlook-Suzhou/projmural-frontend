@@ -46,8 +46,9 @@ if (process.env.NODE_ENV === 'development') {
   }
   createDoc(startServer);
 } else {
-  const privateKey = fs.readFileSync('../privkey.pem', 'utf8');
-  const certificate = fs.readFileSync('../fullchain.pem', 'utf8');
+  console.log('');
+  const privateKey = fs.readFileSync(path.join(__dirname, '../privkey.pem'), 'utf8');
+  const certificate = fs.readFileSync(path.join(__dirname, '../fullchain.pem'), 'utf8');
 
   const credentials = {
     key: privateKey,
