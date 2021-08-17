@@ -37,7 +37,7 @@ jobs:
             rm -rf deploy
             mkdir deploy
             cd deploy 
-            git clone git@github.com:Outlook-Suzhou/projmural-frontend.git
+            git clone github-projmural-frontend:Outlook-Suzhou/projmural-frontend.git
             cd projmural-frontend
             npm run prepare
             sudo docker image build -t projmural .
