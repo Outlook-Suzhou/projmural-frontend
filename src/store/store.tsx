@@ -6,6 +6,7 @@ interface line{
   fill: string,
   points: Array<number>,
   type: 'CURVELINE',
+  size: number,
 }
 interface Point {
   x: number,
@@ -44,6 +45,7 @@ const initialState: globalState = {
     fill: '#000000',
     points: [0],
     type: 'CURVELINE',
+    size: 4,
   },
   isPainting: false,
   adsorptionPointsList: [],
@@ -90,6 +92,7 @@ const StateContext = createContext<globalState>({
     fill: '#000000',
     points: [0],
     type: 'CURVELINE',
+    size: 4,
   },
   isPainting: false,
   adsorptionPointsList: [],
