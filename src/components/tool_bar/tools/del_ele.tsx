@@ -13,8 +13,15 @@ const DelEle: React.FC<{}> = () => {
         <Icon
           iconName="Delete"
           onClick={() => {
+            const ops = state.OpList;
+            const curShape = JSON.parse(JSON.stringify(doc.data.shapes[state.currentIndex]));
+            ops.push({
+              op: 'del', shape: curShape, index: state.currentIndex, before: {},
+            });
+            dispatch({ type: 'setOpList', payload: ops });
             doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
             dispatch({ type: 'setCurrentIndex', payload: -1 });
+            console.log(state.OpList);
           }}
         />
       </Tooltip>

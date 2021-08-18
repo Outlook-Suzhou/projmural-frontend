@@ -65,7 +65,7 @@ function getArrow(start:vector, end: vector, weight: number, arrowSize: number) 
 const Arrow = (props) => {
   const {
     // eslint-disable-next-line react/prop-types
-    item, index, click, isSelected,
+    item, index, click, isSelected, onDragStart, onDragEnd,
   } = props;
 
   const [circleOpacity, setCircleOpacity] = useState(1);
@@ -100,7 +100,8 @@ const Arrow = (props) => {
         key={index}
         fill="black"
         draggable
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
         onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {

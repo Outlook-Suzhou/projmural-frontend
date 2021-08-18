@@ -9,15 +9,17 @@ interface Props {
   isSelected: boolean,
   onSelect: any,
   index: number,
+  onDragStart: any,
+  onDragEnd: any,
 }
 
 const Triangle: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, onSelect, index,
+    item, isSelected, onSelect, index, onDragStart, onDragEnd,
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const [state, dispatch] = [useStateStore(), useDispatchStore()];
+  const [state] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -38,7 +40,8 @@ const Triangle: React.FC<Props> = (props: Props) => {
         points={[item.radius.x, 0, 0, item.radius.y, -item.radius.x, 0]}
         key={index}
         closed
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
         onDragMove={(e) => {
           const afterE: BaseShapes.Triangle = {
             radius: e.target.attrs.radius,

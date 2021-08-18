@@ -12,6 +12,12 @@ interface Point {
   y: number,
 }
 
+interface Operation{
+  op: string,
+  shape: any,
+  index: number,
+  before: any,
+}
 interface globalState {
   currentItem: any,
   currentIndex: number
@@ -21,6 +27,7 @@ interface globalState {
   lastLine: line
   isPainting: boolean
   adsorptionPointsList: Array<Point>
+  OpList: Array<Operation>
 }
 interface actionType {
   type: string,
@@ -40,6 +47,7 @@ const initialState: globalState = {
   },
   isPainting: false,
   adsorptionPointsList: [],
+  OpList: [],
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -62,6 +70,11 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, adsorptionPointsList: action.payload };
     case 'reset':
       return { ...initialState };
+    case 'setOpList':
+      return { ...state, OpList: action.payload };
+    case 'addOpItem':
+      state.OpList.push(action.payload);
+      return { ...state };
     default:
       throw new Error();
   }
@@ -80,6 +93,7 @@ const StateContext = createContext<globalState>({
   },
   isPainting: false,
   adsorptionPointsList: [],
+  OpList: [],
 });
 const DispatchContext = createContext<Function>(() => {});
 

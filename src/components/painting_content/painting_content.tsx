@@ -28,6 +28,7 @@ import CursorShape from './cursor_shape';
 import './painting_content.scss';
 import useDrawing from '../../hook/freeDrawing';
 import globalConfig from '../shapes/global_config';
+import Cancel from '../tool_bar/tools/cancel';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -141,8 +142,15 @@ const PaintingContent: React.FC<{}> = () => {
   }
   // console.log(state);
   const handleClick = (e: any) => {
-    if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN') {
+    if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN' && state.selectShape !== 'FREE') {
       handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
+      const ops = state.OpList;
+      const curShape = doc.data.shapes[doc.data.shapes.length - 1];
+      ops.push({
+        op: 'add', shape: curShape, index: doc.data.shapes.length - 1, before: {},
+      });
+      dispatch({ type: 'setOpList', payload: ops });
+      console.log(state.OpList);
       dispatch({ type: 'setSelectShape', payload: 'FREE' });
     }
   };
@@ -150,7 +158,7 @@ const PaintingContent: React.FC<{}> = () => {
   return (
     <>
       {state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
-      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
+      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing, Cancel]} isFloatBar={false} />
       <div id="stage">
         <Stage
           className={state.selectShape}

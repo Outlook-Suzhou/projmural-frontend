@@ -10,14 +10,16 @@ interface Props {
   isSelected: boolean,
   onSelect: any,
   index: number,
+  onDragStart: any,
+  onDragEnd: any,
 }
 const Img: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, onSelect, index,
+    item, isSelected, onSelect, index, onDragStart, onDragEnd,
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const [state, dispatch] = [useStateStore(), useDispatchStore()];
+  const [state] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -42,7 +44,8 @@ const Img: React.FC<Props> = (props: Props) => {
         rotation={item.rotation}
         draggable={item.draggable && state.selectShape === 'FREE'}
         key={index}
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
         onDragMove={(e) => {
           const afterE: BaseShapes.Image = {
             width: e.target.width(),
