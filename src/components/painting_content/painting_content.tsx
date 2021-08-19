@@ -27,6 +27,7 @@ import { calcX, calcY } from '../../utils/calc_zoom_position';
 import CursorShape from './cursor_shape';
 import './painting_content.scss';
 import globalConfig from '../shapes/global_config';
+import Cancel, { useCancel } from '../tool_bar/tools/cancel';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -36,6 +37,7 @@ const PaintingContent: React.FC<{}> = () => {
   useEffect(() => { dispatch({ type: 'setAdsorptionPointsList', payload: [] }); }, [state.currentIndex]);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   useDrawing();
+  useCancel();
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -141,7 +143,10 @@ const PaintingContent: React.FC<{}> = () => {
   }
   // console.log(state);
   const handleClick = (e: any) => {
-    if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN') {
+    if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN' && state.selectShape !== 'FREE') {
+      const ops = state.OpList;
+      ops.push(JSON.stringify(doc.data.shapes));
+      dispatch({ type: 'setOpList', payload: ops });
       handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
       dispatch({ type: 'setSelectShape', payload: 'FREE' });
     }
@@ -150,7 +155,7 @@ const PaintingContent: React.FC<{}> = () => {
   return (
     <>
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
-      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
+      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing, Cancel]} isFloatBar={false} />
       <div id="stage">
         <Stage
           className={state.selectShape}

@@ -1,11 +1,15 @@
 import { Icon } from '@fluentui/react/lib/Icon';
 import React from 'react';
 import doc from '../../../client/client';
-import { useStateStore } from '../../../store/store';
+import { useDispatchStore, useStateStore } from '../../../store/store';
 
 const Lock: React.FC<{}> = () => {
   const state = useStateStore();
+  const dispatch = useDispatchStore();
   const lockItem: Function = () => {
+    const ops = state.OpList;
+    ops.push(JSON.stringify(doc.data.shapes));
+    dispatch({ type: 'setOpList', payload: ops });
     const afterE: BaseShapes.Shape = { ...doc.data.shapes[state.currentIndex], draggable: !doc.data.shapes[state.currentIndex].draggable };
     doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem, li: afterE }]);
   };

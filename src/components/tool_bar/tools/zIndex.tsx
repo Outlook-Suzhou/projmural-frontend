@@ -22,6 +22,9 @@ const Content: React.FC<{}> = () => {
           role="button"
           tabIndex={0}
           onClick={() => {
+            const ops = state.OpList;
+            ops.push(JSON.stringify(doc.data.shapes));
+            dispatch({ type: 'setOpList', payload: ops });
             const afterE: BaseShapes.Shape = { ...doc.data.shapes[state.currentIndex] };
             doc.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
             doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: afterE }]);
@@ -41,6 +44,9 @@ const Content: React.FC<{}> = () => {
           tabIndex={-1}
           // eslint-disable-next-line max-len
           onClick={() => {
+            const ops = state.OpList;
+            ops.push(JSON.stringify(doc.data.shapes));
+            dispatch({ type: 'setOpList', payload: ops });
             const afterE: BaseShapes.Shape = { ...doc.data.shapes[state.currentIndex] };
             doc.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
             doc.submitOp([{ p: ['shapes', 0], li: afterE }]);

@@ -32,7 +32,7 @@ function getRect(start: vector, end: vector, weight: number) {
 const Line = (props) => {
   const {
     // eslint-disable-next-line react/prop-types
-    item, index, click, isSelected,
+    item, index, click, isSelected, onDragStart, onDragEnd,
   } = props;
   const [circleOpacity, setCircleOpacity] = useState(1);
   const [state, dispatch] = [useStateStore(), useDispatchStore()];
@@ -54,7 +54,8 @@ const Line = (props) => {
         key={index}
         fill="black"
         draggable={state.selectShape === 'FREE'}
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
         onClick={click}
         onDragMove={(e) => {
           const afterE = Object.assign(doc.data.shapes[index], {

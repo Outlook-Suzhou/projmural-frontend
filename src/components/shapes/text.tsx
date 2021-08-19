@@ -4,24 +4,27 @@ import { Text, Transformer } from 'react-konva';
 import React, { useState } from 'react';
 import Konva from 'konva';
 import doc from '../../client/client';
-import { useDispatchStore, useStateStore } from '../../store/store';
+import { useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Text,
   index: number,
   click: any,
   isSelected: boolean,
+  onDragStart: any,
+  onDragEnd: any,
+  onTransformStart: any,
+  onTransformEnd: any,
 }
 
 const TEXT: React.FC<Props> = (props: Props) => {
   const {
-    item, index, click, isSelected,
+    item, index, click, isSelected, onDragEnd, onDragStart, onTransformEnd, onTransformStart,
   } = props;
   const [visible, setVisible] = useState(true);
   const shapeRef = React.useRef<any>();
   const trRef = React.useRef<any>();
   const state = useStateStore();
-  const dispatch = useDispatchStore();
   React.useEffect(() => {
     if (isSelected) {
       // we need to attach transformer manually
@@ -43,6 +46,8 @@ const TEXT: React.FC<Props> = (props: Props) => {
         visible={visible}
         rotation={item.rotation}
         scaleX={item.scaleX}
+        onDragEnd={onDragEnd}
+        onDragStart={onDragStart}
         onDblClick={() => {
           console.log(item);
           const textarea = document.createElement('textarea');
@@ -129,7 +134,8 @@ const TEXT: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
+        onTransformStart={onTransformStart}
+        onTransformEnd={onTransformEnd}
       />
       {isSelected && (
         <Transformer

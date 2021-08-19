@@ -3,6 +3,7 @@ import useImage from 'use-image';
 import React, { useEffect, useRef } from 'react';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+// eslint-disable-next-line import/namespace
 import { useStateStore, useDispatchStore } from '../../store/store';
 
 interface Props {
@@ -10,14 +11,18 @@ interface Props {
   isSelected: boolean,
   onSelect: any,
   index: number,
+  onDragStart: any,
+  onDragEnd: any,
+  onTransformStart: any,
+  onTransformEnd: any
 }
 const Img: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, onSelect, index,
+    item, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const [state, dispatch] = [useStateStore(), useDispatchStore()];
+  const [state] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -42,8 +47,8 @@ const Img: React.FC<Props> = (props: Props) => {
         rotation={item.rotation}
         draggable={item.draggable && state.selectShape === 'FREE'}
         key={index}
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); dispatch({ type: 'setIsDragging', payload: true }); }}
-        onDragEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
         onDragMove={(e) => {
           const afterE: BaseShapes.Image = {
             width: e.target.width(),
@@ -57,8 +62,8 @@ const Img: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
-        onTransformStart={() => { dispatch({ type: 'setIsDragging', payload: true }); }}
-        onTransformEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
+        onTransformStart={onTransformStart}
+        onTransformEnd={onTransformEnd}
         onTransform={() => {
           // transformer is changing scale of the node
           // and NOT its width or height

@@ -8,6 +8,8 @@ import { message, Upload } from 'antd';
 import 'crypto-js';// "base-64": "^0.1.0"
 import 'base-64';//  "crypto-js": "^3.1.9-1"
 import addShape from '../../../utils/add_function';
+import { useDispatchStore, useStateStore } from '../../../store/store';
+import doc from '../../../client/client';
 
 class AliyunOSSUpload extends React.Component {
   // eslint-disable-next-line react/state-in-constructor
@@ -177,10 +179,21 @@ class AliyunOSSUpload extends React.Component {
     );
   }
 }
-const AddImage: React.FC<{}> = () => (
-  // eslint-disable-next-line object-curly-newline
-  <div className="tool_icon">
-    <AliyunOSSUpload />
-  </div>
-);
+const AddImage: React.FC<{}> = () => {
+  const state = useStateStore();
+  const dispatch = useDispatchStore();
+  return (
+    // eslint-disable-next-line object-curly-newline
+    <div
+      className="tool_icon"
+      onClick={() => {
+        const ops = state.OpList;
+        ops.push(JSON.stringify(doc.data.shapes));
+        dispatch({ type: 'setOpList', payload: ops });
+      }}
+    >
+      <AliyunOSSUpload />
+    </div>
+  );
+};
 export default AddImage;
