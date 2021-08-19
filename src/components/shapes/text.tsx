@@ -13,11 +13,13 @@ interface Props {
   isSelected: boolean,
   onDragStart: any,
   onDragEnd: any,
+  onTransformStart: any,
+  onTransformEnd: any,
 }
 
 const TEXT: React.FC<Props> = (props: Props) => {
   const {
-    item, index, click, isSelected, onDragEnd, onDragStart,
+    item, index, click, isSelected, onDragEnd, onDragStart, onTransformEnd, onTransformStart,
   } = props;
   const [visible, setVisible] = useState(true);
   const shapeRef = React.useRef<any>();
@@ -132,6 +134,8 @@ const TEXT: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onTransformStart={onTransformStart}
+        onTransformEnd={onTransformEnd}
       />
       {isSelected && (
         <Transformer

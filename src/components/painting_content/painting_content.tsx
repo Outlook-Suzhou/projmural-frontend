@@ -15,7 +15,6 @@ import SelectColor from '../tool_bar/tools/select_color';
 import Lock from '../tool_bar/tools/lock';
 import {
   useStateStore, useDispatchStore, StateContext, DispatchContext,
-// eslint-disable-next-line import/namespace
 } from '../../store/store';
 import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
@@ -146,7 +145,6 @@ const PaintingContent: React.FC<{}> = () => {
   const handleClick = (e: any) => {
     if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN' && state.selectShape !== 'FREE') {
       const ops = state.OpList;
-      console.log(ops);
       ops.push(JSON.stringify(doc.data.shapes));
       dispatch({ type: 'setOpList', payload: ops });
       handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));

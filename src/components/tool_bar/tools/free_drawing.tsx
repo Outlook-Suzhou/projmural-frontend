@@ -139,10 +139,6 @@ function useDrawing() {
   const dispatch = useDispatchStore();
   const startDraw = (e: any) => {
     if (state.selectShape === 'ERASER' || state.selectShape === 'PEN') {
-      const ops = state.OpList;
-      console.log(ops);
-      ops.push(JSON.stringify(doc.data.shapes));
-      dispatch({ type: 'setOpList', payload: ops });
       dispatch({
         type: 'setLastLine',
         payload: {
@@ -157,6 +153,11 @@ function useDrawing() {
   };
   const onMouseUp = () => {
     if (state.isPainting) {
+      if (state.lastLine.points.length > 2) {
+        const ops = state.OpList;
+        ops.push(JSON.stringify(doc.data.shapes));
+        dispatch({ type: 'setOpList', payload: ops });
+      }
       dispatch({ type: 'setIsPainting', payload: false });
       if (state.selectShape === 'PEN') {
         doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: state.lastLine }]);

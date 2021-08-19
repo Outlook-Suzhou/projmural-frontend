@@ -12,14 +12,16 @@ interface Props {
   index: number,
   onDragStart: any,
   onDragEnd: any,
+  onTransformStart: any,
+  onTransformEnd: any
 }
 const Ellipse: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, onSelect, index, onDragEnd, onDragStart,
+    item, isSelected, onSelect, index, onDragEnd, onDragStart, onTransformStart, onTransformEnd,
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const [state, dispatch] = [useStateStore(), useDispatchStore()];
+  const [state] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -57,8 +59,8 @@ const Ellipse: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
-        onTransformStart={() => { dispatch({ type: 'setIsDragging', payload: true }); }}
-        onTransformEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
+        onTransformStart={onTransformStart}
+        onTransformEnd={onTransformEnd}
         onTransform={() => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();

@@ -14,7 +14,6 @@ const DelEle: React.FC<{}> = () => {
           iconName="Delete"
           onClick={() => {
             const ops = state.OpList;
-            console.log(ops);
             ops.push(JSON.stringify(doc.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
             doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);

@@ -188,7 +188,6 @@ const AddImage: React.FC<{}> = () => {
       className="tool_icon"
       onClick={() => {
         const ops = state.OpList;
-        console.log(ops);
         ops.push(JSON.stringify(doc.data.shapes));
         dispatch({ type: 'setOpList', payload: ops });
       }}

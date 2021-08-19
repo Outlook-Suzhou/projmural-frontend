@@ -33,32 +33,106 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
 
   const onDragStart = () => {
     dispatch({ type: 'setCurrentIndex', payload: index });
+    dispatch({ type: 'setIsDragging', payload: true });
     const ops = state.OpList;
-    console.log(ops);
     ops.push(JSON.stringify(doc.data.shapes));
     dispatch({ type: 'setOpList', payload: ops });
   };
   const onDragEnd = () => {
     dispatch({ type: 'setCurrentIndex', payload: index });
+    dispatch({ type: 'setIsDragging', payload: false });
   };
+  const onTransformStart = () => {
+    dispatch({ type: 'setIsDragging', payload: true });
+    const ops = state.OpList;
+    ops.push(JSON.stringify(doc.data.shapes));
+    dispatch({ type: 'setOpList', payload: ops });
+  };
+  const onTransformEnd = () => { dispatch({ type: 'setIsDragging', payload: false }); };
   switch (item.type) {
     case 'RECTANGLE':
-      ShapeComponent = <Rectangle1 item={item} index={index} isSelected={index === state.currentIndex} onSelect={click} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
+      ShapeComponent = (
+        <Rectangle1
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
       break;
     case 'CIRCLE':
-      ShapeComponent = <Circle item={item} index={index} isSelected={index === state.currentIndex} onSelect={click} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
+      ShapeComponent = (
+        <Circle
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
       break;
     case 'ELLIPSE':
-      ShapeComponent = <Ellipse item={item} index={index} isSelected={index === state.currentIndex} onSelect={click} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
+      ShapeComponent = (
+        <Ellipse
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
       break;
     case 'DIAMOND':
-      ShapeComponent = <Diamond item={item} index={index} isSelected={index === state.currentIndex} onSelect={click} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
+      ShapeComponent = (
+        <Diamond
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
       break;
     case 'IMAGE':
-      ShapeComponent = <Img item={item} index={index} isSelected={index === state.currentIndex} onSelect={click} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
+      ShapeComponent = (
+        <Img
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
       break;
     case 'TRIANGLE':
-      ShapeComponent = <Triangle item={item} index={index} isSelected={index === state.currentIndex} onSelect={click} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
+      ShapeComponent = (
+        <Triangle
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
       break;
     case 'LINE':
       ShapeComponent = <Line item={item} index={index} click={click} isSelected={index === state.currentIndex} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
@@ -67,7 +141,18 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       ShapeComponent = <Arrow item={item} index={index} click={click} isSelected={index === state.currentIndex} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
       break;
     case 'TEXT':
-      ShapeComponent = <Text item={item} index={index} click={click} isSelected={index === state.currentIndex} onDragStart={onDragStart} onDragEnd={onDragEnd} />;
+      ShapeComponent = (
+        <Text
+          item={item}
+          index={index}
+          click={click}
+          isSelected={index === state.currentIndex}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
       break;
     case 'CURVELINE':
       ShapeComponent = <CurveLine item={item} index={index} onSelect={click} onMouseOver={del} />;

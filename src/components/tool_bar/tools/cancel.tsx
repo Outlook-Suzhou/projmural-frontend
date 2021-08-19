@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 // eslint-disable-next-line no-unused-vars
 import { Icon } from '@fluentui/react/lib/Icon';
+import { message } from 'antd';
 import { useDispatchStore, useStateStore } from '../../../store/store';
 import doc from '../../../client/client';
 
@@ -17,11 +18,12 @@ const Cancel: React.FC<{}> = () => {
         iconName="ReturnToSession"
         onClick={() => {
           const ops = state.OpList;
-          console.log(ops);
           if (ops.length !== 0) {
             const last = JSON.parse(ops.pop());
             doc.submitOp([{ p: ['shapes'], od: doc.data.shapes, oi: last }]);
             dispatch({ type: 'setOpList', payload: ops });
+          } else {
+            message.warn('没有更多可撤销的操作！');
           }
         }}
       />
@@ -35,11 +37,12 @@ function useCancel() {
   const cancel = (e:any) => {
     if (e.ctrlKey && e.keyCode === 90) {
       const ops = state.OpList;
-      console.log(ops);
       if (ops.length !== 0) {
         const last = JSON.parse(ops.pop());
         doc.submitOp([{ p: ['shapes'], od: doc.data.shapes, oi: last }]);
         dispatch({ type: 'setOpList', payload: ops });
+      } else {
+        message.warn('没有更多可撤销的操作！');
       }
     }
   };
