@@ -1,17 +1,8 @@
-/* eslint-disable react/require-default-props */
 import React from 'react';
-// import toolList from './tool_list';
-// import AddShape from './tools/add_shape';
 import './tool_bar.scss';
 import { useStateStore } from '../../store/store';
 import { calcZoomX, calcZoomY } from '../../utils/calc_zoom_position';
-// import { Row, Col } from 'antd';
-
-// interface toolComponent {
-//   Component: React.FC<any>,
-//   currentShape?: any,
-//   currentIndex?: number
-// }
+import doc from '../../client/client';
 
 interface toolBarAttribute{
   list: React.FC<any>[],
@@ -26,8 +17,8 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
     <div
       className={['toolbar', (isFloatBar ? 'float_tool_bar' : 'left_tool_bar')].join(' ')}
       style={{
-        left: isFloatBar ? calcZoomX(state.currentItem.x, state.stageScale, state.stagePos.x) - 50 : 50,
-        top: isFloatBar ? calcZoomY(state.currentItem.y, state.stageScale, state.stagePos.y) - 200 : 200,
+        left: isFloatBar ? calcZoomX(doc.data.shapes[state.currentIndex].x, state.stageScale, state.stagePos.x) - 50 : 50,
+        top: isFloatBar ? calcZoomY(doc.data.shapes[state.currentIndex].y, state.stageScale, state.stagePos.y) - 200 : 200,
       }}
     >
       {

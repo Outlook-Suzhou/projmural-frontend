@@ -37,7 +37,8 @@ const Diamond: React.FC<Props> = (props: Props) => {
         {...shapeConfig}
         key={index}
         draggable={item.draggable && state.selectShape === 'FREE'}
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); dispatch({ type: 'setIsDragging', payload: true }); }}
+        onDragEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onDragMove={(e) => {
           const afterE: BaseShapes.Diamond = {
             radius: e.target.attrs.radius,
@@ -50,6 +51,8 @@ const Diamond: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onTransformStart={() => { dispatch({ type: 'setIsDragging', payload: true }); }}
+        onTransformEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onTransform={() => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();

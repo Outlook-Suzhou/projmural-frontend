@@ -21,6 +21,7 @@ interface globalState {
   selectShape: string
   lastLine: line
   isPainting: boolean
+  isDragging: boolean // If is dragging or transforming a shape. If it's true, floatBar won't show.
   adsorptionPointsList: Array<Point>
 }
 interface actionType {
@@ -42,6 +43,7 @@ const initialState: globalState = {
   },
   isPainting: false,
   adsorptionPointsList: [],
+  isDragging: false,
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -60,6 +62,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, lastLine: action.payload };
     case 'setIsPainting':
       return { ...state, isPainting: action.payload };
+    case 'setIsDragging':
+      return { ...state, isDragging: action.payload };
     case 'setAdsorptionPointsList':
       return { ...state, adsorptionPointsList: action.payload };
     case 'reset':
@@ -83,6 +87,7 @@ const StateContext = createContext<globalState>({
   },
   isPainting: false,
   adsorptionPointsList: [],
+  isDragging: false,
 });
 const DispatchContext = createContext<Function>(() => {});
 

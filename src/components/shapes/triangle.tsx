@@ -38,7 +38,8 @@ const Triangle: React.FC<Props> = (props: Props) => {
         points={[item.radius.x, 0, 0, item.radius.y, -item.radius.x, 0]}
         key={index}
         closed
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); dispatch({ type: 'setIsDragging', payload: true }); }}
+        onDragEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onDragMove={(e) => {
           const afterE: BaseShapes.Triangle = {
             radius: e.target.attrs.radius,
@@ -51,6 +52,8 @@ const Triangle: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onTransformStart={() => { dispatch({ type: 'setIsDragging', payload: true }); }}
+        onTransformEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onTransform={() => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();
