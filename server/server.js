@@ -6,8 +6,10 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 require('./sharedb.js');
 const credentials = require('./credentials.js');
 
+
+
 // Create initial document then fire callback
-if(process.env.NODE_ENV === 'production') {
+if(process.env.NODE_ENV !== 'production') {
   const app = express();
   app.use(express.static(path.join(__dirname, '../build')));
 
