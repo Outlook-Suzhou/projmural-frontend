@@ -5,7 +5,8 @@ node_modules
 /.idea
 /.pnp
 .pnp.js
-
+.fullchain.pem
+.privkey.pem
 # testing
 /coverage
 
