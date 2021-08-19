@@ -39,7 +39,7 @@ jobs:
             cd deploy 
             git clone github-projmural-frontend:Outlook-Suzhou/projmural-frontend.git
             cd projmural-frontend
-            npm run prepare
+            npm run pre
             sudo docker image build -t projmural .
             nohup sudo docker container run --rm -p 80:80 -p 443:443 -p 8080:8080 projmural > ./output.log 2>&1 &
             

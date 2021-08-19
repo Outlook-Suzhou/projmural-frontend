@@ -3,6 +3,7 @@ import useImage from 'use-image';
 import React, { useEffect, useRef } from 'react';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+// eslint-disable-next-line import/namespace
 import { useStateStore, useDispatchStore } from '../../store/store';
 
 interface Props {
@@ -19,7 +20,7 @@ const Img: React.FC<Props> = (props: Props) => {
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const [state] = [useStateStore(), useDispatchStore()];
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -59,6 +60,8 @@ const Img: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onTransformStart={() => { dispatch({ type: 'setIsDragging', payload: true }); }}
+        onTransformEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onTransform={() => {
           // transformer is changing scale of the node
           // and NOT its width or height

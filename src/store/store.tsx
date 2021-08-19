@@ -13,12 +13,6 @@ interface Point {
   y: number,
 }
 
-// interface Operation{
-//   op: string,
-//   shape: any,
-//   index: number,
-//   before: any,
-// }
 interface globalState {
   currentItem: any,
   currentIndex: number
@@ -27,6 +21,7 @@ interface globalState {
   selectShape: string
   lastLine: line
   isPainting: boolean
+  isDragging: boolean // If is dragging or transforming a shape. If it's true, floatBar won't show.
   adsorptionPointsList: Array<Point>
   OpList: Array<any>
 }
@@ -50,6 +45,7 @@ const initialState: globalState = {
   isPainting: false,
   adsorptionPointsList: [],
   OpList: [],
+  isDragging: false,
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -68,15 +64,14 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, lastLine: action.payload };
     case 'setIsPainting':
       return { ...state, isPainting: action.payload };
+    case 'setIsDragging':
+      return { ...state, isDragging: action.payload };
     case 'setAdsorptionPointsList':
       return { ...state, adsorptionPointsList: action.payload };
     case 'reset':
       return { ...initialState };
     case 'setOpList':
       return { ...state, OpList: action.payload };
-    case 'addOpItem':
-      state.OpList.push(action.payload);
-      return { ...state };
     default:
       throw new Error();
   }
@@ -97,6 +92,7 @@ const StateContext = createContext<globalState>({
   isPainting: false,
   adsorptionPointsList: [],
   OpList: [],
+  isDragging: false,
 });
 const DispatchContext = createContext<Function>(() => {});
 

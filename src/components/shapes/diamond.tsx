@@ -2,6 +2,7 @@ import { Line, Transformer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
+// eslint-disable-next-line import/namespace
 import { useStateStore, useDispatchStore } from '../../store/store';
 
 interface Props {
@@ -18,7 +19,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const [state] = [useStateStore(), useDispatchStore()];
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -53,6 +54,8 @@ const Diamond: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onTransformStart={() => { dispatch({ type: 'setIsDragging', payload: true }); }}
+        onTransformEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onTransform={() => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();

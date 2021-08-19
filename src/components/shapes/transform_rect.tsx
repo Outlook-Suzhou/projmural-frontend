@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
 import doc from '../../client/client';
 import shapeConfig from './shape_config';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.Rectangle,
@@ -19,7 +19,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
 
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
-  const [state] = [useStateStore()];
+  const [state, dispatch] = [useStateStore(), useDispatchStore()];
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -54,6 +54,8 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onTransformStart={() => { dispatch({ type: 'setIsDragging', payload: true }); }}
+        onTransformEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onTransform={() => {
           // transformer is changing scale of the node
           // and NOT its width or height

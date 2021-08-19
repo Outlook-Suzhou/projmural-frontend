@@ -45,10 +45,10 @@
     "start": "cross-env NODE_ENV=development concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:client": "react-scripts start",
     "start:server": "node ./server/server.js",
-    "prepare": "npm run copyhttp",
+    "pre": "npm run copyhttp",
     "build": "react-scripts build",
     "copyhttp": "sudo cp /etc/letsencrypt/live/www.projmural.com-0001/privkey.pem ./privkey.pem && sudo cp /etc/letsencrypt/live/www.projmural.com-0001/fullchain.pem ./fullchain.pem",
-    "test": "react-scripts test",
+    "test": "react-npmscripts test",
     "eject": "react-scripts eject"
   },
   "browserslist": {
