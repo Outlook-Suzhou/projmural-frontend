@@ -7,9 +7,9 @@ require('./sharedb.js');
 const credentials = require('./credentials.js');
 
 
-
+console.log(process.env.NODE_ENV)
 // Create initial document then fire callback
-if(process.env.NODE_ENV !== 'production') {
+if(process.env.NODE_ENV === 'production') {
   const app = express();
   app.use(express.static(path.join(__dirname, '../build')));
 

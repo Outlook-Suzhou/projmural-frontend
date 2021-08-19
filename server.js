@@ -1,15 +1,17 @@
+/* eslint-disable no-inner-declarations */
+const http = require('http');
+const fs = require('fs');
+const https = require('https');
+const express = require('express');
 const ShareDB = require('sharedb');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
-const fs = require('fs');
 const path = require('path');
-const credentials = require('./credentials.js');
-const express = require('express');
-const https = require('https');
-const http = require('http');
-
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const backend = new ShareDB();
+
+// Create initial document then fire callback
 function createDoc(callback) {
   const connection = backend.connect();
   const doc = connection.get('examples', 'counter');
@@ -24,7 +26,8 @@ function createDoc(callback) {
     callback();
   });
 }
-if(process.env.NODE_ENV === 'development') {
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'development') {
   function startServer() {
     // Create a web server to serve files and listen to WebSocket connections
     const app = express();
@@ -43,14 +46,14 @@ if(process.env.NODE_ENV === 'development') {
   }
   createDoc(startServer);
 } else {
-  // const privateKey = fs.readFileSync(path.join(__dirname, '../privkey.pem'), 'utf8');
-  // const certificate = fs.readFileSync(path.join(__dirname, '../fullchain.pem'), 'utf8');
+  const privateKey = fs.readFileSync('./privkey.pem', 'utf8');
+  const certificate = fs.readFileSync('./fullchain.pem', 'utf8');
 
-  // const credentials = {
-  //   key: privateKey,
-  //   cert: certificate,
-  //   ca: certificate,
-  // };
+  const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: certificate,
+  };
   function startServer() {
     // Create a web server to serve files and listen to WebSocket connections
     const app = express();
@@ -68,4 +71,22 @@ if(process.env.NODE_ENV === 'development') {
     console.log('ShareDB is listening on http://localhost:8080');
   }
   createDoc(startServer);
+
+  // HTTP server
+  const app = express();
+  app.use(express.static(path.join(__dirname, 'build')));
+  const httpsServer = https.createServer(credentials, app);
+
+  app.use('/websocket', createProxyMiddleware({
+    target: 'wss://localhost:8080', // target host
+    ws: true, // proxy websockets
+  }));
+
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+
+  httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+  });
 }
