@@ -48,7 +48,7 @@
     "prepare": "npm run copyhttp",
     "build": "react-scripts build",
     "copyhttp": "sudo cp /etc/letsencrypt/live/www.projmural.com-0001/privkey.pem ./privkey.pem && sudo cp /etc/letsencrypt/live/www.projmural.com-0001/fullchain.pem ./fullchain.pem",
-    "test": "react-scripts test",
+    "test": "react-npmscripts test",
     "eject": "react-scripts eject"
   },
   "browserslist": {

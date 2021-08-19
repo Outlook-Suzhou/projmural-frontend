@@ -37,7 +37,8 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         draggable={item.draggable && state.selectShape === 'FREE'}
           // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
-        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); }}
+        onDragStart={() => { dispatch({ type: 'setCurrentIndex', payload: index }); dispatch({ type: 'setIsDragging', payload: true }); }}
+        onDragEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onDragMove={(e) => {
           const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),
@@ -51,6 +52,8 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           };
           doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
         }}
+        onTransformStart={() => { dispatch({ type: 'setIsDragging', payload: true }); }}
+        onTransformEnd={() => { dispatch({ type: 'setIsDragging', payload: false }); }}
         onTransform={() => {
           // transformer is changing scale of the node
           // and NOT its width or height

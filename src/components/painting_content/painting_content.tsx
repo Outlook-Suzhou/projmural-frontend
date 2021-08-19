@@ -92,7 +92,7 @@ const PaintingContent: React.FC<{}> = () => {
 
   const handleWheel = (e: any) => {
     e.evt.preventDefault();
-    const scaleBy = 0.95;
+    const scaleBy = 0.92;
     const stage = e.target.getStage();
     const oldScale = stage.scaleX();
     const mousePointTo = {
@@ -115,6 +115,7 @@ const PaintingContent: React.FC<{}> = () => {
   };
   const handleDragMove = (e: any) => {
     if (state.currentIndex !== -1) {
+      // Only if no shape is selected, can stage be dragged, Or else stage would be dragged together with the shape.
       return;
     }
     dispatch({
@@ -148,7 +149,7 @@ const PaintingContent: React.FC<{}> = () => {
 
   return (
     <>
-      {state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
+      {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
       <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing]} isFloatBar={false} />
       <div id="stage">
         <Stage
