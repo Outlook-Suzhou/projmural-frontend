@@ -4,6 +4,8 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 const sharedb = require('sharedb/lib/client');
 
+console.log(window.location.href);
+
 // Open WebSocket connection to ShareDB server
 const ipAddress = process.env.NODE_ENV === 'production' ? 'wss://www.projmural.com/websocket' : 'ws://localhost:8080';
 console.log(process.env.NODE_ENV);
