@@ -13,12 +13,12 @@ interface Point {
   y: number,
 }
 
-interface Operation{
-  op: string,
-  shape: any,
-  index: number,
-  before: any,
-}
+// interface Operation{
+//   op: string,
+//   shape: any,
+//   index: number,
+//   before: any,
+// }
 interface globalState {
   currentItem: any,
   currentIndex: number
@@ -28,7 +28,7 @@ interface globalState {
   lastLine: line
   isPainting: boolean
   adsorptionPointsList: Array<Point>
-  OpList: Array<Operation>
+  OpList: Array<any>
 }
 interface actionType {
   type: string,

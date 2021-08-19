@@ -34,25 +34,13 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
   const onDragStart = () => {
     dispatch({ type: 'setCurrentIndex', payload: index });
     const ops = state.OpList;
-    const curShape = doc.data.shapes[index];
-    ops.push({
-      op: 'drag', shape: {}, index, before: curShape,
-    });
+    console.log(ops);
+    ops.push(JSON.stringify(doc.data.shapes));
     dispatch({ type: 'setOpList', payload: ops });
   };
   const onDragEnd = () => {
     dispatch({ type: 'setCurrentIndex', payload: index });
-    const ops = state.OpList;
-    const last = ops.pop();
-    // @ts-ignore
-    last.shape = doc.data.shapes[index];
-    if (last) {
-      ops.push(last);
-    }
-    dispatch({ type: 'setOpList', payload: ops });
   };
-  // const dispatch = useDispatchStore();
-  // console.log(dispatch);
   switch (item.type) {
     case 'RECTANGLE':
       ShapeComponent = <Rectangle1 item={item} index={index} isSelected={index === state.currentIndex} onSelect={click} onDragStart={onDragStart} onDragEnd={onDragEnd} />;

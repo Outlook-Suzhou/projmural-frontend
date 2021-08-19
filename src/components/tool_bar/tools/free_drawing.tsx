@@ -139,6 +139,10 @@ function useDrawing() {
   const dispatch = useDispatchStore();
   const startDraw = (e: any) => {
     if (state.selectShape === 'ERASER' || state.selectShape === 'PEN') {
+      const ops = state.OpList;
+      console.log(ops);
+      ops.push(JSON.stringify(doc.data.shapes));
+      dispatch({ type: 'setOpList', payload: ops });
       dispatch({
         type: 'setLastLine',
         payload: {
