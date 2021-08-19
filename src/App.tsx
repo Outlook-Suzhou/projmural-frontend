@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Login from './pages/login/login';
 import Painting from './pages/painting/painting';
+import Dashboard from './pages/dashboard/dashboard';
 import { StoreProvider } from './store/store';
 import 'antd/dist/antd.css';
 
@@ -16,7 +17,10 @@ const App: React.FC<{}> = () => (
         <Login />
       </Route>
       <Route path="/dashboard">
-        dashboard
+        <Dashboard />
+      </Route>
+      <Route path="/kanban">
+        kanban
       </Route>
       <Route path="/painting">
         <StoreProvider>
