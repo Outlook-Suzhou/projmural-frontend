@@ -31,16 +31,16 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            sudo docker stop $(sudo docker ps -a -q)
-            sudo docker rm $(sudo docker ps -a -q)
-            sudo docker image rm projmural -f
-            rm -rf deploy
-            mkdir deploy
-            cd deploy 
+            sudo docker stop projmural-frontend
+            sudo docker rm projmural-frontend
+            sudo docker image rm projmural-frontend -f
+            rm -rf frontend
+            mkdir frontend
+            cd frontend 
             git clone github-projmural-frontend:Outlook-Suzhou/projmural-frontend.git
             cd projmural-frontend
             npm run pre
-            sudo docker image build -t projmural .
-            nohup sudo docker container run --rm -p 80:80 -p 443:443 -p 8080:8080 projmural > ./output.log 2>&1 &
+            sudo docker image build -t projmural-frontend .
+            nohup sudo docker container run --rm -p 80:80 -p 443:443 -p 8080:8080 projmural-frontend > ./output.log 2>&1 &
             
 
