@@ -72,5 +72,13 @@ namespace BaseShapes {
     arrowSize: number,
     type: 'ARROW',
   }
+  interface Kanban extends Position, Lock {
+    teamNum: number,
+    dateNum: number,
+    type: 'KANBAN',
+    teams: Array<any>,
+    shift: any,
+    projs: Array<any>
+  }
   type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine;
 }
