@@ -12,6 +12,7 @@ import Img from './image';
 import CurveLine from './curveline';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import doc from '../../client/client';
+import Kanban from './kanban';
 
 interface Shape {
   item: any;
@@ -156,6 +157,19 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       break;
     case 'CURVELINE':
       ShapeComponent = <CurveLine item={item} index={index} onSelect={click} onMouseOver={del} />;
+      break;
+    case 'KANBAN':
+      ShapeComponent = (
+        <Kanban
+          item={item}
+          index={index}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
       break;
     default:
       return ShapeComponent;

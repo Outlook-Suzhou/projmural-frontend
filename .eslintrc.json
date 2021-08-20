@@ -41,7 +41,8 @@
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],
     "react/jsx-props-no-spreading": [0],
-    "max-len": ["error", { "code": 180 }]
+    "max-len": ["error", { "code": 180 }],
+    "no-var": "off"
   },
   "globals": {
     "BaseShapes": "readonly"

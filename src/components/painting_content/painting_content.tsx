@@ -28,6 +28,7 @@ import CursorShape from './cursor_shape';
 import './painting_content.scss';
 import globalConfig from '../shapes/global_config';
 import Cancel, { useCancel } from '../tool_bar/tools/cancel';
+import AddKanBan from '../tool_bar/tools/add_kanban';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -155,7 +156,7 @@ const PaintingContent: React.FC<{}> = () => {
   return (
     <>
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
-      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing, Cancel]} isFloatBar={false} />
+      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} isFloatBar={false} />
       <div id="stage">
         <Stage
           className={state.selectShape}
@@ -186,7 +187,7 @@ const PaintingContent: React.FC<{}> = () => {
                       index={index}
                       click={() => {
                         if (state.selectShape === 'FREE') {
-                          if (item.type === 'TEXT') {
+                          if (item.type === 'TEXT' || item.type === 'KANBAN') {
                             const afterE = {
                               ...item,
                               shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
