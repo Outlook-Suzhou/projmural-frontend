@@ -12,6 +12,7 @@ import Img from './image';
 import CurveLine from './curveline';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import doc from '../../client/client';
+import TextRect from './text_rect';
 
 interface Shape {
   item: any;
@@ -147,6 +148,20 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
           index={index}
           click={click}
           isSelected={index === state.currentIndex}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
+      break;
+    case 'TEXTRECT':
+      ShapeComponent = (
+        <TextRect
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
           onTransformStart={onTransformStart}

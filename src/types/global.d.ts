@@ -54,6 +54,13 @@ namespace BaseShapes {
     scaleX: number,
     shift: any,
   }
+  interface TextRect extends Position, Size, Lock {
+    fill: string;
+    type: 'TEXTRECT',
+    rotation: number,
+    text: string,
+    fontSize: number,
+  }
   interface BaseLine extends Position, Lock {
     start: Position,
     end: Position,
@@ -72,5 +79,5 @@ namespace BaseShapes {
     arrowSize: number,
     type: 'ARROW',
   }
-  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine;
+  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect;
 }

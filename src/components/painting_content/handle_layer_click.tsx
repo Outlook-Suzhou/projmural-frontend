@@ -7,6 +7,11 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
         width: 50, height: 50, x, y, type: 'RECTANGLE', rotation: 0, fill: '#FF6900', draggable: true,
       });
       break;
+    case 'TEXTRECT':
+      addShape({
+        width: 100, height: 100, x, y, type: 'TEXTRECT', rotation: 0, fill: '#FFF9B2', draggable: true, text: '双击添加文字', fontSize: 10,
+      });
+      break;
     case 'LINE':
       addShape({
         x: 0, y: 0, start: { x, y }, end: { x: x + 100, y: y + 100 }, weight: 5, type: 'LINE', draggable: true,
