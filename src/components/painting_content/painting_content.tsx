@@ -12,6 +12,7 @@ import AddText from '../tool_bar/tools/add_text';
 import DeleteAll from '../tool_bar/tools/delete_all';
 import BaseShape from '../shapes/baseshape';
 import SelectColor from '../tool_bar/tools/select_color';
+import AddTip from '../tool_bar/tools/add_tip';
 import Lock from '../tool_bar/tools/lock';
 import {
   useStateStore, useDispatchStore, StateContext, DispatchContext,
@@ -156,7 +157,7 @@ const PaintingContent: React.FC<{}> = () => {
   return (
     <>
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
-      <ToolBar list={[Point, AddShape, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} isFloatBar={false} />
+      <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} isFloatBar={false} />
       <div id="stage">
         <Stage
           className={state.selectShape}
