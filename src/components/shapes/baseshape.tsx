@@ -10,6 +10,8 @@ import Line from './line';
 import Arrow from './arrow';
 import Img from './image';
 import CurveLine from './curveline';
+import TextRect from './text_rect';
+import Kanban from './kanban';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import doc from '../../client/client';
 
@@ -159,29 +161,29 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       break;
     case 'KANBAN':
       ShapeComponent = (
-          <Kanban
-              item={item}
-              index={index}
-              onSelect={click}
-              onDragStart={onDragStart}
-              onDragEnd={onDragEnd}
-              onTransformStart={onTransformStart}
-              onTransformEnd={onTransformEnd}
-          />
+        <Kanban
+          item={item}
+          index={index}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
       );
       break;
     case 'TEXTRECT':
       ShapeComponent = (
-          <TextRect
-              item={item}
-              index={index}
-              isSelected={index === state.currentIndex}
-              onSelect={click}
-              onDragStart={onDragStart}
-              onDragEnd={onDragEnd}
-              onTransformStart={onTransformStart}
-              onTransformEnd={onTransformEnd}
-          />
+        <TextRect
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
       );
       break;
     default:
@@ -196,4 +198,5 @@ BaseShape.defaultProps = {
   // setCurrentItem: () => {},
   // setCurrentIndex: () => {},
 };
+
 export default BaseShape;
