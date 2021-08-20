@@ -4,19 +4,20 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
-// import Login from './pages/login/login';
-// import Painting from './pages/painting/painting';
-// import Dashboard from './pages/dashboard/dashboard';
-// import { StoreProvider } from './store/store';
+import { Spin } from 'antd';
+// import { LoadingOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
+import './App.scss';
 
 const Login = lazy(() => import('./pages/login/login'));
 const Painting = lazy(() => import('./pages/painting/painting'));
 const Dashboard = lazy(() => import('./pages/dashboard/dashboard'));
 
+// const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
 const App: React.FC<{}> = () => (
   <Router>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spin size="large" className="page_loading" />}>
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={Dashboard} />
