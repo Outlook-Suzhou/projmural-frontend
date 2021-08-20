@@ -15,6 +15,8 @@ const CursorShape = (props: Props) => {
   switch (selectShape) {
     case 'RECTANGLE':
       return <Rect x={x} y={y} width={50} height={50} stroke="black" dash={[10, 10]} />;
+    case 'TEXTRECT':
+      return <Rect x={x} y={y} width={100} height={100} stroke="black" dash={[10, 10]} />;
     case 'CIRCLE':
       return <Circle x={x} y={y} radius={30} stroke="black" dash={[10, 10]} />;
     case 'LINE':
