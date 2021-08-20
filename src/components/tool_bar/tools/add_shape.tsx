@@ -1,12 +1,9 @@
 import React, { useRef } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { initializeIcons } from '@fluentui/font-icons-mdl2';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { Popover, Row, Col } from 'antd';
 import { BsDiamond } from 'react-icons/bs';
 import { useDispatchStore } from '../../../store/store';
-
-initializeIcons();
 
 const gridStyle:any = {
   textAlign: 'center',

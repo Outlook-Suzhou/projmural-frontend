@@ -11,9 +11,9 @@ const ipAddress = process.env.NODE_ENV === 'production' ? 'wss://www.projmural.c
 console.log(process.env.NODE_ENV);
 const socket = new ReconnectingWebSocket(`${ipAddress}`);
 const connection = new sharedb.Connection(socket);
+const docID = window.location.pathname.substring(10);
 
-// Create local Doc instance mapped to 'examples' collection document with id 'counter'
-const doc = connection.get('examples', 'counter');
+const doc = connection.get('projmural', docID);
 doc.subscribe();
 
 export default doc;
