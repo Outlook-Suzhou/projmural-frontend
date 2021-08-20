@@ -40,7 +40,7 @@ const Login: React.FC<{}> = () => {
     });
   };
   const goToPainting = () => {
-    history.push('/painting');
+    history.push('/dashboard');
   };
   return (
     <div className="login_page">
@@ -77,7 +77,7 @@ const Login: React.FC<{}> = () => {
                   {graphData.id}
                 </p>
                 <button type="button" onClick={goToPainting}>
-                  Go to Painting
+                  Go to Dashboard
                 </button>
               </div>
             )

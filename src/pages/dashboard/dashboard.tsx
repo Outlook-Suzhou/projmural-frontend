@@ -2,11 +2,19 @@ import './dashboard.scss';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
+import axios from 'axios';
 
 const Dashboard: React.FC<{}> = () => {
   const history = useHistory();
-  const goToPainting = () => {
-    history.push('/painting');
+  const createPainting = () => {
+    axios.post('/api/doc', {
+      type: 'create',
+      data: {
+        microsoft_id: 'test',
+      },
+    }).then((res) => {
+      history.push(`/painting/${res.data.data.canvas_id}`);
+    });
   };
   const goToKanban = () => {
     history.push('/kanban');
@@ -28,7 +36,7 @@ const Dashboard: React.FC<{}> = () => {
             <div className="text1">choose a template</div>
             <div className="template">
               <div className="temp">
-                <Icon iconName="Color" onClick={() => { goToPainting(); }} />
+                <Icon iconName="Color" onClick={() => { createPainting(); }} />
               </div>
               <div className="temp">
                 <Icon iconName="CalendarDay" onClick={() => { goToKanban(); }} />

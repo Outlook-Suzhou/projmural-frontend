@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { MsalProvider } from '@azure/msal-react';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -9,6 +10,7 @@ import { msalConfig } from './config/auth_config';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
+initializeIcons();
 ReactDOM.render(
   <React.StrictMode>
     <MsalProvider instance={msalInstance}>
