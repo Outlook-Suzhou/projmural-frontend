@@ -21,13 +21,10 @@ const createHTTPServer = (isHTTPS) => {
   app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
   app.use('/api', docRouter);
-
+  app.use('/api', websocketRouter);
+  app.use('/', viewRouter);
   const httpsServer = isHTTPS ? https.createServer(credentials, app) : http.createServer(app);
   if (isHTTPS) {
-    app.use('/api', websocketRouter);
-
-    app.use('/*', viewRouter);
-
     httpsServer.listen(443, () => {
       console.log('HTTPS Server running on port 443');
     });
