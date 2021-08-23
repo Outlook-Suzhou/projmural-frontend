@@ -22,8 +22,17 @@ const createDoc = () => {
   return ID;
 };
 
-const getDoc = () => {
-
+const getDoc = (id) => {
+  const connection = backend.connect();
+  const doc = connection.get('projmural', id);
+  const promise = new Promise((resolve) => {
+    doc.fetch((err) => {
+      console.log('fetch successfully');
+      if (err) throw err;
+      resolve(doc);
+    });
+  });
+  return promise;
 };
 
 module.exports = {

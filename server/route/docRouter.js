@@ -1,9 +1,9 @@
 const express = require('express');
-const { createDoc } = require('../sharedb/doc.js');
+const { createDoc, getDoc } = require('../sharedb/doc.js');
 
 const docRouter = express.Router();
 
-docRouter.use('/doc', (req, res) => {
+docRouter.post('/doc', async (req, res) => {
   const { type, data } = req.body;
   if (type !== 'create' && type !== 'get') {
     res.status(200).send({
@@ -19,14 +19,25 @@ docRouter.use('/doc', (req, res) => {
     });
     return;
   }
-  const ID = createDoc();
-  res.status(200).send({
-    msg: 'ok',
-    rect: 0,
-    data: {
-      canvas_id: ID,
-    },
-  });
+  if (type === 'create') {
+    const ID = createDoc();
+    res.status(200).send({
+      msg: 'ok',
+      rect: 0,
+      data: {
+        canvas_id: ID,
+      },
+    });
+  } else if (type === 'get') {
+    const doc = await getDoc(data.canvas_id);
+    res.status(200).send({
+      msg: 'ok',
+      rect: 0,
+      data: {
+        canvas_exist: doc.type !== null,
+      },
+    });
+  }
 });
 
 module.exports = docRouter;
