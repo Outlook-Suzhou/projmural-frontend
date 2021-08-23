@@ -8,6 +8,7 @@ const credentials = require('./credentials.js');
 const docRouter = require('./route/docRouter.js');
 const websocketRouter = require('./route/websocketRouter.js');
 const viewRouter = require('./views/view.js');
+const userRouter = require('./route/userRouter.js');
 
 require('./sharedb/sharedb.js');
 
@@ -21,7 +22,7 @@ const createHTTPServer = (isHTTPS) => {
   app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
   app.use('/api', docRouter);
-  app.use('/api', websocketRouter);
+  app.use('/api', [websocketRouter, userRouter]);
   app.use('/', viewRouter);
   const httpsServer = isHTTPS ? https.createServer(credentials, app) : http.createServer(app);
   if (isHTTPS) {
