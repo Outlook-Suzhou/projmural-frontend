@@ -2,7 +2,7 @@ import './dashboard.scss';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
-import axios from 'axios';
+import axios from '../../utils/axios';
 
 const Dashboard: React.FC<{}> = () => {
   const history = useHistory();
