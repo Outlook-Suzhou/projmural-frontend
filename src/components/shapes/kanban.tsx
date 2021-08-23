@@ -31,23 +31,25 @@ const Kanban : React.FC<Props> = (props: Props) => {
       onTransformStart={onTransformStart}
       onTransformEnd={onTransformEnd}
       onDragMove={(e) => {
-        const afterE = {
-          ...item,
-          x: e.target.x(),
-          y: e.target.y(),
-        };
-        doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+        if (item.draggable) {
+          const afterE = {
+            ...item,
+            x: e.target.x(),
+            y: e.target.y(),
+          };
+          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+        }
       }}
     >
       {[...Array(item.teamNum)].map((_, i) => (
-        <>
+        <Group>
           <Group>
             <Rect
               x={10}
               y={10 + i * 60}
               width={140}
               height={60}
-              fill={color[i]}
+              fill={color[i % 5]}
               stroke="#E6E6E6"
               strokeWidth={0.5}
             />
@@ -123,22 +125,22 @@ const Kanban : React.FC<Props> = (props: Props) => {
           <Group>
             {[...Array(item.dateNum)].map((__, j) => (
               <Rect
-                x={j * 60 + 150}
+                x={(j * 900) / item.dateNum + 150}
                 y={i * 60 + 10}
-                width={60}
+                width={900 / item.dateNum}
                 height={60}
-                fill={i === 0 ? '#FFC50033' : 'white'}
+                fill="white"
                 stroke="#E6E6E6"
                 strokeWidth={0.5}
               />
             ))}
           </Group>
-        </>
+        </Group>
 
       ))}
       {[...Array(item.dateNum)].map((_, i) => (
         <Text
-          x={i * 60 + 170}
+          x={(i * 900) / item.dateNum + 150 + 450 / item.dateNum}
           y={-20}
           text={`${i + 1}`}
           fontSize={9}
@@ -146,22 +148,24 @@ const Kanban : React.FC<Props> = (props: Props) => {
 
       ))}
       {[...Array(item.projs.length)].map((_, i) => (
-        <Text
-          x={item.projs[i].x}
-          y={item.projs[i].x}
-          text={item.projs[i].text}
-          fontSize={9}
-          draggable
-          onDragStart={() => {
-            item.draggable = false;
-            doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
-          }}
-          onDragEnd={() => {
-            item.draggable = true;
-            doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
-          }}
-        />
-
+        <Group>
+          <Text
+            text={item.projs[i].text}
+            x={item.projs[i].x}
+            y={item.projs[i].y}
+            fill="#ffffff"
+            wrap="char"
+            align="center"
+            draggable
+            onDragStart={() => { item.draggable = false; }}
+            onDragEnd={() => { item.draggable = true; }}
+            onDragMove={(e) => {
+              item.projs[i].x = e.target.x();
+              item.projs[i].y = e.target.y();
+              doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+            }}
+          />
+        </Group>
       ))}
     </Group>
   );

@@ -1,11 +1,37 @@
 import './dashboard.scss';
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
+import {
+  InputNumber, Modal,
+} from 'antd';
 import axios from '../../utils/axios';
 
 const Dashboard: React.FC<{}> = () => {
   const history = useHistory();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [kanban, setKanban] = useState({ teamNum: 3, dateNum: 10, unit: 'day' });
+  const handleOk = () => {
+    setModalVisible(true);
+    axios.post('/api/doc', {
+      type: 'create',
+      data: {
+        microsoft_id: 'test',
+      },
+    }).then((res) => {
+      history.push({ pathname: `/painting/${res.data.data.canvas_id}`, state: kanban });
+    });
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+  function onChangeTeamNum(value: number) {
+    setKanban({ ...kanban, teamNum: value });
+  }
+  function onChangeDateNum(value: number) {
+    setKanban({ ...kanban, dateNum: value });
+  }
   const createPainting = () => {
     axios.post('/api/doc', {
       type: 'create',
@@ -17,7 +43,7 @@ const Dashboard: React.FC<{}> = () => {
     });
   };
   const goToKanban = () => {
-    history.push('/kanban');
+    setModalVisible(true);
   };
   return (
     <>
@@ -44,6 +70,16 @@ const Dashboard: React.FC<{}> = () => {
             </div>
           </div>
         </div>
+        <Modal title="Basic Modal" visible={modalVisible} onOk={handleOk} onCancel={handleCancel}>
+          <div>
+            <>Input the total number of teams:</>
+            <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
+          </div>
+          <div>
+            <>Input the total number of dates:</>
+            <InputNumber min={5} max={50} value={kanban.dateNum} onChange={onChangeDateNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
+          </div>
+        </Modal>
       </div>
     </>
   );

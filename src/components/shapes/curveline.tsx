@@ -34,8 +34,6 @@ const CurveLine: React.FC<Props> = (props: Props) => {
         }}
         onMouseOver={onMouseOver}
         onMouseDown={onMouseOver}
-        onMouseMove={onMouseOver}
-        onMouseEnter={onMouseOver}
         lineCap="round"
         tension={0.5}
       />
