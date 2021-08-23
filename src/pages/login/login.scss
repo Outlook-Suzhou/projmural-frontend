@@ -3,3 +3,61 @@
     background: white;
   }
 }
+.content{
+  height: 1000px;
+}
+.footer{
+  height: 120px;
+  background-color: gray;
+  color: white;
+  text-align: center;
+}
+.pic{
+  height: 300px;
+  text-align: center;
+  background: #51A2C0;
+}
+.banner{
+  height: 70%;
+  width: 100%;
+  background: url("./img/banner.jpg") center center no-repeat;
+  background-size: 100% 100%;
+}
+.getInfo{
+  height: 100px;
+  width: 300px;
+  font-size: 30px;
+  background-color: white;
+  margin-top: 100px;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.getInfo:hover{
+  color: #51A2C0;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.goToDash{
+  height: 100px;
+  width: 300px;
+  font-size: 30px;
+  background-color: white;
+  margin-top: 100px;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.goToDash:hover{
+  color: #51A2C0;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.info{
+  float: left;
+  height: 100%;
+  margin-top: 100px;
+  margin-left: 20%;
+}
