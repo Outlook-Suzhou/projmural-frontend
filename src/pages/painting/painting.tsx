@@ -17,7 +17,7 @@ const Painting: React.FC<{}> = () => {
     }).then((res) => {
       if (res.data.msg === 'ok') {
         if (res.data.data.canvas_exist === false) {
-          history.push('/');
+          history.push('/404');
         }
       }
     });
