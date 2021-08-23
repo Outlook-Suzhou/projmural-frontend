@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Layout } from 'antd';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
@@ -14,35 +14,39 @@ const Login: React.FC<{}> = () => {
   const isAuthenticated = useIsAuthenticated();
   const { instance, accounts } = useMsal();
   const history = useHistory();
-  const handleSignIn = () => {
-    instance.loginRedirect(loginRequest).catch((e: any) => {
-      console.log(`login error ${e}`);
-      instance.acquireTokenSilent({
-        ...loginRequest,
-        account: accounts[0],
-      }).then((graphResponse: any) => {
-        axios.post('/api/login', {
-          access_token: graphResponse.accessToken,
-        }).then((loginResponse: any) => {
-          if (loginResponse.data.retc === 0) {
-            localStorage.setItem('projmural_jwt', loginResponse.data.data.jwt);
-            axios.get('/api/currentUser').then((rsp: any) => {
-              const dispatch = useDispatchStore();
-              dispatch({
-                type: 'setUserInfo',
-                payload: {
-                  microsoftId: rsp.data.data.microsoft_id,
-                  name: rsp.data.data.name,
-                },
-              });
-              history.push('/dashboard');
+  const jumpToDashboard = () => {
+    history.push('/dashboard');
+  };
+  const dispatch = useDispatchStore();
+  useEffect(() => {
+    if (isAuthenticated === false) return;
+    instance.acquireTokenSilent({
+      ...loginRequest,
+      account: accounts[0],
+    }).then((graphResponse: any) => {
+      axios.post('/api/login', {
+        access_token: graphResponse.accessToken,
+      }).then((loginResponse: any) => {
+        if (loginResponse.data.retc === 0) {
+          localStorage.setItem('projmural_jwt', loginResponse.data.data.jwt);
+          axios.get('/api/currentUser').then((rsp: any) => {
+            dispatch({
+              type: 'setUserInfo',
+              payload: {
+                microsoftId: rsp.data.data.microsoft_id,
+                name: rsp.data.data.name,
+              },
             });
-          } else {
-            console.log(loginResponse.data.msg);
-          }
-        }).catch((err: any) => { console.log(err); });
+            jumpToDashboard();
+          }).catch((err: any) => { console.log(err); });
+        } else {
+          console.log(loginResponse.data.msg);
+        }
       });
     });
+  }, [isAuthenticated]);
+  const handleSignIn = () => {
+    instance.loginRedirect(loginRequest).catch((err: any) => { console.log(err); });
   };
   const handleSignOut = () => {
     instance.logoutRedirect({
