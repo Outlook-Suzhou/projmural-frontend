@@ -13,6 +13,11 @@ interface Point {
   y: number,
 }
 
+interface UserInfo {
+  name: string
+  microsoftId: string
+}
+
 interface globalState {
   currentItem: any,
   currentIndex: number
@@ -24,6 +29,7 @@ interface globalState {
   isDragging: boolean // If is dragging or transforming a shape. If it's true, floatBar won't show.
   adsorptionPointsList: Array<Point>
   OpList: Array<any>
+  userInfo: UserInfo
 }
 interface actionType {
   type: string,
@@ -46,6 +52,10 @@ const initialState: globalState = {
   adsorptionPointsList: [],
   OpList: [],
   isDragging: false,
+  userInfo: {
+    name: '',
+    microsoftId: '',
+  },
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -68,6 +78,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, isDragging: action.payload };
     case 'setAdsorptionPointsList':
       return { ...state, adsorptionPointsList: action.payload };
+    case 'setUserInfo':
+      return { ...state, userInfo: action.payload };
     case 'reset':
       return { ...initialState };
     case 'setOpList':
@@ -78,21 +90,7 @@ function reducer(state: globalState = initialState, action: actionType): globalS
 }
 
 const StateContext = createContext<globalState>({
-  currentItem: {},
-  currentIndex: -1,
-  stagePos: { x: 0, y: 0 },
-  stageScale: 2,
-  selectShape: 'FREE',
-  lastLine: {
-    fill: '#000000',
-    points: [0],
-    type: 'CURVELINE',
-    size: 4,
-  },
-  isPainting: false,
-  adsorptionPointsList: [],
-  OpList: [],
-  isDragging: false,
+  ...initialState,
 });
 const DispatchContext = createContext<Function>(() => {});
 
