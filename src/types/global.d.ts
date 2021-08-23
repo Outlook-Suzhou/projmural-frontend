@@ -11,6 +11,11 @@ namespace BaseShapes {
   interface Lock {
     draggable: boolean
   }
+  interface Proj {
+    text: string,
+    x: number,
+    y: number,
+  }
   interface Rectangle extends Position, Size, Lock {
     type: 'RECTANGLE',
     rotation: number,
@@ -85,7 +90,7 @@ namespace BaseShapes {
     type: 'KANBAN',
     teams: Array<any>,
     shift: any,
-    projs: Array<any>
+    projs: Array<Proj>
   }
   type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect;
 }

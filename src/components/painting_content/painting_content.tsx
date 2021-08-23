@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
+import { useHistory } from 'react-router-dom';
 import doc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
@@ -30,13 +31,17 @@ import './painting_content.scss';
 import globalConfig from '../shapes/global_config';
 import Cancel, { useCancel } from '../tool_bar/tools/cancel';
 import AddKanBan from '../tool_bar/tools/add_kanban';
+import AddItem from '../tool_bar/tools/add_kanbanItem';
+import addKanBan from '../../utils/add_kanban';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
-  useEffect(() => { dispatch({ type: 'setAdsorptionPointsList', payload: [] }); }, [state.currentIndex]);
+  useEffect(() => {
+    dispatch({ type: 'setAdsorptionPointsList', payload: [] });
+  }, [state.currentIndex]);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   useDrawing();
   useCancel();
@@ -47,6 +52,8 @@ const PaintingContent: React.FC<{}> = () => {
       dispatch({ type: 'setCurrentIndex', payload: -1 });
     }
   };
+  const history = useHistory();
+  const [kanban, setKanBan] = useState(history.location.state);
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
     const pos = e.target.getStage().getPointerPosition();
     if (state.isPainting && state.selectShape === 'PEN') {
@@ -66,6 +73,9 @@ const PaintingContent: React.FC<{}> = () => {
     if (state.currentItem.type === 'TEXT') {
       tools.push(FontSize);
     }
+    if (state.currentItem.type === 'KANBAN') {
+      tools.push(AddItem);
+    }
     return tools;
   };
   useEffect(() => {
@@ -82,6 +92,13 @@ const PaintingContent: React.FC<{}> = () => {
       }
     });
   }, []);
+  useEffect(() => {
+    if (kanban !== undefined && doc.data !== undefined) {
+      addKanBan(kanban);
+      setKanBan(undefined);
+      console.log(kanban);
+    }
+  });
 
   const boundFunc = (pos: any) => {
     const x = Math.min(0, Math.max(pos.x, window.innerWidth * (1 - state.stageScale)));

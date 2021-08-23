@@ -105,17 +105,10 @@ const Content: React.FC<{}> = () => {
             style={gridStyle}
           >
             <Tooltip title="画笔设置">
-              {/* <div style={{ */}
-              {/*  // eslint-disable-next-line max-len */}
-              {/* eslint-disable-next-line max-len */}
-              {/*  width: '30px', height: '30px', lineHeight: '30px', textAlign: 'center', display: 'inline-block', background: 'white', borderRadius: '50%', alignContent: 'center', textDecoration: 'none', */}
-              {/* }} */}
-              {/* > */}
               <Icon
                 iconName="locationdot"
                 style={{ color: penColor, fontSize: `${4 * penSize}px` }}
               />
-              {/* </div> */}
             </Tooltip>
           </Col>
         </Popover>
