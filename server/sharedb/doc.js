@@ -23,6 +23,11 @@ const createDoc = () => {
 };
 
 const getDoc = (id) => {
+  if (id === '') {
+    return Promise.resolve({
+      type: null,
+    });
+  }
   const connection = backend.connect();
   const doc = connection.get('projmural', id);
   const promise = new Promise((resolve) => {
