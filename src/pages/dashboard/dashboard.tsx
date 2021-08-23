@@ -2,10 +2,10 @@ import './dashboard.scss';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
-import axios from 'axios';
 import {
   InputNumber, Modal,
 } from 'antd';
+import axios from '../../utils/axios';
 
 const Dashboard: React.FC<{}> = () => {
   const history = useHistory();
