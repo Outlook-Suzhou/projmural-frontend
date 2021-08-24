@@ -153,7 +153,7 @@ const PaintingContent: React.FC<{}> = () => {
           y={y}
           width={WIDTH}
           height={HEIGHT}
-          fill="#F2F2F2"
+          fill="#faf9f8"
           stroke="lightGray"
           onClick={() => { dispatch({ type: 'setCurrentIndex', payload: -1 }); }}
         />,
