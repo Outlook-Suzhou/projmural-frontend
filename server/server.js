@@ -15,6 +15,7 @@ const createHTTPServer = () => {
   app.use(express.static(path.join(__dirname, '../build'))); // for parsing application/json
   app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+  app.use(express.json());
   app.use('/api', docRouter);
   app.use('/', viewRouter);
   const httpsServer = http.createServer(app);
