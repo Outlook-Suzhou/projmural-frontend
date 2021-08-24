@@ -37,10 +37,11 @@ jobs:
             rm -rf frontend
             mkdir frontend
             cd frontend 
-            git clone github-projmural-frontend:Outlook-Suzhou/projmural-frontend.git
             cd projmural-frontend
-            npm run pre
+            npm install
+            npm run build
+            cp build/* /home/intern/static/ -r
             sudo docker image build -t projmural-frontend .
-            nohup sudo docker container run --name projmural-frontend --rm -p 80:80 -p 443:443 -p 8080:8080 projmural-frontend > ./output.log 2>&1 &
+            nohup sudo docker container run --name projmural-frontend --rm -p 8000:8000 -p 8080:8080 projmural-frontend > ./output.log 2>&1 &
             
 
