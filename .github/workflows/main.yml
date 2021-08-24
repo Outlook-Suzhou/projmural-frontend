@@ -41,6 +41,7 @@ jobs:
             npm install
             npm run build
             cp build/* /home/intern/static/ -r
+            cd server
             sudo docker image build -t projmural-frontend .
             nohup sudo docker container run --name projmural-frontend --rm -p 8000:8000 -p 8080:8080 projmural-frontend > ./output.log 2>&1 &
             
