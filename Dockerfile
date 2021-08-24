@@ -1,4 +1,4 @@
 FROM node:14.17
-COPY . ./projmural
+COPY ./server ./projmural
 WORKDIR /projmural
-CMD ["pm2-runtime", "./server/server.js"]
+CMD ["node", "./server.js"]
