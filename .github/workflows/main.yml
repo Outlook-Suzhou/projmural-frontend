@@ -34,10 +34,10 @@ jobs:
             sudo docker stop projmural-frontend
             sudo docker rm projmural-frontend
             sudo docker image rm projmural-frontend -f
-            rm -rf frontend
-            mkdir frontend
             cd frontend 
             cd projmural-frontend
+            git checkout main
+            git pull
             npm install
             npm run build
             cp build/* /home/intern/static/ -r
