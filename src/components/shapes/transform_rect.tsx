@@ -94,6 +94,9 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             }
             return newBox;
           }}
+          borderStroke="black"
+          anchorStroke="black"
+          anchorCornerRadius={5}
         />
       )}
     </>

@@ -1,8 +1,8 @@
 import React from 'react';
 import './tool_bar.scss';
 import { useStateStore } from '../../store/store';
-import { calcZoomX, calcZoomY } from '../../utils/calc_zoom_position';
 import doc from '../../client/client';
+import calcFloatBarPos from '../../utils/calc_floatbar_position';
 
 interface toolBarAttribute{
   list: React.FC<any>[],
@@ -17,8 +17,8 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
     <div
       className={['toolbar', (isFloatBar ? 'float_tool_bar' : 'left_tool_bar')].join(' ')}
       style={{
-        left: isFloatBar ? calcZoomX(doc.data.shapes[state.currentIndex].x, state.stageScale, state.stagePos.x) - 50 : 50,
-        top: isFloatBar ? calcZoomY(doc.data.shapes[state.currentIndex].y, state.stageScale, state.stagePos.y) - 200 : 200,
+        left: isFloatBar ? calcFloatBarPos(doc.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[0] - 90 : 50,
+        top: isFloatBar ? calcFloatBarPos(doc.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[1] - 150 : 200,
       }}
     >
       {

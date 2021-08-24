@@ -87,7 +87,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
         height={item.height / 2}
         text={item.text}
         fontSize={item.fontSize}
-        fontFamily="fantasy"
+        fontFamily="Arial"
         visible={visible}
         align="center"
         onDblClick={() => {
@@ -105,7 +105,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
           textarea.style.margin = '0px';
           textarea.style.overflow = 'hidden';
           textarea.style.background = 'none';
-          textarea.style.fontFamily = 'fantasy';
+          textarea.style.fontFamily = 'Arial';
           textarea.style.textAlign = 'center';
           // textarea.style.lineHeight = String(item.height / 4);
           textarea.style.resize = 'none';
