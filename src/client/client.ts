@@ -2,7 +2,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 const sharedb = require('sharedb/lib/client');
 
-const ipAddress = process.env.NODE_ENV === 'production' ? 'wss://www.projmural.com/api/websocket' : 'wss://www.projmural.com/api/websocket';
+const ipAddress = 'wss://www.projmural.com/api/websocket';
 
 const socket = new ReconnectingWebSocket(`${ipAddress}`);
 const connection = new sharedb.Connection(socket);
