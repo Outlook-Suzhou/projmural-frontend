@@ -92,6 +92,9 @@ const Dashboard: React.FC<{}> = () => {
             <div className="choose_storage" />
           </div>
           <div className="right_body">
+            <div className="text1">
+              Create new board
+            </div>
             <div className="template">
               <div className="temp">
                 <Icon className="icon" iconName="Color" onClick={() => { createPainting(); }} />
@@ -101,6 +104,9 @@ const Dashboard: React.FC<{}> = () => {
                 <Icon className="icon" iconName="CalendarDay" onClick={() => { goToKanban(); }} />
                 <div className="font"> journey map </div>
               </div>
+            </div>
+            <div className="text1">
+              All board
             </div>
           </div>
         </div>
