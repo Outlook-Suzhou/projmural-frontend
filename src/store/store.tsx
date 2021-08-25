@@ -16,6 +16,7 @@ interface Point {
 interface UserInfo {
   name: string
   microsoftId: string
+  mail: string
 }
 
 interface globalState {
@@ -55,6 +56,7 @@ const initialState: globalState = {
   userInfo: {
     name: '',
     microsoftId: '',
+    mail: '',
   },
 };
 
