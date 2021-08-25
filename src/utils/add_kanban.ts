@@ -17,24 +17,27 @@ function addKanBan(kanban: any) {
   const days = [];
   const a = moment(start);
   const b = moment(end);
-  console.log(a, b);
   switch (unit) {
     case 'month':
-      while (a.isSame(b)) {
+      while (!a.isSame(b)) {
         days.push(a.format('YYYY-M'));
         a.add(1, 'month');
       }
       days.push(b.format('YYYY-M'));
       break;
     case 'week':
-      while (a.isSame(b)) {
-        days.push(a.format('YYYY-do'));
+      while (!a.isSame(b)) {
+        if (a.isAfter(b)) {
+          break;
+        }
+        days.push(a.format('YYYY-wo'));
         a.add(1, 'week');
+        console.log(a, b);
       }
-      days.push(b.format('YYYY-do'));
+      days.push(b.format('YYYY-wo'));
       break;
     case 'day':
-      while (a.isSame(b)) {
+      while (!a.isSame(b)) {
         days.push(a.format('YYYY-M-D'));
         a.add(1, 'day');
       }
