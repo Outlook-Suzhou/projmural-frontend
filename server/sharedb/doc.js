@@ -9,7 +9,7 @@ const createPaintingID = () => {
   return md5.update(Buffer.from(uuidv4()).toString('base64')).digest('hex').slice(-8);
 };
 
-const createDoc = () => {
+const createDoc = (canvaName) => {
   const connection = backend.connect();
   const ID = createPaintingID();
   const doc = connection.get('projmural', ID);
@@ -19,6 +19,7 @@ const createDoc = () => {
       doc.create({
         shapes: [],
         users: [],
+        canvaName,
       });
     }
   });

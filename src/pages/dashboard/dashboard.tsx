@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {
-  InputNumber, Modal, PageHeader, Avatar, Dropdown, Menu,
+  InputNumber, Modal, PageHeader, Avatar, Dropdown, Menu, Input,
 } from 'antd';
 import { useMsal } from '@azure/msal-react';
 import axios from '../../utils/axios';
@@ -12,22 +12,21 @@ import { useStateStore } from '../../store/store';
 const Dashboard: React.FC<{}> = () => {
   const state = useStateStore();
   const history = useHistory();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [journeyMapModalVisible, setJourneyMapModalVisible] = useState(false);
   const [kanban, setKanban] = useState({ teamNum: 3, dateNum: 10, unit: 'day' });
+  const [canvaName, setCanvaName] = useState('untitle');
+  const [canvaNameModalVisible, setCanvaNameModalVisible] = useState(false);
   const handleOk = () => {
-    setModalVisible(true);
+    setJourneyMapModalVisible(true);
     axios.post('/api/doc', {
       type: 'create',
       data: {
         microsoft_id: 'test',
+        canvaName,
       },
     }).then((res) => {
       history.push({ pathname: `/painting/${res.data.data.canvas_id}`, state: kanban });
     });
-  };
-
-  const handleCancel = () => {
-    setModalVisible(false);
   };
   function onChangeTeamNum(value: number) {
     setKanban({ ...kanban, teamNum: value });
@@ -35,18 +34,19 @@ const Dashboard: React.FC<{}> = () => {
   function onChangeDateNum(value: number) {
     setKanban({ ...kanban, dateNum: value });
   }
+  function canvaNameOnChange(e: any) {
+    setCanvaName(e.target.defaultValue);
+  }
   const createPainting = () => {
     axios.post('/api/doc', {
       type: 'create',
       data: {
-        microsoft_id: 'test',
+        microsoft_id: state.userInfo.microsoftId,
+        canvaName,
       },
     }).then((res) => {
       history.push(`/painting/${res.data.data.canvas_id}`);
     });
-  };
-  const goToKanban = () => {
-    setModalVisible(true);
   };
   const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
   const { instance } = useMsal();
@@ -97,11 +97,11 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               <div className="temp">
-                <Icon className="icon" iconName="Color" onClick={() => { createPainting(); }} />
+                <Icon className="icon" iconName="Color" onClick={() => { setCanvaNameModalVisible(true); }} />
                 <div className="font"> new board </div>
               </div>
               <div className="temp">
-                <Icon className="icon" iconName="CalendarDay" onClick={() => { goToKanban(); }} />
+                <Icon className="icon" iconName="CalendarDay" onClick={() => { setJourneyMapModalVisible(true); }} />
                 <div className="font"> journey map </div>
               </div>
             </div>
@@ -110,7 +110,7 @@ const Dashboard: React.FC<{}> = () => {
             </div>
           </div>
         </div>
-        <Modal title="Basic Modal" visible={modalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title="Please input journey map info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>
           <div>
             <>Input the total number of teams:</>
             <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
@@ -119,6 +119,9 @@ const Dashboard: React.FC<{}> = () => {
             <>Input the total number of dates:</>
             <InputNumber min={5} max={50} value={kanban.dateNum} onChange={onChangeDateNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
           </div>
+        </Modal>
+        <Modal title="Please input canva Name" visible={canvaNameModalVisible} onOk={createPainting} onCancel={() => { setCanvaNameModalVisible(false); }}>
+          <Input onChange={canvaNameOnChange} />
         </Modal>
       </div>
     </>
