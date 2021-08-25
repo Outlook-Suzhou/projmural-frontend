@@ -18,7 +18,7 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
       className={['toolbar', (isFloatBar ? 'float_tool_bar' : 'left_tool_bar')].join(' ')}
       style={{
         left: isFloatBar ? calcFloatBarPos(doc.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[0] - 90 : 50,
-        top: isFloatBar ? calcFloatBarPos(doc.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[1] - 150 : 200,
+        top: isFloatBar ? calcFloatBarPos(doc.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[1] - 150 : window.innerHeight * 0.15,
       }}
     >
       {
