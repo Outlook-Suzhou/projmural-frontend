@@ -4,7 +4,6 @@ const path = require('path');
 const cors = require('cors');
 
 const docRouter = require('./route/docRouter.js');
-const viewRouter = require('./views/view.js');
 
 require('./sharedb/sharedb.js');
 
@@ -17,7 +16,6 @@ const createHTTPServer = () => {
 
   app.use(express.json());
   app.use('/api', docRouter);
-  app.use('/', viewRouter);
   const httpsServer = http.createServer(app);
   httpsServer.listen(8000, () => {
     console.log('HTTP Server running on port 8000');
