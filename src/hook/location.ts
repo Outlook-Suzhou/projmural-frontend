@@ -16,6 +16,7 @@ function useCurrentLocation() {
       if (userData.data.retc === -1) {
         history.push('/');
       } else if (userData.data.retc === 0) {
+        history.push('/dashboard');
         dispatch({
           type: 'setUserInfo',
           payload: {
