@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Layout } from 'antd';
+import { Layout, Spin } from 'antd';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { loginRequest } from '../../config/auth_config';
 import LoginHeader from '../../components/login_page/login_header';
@@ -12,6 +12,7 @@ const { Header, Content, Footer } = Layout;
 
 const Login: React.FC<{}> = () => {
   const isAuthenticated = useIsAuthenticated();
+  const [loading, setLoading] = useState(false);
   const { instance, accounts } = useMsal();
   const history = useHistory();
   const jumpToDashboard = () => {
@@ -24,6 +25,7 @@ const Login: React.FC<{}> = () => {
       ...loginRequest,
       account: accounts[0],
     }).then((graphResponse: any) => {
+      setLoading(true);
       axios.post('/api/login', {
         access_token: graphResponse.accessToken,
       }).then((loginResponse: any) => {
@@ -37,6 +39,7 @@ const Login: React.FC<{}> = () => {
                 name: rsp.data.data.name,
               },
             });
+            setLoading(false);
             jumpToDashboard();
           }).catch((err: any) => { console.log(err); });
         } else {
@@ -63,9 +66,11 @@ const Login: React.FC<{}> = () => {
             isAuthenticated={isAuthenticated}
           />
         </Header>
-        <Content className="content">
-          <div className="banner" />
-        </Content>
+        <Spin spinning={loading}>
+          <Content className="content">
+            <div className="banner" />
+          </Content>
+        </Spin>
         <Footer className="footer">
           <small>
             <p>Microsoft Outlook Team</p>
