@@ -20,7 +20,7 @@ docRouter.post('/doc', async (req, res) => {
     return;
   }
   if (type === 'create') {
-    const ID = createDoc();
+    const ID = createDoc(data.canvaName);
     res.status(200).send({
       msg: 'ok',
       rect: 0,
