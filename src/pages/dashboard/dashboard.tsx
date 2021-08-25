@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {
-  InputNumber, Modal, PageHeader, Avatar,
+  InputNumber, Modal, PageHeader, Avatar, Dropdown, Menu,
 } from 'antd';
+import { useMsal } from '@azure/msal-react';
 import axios from '../../utils/axios';
 import { useStateStore } from '../../store/store';
 
@@ -48,6 +49,15 @@ const Dashboard: React.FC<{}> = () => {
     setModalVisible(true);
   };
   const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
+  const { instance } = useMsal();
+  const logoutFunction = () => { instance.logoutRedirect({ postLogoutRedirectUri: '/' }); };
+  const DropdownMenu = (
+    <Menu>
+      <Menu.Item key="1" onClick={logoutFunction}>
+        logout
+      </Menu.Item>
+    </Menu>
+  );
   return (
     <>
       <div className="dashboard">
@@ -60,9 +70,18 @@ const Dashboard: React.FC<{}> = () => {
                 <span className="avatar_name">
                   {state.userInfo.name}
                 </span>
-                <Avatar size={50} style={{ backgroundColor: ColorList[0], verticalAlign: 'middle' }}>
-                  {state.userInfo.name.split(' ').pop()}
-                </Avatar>
+                <Dropdown overlay={DropdownMenu} trigger={['hover']}>
+                  <Avatar
+                    size={40}
+                    style={{
+                      backgroundColor: ColorList[parseInt(state.userInfo.microsoftId.substr(-1), 16) % 4],
+                      verticalAlign: 'middle',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {state.userInfo.name.split(' ').pop()}
+                  </Avatar>
+                </Dropdown>
               </div>,
             ]
           }
@@ -73,13 +92,14 @@ const Dashboard: React.FC<{}> = () => {
             <div className="choose_storage" />
           </div>
           <div className="right_body">
-            <div className="text1">choose a template</div>
             <div className="template">
               <div className="temp">
-                <Icon iconName="Color" onClick={() => { createPainting(); }} />
+                <Icon className="icon" iconName="Color" onClick={() => { createPainting(); }} />
+                <div className="font"> new board </div>
               </div>
               <div className="temp">
-                <Icon iconName="CalendarDay" onClick={() => { goToKanban(); }} />
+                <Icon className="icon" iconName="CalendarDay" onClick={() => { goToKanban(); }} />
+                <div className="font"> journey map </div>
               </div>
             </div>
           </div>
