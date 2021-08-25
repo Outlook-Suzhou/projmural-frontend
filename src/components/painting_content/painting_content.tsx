@@ -94,9 +94,9 @@ const PaintingContent: React.FC<{}> = () => {
   }, []);
   useEffect(() => {
     if (kanban !== undefined && doc.data !== undefined) {
-      addKanBan(kanban);
+      // @ts-ignore
+      addKanBan(kanban.kanban);
       setKanBan(undefined);
-      console.log(kanban);
     }
   });
 

@@ -14,7 +14,7 @@ const Dashboard: React.FC<{}> = () => {
   const history = useHistory();
   const [modalVisible, setModalVisible] = useState(false);
   const [kanban, setKanban] = useState({
-    teamNum: 3, dateSize: 'month', start: '1', end: '1', unit: 'day', dateNum: 10,
+    teamNum: 3, start: '1', end: '1', unit: 'day',
   });
   const size = ['month', 'week', 'day'];
   const handleOk = () => {
@@ -36,11 +36,11 @@ const Dashboard: React.FC<{}> = () => {
     setKanban({ ...kanban, teamNum: value });
   }
   function onChangeSize(value: string) {
-    setKanban({ ...kanban, dateSize: value });
+    setKanban({ ...kanban, unit: value });
   }
-  function onChangeDate(date: any, dateString: any) {
-    console.log(date[1] - date[0]);
-    console.log(date, dateString);
+  function onChangeDate(date: any) {
+    setKanban({ ...kanban, start: date[0].format(), end: date[1].format() });
+    console.log(kanban);
   }
   const createPainting = () => {
     axios.post('/api/doc', {
@@ -87,13 +87,13 @@ const Dashboard: React.FC<{}> = () => {
           </div>
           <div>
             <>Input the the start-stop time of the project</>
-            <Select defaultValue={size[0]} style={{ width: 120 }} onChange={onChangeSize}>
+            <Select defaultValue="day" style={{ width: 120 }} onChange={onChangeSize}>
               {size.map((unit) => (
                 <Option value={unit}>{unit}</Option>
               ))}
             </Select>
             {/* @ts-ignore */}
-            <RangePicker picker={kanban.dateSize} onChange={onChangeDate} />
+            <RangePicker picker={kanban.unit} onChange={onChangeDate} />
           </div>
         </Modal>
       </div>
