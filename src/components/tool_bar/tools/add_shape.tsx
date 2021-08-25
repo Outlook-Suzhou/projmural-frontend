@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Icon } from '@fluentui/react/lib/Icon';
 import { Popover, Row, Col } from 'antd';
 import { BsDiamond } from 'react-icons/bs';
@@ -130,7 +129,7 @@ const AddShape: React.FC<{}> = () => {
   const nodeRef = useRef(null);//
   return (
     <div className="tool_icon">
-      <Popover trigger="click" placement="right" content={shapes}>
+      <Popover placement="right" content={shapes} trigger="hover">
         <div ref={nodeRef} />
         <Icon iconName="Shapes" />
       </Popover>
