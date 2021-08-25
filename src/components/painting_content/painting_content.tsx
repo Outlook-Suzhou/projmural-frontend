@@ -33,9 +33,11 @@ import Cancel, { useCancel } from '../tool_bar/tools/cancel';
 import AddKanBan from '../tool_bar/tools/add_kanban';
 import AddItem from '../tool_bar/tools/add_kanbanItem';
 import addKanBan from '../../utils/add_kanban';
+import useUserList from '../../hook/userList';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
+  const [userList] = useUserList(doc?.data?.users || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
@@ -84,8 +86,6 @@ const PaintingContent: React.FC<{}> = () => {
         setList([...doc.data.shapes]);
       }
     });
-  }, []);
-  useEffect(() => {
     doc.on('op', () => {
       if (doc?.data?.shapes) {
         setList([...doc.data.shapes]);
@@ -246,7 +246,19 @@ const PaintingContent: React.FC<{}> = () => {
                     />
                   ))
                 }
+                {
+                  userList.map((item: BaseShapes.User) => (
+                    <Circle
+                      x={item.x}
+                      y={item.y}
+                      fill="red"
+                      radius={globalConfig.auxiliaryPointSize / state.stageScale}
+                      stroke={(1 / state.stageScale).toString()}
+                    />
+                  ))
+                }
               </Layer>
+
             </DispatchContext.Provider>
           </StateContext.Provider>
         </Stage>

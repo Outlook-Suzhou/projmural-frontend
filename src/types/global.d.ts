@@ -92,5 +92,9 @@ namespace BaseShapes {
     shift: any,
     projs: Array<Proj>
   }
+  interface User extends Position{
+    name: string,
+    microsoftId: string
+  }
   type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect;
 }

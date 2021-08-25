@@ -16,6 +16,7 @@ const createDoc = () => {
     if (doc.type === null) {
       doc.create({
         shapes: [],
+        users: [],
       });
     }
   });
