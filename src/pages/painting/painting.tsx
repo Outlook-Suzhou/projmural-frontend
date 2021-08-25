@@ -18,6 +18,9 @@ const Painting: React.FC<{}> = () => {
       if (res.data.msg === 'ok') {
         if (res.data.data.canvas_exist === false) {
           history.push('/404');
+        } else {
+          window.onbeforeunload = () => {
+          };
         }
       }
     });
