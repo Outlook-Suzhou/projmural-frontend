@@ -3,15 +3,25 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {
-  InputNumber, Modal,
+  DatePicker,
+  InputNumber, message, Modal, Select,
 } from 'antd';
 import axios from '../../utils/axios';
 
 const Dashboard: React.FC<{}> = () => {
+  const { RangePicker } = DatePicker;
+  const { Option } = Select;
   const history = useHistory();
   const [modalVisible, setModalVisible] = useState(false);
-  const [kanban, setKanban] = useState({ teamNum: 3, dateNum: 10, unit: 'day' });
+  const [kanban, setKanban] = useState({
+    teamNum: 3, dateNum: 10, unit: 'month', start: '1', end: '1',
+  });
+  const size = ['month', 'week', 'day'];
   const handleOk = () => {
+    if (kanban.start === '1') {
+      message.warning('please input the start-stop time!');
+      return;
+    }
     setModalVisible(true);
     axios.post('/api/doc', {
       type: 'create',
@@ -29,8 +39,13 @@ const Dashboard: React.FC<{}> = () => {
   function onChangeTeamNum(value: number) {
     setKanban({ ...kanban, teamNum: value });
   }
-  function onChangeDateNum(value: number) {
-    setKanban({ ...kanban, dateNum: value });
+  function handleSizeChange(value: string) {
+    setKanban({ ...kanban, unit: value });
+  }
+  function handleRangeChange(value: any, dateString: any) {
+    console.log('Selected Time: ', value);
+    console.log('Formatted Selected Time: ', dateString);
+    setKanban({ ...kanban, start: dateString[0], end: dateString[1] });
   }
   const createPainting = () => {
     axios.post('/api/doc', {
@@ -76,8 +91,16 @@ const Dashboard: React.FC<{}> = () => {
             <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
           </div>
           <div>
-            <>Input the total number of dates:</>
-            <InputNumber min={5} max={50} value={kanban.dateNum} onChange={onChangeDateNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
+            <>Input the start-stop time of the project:</>
+          </div>
+          <div>
+            <Select defaultValue={size[0]} style={{ width: 120 }} onChange={handleSizeChange}>
+              {size.map((unit) => (
+                <Option key={unit} value={unit}>{unit}</Option>
+              ))}
+            </Select>
+            {/* @ts-ignore */}
+            <RangePicker picker={kanban.unit} onChange={handleRangeChange} />
           </div>
         </Modal>
       </div>

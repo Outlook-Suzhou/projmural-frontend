@@ -87,6 +87,9 @@ namespace BaseShapes {
   interface Kanban extends Position, Lock {
     teamNum: number,
     dateNum: number,
+    unit: string,
+    start: string,
+    end: string,
     type: 'KANBAN',
     teams: Array<any>,
     shift: any,
