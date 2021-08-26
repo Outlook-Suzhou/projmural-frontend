@@ -4,33 +4,35 @@ import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {
   DatePicker,
-  InputNumber, Modal, Select,
+  InputNumber, Modal, Select, PageHeader, Input,
 } from 'antd';
 import axios from '../../utils/axios';
+import { useStateStore } from '../../store/store';
+import AvatarArea from '../../components/login_page/avatar';
 
 const Dashboard: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
   const { Option } = Select;
+  const state = useStateStore();
   const history = useHistory();
-  const [modalVisible, setModalVisible] = useState(false);
   const [kanban, setKanban] = useState({
     teamNum: 3, start: '1', end: '1', unit: 'day',
   });
   const size = ['month', 'week', 'day'];
+  const [journeyMapModalVisible, setJourneyMapModalVisible] = useState(false);
+  const [canvaName, setCanvaName] = useState('untitle');
+  const [canvaNameModalVisible, setCanvaNameModalVisible] = useState(false);
   const handleOk = () => {
-    setModalVisible(true);
+    setJourneyMapModalVisible(true);
     axios.post('/api/doc', {
       type: 'create',
       data: {
         microsoft_id: 'test',
+        canva_name: canvaName,
       },
     }).then((res) => {
       history.push({ pathname: `/painting/${res.data.data.canvas_id}`, state: { kanban, id: `${res.data.data.canvas_id}` } });
     });
-  };
-
-  const handleCancel = () => {
-    setModalVisible(false);
   };
   function onChangeTeamNum(value: number) {
     setKanban({ ...kanban, teamNum: value });
@@ -42,45 +44,69 @@ const Dashboard: React.FC<{}> = () => {
     setKanban({ ...kanban, start: date[0].format(), end: date[1].format() });
     console.log(kanban);
   }
+  function canvaNameOnChange(e: any) {
+    console.log(e);
+    setCanvaName(e.target.defaultValue);
+  }
   const createPainting = () => {
     axios.post('/api/doc', {
       type: 'create',
       data: {
-        microsoft_id: 'test',
+        microsoft_id: state.userInfo.microsoftId,
+        canva_name: canvaName,
       },
     }).then((res) => {
+      if (res.data.retc !== 0) {
+        console.log(res);
+        return;
+      }
       history.push(`/painting/${res.data.data.canvas_id}`);
+    }).catch((e) => {
+      console.log(e);
     });
-  };
-  const goToKanban = () => {
-    setModalVisible(true);
   };
   return (
     <>
       <div className="dashboard">
-        <div className="header">
-          <div className="avatar">
-            <Icon iconName="UserFollowed" />
-          </div>
-        </div>
+        <PageHeader
+          className="site-page-header"
+          title="DashBoard"
+          extra={
+            [
+              <div>
+                <span className="avatar_name">
+                  {state.userInfo.name}
+                </span>
+                <AvatarArea />
+              </div>,
+            ]
+          }
+        />
         <div className="body">
           <div className="menu">
             <div className="choose_template" />
             <div className="choose_storage" />
           </div>
           <div className="right_body">
-            <div className="text1">choose a template</div>
+            <div className="text1">
+              Create new board
+            </div>
             <div className="template">
               <div className="temp">
-                <Icon iconName="Color" onClick={() => { createPainting(); }} />
+                <Icon className="icon" iconName="Color" onClick={() => { setCanvaNameModalVisible(true); }} />
+                <div className="font"> new board </div>
               </div>
               <div className="temp">
-                <Icon iconName="CalendarDay" onClick={() => { goToKanban(); }} />
+                <Icon className="icon" iconName="CalendarDay" onClick={() => { setJourneyMapModalVisible(true); }} />
+                <div className="font"> journey map </div>
               </div>
+            </div>
+            <div className="text1">
+              All board
             </div>
           </div>
         </div>
-        <Modal title="Basic Modal" visible={modalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title="Please input journey map info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>
           <div>
             <>Input the total number of teams:</>
             <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
@@ -95,6 +121,9 @@ const Dashboard: React.FC<{}> = () => {
             {/* @ts-ignore */}
             <RangePicker picker={kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
           </div>
+        </Modal>
+        <Modal title="Please input canva Name" visible={canvaNameModalVisible} onOk={createPainting} onCancel={() => { setCanvaNameModalVisible(false); }}>
+          <Input onChange={canvaNameOnChange} />
         </Modal>
       </div>
     </>

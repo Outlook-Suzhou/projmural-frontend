@@ -11,12 +11,6 @@ axios.interceptors.request.use((config: any) => {
   return config;
 });
 
-axios.interceptors.response.use((response) => {
-  if (response.data.retc === -1) {
-    console.log(response);
-    window.location.href = 'localhost:3000';
-  }
-  return response;
-});
+axios.interceptors.response.use((response) => response);
 
 export default axios;
