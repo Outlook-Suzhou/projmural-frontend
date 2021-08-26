@@ -45,7 +45,13 @@ const Dashboard: React.FC<{}> = () => {
         canvaName,
       },
     }).then((res) => {
+      if (res.data.data.retc !== 0) {
+        console.log(res);
+        return;
+      }
       history.push(`/painting/${res.data.data.canvas_id}`);
+    }).catch((e) => {
+      console.log(e);
     });
   };
   const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
