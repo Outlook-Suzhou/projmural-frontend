@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { message, Modal } from 'antd';
 import deleteAll from '../../../utils/delete_function';
+import { useDispatchStore } from '../../../store/store';
 
 const DeleteAll: React.FC<{}> = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const dispatch = useDispatchStore();
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
+    dispatch({ type: 'setSelectShape', payload: 'FREE' });
+    dispatch({ type: 'setCurrentIndex', payload: -1 });
     setIsModalVisible(false);
     deleteAll();
     message.info('All cleared');

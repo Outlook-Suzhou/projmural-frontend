@@ -9,6 +9,7 @@ const gridStyle:any = {
   cursor: 'pointer',
   fontSize: '25px',
 };
+
 const shapes: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
   return (
@@ -25,6 +26,7 @@ const shapes: React.FC<{}> = () => {
           style={gridStyle}
         >
           <Icon
+            className="icons"
             iconName="RectangleShape"
           />
         </Col>
@@ -40,6 +42,7 @@ const shapes: React.FC<{}> = () => {
           style={gridStyle}
         >
           <Icon
+            className="icons"
             iconName="Line"
           />
         </Col>
@@ -55,6 +58,7 @@ const shapes: React.FC<{}> = () => {
           style={gridStyle}
         >
           <Icon
+            className="icons"
             iconName="CircleRing"
           />
         </Col>
@@ -72,6 +76,7 @@ const shapes: React.FC<{}> = () => {
           style={gridStyle}
         >
           <Icon
+            className="icons"
             iconName="TriangleShape"
           />
         </Col>
@@ -87,6 +92,7 @@ const shapes: React.FC<{}> = () => {
           style={gridStyle}
         >
           <Icon
+            className="icons"
             iconName="Ellipse"
           />
         </Col>
@@ -101,7 +107,7 @@ const shapes: React.FC<{}> = () => {
           onKeyDown={() => {}}
           style={gridStyle}
         >
-          <BsDiamond />
+          <BsDiamond className="icons" />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -117,6 +123,7 @@ const shapes: React.FC<{}> = () => {
           style={gridStyle}
         >
           <Icon
+            className="icons"
             iconName="ArrowTallUpRight"
           />
         </Col>
