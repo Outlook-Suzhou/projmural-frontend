@@ -65,16 +65,6 @@ const Dashboard: React.FC<{}> = () => {
       console.log(e);
     });
   };
-  const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
-  const { instance } = useMsal();
-  const logoutFunction = () => { instance.logoutRedirect({ postLogoutRedirectUri: '/' }); };
-  const DropdownMenu = (
-    <Menu>
-      <Menu.Item key="1" onClick={logoutFunction}>
-        logout
-      </Menu.Item>
-    </Menu>
-  );
   console.log(state.userInfo);
   return (
     <>
