@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 const useMousePos = () => {
   const [mouse, setMouse] = useState<BaseShapes.Position>({ x: 0, y: 0 });
   useEffect(() => {
+    console.log(mouse);
     const mouseListener = (e: any) => {
       // console.log(mouse);
       // console.log(doc);

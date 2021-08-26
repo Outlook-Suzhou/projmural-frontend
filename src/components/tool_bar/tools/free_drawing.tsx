@@ -149,12 +149,12 @@ function useDrawing() {
     if (state.isPainting) {
       if (state.lastLine.points.length > 2) {
         const ops = state.OpList;
-        ops.push(JSON.stringify(doc.data.shapes));
+        ops.push(JSON.stringify(doc.value.data.shapes));
         dispatch({ type: 'setOpList', payload: ops });
       }
       dispatch({ type: 'setIsPainting', payload: false });
       if (state.selectShape === 'PEN') {
-        doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: state.lastLine }]);
+        doc.value.submitOp([{ p: ['shapes', doc.value.data.shapes.length], li: state.lastLine }]);
         dispatch({
           type: 'setLastLine',
           payload: {

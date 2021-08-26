@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
+import getCurrentDoc from '../client/client';
 import { useDispatchStore } from '../store/store';
 import axios from '../utils/axios';
-import getCurrentDoc from '../client/client';
 import { addUser } from '../utils/user_function';
 
 function useCurrentLocation() {
@@ -43,11 +43,13 @@ function useCurrentLocation() {
             if (res.data.data.canvas_exist === false) {
               history.push('/404');
             } else {
-              getCurrentDoc(() => addUser({
-                x: 0,
-                y: 0,
-                ...user,
-              }));
+              getCurrentDoc(() => {
+                addUser({
+                  x: 0,
+                  y: 0,
+                  ...user,
+                });
+              });
             }
           }
         });

@@ -5,25 +5,27 @@ import { useStateStore } from '../store/store';
 import { editUser } from '../utils/user_function';
 
 const doc = getCurrentDoc();
+
 function useUserList(list: BaseShapes.User[]) {
   const [userList, setUserList] = useState<BaseShapes.User[]>(list || []);
   const state = useStateStore();
   const mousePos = useMousePos();
   useEffect(() => {
-    doc.subscribe(() => {
-      if (doc?.data?.users) {
-        setUserList([...doc.data.users]);
+    (doc.value).subscribe(() => {
+      if (doc?.value?.data?.users) {
+        setUserList([...doc.value.data.users]);
       }
     });
-    doc.on('op', () => {
-      if (doc?.data?.users) {
-        setUserList([...doc.data.users]);
+    doc.value.on('op', () => {
+      if (doc?.value?.data?.users) {
+        setUserList([...doc.value.data.users]);
       }
     });
   }, []);
   useEffect(() => {
-    if (doc.data) {
-      doc.data.users.forEach((item: BaseShapes.User, index: number) => {
+    if (doc?.value?.data) {
+      console.log(mousePos);
+      doc?.value?.data.users.forEach((item: BaseShapes.User, index: number) => {
         if (item.microsoftId === state.userInfo.microsoftId) {
           editUser({
             ...item,

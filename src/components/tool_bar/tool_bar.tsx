@@ -20,10 +20,10 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
       className={['toolbar', (BarType === 'float' ? 'float_tool_bar' : BarType === 'left' ? 'left_tool_bar' : 'avatar_tool_bar')].join(' ')}
       style={{
         // eslint-disable-next-line no-nested-ternary
-        left: BarType === 'float' ? calcFloatBarPos(doc.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[0] - 90
+        left: BarType === 'float' ? calcFloatBarPos(doc.value.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[0] - 90
           : BarType === 'left' ? 50 : window.innerWidth * 0.8,
         // eslint-disable-next-line no-nested-ternary
-        top: BarType === 'float' ? calcFloatBarPos(doc.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[1] - 150
+        top: BarType === 'float' ? calcFloatBarPos(doc.value.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[1] - 150
           : BarType === 'left' ? window.innerHeight * 0.15 : 100,
       }}
     >

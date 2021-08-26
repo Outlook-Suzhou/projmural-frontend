@@ -24,11 +24,11 @@ const Content: React.FC<{}> = () => {
           tabIndex={0}
           onClick={() => {
             const ops = state.OpList;
-            ops.push(JSON.stringify(doc.data.shapes));
+            ops.push(JSON.stringify(doc.value.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
-            const afterE: BaseShapes.Shape = { ...doc.data.shapes[state.currentIndex] };
-            doc.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
-            doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: afterE }]);
+            const afterE: BaseShapes.Shape = { ...doc.value.data.shapes[state.currentIndex] };
+            doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
+            doc.value.submitOp([{ p: ['shapes', doc.value.data.shapes.length], li: afterE }]);
             dispatch({ type: 'setCurrentIndex', payload: -1 });
           }}
           onKeyDown={() => {}}
@@ -46,11 +46,11 @@ const Content: React.FC<{}> = () => {
           // eslint-disable-next-line max-len
           onClick={() => {
             const ops = state.OpList;
-            ops.push(JSON.stringify(doc.data.shapes));
+            ops.push(JSON.stringify(doc.value.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
-            const afterE: BaseShapes.Shape = { ...doc.data.shapes[state.currentIndex] };
-            doc.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
-            doc.submitOp([{ p: ['shapes', 0], li: afterE }]);
+            const afterE: BaseShapes.Shape = { ...doc.value.data.shapes[state.currentIndex] };
+            doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
+            doc.value.submitOp([{ p: ['shapes', 0], li: afterE }]);
             dispatch({ type: 'setCurrentIndex', payload: -1 });
           }}
           onKeyDown={() => {}}

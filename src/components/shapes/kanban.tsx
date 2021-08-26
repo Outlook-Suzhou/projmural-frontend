@@ -38,7 +38,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
             x: e.target.x(),
             y: e.target.y(),
           };
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }
       }}
     >
@@ -65,7 +65,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
               visible={item.teams[i].visible}
               onDblClick={() => {
                 item.teams[i].visible = false;
-                doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+                doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
                 const textarea = document.createElement('textarea');
                 document.body.appendChild(textarea);
                 const textNode = new Konva.Text({
@@ -99,7 +99,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
                 textarea.focus();
                 textarea.addEventListener('keydown', () => {
                   item.teams[i].text = textarea.value;
-                  doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+                  doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
                 });
                 function removeTextarea() {
                   // @ts-ignore
@@ -108,7 +108,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
                   // eslint-disable-next-line @typescript-eslint/no-use-before-define
                   window.removeEventListener('click', handleOutsideClick);
                   item.teams[i].visible = true;
-                  doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+                  doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
                 }
                 function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
                   if (e.target !== textarea) {
@@ -163,7 +163,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
             onDragMove={(e) => {
               item.projs[i].x = e.target.x();
               item.projs[i].y = e.target.y();
-              doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+              doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
             }}
           />
         </Group>

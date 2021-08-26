@@ -14,10 +14,10 @@ const SelectColor = () => {
   const [isClicked, setClicked] = useState(false);
   const handlePickComplete = (color: any) => {
     const ops = state.OpList;
-    ops.push(JSON.stringify(doc.data.shapes));
+    ops.push(JSON.stringify(doc.value.data.shapes));
     dispatch({ type: 'setOpList', payload: ops });
     console.log(color.hex);
-    const afterE = { ...doc.data.shapes[state.currentIndex], fill: color.hex };
+    const afterE = { ...doc.value.data.shapes[state.currentIndex], fill: color.hex };
     changeColor(state.currentIndex, afterE);
     setClicked(false);
   };

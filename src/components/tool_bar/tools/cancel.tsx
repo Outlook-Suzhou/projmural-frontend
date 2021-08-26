@@ -21,7 +21,7 @@ const Cancel: React.FC<{}> = () => {
           const ops = state.OpList;
           if (ops.length !== 0) {
             const last = JSON.parse(ops.pop());
-            doc.submitOp([{ p: ['shapes'], od: doc.data.shapes, oi: last }]);
+            doc.value.submitOp([{ p: ['shapes'], od: doc.value.data.shapes, oi: last }]);
             dispatch({ type: 'setOpList', payload: ops });
           } else {
             message.warn('没有更多可撤销的操作！');
@@ -40,7 +40,7 @@ function useCancel() {
       const ops = state.OpList;
       if (ops.length !== 0) {
         const last = JSON.parse(ops.pop());
-        doc.submitOp([{ p: ['shapes'], od: doc.data.shapes, oi: last }]);
+        doc.value.submitOp([{ p: ['shapes'], od: doc.value.data.shapes, oi: last }]);
         dispatch({ type: 'setOpList', payload: ops });
       } else {
         message.warn('没有更多可撤销的操作！');

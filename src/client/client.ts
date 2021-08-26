@@ -6,15 +6,18 @@ const ipAddress = 'wss://www.projmural.com/api/websocket';
 
 const socket = new ReconnectingWebSocket(`${ipAddress}`);
 const connection = new sharedb.Connection(socket);
-let doc;
+const doc = { value: null };
 function getCurrentDoc(callback?: Function) {
   const docID = window.location.pathname.substring(10);
-  doc = connection.get('projmural', docID);
-  doc.subscribe(() => {
-    if (callback) {
-      callback();
-    }
-  });
-  return doc;
+  doc.value = connection.get('projmural', docID);
+  if (doc.value) {
+    ((doc.value) as any).subscribe(() => {
+      console.log(doc.value);
+      if (callback) {
+        callback();
+      }
+    });
+  }
+  return doc as any;
 }
 export default getCurrentDoc;

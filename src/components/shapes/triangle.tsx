@@ -55,7 +55,7 @@ const Triangle: React.FC<Props> = (props: Props) => {
             rotation: item.rotation,
             draggable: item.draggable,
           };
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
@@ -82,7 +82,7 @@ const Triangle: React.FC<Props> = (props: Props) => {
             draggable: item.draggable,
           };
 
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
       />
       {isSelected && (

@@ -40,8 +40,8 @@ import AvatarArea from '../login_page/avatar';
 const doc = getCurrentDoc();
 
 const PaintingContent: React.FC<{}> = () => {
-  const [list, setList] = useState(doc?.data?.shapes || []);
-  const [userList] = useUserList(doc?.data?.users || []);
+  const [list, setList] = useState(doc?.value?.data?.shapes || []);
+  const [userList] = useUserList(doc?.value?.data?.users || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
@@ -85,19 +85,19 @@ const PaintingContent: React.FC<{}> = () => {
     return tools;
   };
   useEffect(() => {
-    doc.subscribe(() => {
-      if (doc?.data?.shapes) {
-        setList([...doc.data.shapes]);
+    doc.value.subscribe(() => {
+      if (doc?.value?.data?.shapes) {
+        setList([...doc.value.data.shapes]);
       }
     });
-    doc.on('op', () => {
-      if (doc?.data?.shapes) {
-        setList([...doc.data.shapes]);
+    doc.value.on('op', () => {
+      if (doc?.value?.data?.shapes) {
+        setList([...doc.value.data.shapes]);
       }
     });
   }, []);
   useEffect(() => {
-    if (kanban !== undefined && doc.data !== undefined) {
+    if (kanban !== undefined && doc.value.data !== undefined) {
       addKanBan(kanban);
       setKanBan(undefined);
       console.log(kanban);
@@ -168,7 +168,7 @@ const PaintingContent: React.FC<{}> = () => {
   const handleClick = (e: any) => {
     if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN' && state.selectShape !== 'FREE') {
       const ops = state.OpList;
-      ops.push(JSON.stringify(doc.data.shapes));
+      ops.push(JSON.stringify(doc.value.data.shapes));
       dispatch({ type: 'setOpList', payload: ops });
       handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
       dispatch({ type: 'setSelectShape', payload: 'FREE' });
@@ -215,7 +215,7 @@ const PaintingContent: React.FC<{}> = () => {
                               ...item,
                               shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
                             };
-                            doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                            doc.value.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
                           }
                           dispatch({ type: 'setCurrentItem', payload: item });
                           dispatch({ type: 'setCurrentIndex', payload: index });
@@ -224,7 +224,7 @@ const PaintingContent: React.FC<{}> = () => {
                       }}
                       del={() => {
                         if (state.selectShape === 'ERASER' && state.isPainting) {
-                          doc.submitOp([{ p: ['shapes', index], ld: item }]);
+                          doc.value.submitOp([{ p: ['shapes', index], ld: item }]);
                         }
                       }}
                     />
