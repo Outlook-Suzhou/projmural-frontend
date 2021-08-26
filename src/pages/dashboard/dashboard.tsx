@@ -22,7 +22,7 @@ const Dashboard: React.FC<{}> = () => {
       type: 'create',
       data: {
         microsoft_id: 'test',
-        canvaName,
+        canva_name: canvaName,
       },
     }).then((res) => {
       history.push({ pathname: `/painting/${res.data.data.canvas_id}`, state: kanban });
@@ -35,6 +35,7 @@ const Dashboard: React.FC<{}> = () => {
     setKanban({ ...kanban, dateNum: value });
   }
   function canvaNameOnChange(e: any) {
+    console.log(e);
     setCanvaName(e.target.defaultValue);
   }
   const createPainting = () => {

@@ -22,7 +22,7 @@ docRouter.post('/doc', async (req, res) => {
       res.status(200).send(errRsp);
       return;
     }
-    const ID = await createDoc(data.canvaName);
+    const ID = await createDoc(data.canva_name);
     res.status(200).send({
       msg: 'ok',
       rect: 0,
