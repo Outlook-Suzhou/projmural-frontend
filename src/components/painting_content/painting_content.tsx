@@ -5,7 +5,7 @@ import {
   Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
 import { useHistory } from 'react-router-dom';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
 import AddImage from '../tool_bar/tools/add_images';
@@ -36,6 +36,8 @@ import addKanBan from '../../utils/add_kanban';
 import useUserList from '../../hook/userList';
 // import UserBar from '../user_bar/user_bar';
 import AvatarArea from '../login_page/avatar';
+
+const doc = getCurrentDoc();
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);

@@ -13,8 +13,9 @@ import CurveLine from './curveline';
 import TextRect from './text_rect';
 import Kanban from './kanban';
 import { useDispatchStore, useStateStore } from '../../store/store';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 
+const doc = getCurrentDoc();
 interface Shape {
   item: any;
   index: number;

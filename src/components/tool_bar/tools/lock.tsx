@@ -1,8 +1,9 @@
 import { Icon } from '@fluentui/react/lib/Icon';
 import React from 'react';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 import { useDispatchStore, useStateStore } from '../../../store/store';
 
+const doc = getCurrentDoc();
 const Lock: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();

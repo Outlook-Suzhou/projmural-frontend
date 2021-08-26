@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { useDispatchStore } from '../store/store';
 import axios from '../utils/axios';
+import getCurrentDoc from '../client/client';
 import { addUser } from '../utils/user_function';
-import { addSubscrible } from '../client/client';
 
 function useCurrentLocation() {
   const location = useLocation();
@@ -43,7 +43,7 @@ function useCurrentLocation() {
             if (res.data.data.canvas_exist === false) {
               history.push('/404');
             } else {
-              addSubscrible(() => addUser({
+              getCurrentDoc(() => addUser({
                 x: 0,
                 y: 0,
                 ...user,

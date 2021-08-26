@@ -1,9 +1,10 @@
 import React from 'react';
 import './tool_bar.scss';
 import { useStateStore } from '../../store/store';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import calcFloatBarPos from '../../utils/calc_floatbar_position';
 
+const doc = getCurrentDoc();
 interface toolBarAttribute{
   list: React.FC<any>[],
   BarType: string,

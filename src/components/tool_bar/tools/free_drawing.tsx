@@ -8,8 +8,9 @@ import {
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { useDispatchStore, useStateStore } from '../../../store/store';
 import { calcX, calcY } from '../../../utils/calc_zoom_position';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 
+const doc = getCurrentDoc();
 const gridStyle: any = {
   textAlign: 'center',
   cursor: 'pointer',

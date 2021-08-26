@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
 import Vector from './vector';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import globalConfig from './global_config';
 
+const doc = getCurrentDoc();
 interface vector {
   x: number;
   y: number;

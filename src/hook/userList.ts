@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import useMousePos from './mouse_pos';
-import doc from '../client/client';
+import getCurrentDoc from '../client/client';
 import { useStateStore } from '../store/store';
 import { editUser } from '../utils/user_function';
 
+const doc = getCurrentDoc();
 function useUserList(list: BaseShapes.User[]) {
   const [userList, setUserList] = useState<BaseShapes.User[]>(list || []);
   const state = useStateStore();

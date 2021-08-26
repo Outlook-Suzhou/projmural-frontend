@@ -1,7 +1,8 @@
 import { Line } from 'react-konva';
 import React from 'react';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 
+const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.CurveLine,
   onSelect: any,

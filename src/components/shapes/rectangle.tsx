@@ -1,7 +1,8 @@
 import { Rect } from 'react-konva';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 
+const doc = getCurrentDoc();
 // @ts-ignore
 // eslint-disable-next-line react/prop-types
 const Rectangle = ({ item, index, click }) => (

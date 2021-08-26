@@ -5,8 +5,9 @@ import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Icon } from '@fluentui/react/lib/Icon';
 import { Tooltip } from 'antd';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 
+const doc = getCurrentDoc();
 const AddKanBan: React.FC<{}> = () => (
   // eslint-disable-next-line object-curly-newline
   <div className="tool_icon">

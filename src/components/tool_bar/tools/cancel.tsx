@@ -6,8 +6,9 @@ import React, { useEffect } from 'react';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { message } from 'antd';
 import { useDispatchStore, useStateStore } from '../../../store/store';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 
+const doc = getCurrentDoc();
 const Cancel: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
   const state = useStateStore();

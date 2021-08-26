@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 import { useDispatchStore, useStateStore } from '../../store/store';
 
+const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Rectangle,
   isSelected: boolean,

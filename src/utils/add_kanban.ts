@@ -1,5 +1,6 @@
-import doc from '../client/client';
+import getCurrentDoc from '../client/client';
 
+const doc = getCurrentDoc();
 function addKanBan(kanban: any) {
   for (let i = 0; i < doc.data.shapes.length; i += 1) {
     if (doc.data.shapes[i].type === 'KANBAN') {

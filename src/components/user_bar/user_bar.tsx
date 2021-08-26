@@ -1,5 +1,4 @@
 import React from 'react';
-import doc from '../../client/client';
 import useUserList from '../../hook/userList';
 
 interface UserInfo {
@@ -9,7 +8,6 @@ interface UserInfo {
 }
 const UserBar: React.FC<{}> = () => {
   const [userList] = useUserList([]);
-  console.log(doc);
   return (
     <div
       className="user_bar"

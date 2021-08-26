@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Rect, Transformer, Text,
 } from 'react-konva';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
 
+const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.TextRect,
   isSelected: boolean,

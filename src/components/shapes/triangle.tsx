@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { Line, Transformer } from 'react-konva';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 import { useStateStore, useDispatchStore } from '../../store/store';
 
+const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Triangle,
   isSelected: boolean,

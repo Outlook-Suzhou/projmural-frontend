@@ -3,9 +3,10 @@ import React from 'react';
 import {
   Col, Popover, Row, Tooltip,
 } from 'antd';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 import { useDispatchStore, useStateStore } from '../../../store/store';
 
+const doc = getCurrentDoc();
 const gridStyle:any = {
   textAlign: 'center',
   cursor: 'pointer',

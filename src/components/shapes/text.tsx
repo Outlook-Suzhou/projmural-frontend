@@ -3,9 +3,10 @@ import { Text, Transformer } from 'react-konva';
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import Konva from 'konva';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import { useStateStore } from '../../store/store';
 
+const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Text,
   index: number,

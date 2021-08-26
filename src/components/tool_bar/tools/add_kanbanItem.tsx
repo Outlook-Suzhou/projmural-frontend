@@ -2,8 +2,9 @@ import React from 'react';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { Tooltip } from 'antd';
 import { useStateStore } from '../../../store/store';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 
+const doc = getCurrentDoc();
 const AddItem: React.FC<{}> = () => {
   const state = useStateStore();
   return (

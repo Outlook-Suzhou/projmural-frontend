@@ -1,4 +1,6 @@
-import doc from '../client/client';
+import getCurrentDoc from '../client/client';
+
+const doc = getCurrentDoc();
 
 function addUser(user: BaseShapes.User) {
   console.log(doc);

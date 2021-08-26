@@ -4,8 +4,9 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import { TwitterPicker } from 'react-color';
 import changeColor from '../../../utils/change_color';
 import { useDispatchStore, useStateStore } from '../../../store/store';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 
+const doc = getCurrentDoc();
 const SelectColor = () => {
   // @ts-ignore
   const state = useStateStore();
