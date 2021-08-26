@@ -43,7 +43,7 @@ const Dashboard: React.FC<{}> = () => {
       type: 'create',
       data: {
         microsoft_id: state.userInfo.microsoftId,
-        canvaName,
+        canva_name: canvaName,
       },
     }).then((res) => {
       if (res.data.retc !== 0) {
