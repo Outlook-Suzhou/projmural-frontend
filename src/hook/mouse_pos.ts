@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import doc from '../client/client';
 
 const useMousePos = () => {
   const [mouse, setMouse] = useState<BaseShapes.Position>({ x: 0, y: 0 });
   useEffect(() => {
     const mouseListener = (e: any) => {
       // console.log(mouse);
-      console.log(doc);
+      // console.log(doc);
       setMouse({
         x: e.x,
         y: e.y,

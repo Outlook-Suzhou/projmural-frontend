@@ -34,6 +34,7 @@ import AddKanBan from '../tool_bar/tools/add_kanban';
 import AddItem from '../tool_bar/tools/add_kanbanItem';
 import addKanBan from '../../utils/add_kanban';
 import useUserList from '../../hook/userList';
+import UserBar from '../user_bar/user_bar';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -175,6 +176,7 @@ const PaintingContent: React.FC<{}> = () => {
     <>
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
       <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} isFloatBar={false} />
+      <UserBar />
       <div id="stage">
         <Stage
           className={state.selectShape}

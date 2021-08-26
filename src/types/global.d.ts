@@ -94,7 +94,8 @@ namespace BaseShapes {
   }
   interface User extends Position{
     name: string,
-    microsoftId: string
+    microsoftId: string,
+    mail: string
   }
   type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect;
 }

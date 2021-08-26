@@ -8,6 +8,7 @@ const socket = new ReconnectingWebSocket(`${ipAddress}`);
 const connection = new sharedb.Connection(socket);
 const docID = window.location.pathname.substring(10);
 const doc = connection.get('projmural', docID);
+doc.subscribe();
 const addSubscrible = (callback: Function) => {
   doc.subscribe(callback);
 };
