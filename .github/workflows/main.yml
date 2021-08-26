@@ -43,6 +43,6 @@ jobs:
             sudo docker rm projmural-frontend
             sudo docker image rm projmural-frontend -f
             sudo docker image build -t projmural-frontend .
-            nohup sudo docker container run --name projmural-frontend --rm -p 8000:8000 -p 8080:8080 projmural-frontend > ./output.log 2>&1 &
+            nohup sudo docker container run --name projmural-frontend --rm --net="host" projmural-frontend > ./output.log 2>&1 &
             
 
