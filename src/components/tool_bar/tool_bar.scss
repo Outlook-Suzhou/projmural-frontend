@@ -42,3 +42,18 @@
 .icons:hover {
   color: blue;
 }
+
+.avatar_tool_bar {
+  padding: 10px;
+  font-size: 30px;
+  position: absolute;
+  z-index: 5;
+  height: auto;
+  width: 100px;
+  display: flex;
+  border-radius: 1px;
+  .tool_icon {
+    width: 35px;
+    margin: 5px;
+  }
+}
