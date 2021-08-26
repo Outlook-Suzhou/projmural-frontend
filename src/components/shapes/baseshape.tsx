@@ -169,6 +169,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
           onDragEnd={onDragEnd}
           onTransformStart={onTransformStart}
           onTransformEnd={onTransformEnd}
+          isSelected={index === state.currentIndex}
         />
       );
       break;

@@ -33,6 +33,7 @@ import Cancel, { useCancel } from '../tool_bar/tools/cancel';
 import AddKanBan from '../tool_bar/tools/add_kanban';
 import AddItem from '../tool_bar/tools/add_kanbanItem';
 import addKanBan from '../../utils/add_kanban';
+import useKanBan from '../../hook/kanban_event';
 import AvatarArea from '../login_page/avatar';
 
 const PaintingContent: React.FC<{}> = () => {
@@ -46,6 +47,7 @@ const PaintingContent: React.FC<{}> = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   useDrawing();
   useCancel();
+  useKanBan();
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -95,9 +97,9 @@ const PaintingContent: React.FC<{}> = () => {
   }, []);
   useEffect(() => {
     if (kanban !== undefined && doc.data !== undefined) {
-      addKanBan(kanban);
+      // @ts-ignore
+      addKanBan(kanban.kanban);
       setKanBan(undefined);
-      console.log(kanban);
     }
   });
 
