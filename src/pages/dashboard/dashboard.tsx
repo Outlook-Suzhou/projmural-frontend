@@ -46,7 +46,7 @@ const Dashboard: React.FC<{}> = () => {
         canvaName,
       },
     }).then((res) => {
-      if (res.data.data.retc !== 0) {
+      if (res.data.retc !== 0) {
         console.log(res);
         return;
       }
