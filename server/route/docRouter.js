@@ -25,7 +25,7 @@ docRouter.post('/doc', async (req, res) => {
     const ID = await createDoc(data.canva_name);
     res.status(200).send({
       msg: 'ok',
-      rect: 0,
+      retc: 0,
       data: {
         canvas_id: ID,
       },
@@ -34,7 +34,7 @@ docRouter.post('/doc', async (req, res) => {
     const doc = await getDoc(data.canvas_id);
     res.status(200).send({
       msg: 'ok',
-      rect: 0,
+      retc: 0,
       data: {
         canvas_exist: doc.type !== null,
       },
