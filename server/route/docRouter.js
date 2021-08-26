@@ -59,7 +59,11 @@ docRouter.post('/doc', async (req, res) => {
     const newUser = {
       ...usrRsp.data.data,
     };
-    newUser.canvas.push(ID);
+    newUser.canvas.push({
+      id: ID,
+      name: data.canva_name,
+      recent_open: 0,
+    });
     let updateRsp;
     try {
       updateRsp = await axios.post(`${goHostName}/api/user`, {
