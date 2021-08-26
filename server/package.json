@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "@teamwork/websocket-json-stream": "^2.0.0",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "sharedb": "^1.9.2",

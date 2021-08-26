@@ -37,6 +37,12 @@ const Login: React.FC<{}> = () => {
               payload: {
                 microsoftId: rsp.data.data.microsoft_id,
                 name: rsp.data.data.name,
+                mail: rsp.data.data.mail,
+                canvas: rsp.data.data.canvas.map((val: any) => ({
+                  id: val.id,
+                  name: val.name,
+                  recentOpen: val.recent_open,
+                })),
               },
             });
             setLoading(false);
