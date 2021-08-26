@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {
-  InputNumber, Modal, PageHeader, Avatar, Dropdown, Menu, Input,
+  InputNumber, Modal, PageHeader, Input,
 } from 'antd';
-import { useMsal } from '@azure/msal-react';
 import axios from '../../utils/axios';
 import { useStateStore } from '../../store/store';
+import AvatarArea from '../../components/login_page/avatar';
 
 const Dashboard: React.FC<{}> = () => {
   const state = useStateStore();
@@ -48,16 +48,6 @@ const Dashboard: React.FC<{}> = () => {
       history.push(`/painting/${res.data.data.canvas_id}`);
     });
   };
-  const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
-  const { instance } = useMsal();
-  const logoutFunction = () => { instance.logoutRedirect({ postLogoutRedirectUri: '/' }); };
-  const DropdownMenu = (
-    <Menu>
-      <Menu.Item key="1" onClick={logoutFunction}>
-        logout
-      </Menu.Item>
-    </Menu>
-  );
   return (
     <>
       <div className="dashboard">
@@ -70,18 +60,7 @@ const Dashboard: React.FC<{}> = () => {
                 <span className="avatar_name">
                   {state.userInfo.name}
                 </span>
-                <Dropdown overlay={DropdownMenu} trigger={['hover']}>
-                  <Avatar
-                    size={40}
-                    style={{
-                      backgroundColor: ColorList[parseInt(state.userInfo.microsoftId.substr(-1), 16) % 4],
-                      verticalAlign: 'middle',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {state.userInfo.name.split(' ').pop()}
-                  </Avatar>
-                </Dropdown>
+                <AvatarArea />
               </div>,
             ]
           }
