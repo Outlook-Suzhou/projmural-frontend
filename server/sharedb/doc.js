@@ -13,17 +13,21 @@ const createDoc = (canvaName) => {
   const connection = backend.connect();
   const ID = createPaintingID();
   const doc = connection.get('projmural', ID);
-  doc.fetch((err) => {
-    if (err) throw err;
-    if (doc.type === null) {
-      doc.create({
-        shapes: [],
-        users: [],
-        canvaName,
-      });
-    }
+  const promise = new Promise((resolve) => {
+    doc.fetch((err) => {
+      if (err) throw err;
+      if (doc.type === null) {
+        doc.create({
+          shapes: [],
+          users: [],
+          canvaName,
+        }, () => {
+          resolve(ID);
+        });
+      }
+    });
   });
-  return ID;
+  return promise;
 };
 
 const getDoc = (id) => {
