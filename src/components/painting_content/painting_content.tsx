@@ -34,7 +34,8 @@ import AddKanBan from '../tool_bar/tools/add_kanban';
 import AddItem from '../tool_bar/tools/add_kanbanItem';
 import addKanBan from '../../utils/add_kanban';
 import useUserList from '../../hook/userList';
-import UserBar from '../user_bar/user_bar';
+// import UserBar from '../user_bar/user_bar';
+import AvatarArea from '../login_page/avatar';
 
 const PaintingContent: React.FC<{}> = () => {
   const [list, setList] = useState(doc?.data?.shapes || []);
@@ -174,9 +175,9 @@ const PaintingContent: React.FC<{}> = () => {
 
   return (
     <>
-      {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
-      <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} isFloatBar={false} />
-      <UserBar />
+      {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
+      <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} BarType="left" />
+      <ToolBar list={[AvatarArea]} BarType="avatar" />
       <div id="stage">
         <Stage
           className={state.selectShape}
