@@ -4,7 +4,7 @@ const { createDoc, getDoc } = require('../sharedb/doc.js');
 const docRouter = express.Router();
 const errRsp = {
   msg: 'err',
-  rect: -1,
+  retc: -1,
 };
 
 docRouter.post('/doc', async (req, res) => {
@@ -18,7 +18,7 @@ docRouter.post('/doc', async (req, res) => {
     return;
   }
   if (type === 'create') {
-    if (data?.canvaName === undefined) {
+    if (data?.canva_name === undefined) {
       res.status(200).send(errRsp);
       return;
     }
