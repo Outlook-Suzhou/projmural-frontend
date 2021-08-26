@@ -13,9 +13,11 @@ const AddItem: React.FC<{}> = () => {
         <Icon
           iconName="Addto"
           onClick={() => {
-            const kanban = doc.value.data.shapes[state.currentIndex];
-            kanban.projs.push({ text: 'testProj', x: 20, y: 20 });
-            doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.value.data.shapes[state.currentIndex], li: kanban }]);
+            const kanban = doc.data.shapes[state.currentIndex];
+            kanban.projs.push({
+              text: 'testProj', x: 160, y: 20, width: 100, visible: true,
+            });
+            doc.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.data.shapes[state.currentIndex], li: kanban }]);
           }}
         />
       </Tooltip>

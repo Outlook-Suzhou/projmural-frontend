@@ -35,6 +35,7 @@ import AddItem from '../tool_bar/tools/add_kanbanItem';
 import addKanBan from '../../utils/add_kanban';
 import useUserList from '../../hook/userList';
 // import UserBar from '../user_bar/user_bar';
+import useKanBan from '../../hook/kanban_event';
 import AvatarArea from '../login_page/avatar';
 
 const doc = getCurrentDoc();
@@ -51,6 +52,7 @@ const PaintingContent: React.FC<{}> = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   useDrawing();
   useCancel();
+  useKanBan();
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -97,10 +99,10 @@ const PaintingContent: React.FC<{}> = () => {
     });
   }, []);
   useEffect(() => {
-    if (kanban !== undefined && doc.value.data !== undefined) {
-      addKanBan(kanban);
+    if (kanban !== undefined && doc.data !== undefined) {
+      // @ts-ignore
+      addKanBan(kanban.kanban);
       setKanBan(undefined);
-      console.log(kanban);
     }
   });
 

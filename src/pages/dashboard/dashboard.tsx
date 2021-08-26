@@ -3,17 +3,23 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {
-  InputNumber, Modal, PageHeader, Input,
+  DatePicker,
+  InputNumber, Modal, Select, PageHeader, Input,
 } from 'antd';
 import axios from '../../utils/axios';
 import { useStateStore } from '../../store/store';
 import AvatarArea from '../../components/login_page/avatar';
 
 const Dashboard: React.FC<{}> = () => {
+  const { RangePicker } = DatePicker;
+  const { Option } = Select;
   const state = useStateStore();
   const history = useHistory();
+  const [kanban, setKanban] = useState({
+    teamNum: 3, start: '1', end: '1', unit: 'day',
+  });
+  const size = ['month', 'week', 'day'];
   const [journeyMapModalVisible, setJourneyMapModalVisible] = useState(false);
-  const [kanban, setKanban] = useState({ teamNum: 3, dateNum: 10, unit: 'day' });
   const [canvaName, setCanvaName] = useState('untitle');
   const [canvaNameModalVisible, setCanvaNameModalVisible] = useState(false);
   const handleOk = () => {
@@ -25,14 +31,18 @@ const Dashboard: React.FC<{}> = () => {
         canva_name: canvaName,
       },
     }).then((res) => {
-      history.push({ pathname: `/painting/${res.data.data.canvas_id}`, state: kanban });
+      history.push({ pathname: `/painting/${res.data.data.canvas_id}`, state: { kanban, id: `${res.data.data.canvas_id}` } });
     });
   };
   function onChangeTeamNum(value: number) {
     setKanban({ ...kanban, teamNum: value });
   }
-  function onChangeDateNum(value: number) {
-    setKanban({ ...kanban, dateNum: value });
+  function onChangeSize(value: string) {
+    setKanban({ ...kanban, unit: value });
+  }
+  function onChangeDate(date: any) {
+    setKanban({ ...kanban, start: date[0].format(), end: date[1].format() });
+    console.log(kanban);
   }
   function canvaNameOnChange(e: any) {
     console.log(e);
@@ -55,6 +65,7 @@ const Dashboard: React.FC<{}> = () => {
       console.log(e);
     });
   };
+  console.log(state.userInfo);
   return (
     <>
       <div className="dashboard">
@@ -82,17 +93,29 @@ const Dashboard: React.FC<{}> = () => {
               Create new board
             </div>
             <div className="template">
-              <div className="temp">
-                <Icon className="icon" iconName="Color" onClick={() => { setCanvaNameModalVisible(true); }} />
+              <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
+                <Icon className="icon" iconName="Color" />
                 <div className="font"> new board </div>
               </div>
-              <div className="temp">
-                <Icon className="icon" iconName="CalendarDay" onClick={() => { setJourneyMapModalVisible(true); }} />
+              <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
+                <Icon className="icon" iconName="CalendarDay" />
                 <div className="font"> journey map </div>
               </div>
             </div>
             <div className="text1">
               All board
+            </div>
+            <div className="template">
+              {
+                state.userInfo.canvas.reverse().map((val) => (
+                  <div className="temp" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
+                    <Icon className="icon" iconName="Color" />
+                    <div className="font">
+                      {val.name}
+                    </div>
+                  </div>
+                ))
+              }
             </div>
           </div>
         </div>
@@ -102,8 +125,14 @@ const Dashboard: React.FC<{}> = () => {
             <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
           </div>
           <div>
-            <>Input the total number of dates:</>
-            <InputNumber min={5} max={50} value={kanban.dateNum} onChange={onChangeDateNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
+            <>Input the the start-stop time of the project</>
+            <Select defaultValue="day" style={{ width: 120 }} onChange={onChangeSize}>
+              {size.map((unit) => (
+                <Option value={unit}>{unit}</Option>
+              ))}
+            </Select>
+            {/* @ts-ignore */}
+            <RangePicker picker={kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
           </div>
         </Modal>
         <Modal title="Please input canva Name" visible={canvaNameModalVisible} onOk={createPainting} onCancel={() => { setCanvaNameModalVisible(false); }}>
