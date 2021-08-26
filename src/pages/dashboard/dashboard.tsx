@@ -65,6 +65,7 @@ const Dashboard: React.FC<{}> = () => {
       </Menu.Item>
     </Menu>
   );
+  console.log(state.userInfo);
   return (
     <>
       <div className="dashboard">
@@ -114,7 +115,18 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="text1">
               All board
+              {
+                state.userInfo.canvas.reverse().map((val) => (
+                  <div className="temp">
+                    <Icon className="icon" iconName="Color" />
+                    <div className="font">
+                      {val.name}
+                    </div>
+                  </div>
+                ))
+              }
             </div>
+            <div className="template" />
           </div>
         </div>
         <Modal title="Please input journey map info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>

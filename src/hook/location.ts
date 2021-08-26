@@ -22,6 +22,11 @@ function useCurrentLocation() {
             name: userData.data.data.name,
             microsoftId: userData.data.data.microsoft_id,
             mail: userData.data.data.mail,
+            canvas: userData.data.data.canvas.map((val: any) => ({
+              id: val.id,
+              name: val.name,
+              recentOpen: val.recent_open,
+            })),
           },
         });
       }
