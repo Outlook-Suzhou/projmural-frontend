@@ -93,12 +93,12 @@ const Dashboard: React.FC<{}> = () => {
               Create new board
             </div>
             <div className="template">
-              <div className="temp">
-                <Icon className="icon" iconName="Color" onClick={() => { setCanvaNameModalVisible(true); }} />
+              <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
+                <Icon className="icon" iconName="Color" />
                 <div className="font"> new board </div>
               </div>
-              <div className="temp">
-                <Icon className="icon" iconName="CalendarDay" onClick={() => { setJourneyMapModalVisible(true); }} />
+              <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
+                <Icon className="icon" iconName="CalendarDay" />
                 <div className="font"> journey map </div>
               </div>
             </div>
@@ -108,8 +108,8 @@ const Dashboard: React.FC<{}> = () => {
             <div className="template">
               {
                 state.userInfo.canvas.reverse().map((val) => (
-                  <div className="temp">
-                    <Icon className="icon" iconName="Color" onClick={() => { history.push(`/painting/${val.id}`); }} />
+                  <div className="temp" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
+                    <Icon className="icon" iconName="Color" />
                     <div className="font">
                       {val.name}
                     </div>
