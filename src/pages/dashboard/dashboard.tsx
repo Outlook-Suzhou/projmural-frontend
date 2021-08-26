@@ -45,6 +45,12 @@ const Dashboard: React.FC<{}> = () => {
         microsoft_id: state.userInfo.microsoftId,
         canvaName,
       },
+    }).then((res) => {
+      if (res.data.data.retc !== 0) {
+        console.log(res);
+        return;
+      }
+      history.push(`/painting/${res.data.data.canvas_id}`);
     }).catch((e) => {
       console.log(e);
     });

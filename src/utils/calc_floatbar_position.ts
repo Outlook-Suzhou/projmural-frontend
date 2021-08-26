@@ -1,5 +1,4 @@
 import { calcZoomX, calcZoomY } from './calc_zoom_position';
-
 // get the top-center of a shape
 const getEdge = (pointsList: number[][]) => {
   let top = 10000;
@@ -107,7 +106,15 @@ const calcFloatBarPos = (shape: BaseShapes.Shape, stageScale: number, stagePos: 
     }
     case 'TEXT':
     {
-      pointsList = [[x + 30, y]];
+      const x1 = x;
+      const y1 = y;
+      const x2 = x1 + shape.width * stageScale * Math.cos((shape.rotation * 2 * Math.PI) / 360);
+      const y2 = y1 + shape.width * stageScale * Math.sin((shape.rotation * 2 * Math.PI) / 360);
+      const x3 = x1 - shape.height * stageScale * Math.sin((shape.rotation * 2 * Math.PI) / 360);
+      const y3 = y1 + shape.height * stageScale * Math.cos((shape.rotation * 2 * Math.PI) / 360);
+      const x4 = x3 + (x2 - x1);
+      const y4 = y3 + (y2 - y1);
+      pointsList = [[x1 - 40, y1], [x2 - 40, y2], [x3 - 40, y3], [x4 - 40, y4]];
       break;
     }
     default:

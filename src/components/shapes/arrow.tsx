@@ -12,7 +12,7 @@ interface vector {
   y: number;
 }
 
-function getRect(start: vector, end: vector, weight: number) {
+export function getRect(start: vector, end: vector, weight: number) {
   const vectorAdd = (a: vector, b: vector) => [a.x + b.x, a.y + b.y];
   const dx = end.x - start.x;
   const dy = end.y - start.y;
@@ -28,7 +28,7 @@ function getRect(start: vector, end: vector, weight: number) {
   return ret;
 }
 
-function getArrow(start:vector, end: vector, weight: number, arrowSize: number) {
+export function getArrow(start:vector, end: vector, weight: number, arrowSize: number) {
   const startToEnd = Vector.init(Vector.sub(end, start));
   let direction = Vector.rotate(startToEnd, (-3 * Math.PI) / 4);
   let now = Vector.add(end, Vector.mulN(startToEnd, weight / 2));
