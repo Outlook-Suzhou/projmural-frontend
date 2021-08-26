@@ -93,7 +93,7 @@ const Dashboard: React.FC<{}> = () => {
               ))}
             </Select>
             {/* @ts-ignore */}
-            <RangePicker picker={kanban.unit} onChange={onChangeDate} />
+            <RangePicker picker={kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
           </div>
         </Modal>
       </div>

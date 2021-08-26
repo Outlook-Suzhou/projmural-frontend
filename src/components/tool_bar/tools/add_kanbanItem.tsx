@@ -13,7 +13,9 @@ const AddItem: React.FC<{}> = () => {
           iconName="Addto"
           onClick={() => {
             const kanban = doc.data.shapes[state.currentIndex];
-            kanban.projs.push({ text: 'testProj', x: 20, y: 20 });
+            kanban.projs.push({
+              text: 'testProj', x: 160, y: 20, width: 100, visible: true,
+            });
             doc.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.data.shapes[state.currentIndex], li: kanban }]);
           }}
         />

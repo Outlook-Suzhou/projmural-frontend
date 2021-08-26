@@ -3,6 +3,7 @@ import React from 'react';
 import Konva from 'konva';
 import doc from '../../client/client';
 import { useStateStore } from '../../store/store';
+import KanbanItem from './kanban_item';
 
 interface Props {
   item: BaseShapes.Kanban,
@@ -11,11 +12,12 @@ interface Props {
   onDragStart: any,
   onDragEnd: any,
   onTransformStart: any,
-  onTransformEnd: any
+  onTransformEnd: any,
+  isSelected: boolean,
 }
 const Kanban : React.FC<Props> = (props: Props) => {
   const {
-    item, index, onSelect, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
+    item, index, onSelect, onDragStart, onDragEnd, onTransformStart, onTransformEnd, isSelected,
   } = props;
   const color = ['#FFC500', '#3F53D9', '#FFBFBF', '#ff653b', '#1e9575'];
   const state = useStateStore();
@@ -52,6 +54,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
               fill={color[i % 5]}
               stroke="#E6E6E6"
               strokeWidth={0.5}
+              onClick={() => { item.selectProj = -1; doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]); }}
             />
             <Text
               x={item.teams[i].x}
@@ -132,19 +135,16 @@ const Kanban : React.FC<Props> = (props: Props) => {
                 fill="white"
                 stroke="#E6E6E6"
                 strokeWidth={0.5}
+                onClick={() => { item.selectProj = -1; doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]); }}
               />
             ))}
           </Group>
         </Group>
 
       ))}
-      <Text
-        text={item.unit}
-        fontSize={9}
-      />
       {[...Array(item.days.length)].map((_, i) => (
         <Text
-          x={(i * 900) / item.days.length + 150 + 450 / item.days.length}
+          x={(i * 900) / item.days.length + 130 + 450 / item.days.length}
           y={-20}
           text={item.days[i]}
           fontSize={9}
@@ -152,24 +152,17 @@ const Kanban : React.FC<Props> = (props: Props) => {
 
       ))}
       {[...Array(item.projs.length)].map((_, i) => (
-        <Group>
-          <Text
-            text={item.projs[i].text}
-            x={item.projs[i].x}
-            y={item.projs[i].y}
-            fill="#ffffff"
-            wrap="char"
-            align="center"
-            draggable
-            onDragStart={() => { item.draggable = false; }}
-            onDragEnd={() => { item.draggable = true; }}
-            onDragMove={(e) => {
-              item.projs[i].x = e.target.x();
-              item.projs[i].y = e.target.y();
-              doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
-            }}
-          />
-        </Group>
+        <KanbanItem
+          index={index}
+          item={item}
+          isSelected={isSelected && item.selectProj === i}
+          i={i}
+          color={color}
+          click={() => {
+            item.selectProj = i;
+            doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+          }}
+        />
       ))}
     </Group>
   );

@@ -28,7 +28,6 @@ const Cancel: React.FC<{}> = () => {
         }}
       />
     </div>
-
   );
 };
 function useCancel() {

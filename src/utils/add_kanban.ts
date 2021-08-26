@@ -26,15 +26,13 @@ function addKanBan(kanban: any) {
       days.push(b.format('YYYY-M'));
       break;
     case 'week':
-      while (!a.isSame(b)) {
-        if (a.isAfter(b)) {
-          break;
-        }
+      while (!a.isAfter(b)) {
         days.push(a.format('YYYY-wo'));
         a.add(1, 'week');
-        console.log(a, b);
       }
-      days.push(b.format('YYYY-wo'));
+      if (days[days.length - 1] !== b.format('YYYY-wo')) {
+        days.push(b.format('YYYY-wo'));
+      }
       break;
     case 'day':
       while (!a.isSame(b)) {
@@ -55,7 +53,7 @@ function addKanBan(kanban: any) {
   doc.submitOp([{
     p: ['shapes', doc.data.shapes.length],
     li: {
-      type: 'KANBAN', days, teamNum, x: 10, y: 10, teams, shift: {}, projs: [], draggable: true, unit,
+      type: 'KANBAN', days, teamNum, x: 10, y: 10, teams, shift: {}, projs: [], draggable: true, unit, selectProj: -1,
     },
   }]);
 }
