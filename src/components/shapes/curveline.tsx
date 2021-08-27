@@ -1,7 +1,8 @@
 import { Line } from 'react-konva';
 import React from 'react';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 
+const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.CurveLine,
   onSelect: any,
@@ -30,7 +31,7 @@ const CurveLine: React.FC<Props> = (props: Props) => {
             x: e.target.x(),
             y: e.target.y(),
           };
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
         onMouseOver={onMouseOver}
         onMouseDown={onMouseOver}

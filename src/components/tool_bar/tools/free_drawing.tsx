@@ -8,8 +8,9 @@ import {
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { useDispatchStore, useStateStore } from '../../../store/store';
 import { calcX, calcY } from '../../../utils/calc_zoom_position';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 
+const doc = getCurrentDoc();
 const gridStyle: any = {
   textAlign: 'center',
   cursor: 'pointer',
@@ -148,12 +149,12 @@ function useDrawing() {
     if (state.isPainting) {
       if (state.lastLine.points.length > 2) {
         const ops = state.OpList;
-        ops.push(JSON.stringify(doc.data.shapes));
+        ops.push(JSON.stringify(doc.value.data.shapes));
         dispatch({ type: 'setOpList', payload: ops });
       }
       dispatch({ type: 'setIsPainting', payload: false });
       if (state.selectShape === 'PEN') {
-        doc.submitOp([{ p: ['shapes', doc.data.shapes.length], li: state.lastLine }]);
+        doc.value.submitOp([{ p: ['shapes', doc.value.data.shapes.length], li: state.lastLine }]);
         dispatch({
           type: 'setLastLine',
           payload: {

@@ -1,12 +1,13 @@
-import doc from '../client/client';
+import getCurrentDoc from '../client/client';
 
+const doc = getCurrentDoc();
 const moment = require('moment');
 
 moment().format();
 
 function addKanBan(kanban: any) {
-  for (let i = 0; i < doc.data.shapes.length; i += 1) {
-    if (doc.data.shapes[i].type === 'KANBAN') {
+  for (let i = 0; i < doc.value.data.shapes.length; i += 1) {
+    if (doc.value.data.shapes[i].type === 'KANBAN') {
       return;
     }
   }
@@ -50,7 +51,7 @@ function addKanBan(kanban: any) {
       width: 120, height: 25, x: 20, y: 20 + i * 60, text: `Team${i + 1}`, fontSize: 12, fill: '#ffffff', visible: true,
     });
   }
-  doc.submitOp([{
+  doc.value.submitOp([{
     p: ['shapes', doc.data.shapes.length],
     li: {
       type: 'KANBAN', days, teamNum, x: 10, y: 10, teams, shift: {}, projs: [], draggable: true, unit, selectProj: -1,

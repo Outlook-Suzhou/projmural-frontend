@@ -9,8 +9,9 @@ import 'crypto-js';// "base-64": "^0.1.0"
 import 'base-64';//  "crypto-js": "^3.1.9-1"
 import addShape from '../../../utils/add_function';
 import { useDispatchStore, useStateStore } from '../../../store/store';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 
+const doc = getCurrentDoc();
 class AliyunOSSUpload extends React.Component {
   // eslint-disable-next-line react/state-in-constructor
   state = {
@@ -188,7 +189,7 @@ const AddImage: React.FC<{}> = () => {
       className="tool_icon"
       onClick={() => {
         const ops = state.OpList;
-        ops.push(JSON.stringify(doc.data.shapes));
+        ops.push(JSON.stringify(doc.value.data.shapes));
         dispatch({ type: 'setOpList', payload: ops });
       }}
     >
