@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Shape, Transformer, Text,
+  Rect, Transformer, Text, Line,
 } from 'react-konva';
 import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
@@ -36,33 +36,16 @@ const Message: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Shape
+      <Rect
         shadowOpacity={0.3}
         shadowOffsetX={3}
         shadowOffsetY={8}
         shadowBlur={4}
-        sceneFunc={(context, shape) => {
-          context.beginPath();
-          context.moveTo(item.x + item.width * 0.1, item.y);
-          context.lineTo(item.x + item.width * 0.9, item.y);
-          context.quadraticCurveTo(item.x + item.width, item.y, item.x + item.width, item.y + item.height * 0.2);
-          context.lineTo(item.x + item.width, item.y + item.height * 0.8);
-          context.quadraticCurveTo(item.x + item.width, item.y + item.height, item.x + item.width * 0.9, item.y + item.height);
-          context.lineTo(item.x + item.width * 0.4, item.y + item.height);
-          context.lineTo(item.x + item.width * 0.2, item.y + item.height * 1.3);
-          context.lineTo(item.x + item.width * 0.2, item.y + item.height);
-          context.lineTo(item.x + item.width * 0.1, item.y + item.height);
-          context.quadraticCurveTo(item.x, item.y + item.height, item.x, item.y + item.height * 0.8);
-          context.lineTo(item.x, item.y + item.height * 0.2);
-          context.quadraticCurveTo(item.x, item.y, item.x + item.width * 0.1, item.y);
-          context.closePath();
-          // (!) Konva specific method, it is very important
-          context.fillStrokeShape(shape);
-        }}
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
-        fill={item.fill}
+        cornerRadius={item.height * 0.1}
+        {...item}
         draggable={item.draggable && state.selectShape === 'FREE'}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
@@ -98,6 +81,19 @@ const Message: React.FC<Props> = (props: Props) => {
 
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+      />
+      <Line
+        shadowOpacity={0.3}
+        shadowOffsetX={3}
+        shadowOffsetY={8}
+        shadowBlur={4}
+        fill={item.fill}
+        draggable={item.draggable && state.selectShape === 'FREE'}
+        points={[item.x + item.width * 0.2, item.y + item.height - 1,
+          item.x + item.width * 0.4, item.y + item.height - 1,
+          item.x + item.width * 0.2, item.y + item.height * 1.2,
+        ]}
+        closed
       />
       <Text
         x={item.x + item.width / 4}
