@@ -10,12 +10,11 @@ interface Props {
   isSelected: boolean,
   index: number,
   i: number,
-  color: Array<string>,
   click: any,
 }
 const KanbanItem: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, index, i, color, click,
+    item, isSelected, index, i, click,
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
@@ -47,7 +46,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           ref={shapeRef}
           width={item.projs[i].width}
           height={20}
-          stroke={color[i % 5]}
+          stroke={item.projs[i].color}
           strokeWidth={0.7}
           fill="#ffffff"
           onTransform={() => {
@@ -67,7 +66,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
         <Rect
           width={2}
           height={20}
-          fill={color[i % 5]}
+          fill={item.projs[i].color}
         />
         <Text
           x={5}

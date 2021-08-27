@@ -157,7 +157,6 @@ const Kanban : React.FC<Props> = (props: Props) => {
           item={item}
           isSelected={isSelected && item.selectProj === i}
           i={i}
-          color={color}
           click={() => {
             item.selectProj = i;
             doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
