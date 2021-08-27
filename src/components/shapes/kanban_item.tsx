@@ -61,7 +61,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             node.scaleX(1);
             node.scaleY(1);
             item.projs[i].width = Math.max(5, node.width() * scaleX);
-            doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
           }}
         />
         <Rect
@@ -79,7 +79,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           visible={item.projs[i].visible}
           onDblClick={() => {
             item.projs[i].visible = false;
-            doc.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
             const textarea = document.createElement('textarea');
             document.body.appendChild(textarea);
             const textNode = new Konva.Text({
@@ -151,6 +151,9 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           anchorStroke="black"
           anchorCornerRadius={5}
         />
+      )}
+      {isSelected && (
+        <Rect width={10} height={10} />
       )}
     </>
   );

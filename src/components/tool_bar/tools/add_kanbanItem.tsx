@@ -13,16 +13,16 @@ const AddItem: React.FC<{}> = () => {
   const color = ['#FFC500', '#3F53D9', '#FFBFBF', '#ff653b', '#1e9575'];
   const [proj, setProj] = useState({ name: 'proj', color: '#FFC500', y: 20 });
   const handleOk = () => {
-    const kanban = doc.data.shapes[state.currentIndex];
+    const kanban = doc.value.data.shapes[state.currentIndex];
     kanban.projs.push({
       text: proj.name, x: 160, y: proj.y, width: 100, visible: true, color: proj.color,
     });
-    doc.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.data.shapes[state.currentIndex], li: kanban }]);
+    doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.value.data.shapes[state.currentIndex], li: kanban }]);
     setModalVisible(false);
   };
   function onChangeTeam(t: string) {
-    for (let i = 0; i < doc.data.shapes[state.currentIndex].teams.length; i += 1) {
-      if (doc.data.shapes[state.currentIndex].teams[i].text === t) {
+    for (let i = 0; i < doc.value.data.shapes[state.currentIndex].teams.length; i += 1) {
+      if (doc.value.data.shapes[state.currentIndex].teams[i].text === t) {
         setProj({
           ...proj,
           color: color[i],
@@ -57,8 +57,8 @@ const AddItem: React.FC<{}> = () => {
         </div>
         <div style={{ marginTop: '10px' }}>
           <>choose the team:</>
-          <Select defaultValue={doc.data.shapes[state.currentIndex].teams[0].text} style={{ width: 120, marginLeft: '10px' }} onChange={onChangeTeam}>
-            {doc.data.shapes[state.currentIndex].teams.map((unit: { text: string }) => (
+          <Select defaultValue={doc.value.data.shapes[state.currentIndex].teams[0].text} style={{ width: 120, marginLeft: '10px' }} onChange={onChangeTeam}>
+            {doc.value.data.shapes[state.currentIndex].teams.map((unit: { text: string }) => (
               <Option value={unit.text}>{unit.text}</Option>
             ))}
           </Select>

@@ -54,7 +54,7 @@ function addKanBan(kanban: any) {
     });
   }
   doc.value.submitOp([{
-    p: ['shapes', doc.data.shapes.length],
+    p: ['shapes', doc.value.data.shapes.length],
     li: {
       type: 'KANBAN', days, teamNum, x: 10, y: 10, teams, shift: {}, projs: [], draggable: true, unit, selectProj: -1,
     },

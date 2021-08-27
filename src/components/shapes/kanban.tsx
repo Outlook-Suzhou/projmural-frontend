@@ -55,7 +55,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
               fill={color[i % 5]}
               stroke="#E6E6E6"
               strokeWidth={0.5}
-              onClick={() => { item.selectProj = -1; doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]); }}
+              onClick={() => { item.selectProj = -1; doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]); }}
             />
             <Text
               x={item.teams[i].x}
@@ -136,7 +136,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
                 fill="white"
                 stroke="#E6E6E6"
                 strokeWidth={0.5}
-                onClick={() => { item.selectProj = -1; doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]); }}
+                onClick={() => { item.selectProj = -1; doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]); }}
               />
             ))}
           </Group>
