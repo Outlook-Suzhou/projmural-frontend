@@ -38,7 +38,7 @@ const getDoc = (id) => {
     });
   }
   const connection = backend.connect();
-  const doc = connection.get('projmural', id);
+  const doc = connection.get('canvas', id);
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
       console.log('fetch successfully');
