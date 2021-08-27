@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import axios from '../../utils/axios';
 import { useStateStore } from '../../store/store';
-import AvatarArea from '../../components/login_page/avatar';
+import AvatarArea from '../../components/login_page/avatar_area';
 
 const Dashboard: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
