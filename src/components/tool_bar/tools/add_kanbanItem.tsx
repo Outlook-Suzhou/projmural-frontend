@@ -4,8 +4,9 @@ import {
   Input, Modal, Select, Tooltip,
 } from 'antd';
 import { useStateStore } from '../../../store/store';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 
+const doc = getCurrentDoc();
 const AddItem: React.FC<{}> = () => {
   const state = useStateStore();
   const [modalVisible, setModalVisible] = useState(false);

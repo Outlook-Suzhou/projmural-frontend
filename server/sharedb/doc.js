@@ -1,6 +1,7 @@
 const ShareDB = require('sharedb');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
+// const db = require('sharedb-mongo')('mongodb://localhost:27017/projmural', { mongoOptions: {} });
 
 const backend = new ShareDB();
 
@@ -12,7 +13,7 @@ const createPaintingID = () => {
 const createDoc = (canvaName) => {
   const connection = backend.connect();
   const ID = createPaintingID();
-  const doc = connection.get('projmural', ID);
+  const doc = connection.get('canvas', ID);
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
       if (err) throw err;
@@ -37,10 +38,11 @@ const getDoc = (id) => {
     });
   }
   const connection = backend.connect();
-  const doc = connection.get('projmural', id);
+  const doc = connection.get('canvas', id);
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
       console.log('fetch successfully');
+      console.log(doc);
       if (err) throw err;
       resolve(doc);
     });

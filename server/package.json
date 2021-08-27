@@ -1,21 +1,23 @@
 {
   "name": "nodejs_server",
   "version": "1.0.0",
-  "description": "",
+  "description": "nodejs_server",
   "main": "server.js",
   "dependencies": {
     "@teamwork/websocket-json-stream": "^2.0.0",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "sharedb": "^1.9.2",
+    "sharedb-mongo": "^1.0.0-beta.20",
     "uuid": "^8.3.2",
     "ws": "^8.2.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "private": true
 }

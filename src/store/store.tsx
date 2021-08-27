@@ -13,10 +13,17 @@ interface Point {
   y: number,
 }
 
+interface canvaInfo {
+  id: string
+  name: string
+  recentOpen: string
+}
+
 interface UserInfo {
   name: string
   microsoftId: string
   mail: string
+  canvas: Array<canvaInfo>
 }
 
 interface globalState {
@@ -57,6 +64,7 @@ const initialState: globalState = {
     name: '',
     microsoftId: '',
     mail: '',
+    canvas: [],
   },
 };
 

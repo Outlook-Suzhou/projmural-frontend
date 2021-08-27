@@ -65,6 +65,7 @@ const Dashboard: React.FC<{}> = () => {
       console.log(e);
     });
   };
+  console.log(state.userInfo);
   return (
     <>
       <div className="dashboard">
@@ -92,17 +93,29 @@ const Dashboard: React.FC<{}> = () => {
               Create new board
             </div>
             <div className="template">
-              <div className="temp">
-                <Icon className="icon" iconName="Color" onClick={() => { setCanvaNameModalVisible(true); }} />
+              <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
+                <Icon className="icon" iconName="Color" />
                 <div className="font"> new board </div>
               </div>
-              <div className="temp">
-                <Icon className="icon" iconName="CalendarDay" onClick={() => { setJourneyMapModalVisible(true); }} />
+              <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
+                <Icon className="icon" iconName="CalendarDay" />
                 <div className="font"> journey map </div>
               </div>
             </div>
             <div className="text1">
               All board
+            </div>
+            <div className="template">
+              {
+                state.userInfo.canvas.reverse().map((val) => (
+                  <div className="temp" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
+                    <Icon className="icon" iconName="Color" />
+                    <div className="font">
+                      {val.name}
+                    </div>
+                  </div>
+                ))
+              }
             </div>
           </div>
         </div>
