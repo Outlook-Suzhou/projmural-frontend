@@ -13,7 +13,7 @@ const createPaintingID = () => {
 const createDoc = (canvaName) => {
   const connection = backend.connect();
   const ID = createPaintingID();
-  const doc = connection.get('canvas', ID);
+  const doc = connection.get('projmural', ID);
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
       if (err) throw err;
