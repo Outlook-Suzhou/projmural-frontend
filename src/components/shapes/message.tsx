@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Rect, Transformer, Text,
+  Shape, Transformer, Text,
 } from 'react-konva';
 import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
 
 const doc = getCurrentDoc();
 interface Props {
-  item: BaseShapes.TextRect,
+  item: BaseShapes.Message,
   isSelected: boolean,
   onSelect: any,
   index: number,
@@ -16,7 +16,7 @@ interface Props {
   onTransformStart: any,
   onTransformEnd: any
 }
-const TextRect: React.FC<Props> = (props: Props) => {
+const Message: React.FC<Props> = (props: Props) => {
   const {
     item, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
   } = props;
@@ -36,21 +36,38 @@ const TextRect: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Rect
+      <Shape
         shadowOpacity={0.3}
         shadowOffsetX={3}
         shadowOffsetY={8}
         shadowBlur={4}
+        sceneFunc={(context, shape) => {
+          context.beginPath();
+          context.moveTo(item.x + item.width * 0.1, item.y);
+          context.lineTo(item.x + item.width * 0.9, item.y);
+          context.quadraticCurveTo(item.x + item.width, item.y, item.x + item.width, item.y + item.height * 0.2);
+          context.lineTo(item.x + item.width, item.y + item.height * 0.8);
+          context.quadraticCurveTo(item.x + item.width, item.y + item.height, item.x + item.width * 0.9, item.y + item.height);
+          context.lineTo(item.x + item.width * 0.4, item.y + item.height);
+          context.lineTo(item.x + item.width * 0.2, item.y + item.height * 1.3);
+          context.lineTo(item.x + item.width * 0.2, item.y + item.height);
+          context.lineTo(item.x + item.width * 0.1, item.y + item.height);
+          context.quadraticCurveTo(item.x, item.y + item.height, item.x, item.y + item.height * 0.8);
+          context.lineTo(item.x, item.y + item.height * 0.2);
+          context.quadraticCurveTo(item.x, item.y, item.x + item.width * 0.1, item.y);
+          context.closePath();
+          // (!) Konva specific method, it is very important
+          context.fillStrokeShape(shape);
+        }}
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
-        {...item}
+        fill={item.fill}
         draggable={item.draggable && state.selectShape === 'FREE'}
-            // eslint-disable-next-line react/jsx-props-no-spreading
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDragMove={(e) => {
-          const afterE: BaseShapes.TextRect = {
+          const afterE: BaseShapes.Message = {
             ...item,
             x: e.target.x(),
             y: e.target.y(),
@@ -67,7 +84,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
           // we will reset it back
           node.scaleX(1);
           node.scaleY(1);
-          const afterE: BaseShapes.TextRect = {
+          const afterE: BaseShapes.Message = {
             ...item,
             x: node.x(),
             y: node.y(),
@@ -75,7 +92,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
             height: Math.max(5, node.height() * scaleY),
-            type: 'TEXTRECT',
+            type: 'MESSAGE',
             rotation: node.rotation(),
           };
 
@@ -163,4 +180,4 @@ const TextRect: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default TextRect;
+export default Message;

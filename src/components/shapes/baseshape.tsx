@@ -13,6 +13,7 @@ import CurveLine from './curveline';
 import TextRect from './text_rect';
 import Kanban from './kanban';
 import Star from './star';
+import Message from './message';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import getCurrentDoc from '../../client/client';
 
@@ -205,7 +206,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       break;
     case 'MESSAGE':
       ShapeComponent = (
-        <TextRect
+        <Message
           item={item}
           index={index}
           isSelected={index === state.currentIndex}

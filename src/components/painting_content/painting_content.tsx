@@ -161,6 +161,7 @@ const PaintingContent: React.FC<{}> = () => {
           height={HEIGHT}
           fill="#faf9f8"
           stroke="lightGray"
+          strokeWidth={0.5}
           onClick={() => { dispatch({ type: 'setCurrentIndex', payload: -1 }); }}
         />,
       );
