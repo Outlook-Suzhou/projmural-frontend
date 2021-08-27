@@ -42,6 +42,7 @@ const getDoc = (id) => {
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
       console.log('fetch successfully');
+      console.log(doc);
       if (err) throw err;
       resolve(doc);
     });
