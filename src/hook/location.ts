@@ -3,7 +3,7 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import getCurrentDoc from '../client/client';
 import { useDispatchStore } from '../store/store';
 import axios from '../utils/axios';
-import { addUser } from '../utils/user_function';
+import { addUser, removeUser, userExist } from '../utils/user_function';
 
 function useCurrentLocation() {
   const location = useLocation();
@@ -53,11 +53,16 @@ function useCurrentLocation() {
               history.push('/404');
             } else {
               getCurrentDoc(() => {
-                addUser({
-                  x: 0,
-                  y: 0,
-                  ...user,
-                });
+                if (!userExist(user)) {
+                  addUser({
+                    x: 0,
+                    y: 0,
+                    ...user,
+                  });
+                }
+                window.onbeforeunload = () => {
+                  removeUser(user);
+                };
               });
             }
           }

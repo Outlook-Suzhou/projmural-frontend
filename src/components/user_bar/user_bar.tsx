@@ -8,6 +8,7 @@ interface UserInfo {
 }
 const UserBar: React.FC<{}> = () => {
   const [userList] = useUserList([]);
+  console.log(userList);
   return (
     <div
       className="user_bar"
