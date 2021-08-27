@@ -36,6 +36,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
 
   const onDragStart = () => {
     dispatch({ type: 'setCurrentIndex', payload: index });
+    dispatch({ type: 'setCurrentItem', payload: item });
     dispatch({ type: 'setIsDragging', payload: true });
     const ops = state.OpList;
     ops.push(JSON.stringify(doc.value.data.shapes));
@@ -43,6 +44,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
   };
   const onDragEnd = () => {
     dispatch({ type: 'setCurrentIndex', payload: index });
+    dispatch({ type: 'setCurrentItem', payload: item });
     dispatch({ type: 'setIsDragging', payload: false });
   };
   const onTransformStart = () => {

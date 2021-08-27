@@ -55,7 +55,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
               fill={color[i % 5]}
               stroke="#E6E6E6"
               strokeWidth={0.5}
-              onClick={() => { item.selectProj = -1; doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]); }}
+              onClick={() => { item.selectProj = -1; doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]); }}
             />
             <Text
               x={item.teams[i].x}
@@ -129,14 +129,14 @@ const Kanban : React.FC<Props> = (props: Props) => {
           <Group>
             {[...Array(item.days.length)].map((__, j) => (
               <Rect
-                x={(j * 900) / item.days.length + 150}
+                x={(j * Math.max(60, 900 / item.days.length) + 150)}
                 y={i * 60 + 10}
-                width={900 / item.days.length}
+                width={Math.max(60, 900 / item.days.length)}
                 height={60}
                 fill="white"
                 stroke="#E6E6E6"
                 strokeWidth={0.5}
-                onClick={() => { item.selectProj = -1; doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]); }}
+                onClick={() => { item.selectProj = -1; doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]); }}
               />
             ))}
           </Group>
@@ -145,7 +145,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
       ))}
       {[...Array(item.days.length)].map((_, i) => (
         <Text
-          x={(i * 900) / item.days.length + 130 + 450 / item.days.length}
+          x={i * Math.max(60, 900 / item.days.length) + 130 + Math.max(60, 900 / item.days.length) / 2}
           y={-20}
           text={item.days[i]}
           fontSize={9}
@@ -158,7 +158,6 @@ const Kanban : React.FC<Props> = (props: Props) => {
           item={item}
           isSelected={isSelected && item.selectProj === i}
           i={i}
-          color={color}
           click={() => {
             item.selectProj = i;
             doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);

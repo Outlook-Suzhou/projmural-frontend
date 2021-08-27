@@ -79,10 +79,10 @@ const PaintingContent: React.FC<{}> = () => {
   };
   const getFloatBar = () => {
     const tools = [SelectColor, ZIndex, Lock, DelEle];
-    if (state.currentItem.type === 'TEXT') {
+    if (doc.value.data.shapes[state.currentIndex].type === 'TEXT') {
       tools.push(FontSize);
     }
-    if (state.currentItem.type === 'KANBAN') {
+    if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN') {
       tools.push(AddItem);
     }
     return tools;
@@ -100,7 +100,7 @@ const PaintingContent: React.FC<{}> = () => {
     });
   }, []);
   useEffect(() => {
-    if (kanban !== undefined && doc.data !== undefined) {
+    if (kanban !== undefined && doc.value.data !== undefined) {
       // @ts-ignore
       addKanBan(kanban.kanban);
       setKanBan(undefined);
