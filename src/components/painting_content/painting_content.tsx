@@ -255,13 +255,16 @@ const PaintingContent: React.FC<{}> = () => {
                 }
                 {
                   userList.map((item: BaseShapes.User) => (
-                    <Circle
-                      x={item.x}
-                      y={item.y}
-                      fill="red"
-                      radius={globalConfig.auxiliaryPointSize / state.stageScale}
-                      stroke={(1 / state.stageScale).toString()}
-                    />
+                    item.microsoftId === state.userInfo.microsoftId ? null
+                      : (
+                        <Circle
+                          x={item.x}
+                          y={item.y}
+                          fill="red"
+                          radius={globalConfig.auxiliaryPointSize / state.stageScale}
+                          stroke={(1 / state.stageScale).toString()}
+                        />
+                      )
                   ))
                 }
               </Layer>
