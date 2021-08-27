@@ -49,6 +49,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           height={20}
           stroke={color[i % 5]}
           strokeWidth={0.7}
+          fill="#ffffff"
           onTransform={() => {
             // transformer is changing scale of the node
             // and NOT its width or height

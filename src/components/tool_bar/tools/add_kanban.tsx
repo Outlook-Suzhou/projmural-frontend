@@ -1,39 +1,66 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from 'react';
+import React, { useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 // eslint-disable-next-line no-unused-vars
 import { Icon } from '@fluentui/react/lib/Icon';
-import { Tooltip } from 'antd';
-import doc from '../../../client/client';
+import {
+  DatePicker,
+  InputNumber, Modal, Select, Tooltip,
+} from 'antd';
+import addKanBan from '../../../utils/add_kanban';
 
-const AddKanBan: React.FC<{}> = () => (
-  // eslint-disable-next-line object-curly-newline
-  <div className="tool_icon">
-    <Tooltip title="项目看板">
-      <Icon
-        iconName="Calendar"
-        onClick={() => {
-          const teams = [];
-          const teamNum = 5;
-          const dateNum = 15;
-          const ind = doc.data.shapes.length;
-          for (let i = 0; i < teamNum; i += 1) {
-            teams.push({
-              // eslint-disable-next-line max-len
-              width: 120, height: 25, x: 20, y: 20 + i * 60, text: `Team${i + 1}`, fontSize: 12, fill: '#ffffff', visible: true,
-            });
-          }
-          doc.submitOp([{
-            p: ['shapes', ind],
-            li: {
-              type: 'KANBAN', dateNum, teamNum, x: 10, y: 10, teams, shift: {}, projs: [], draggable: true,
-            },
-          }]);
-        }}
-      />
-    </Tooltip>
-  </div>
+const AddKanBan: React.FC<{}> = () => {
+  const [journeyMapModalVisible, setJourneyMapModalVisible] = useState(false);
+  const [kanban, setKanban] = useState({
+    teamNum: 3, start: '1', end: '1', unit: 'day', isFirst: false,
+  });
+  const size = ['month', 'week', 'day'];
+  const { RangePicker } = DatePicker;
+  const { Option } = Select;
+  const handleOk = () => {
+    addKanBan(kanban);
+    setJourneyMapModalVisible(false);
+  };
+  function onChangeTeamNum(value: number) {
+    setKanban({ ...kanban, teamNum: value });
+  }
+  function onChangeSize(value: string) {
+    setKanban({ ...kanban, unit: value });
+  }
+  function onChangeDate(date: any) {
+    setKanban({ ...kanban, start: date[0].format(), end: date[1].format() });
+    console.log(kanban);
+  }
+  return (
+    // eslint-disable-next-line object-curly-newline
+    <div className="tool_icon">
+      <Tooltip title="项目看板">
+        <Icon
+          iconName="Calendar"
+          onClick={() => {
+            setJourneyMapModalVisible(true);
+          }}
+        />
+      </Tooltip>
+      <Modal title="Please input journey map info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>
+        <div>
+          <>Input the total number of teams:</>
+          <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
+        </div>
+        <div>
+          <>Input the the start-stop time of the project</>
+          <Select defaultValue="day" style={{ width: 120 }} onChange={onChangeSize}>
+            {size.map((unit) => (
+              <Option value={unit}>{unit}</Option>
+            ))}
+          </Select>
+          {/* @ts-ignore */}
+          <RangePicker picker={kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
+        </div>
+      </Modal>
+    </div>
 
-);
+  );
+};
 export default AddKanBan;

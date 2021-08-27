@@ -17,6 +17,7 @@ namespace BaseShapes {
     y: number,
     width: number,
     visible: boolean,
+    color: string,
   }
   interface Rectangle extends Position, Size, Lock {
     type: 'RECTANGLE',

@@ -5,9 +5,11 @@ const moment = require('moment');
 moment().format();
 
 function addKanBan(kanban: any) {
-  for (let i = 0; i < doc.data.shapes.length; i += 1) {
-    if (doc.data.shapes[i].type === 'KANBAN') {
-      return;
+  if (kanban.isFirst) {
+    for (let i = 0; i < doc.data.shapes.length; i += 1) {
+      if (doc.data.shapes[i].type === 'KANBAN') {
+        return;
+      }
     }
   }
   const teams = [];
@@ -27,11 +29,11 @@ function addKanBan(kanban: any) {
       break;
     case 'week':
       while (!a.isAfter(b)) {
-        days.push(a.format('YYYY-wo'));
+        days.push(a.format('YYYY-M-D'));
         a.add(1, 'week');
       }
-      if (days[days.length - 1] !== b.format('YYYY-wo')) {
-        days.push(b.format('YYYY-wo'));
+      if (a.format('YYYY-wo') === b.format('YYYY-wo')) {
+        days.push(a.format('YYYY-M-D'));
       }
       break;
     case 'day':
@@ -47,7 +49,7 @@ function addKanBan(kanban: any) {
   for (let i = 0; i < teamNum; i += 1) {
     teams.push({
       // eslint-disable-next-line max-len
-      width: 120, height: 25, x: 20, y: 20 + i * 60, text: `Team${i + 1}`, fontSize: 12, fill: '#ffffff', visible: true,
+      width: 120, height: 25, x: 20, y: 20 + i * 60, text: `Team${i + 1}`, fontSize: 12, fill: (i % 5 === 0 || i % 5 === 2) ? '#000000' : '#ffffff', visible: true,
     });
   }
   doc.submitOp([{

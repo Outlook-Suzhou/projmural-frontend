@@ -128,9 +128,9 @@ const Kanban : React.FC<Props> = (props: Props) => {
           <Group>
             {[...Array(item.days.length)].map((__, j) => (
               <Rect
-                x={(j * 900) / item.days.length + 150}
+                x={(j * Math.max(60, 900 / item.days.length) + 150)}
                 y={i * 60 + 10}
-                width={900 / item.days.length}
+                width={Math.max(60, 900 / item.days.length)}
                 height={60}
                 fill="white"
                 stroke="#E6E6E6"
@@ -144,7 +144,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
       ))}
       {[...Array(item.days.length)].map((_, i) => (
         <Text
-          x={(i * 900) / item.days.length + 130 + 450 / item.days.length}
+          x={i * Math.max(60, 900 / item.days.length) + 130 + Math.max(60, 900 / item.days.length) / 2}
           y={-20}
           text={item.days[i]}
           fontSize={9}
