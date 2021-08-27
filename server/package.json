@@ -1,7 +1,7 @@
 {
   "name": "nodejs_server",
   "version": "1.0.0",
-  "description": "",
+  "description": "nodejs_server",
   "main": "server.js",
   "dependencies": {
     "@teamwork/websocket-json-stream": "^2.0.0",
@@ -18,5 +18,6 @@
     "start": "node server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "private": true
 }
