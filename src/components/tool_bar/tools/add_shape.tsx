@@ -143,6 +143,22 @@ const shapes: React.FC<{}> = () => {
             iconName="FavoriteStar"
           />
         </Col>
+        <Col
+          span={8}
+          className="chooseShapeButton"
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            dispatch({ type: 'setSelectShape', payload: 'MESSAGE' });
+          }}
+          onKeyDown={() => {}}
+          style={gridStyle}
+        >
+          <Icon
+            className="icons"
+            iconName="Message"
+          />
+        </Col>
       </Row>
     </>
   );

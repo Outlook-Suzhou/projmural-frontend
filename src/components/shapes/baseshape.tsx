@@ -203,6 +203,20 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
         />
       );
       break;
+    case 'MESSAGE':
+      ShapeComponent = (
+        <TextRect
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
+      break;
     default:
       return ShapeComponent;
   }

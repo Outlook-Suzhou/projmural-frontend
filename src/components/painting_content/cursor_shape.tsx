@@ -33,6 +33,8 @@ const CursorShape = (props: Props) => {
       return <Rect x={x} y={y} width={200} height={50} stroke="black" dash={[10, 10]} />;
     case 'STAR':
       return <Star x={x} y={y} numPoints={5} innerRadius={20} outerRadius={50} stroke="black" dash={[10, 10]} />;
+    case 'MESSAGE':
+      return <Rect x={x} y={y} width={100} height={50} stroke="black" dash={[10, 10]} />;
     default:
       break;
   }
