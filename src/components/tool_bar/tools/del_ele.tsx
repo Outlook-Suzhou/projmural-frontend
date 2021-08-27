@@ -1,9 +1,10 @@
 import { Icon } from '@fluentui/react/lib/Icon';
 import React from 'react';
 import { Tooltip } from 'antd';
-import doc from '../../../client/client';
+import getCurrentDoc from '../../../client/client';
 import { useDispatchStore, useStateStore } from '../../../store/store';
 
+const doc = getCurrentDoc();
 const DelEle: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
@@ -14,9 +15,9 @@ const DelEle: React.FC<{}> = () => {
           iconName="Delete"
           onClick={() => {
             const ops = state.OpList;
-            ops.push(JSON.stringify(doc.data.shapes));
+            ops.push(JSON.stringify(doc.value.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
-            doc.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
+            doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
             dispatch({ type: 'setCurrentIndex', payload: -1 });
           }}
         />

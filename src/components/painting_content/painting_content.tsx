@@ -5,7 +5,7 @@ import {
   Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
 import { useHistory } from 'react-router-dom';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
 import AddImage from '../tool_bar/tools/add_images';
@@ -33,9 +33,16 @@ import Cancel, { useCancel } from '../tool_bar/tools/cancel';
 import AddKanBan from '../tool_bar/tools/add_kanban';
 import AddItem from '../tool_bar/tools/add_kanbanItem';
 import addKanBan from '../../utils/add_kanban';
+import useUserList from '../../hook/userList';
+// import UserBar from '../user_bar/user_bar';
+import useKanBan from '../../hook/kanban_event';
+import AvatarArea from '../login_page/avatar';
+
+const doc = getCurrentDoc();
 
 const PaintingContent: React.FC<{}> = () => {
-  const [list, setList] = useState(doc?.data?.shapes || []);
+  const [list, setList] = useState(doc?.value?.data?.shapes || []);
+  const [userList] = useUserList(doc?.value?.data?.users || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
@@ -45,6 +52,7 @@ const PaintingContent: React.FC<{}> = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   useDrawing();
   useCancel();
+  useKanBan();
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -79,24 +87,22 @@ const PaintingContent: React.FC<{}> = () => {
     return tools;
   };
   useEffect(() => {
-    doc.subscribe(() => {
-      if (doc?.data?.shapes) {
-        setList([...doc.data.shapes]);
+    doc.value.subscribe(() => {
+      if (doc?.value?.data?.shapes) {
+        setList([...doc.value.data.shapes]);
       }
     });
-  }, []);
-  useEffect(() => {
-    doc.on('op', () => {
-      if (doc?.data?.shapes) {
-        setList([...doc.data.shapes]);
+    doc.value.on('op', () => {
+      if (doc?.value?.data?.shapes) {
+        setList([...doc.value.data.shapes]);
       }
     });
   }, []);
   useEffect(() => {
     if (kanban !== undefined && doc.data !== undefined) {
-      addKanBan(kanban);
+      // @ts-ignore
+      addKanBan(kanban.kanban);
       setKanBan(undefined);
-      console.log(kanban);
     }
   });
 
@@ -164,7 +170,7 @@ const PaintingContent: React.FC<{}> = () => {
   const handleClick = (e: any) => {
     if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN' && state.selectShape !== 'FREE') {
       const ops = state.OpList;
-      ops.push(JSON.stringify(doc.data.shapes));
+      ops.push(JSON.stringify(doc.value.data.shapes));
       dispatch({ type: 'setOpList', payload: ops });
       handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
       dispatch({ type: 'setSelectShape', payload: 'FREE' });
@@ -173,8 +179,9 @@ const PaintingContent: React.FC<{}> = () => {
 
   return (
     <>
-      {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} isFloatBar />}
-      <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} isFloatBar={false} />
+      {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
+      <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} BarType="left" />
+      <ToolBar list={[AvatarArea]} BarType="avatar" />
       <div id="stage">
         <Stage
           className={state.selectShape}
@@ -210,7 +217,7 @@ const PaintingContent: React.FC<{}> = () => {
                               ...item,
                               shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
                             };
-                            doc.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                            doc.value.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
                           }
                           dispatch({ type: 'setCurrentItem', payload: item });
                           dispatch({ type: 'setCurrentIndex', payload: index });
@@ -219,7 +226,7 @@ const PaintingContent: React.FC<{}> = () => {
                       }}
                       del={() => {
                         if (state.selectShape === 'ERASER' && state.isPainting) {
-                          doc.submitOp([{ p: ['shapes', index], ld: item }]);
+                          doc.value.submitOp([{ p: ['shapes', index], ld: item }]);
                         }
                       }}
                     />
@@ -246,7 +253,22 @@ const PaintingContent: React.FC<{}> = () => {
                     />
                   ))
                 }
+                {
+                  userList.map((item: BaseShapes.User) => (
+                    item.microsoftId === state.userInfo.microsoftId ? null
+                      : (
+                        <Circle
+                          x={item.x}
+                          y={item.y}
+                          fill="red"
+                          radius={globalConfig.auxiliaryPointSize / state.stageScale}
+                          stroke={(1 / state.stageScale).toString()}
+                        />
+                      )
+                  ))
+                }
               </Layer>
+
             </DispatchContext.Provider>
           </StateContext.Provider>
         </Stage>

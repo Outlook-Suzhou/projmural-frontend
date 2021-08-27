@@ -1,11 +1,12 @@
 import { Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import React, { useEffect, useRef } from 'react';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 // eslint-disable-next-line import/namespace
 import { useStateStore, useDispatchStore } from '../../store/store';
 
+const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Image,
   isSelected: boolean,
@@ -60,7 +61,7 @@ const Img: React.FC<Props> = (props: Props) => {
             rotation: item.rotation,
             draggable: item.draggable,
           };
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
@@ -89,7 +90,7 @@ const Img: React.FC<Props> = (props: Props) => {
             draggable: item.draggable,
           };
 
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
       />
       {isSelected && (

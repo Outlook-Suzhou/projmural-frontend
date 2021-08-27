@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import globalConfig from './global_config';
 
+const doc = getCurrentDoc();
 interface vector {
   x: number;
   y: number;
@@ -58,18 +59,18 @@ const Line = (props) => {
         onDragEnd={onDragEnd}
         onClick={click}
         onDragMove={(e) => {
-          const afterE = Object.assign(doc.data.shapes[index], {
+          const afterE = Object.assign(doc.value.data.shapes[index], {
             x: e.target.attrs.x,
             y: e.target.attrs.y,
           });
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
       />
       <Circle
         // eslint-disable-next-line react/prop-types
-        x={doc.data.shapes[index].start.x + doc.data.shapes[index].x}
+        x={doc.value.data.shapes[index].start.x + doc.value.data.shapes[index].x}
         // eslint-disable-next-line react/prop-types
-        y={doc.data.shapes[index].start.y + doc.data.shapes[index].y}
+        y={doc.value.data.shapes[index].start.y + doc.value.data.shapes[index].y}
         // eslint-disable-next-line react/prop-types
         radius={globalConfig.auxiliaryPointSize / state.stageScale}
         opacity={circleOpacity}
@@ -80,7 +81,7 @@ const Line = (props) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
           let newPoint = mouse;
           let flag = false;
-          doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+          doc.value.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
             if (flag || ind === index) return;
             const res = checkAdsorptionPoint(mouse, shape, miniDistance);
             if (res.flag === true) {
@@ -90,22 +91,22 @@ const Line = (props) => {
             }
           });
           if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
-          const afterE = Object.assign(doc.data.shapes[index], {
+          const afterE = Object.assign(doc.value.data.shapes[index], {
             start: {
-              x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
-              y: newPoint.y - doc.data.shapes[index].y + Math.random() * 0.000001,
+              x: newPoint.x - doc.value.data.shapes[index].x + Math.random() * 0.000001,
+              y: newPoint.y - doc.value.data.shapes[index].y + Math.random() * 0.000001,
             },
           });
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
         fill="white"
         stroke={(1 / state.stageScale).toString()}
       />
       <Circle
         // eslint-disable-next-line react/prop-types
-        x={doc.data.shapes[index].end.x + doc.data.shapes[index].x}
+        x={doc.value.data.shapes[index].end.x + doc.value.data.shapes[index].x}
         // eslint-disable-next-line react/prop-types
-        y={doc.data.shapes[index].end.y + doc.data.shapes[index].y}
+        y={doc.value.data.shapes[index].end.y + doc.value.data.shapes[index].y}
         // eslint-disable-next-line react/prop-types
         radius={globalConfig.auxiliaryPointSize / state.stageScale}
         opacity={circleOpacity}
@@ -116,7 +117,7 @@ const Line = (props) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
           let newPoint = mouse;
           let flag = false;
-          doc.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+          doc.value.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
             if (flag || ind === index) return;
             const res = checkAdsorptionPoint(mouse, shape, miniDistance);
             if (res.flag === true) {
@@ -126,13 +127,13 @@ const Line = (props) => {
             }
           });
           if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
-          const afterE = Object.assign(doc.data.shapes[index], {
+          const afterE = Object.assign(doc.value.data.shapes[index], {
             end: {
-              x: newPoint.x - doc.data.shapes[index].x + Math.random() * 0.000001,
-              y: newPoint.y - doc.data.shapes[index].y + Math.random() * 0.000001,
+              x: newPoint.x - doc.value.data.shapes[index].x + Math.random() * 0.000001,
+              y: newPoint.y - doc.value.data.shapes[index].y + Math.random() * 0.000001,
             },
           });
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
         fill="white"
         stroke={(1 / state.stageScale).toString()}

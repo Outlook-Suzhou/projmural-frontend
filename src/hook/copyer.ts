@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import addShape from '../utils/add_function';
 import { calcX, calcY } from '../utils/calc_zoom_position';
 import { useStateStore } from '../store/store';
+import useMousePos from './mouse_pos';
 
 // const throttle = (fn: Function, rateTime: number) => {
 //   let prev = Date.now() - rateTime;
@@ -14,7 +15,7 @@ import { useStateStore } from '../store/store';
 // };
 // throttle;
 function useCopyer(): [BaseShapes.Shape | null, Function] {
-  const [mouse, setMouse] = useState<BaseShapes.Position>({ x: 0, y: 0 });
+  const mouse = useMousePos();
   const [item, setItem] = useState<BaseShapes.Shape | null>(null);
   const [selectItem, setSelectItem] = useState<BaseShapes.Shape | null>(null);
   const state = useStateStore();
@@ -41,19 +42,11 @@ function useCopyer(): [BaseShapes.Shape | null, Function] {
         }
       }
     };
-    const mouseListener = (e: any) => {
-      setMouse({
-        x: e.x,
-        y: e.y,
-      });
-    };
     document.addEventListener('keydown', copyListener);
-    document.addEventListener('mousemove', mouseListener);
     return () => {
       document.removeEventListener('keydown', copyListener);
-      document.removeEventListener('mousemove', mouseListener);
     };
-  }, [item, selectItem, mouse]);
+  }, [item, selectItem]);
   return [item, setSelectItem];
 }
 

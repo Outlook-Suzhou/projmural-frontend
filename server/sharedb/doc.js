@@ -1,8 +1,9 @@
 const ShareDB = require('sharedb');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
+const db = require('sharedb-mongo')('mongodb://localhost:27017/projmural', { mongoOptions: {} });
 
-const backend = new ShareDB();
+const backend = new ShareDB({ db });
 
 const createPaintingID = () => {
   const md5 = crypto.createHash('md5');
@@ -12,18 +13,22 @@ const createPaintingID = () => {
 const createDoc = (canvaName) => {
   const connection = backend.connect();
   const ID = createPaintingID();
-  const doc = connection.get('projmural', ID);
-  doc.fetch((err) => {
-    if (err) throw err;
-    if (doc.type === null) {
-      doc.create({
-        shapes: [],
-        users: [],
-        canvaName,
-      });
-    }
+  const doc = connection.get('canvas', ID);
+  const promise = new Promise((resolve) => {
+    doc.fetch((err) => {
+      if (err) throw err;
+      if (doc.type === null) {
+        doc.create({
+          shapes: [],
+          users: [],
+          canvaName,
+        }, () => {
+          resolve(ID);
+        });
+      }
+    });
   });
-  return ID;
+  return promise;
 };
 
 const getDoc = (id) => {

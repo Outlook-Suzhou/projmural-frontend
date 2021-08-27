@@ -3,9 +3,10 @@ import { Text, Transformer } from 'react-konva';
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import Konva from 'konva';
-import doc from '../../client/client';
+import getCurrentDoc from '../../client/client';
 import { useStateStore } from '../../store/store';
 
+const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Text,
   index: number,
@@ -86,7 +87,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             item.text = textarea.value;
             const node = shapeRef.current;
             item.height = node.height();
-            doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
           });
           function removeTextarea() {
             // @ts-ignore
@@ -94,7 +95,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             window.removeEventListener('click', handleOutsideClick);
-            doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
             setVisible(true);
           }
           function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
@@ -117,7 +118,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             x: e.target.x(),
             y: e.target.y(),
           };
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
         onTransform={() => {
           const node = shapeRef.current;
@@ -132,7 +133,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             rotation: node.rotation(),
             scaleX: 1,
           };
-          doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: afterE }]);
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
