@@ -102,5 +102,12 @@ namespace BaseShapes {
     microsoftId: string,
     mail: string
   }
-  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect;
+  interface Star extends Position, Lock{
+    type: 'STAR',
+    fill: string,
+    innerRadius: number,
+    outerRadius: number,
+    rotation: number,
+  }
+  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect | Star;
 }

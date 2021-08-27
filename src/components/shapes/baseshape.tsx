@@ -12,6 +12,7 @@ import Img from './image';
 import CurveLine from './curveline';
 import TextRect from './text_rect';
 import Kanban from './kanban';
+import Star from './star';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import getCurrentDoc from '../../client/client';
 
@@ -177,6 +178,20 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
     case 'TEXTRECT':
       ShapeComponent = (
         <TextRect
+          item={item}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
+      break;
+    case 'STAR':
+      ShapeComponent = (
+        <Star
           item={item}
           index={index}
           isSelected={index === state.currentIndex}

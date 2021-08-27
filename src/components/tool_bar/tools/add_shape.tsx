@@ -127,6 +127,22 @@ const shapes: React.FC<{}> = () => {
             iconName="ArrowTallUpRight"
           />
         </Col>
+        <Col
+          span={8}
+          className="chooseShapeButton"
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            dispatch({ type: 'setSelectShape', payload: 'STAR' });
+          }}
+          onKeyDown={() => {}}
+          style={gridStyle}
+        >
+          <Icon
+            className="icons"
+            iconName="FavoriteStar"
+          />
+        </Col>
       </Row>
     </>
   );

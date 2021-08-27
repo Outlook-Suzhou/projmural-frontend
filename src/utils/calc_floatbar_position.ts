@@ -60,7 +60,14 @@ const calcFloatBarPos = (shape: BaseShapes.Shape, stageScale: number, stagePos: 
     case 'CIRCLE':
     {
       const x1 = x;
-      const y1 = y - shape.radius * stageScale;
+      const y1 = y - shape.radius * stageScale * Math.sqrt(2);
+      pointsList = [[x1, y1]];
+      break;
+    }
+    case 'STAR':
+    {
+      const x1 = x;
+      const y1 = y - shape.outerRadius * stageScale * Math.sqrt(2);
       pointsList = [[x1, y1]];
       break;
     }
