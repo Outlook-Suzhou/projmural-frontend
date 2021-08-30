@@ -60,7 +60,14 @@ const calcFloatBarPos = (shape: BaseShapes.Shape, stageScale: number, stagePos: 
     case 'CIRCLE':
     {
       const x1 = x;
-      const y1 = y - shape.radius * stageScale;
+      const y1 = y - shape.radius * stageScale * Math.sqrt(2);
+      pointsList = [[x1, y1]];
+      break;
+    }
+    case 'STAR':
+    {
+      const x1 = x;
+      const y1 = y - shape.outerRadius * stageScale * Math.sqrt(2);
       pointsList = [[x1, y1]];
       break;
     }
@@ -115,6 +122,19 @@ const calcFloatBarPos = (shape: BaseShapes.Shape, stageScale: number, stagePos: 
       const x4 = x3 + (x2 - x1);
       const y4 = y3 + (y2 - y1);
       pointsList = [[x1 - 40, y1], [x2 - 40, y2], [x3 - 40, y3], [x4 - 40, y4]];
+      break;
+    }
+    case 'MESSAGE':
+    {
+      const x1 = x;
+      const y1 = y;
+      const x2 = x1 + shape.width * stageScale * Math.cos((shape.rotation * 2 * Math.PI) / 360);
+      const y2 = y1 + shape.width * stageScale * Math.sin((shape.rotation * 2 * Math.PI) / 360);
+      const x3 = x1 - shape.height * stageScale * Math.sin((shape.rotation * 2 * Math.PI) / 360);
+      const y3 = y1 + shape.height * stageScale * Math.cos((shape.rotation * 2 * Math.PI) / 360);
+      const x4 = x3 + (x2 - x1);
+      const y4 = y3 + (y2 - y1);
+      pointsList = [[x1, y1], [x2, y2], [x3, y3], [x4, y4]];
       break;
     }
     default:

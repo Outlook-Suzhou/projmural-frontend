@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Rect, Transformer, Text,
+  Rect, Transformer, Text, Line,
 } from 'react-konva';
 import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
 
 const doc = getCurrentDoc();
 interface Props {
-  item: BaseShapes.TextRect,
+  item: BaseShapes.Message,
   isSelected: boolean,
   onSelect: any,
   index: number,
@@ -16,7 +16,7 @@ interface Props {
   onTransformStart: any,
   onTransformEnd: any
 }
-const TextRect: React.FC<Props> = (props: Props) => {
+const Message: React.FC<Props> = (props: Props) => {
   const {
     item, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
   } = props;
@@ -44,13 +44,13 @@ const TextRect: React.FC<Props> = (props: Props) => {
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
+        cornerRadius={item.height * 0.1}
         {...item}
         draggable={item.draggable && state.selectShape === 'FREE'}
-            // eslint-disable-next-line react/jsx-props-no-spreading
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDragMove={(e) => {
-          const afterE: BaseShapes.TextRect = {
+          const afterE: BaseShapes.Message = {
             ...item,
             x: e.target.x(),
             y: e.target.y(),
@@ -67,20 +67,33 @@ const TextRect: React.FC<Props> = (props: Props) => {
           // we will reset it back
           node.scaleX(1);
           node.scaleY(1);
-          const afterE: BaseShapes.TextRect = {
+          const afterE: BaseShapes.Message = {
             ...item,
             x: node.x(),
             y: node.y(),
-            fontSize: Math.min(30, Math.max(12, item.fontSize * Math.min(scaleX, scaleY))),
+            fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
             height: Math.max(5, node.height() * scaleY),
-            type: 'TEXTRECT',
+            type: 'MESSAGE',
             rotation: node.rotation(),
           };
 
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+      />
+      <Line
+        shadowOpacity={0.3}
+        shadowOffsetX={3}
+        shadowOffsetY={8}
+        shadowBlur={4}
+        fill={item.fill}
+        draggable={item.draggable && state.selectShape === 'FREE'}
+        points={[item.x + item.width * 0.2, item.y + item.height - 1,
+          item.x + item.width * 0.4, item.y + item.height - 1,
+          item.x + item.width * 0.2, item.y + item.height * 1.2,
+        ]}
+        closed
       />
       <Text
         x={item.x + item.width / 4}
@@ -151,7 +164,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;
             }
-            return newBox;
+            return { ...newBox };
           }}
           rotateEnabled={false}
           borderStroke="black"
@@ -163,4 +176,4 @@ const TextRect: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default TextRect;
+export default Message;

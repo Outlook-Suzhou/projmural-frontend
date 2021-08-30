@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Circle, Rect, Line, Ellipse,
+  Circle, Rect, Line, Ellipse, Star,
 } from 'react-konva';
 
 interface Props {
@@ -31,6 +31,10 @@ const CursorShape = (props: Props) => {
       return <Line points={[x, y, x + 100, y + 100]} stroke="black" dash={[10, 10]} />;
     case 'TEXT':
       return <Rect x={x} y={y} width={200} height={50} stroke="black" dash={[10, 10]} />;
+    case 'STAR':
+      return <Star x={x} y={y} numPoints={5} innerRadius={20} outerRadius={50} stroke="black" dash={[10, 10]} />;
+    case 'MESSAGE':
+      return <Rect x={x} y={y} width={100} height={50} stroke="black" dash={[10, 10]} />;
     default:
       break;
   }

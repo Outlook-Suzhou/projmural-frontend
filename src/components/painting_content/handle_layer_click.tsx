@@ -47,6 +47,16 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
         width: 200, height: 25, x, y, type: 'TEXT', text: '双击编辑文字', fontSize: 25, draggable: true, fill: '#000000', rotation: 0, scaleX: 1, shift: { x: 0, y: 0 },
       });
       break;
+    case 'STAR':
+      addShape({
+        innerRadius: 20, outerRadius: 50, x, y, type: 'STAR', draggable: true, rotation: 0, fill: '#7BDCB5',
+      });
+      break;
+    case 'MESSAGE':
+      addShape({
+        width: 100, height: 50, x, y, type: 'MESSAGE', rotation: 0, fill: '#8ED1FC', draggable: true, text: '双击添加文字', fontSize: 10,
+      });
+      break;
     default:
       break;
   }
