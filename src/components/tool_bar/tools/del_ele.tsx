@@ -17,8 +17,16 @@ const DelEle: React.FC<{}> = () => {
             const ops = state.OpList;
             ops.push(JSON.stringify(doc.value.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
-            doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
-            dispatch({ type: 'setCurrentIndex', payload: -1 });
+            if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
+              const { projs } = state.currentItem;
+              projs.splice(state.currentItem.selectProj, 1);
+              doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.value.data.shapes[state.currentIndex], li: { ...state.currentItem, projs, selectProj: -1 } }]);
+              dispatch({ type: 'setCurrentItem', payload: { ...state.currentItem, projs, selectProj: -1 } });
+              dispatch({ type: 'setCurrentIndex', payload: -1 });
+            } else {
+              doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
+              dispatch({ type: 'setCurrentIndex', payload: -1 });
+            }
           }}
         />
       </Tooltip>
