@@ -1,6 +1,7 @@
 import React, {
   createContext, useContext, useReducer,
 } from 'react';
+import { doc } from '../client/client';
 
 interface line{
   fill: string,
@@ -89,6 +90,7 @@ function reducer(state: globalState = initialState, action: actionType): globalS
     case 'setAdsorptionPointsList':
       return { ...state, adsorptionPointsList: action.payload };
     case 'setUserInfo':
+      doc.userInfo = action.payload;
       return { ...state, userInfo: action.payload };
     case 'reset':
       return { ...initialState };
