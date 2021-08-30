@@ -107,7 +107,7 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
-                <Icon className="icon" iconName="Color" />
+                <div className="template-image-paint" />
                 <div className="font"> new board </div>
               </div>
               <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
