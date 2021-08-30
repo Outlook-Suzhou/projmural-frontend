@@ -108,8 +108,8 @@ const PaintingContent: React.FC<{}> = () => {
   });
 
   const boundFunc = (pos: any) => {
-    const x = Math.min(0, Math.max(pos.x, window.innerWidth * (1 - state.stageScale)));
-    const y = Math.min(0, Math.max(pos.y, window.innerHeight * (1 - state.stageScale)));
+    const x = Math.min(0, Math.max(pos.x, window.innerWidth * 2 * (1 - state.stageScale)));
+    const y = Math.min(0, Math.max(pos.y, window.innerHeight * 2 * (1 - state.stageScale)));
     return { x, y };
   };
   const WIDTH = 100;// size for background rect
@@ -152,8 +152,8 @@ const PaintingContent: React.FC<{}> = () => {
     });
   };
 
-  for (let x = 0; x < window.innerWidth; x += WIDTH) {
-    for (let y = 0; y < window.innerHeight; y += HEIGHT) {
+  for (let x = 0; x < window.innerWidth * 2; x += WIDTH) {
+    for (let y = 0; y < window.innerHeight * 2; y += HEIGHT) {
       gridComponents.push(
         <Rect
           x={x}

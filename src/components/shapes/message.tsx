@@ -71,7 +71,7 @@ const Message: React.FC<Props> = (props: Props) => {
             ...item,
             x: node.x(),
             y: node.y(),
-            fontSize: Math.min(30, Math.max(10, item.fontSize * Math.min(scaleX, scaleY))),
+            fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
             height: Math.max(5, node.height() * scaleY),
@@ -164,7 +164,7 @@ const Message: React.FC<Props> = (props: Props) => {
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;
             }
-            return newBox;
+            return { ...newBox };
           }}
           rotateEnabled={false}
           borderStroke="black"
