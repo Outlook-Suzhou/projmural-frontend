@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {
   DatePicker,
-  InputNumber, Modal, Select, PageHeader, Input,
+  InputNumber, Modal, Select, PageHeader, Input, Pagination,
 } from 'antd';
 import axios from '../../utils/axios';
 import { useStateStore } from '../../store/store';
@@ -65,7 +65,20 @@ const Dashboard: React.FC<{}> = () => {
       console.log(e);
     });
   };
-  console.log(state.userInfo);
+
+  // divide boards into separate pages
+  const [pageMinValue, setPageMinValue] = useState(0);
+  const [pageMaxValue, setPageMaxValue] = useState(5);
+  const handlePageChange = (val: number) => {
+    if (val <= 1) {
+      setPageMinValue(0);
+      setPageMaxValue(5);
+    } else {
+      setPageMinValue((val - 1) * 5);
+      setPageMaxValue((val - 1) * 5 + 5);
+    }
+  };
+
   return (
     <>
       <div className="dashboard">
@@ -103,11 +116,11 @@ const Dashboard: React.FC<{}> = () => {
               </div>
             </div>
             <div className="text1">
-              All board
+              History Boards
             </div>
             <div className="template">
               {
-                state.userInfo.canvas.reverse().map((val) => (
+                state.userInfo.canvas.reverse().slice(pageMinValue, pageMaxValue).map((val) => (
                   <div className="temp" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
                     <Icon className="icon" iconName="Color" />
                     <div className="font">
@@ -116,6 +129,15 @@ const Dashboard: React.FC<{}> = () => {
                   </div>
                 ))
               }
+            </div>
+            <div className="page">
+              <br />
+              <Pagination
+                defaultCurrent={1}
+                defaultPageSize={5}
+                onChange={handlePageChange}
+                total={state.userInfo.canvas.length}
+              />
             </div>
           </div>
         </div>
