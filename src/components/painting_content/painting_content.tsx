@@ -78,6 +78,9 @@ const PaintingContent: React.FC<{}> = () => {
     setCursorPos({ x: pos.x, y: pos.y });
   };
   const getFloatBar = () => {
+    if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
+      return [DelEle, SelectColor];
+    }
     const tools = [SelectColor, ZIndex, Lock, DelEle];
     if (doc.value.data.shapes[state.currentIndex].type === 'TEXT') {
       tools.push(FontSize);
