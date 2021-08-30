@@ -21,7 +21,6 @@ const ToolBar: React.FC<toolBarAttribute> = (props: toolBarAttribute) => {
       style={{
         // eslint-disable-next-line no-nested-ternary
         left: BarType === 'float' ? calcFloatBarPos(doc.value.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[0] - 90
-          + (state.currentItem.type === 'KANBAN' && state.currentItem.selectProj !== -1 ? state.currentItem.projs[state.currentItem.selectProj].x + 200 : 0)
           : BarType === 'left' ? 50 : window.innerWidth * 0.85,
         // eslint-disable-next-line no-nested-ternary
         top: BarType === 'float' ? calcFloatBarPos(doc.value.data.shapes[state.currentIndex], state.stageScale, state.stagePos)[1] - 150

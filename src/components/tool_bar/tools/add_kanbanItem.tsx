@@ -25,7 +25,7 @@ const AddItem: React.FC<{}> = () => {
       if (doc.value.data.shapes[state.currentIndex].teams[i].text === t) {
         setProj({
           ...proj,
-          color: color[i],
+          color: color[i % 5],
           y: proj.y + i * 60,
         });
         return;

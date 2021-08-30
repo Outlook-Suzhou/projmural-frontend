@@ -1,0 +1,15 @@
+.name {
+  left: 100px;
+  top: 30px;
+  background-color: white;
+  box-shadow: 2px 2px 2px #888888;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 25px;
+  position: absolute;
+  z-index: 5;
+  height: 45px;
+  width: auto;
+}
