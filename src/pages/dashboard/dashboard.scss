@@ -45,6 +45,7 @@
           }
           .font{
             font-size: 16px;
+            text-align: center;
           }
         }
         .temp:hover{
@@ -52,5 +53,12 @@
         }
       }
     }
+  }
+}
+.page{
+  text-align: center;
+  .ant-pagination{
+    width: auto;
+    height: 100px;
   }
 }
