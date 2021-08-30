@@ -34,7 +34,20 @@ const CursorShape = (props: Props) => {
     case 'STAR':
       return <Star x={x} y={y} numPoints={5} innerRadius={20} outerRadius={50} stroke="black" dash={[10, 10]} />;
     case 'MESSAGE':
-      return <Rect x={x} y={y} width={100} height={50} stroke="black" dash={[10, 10]} />;
+      return (
+        <>
+          <Rect x={x} y={y} width={100} height={50} stroke="black" dash={[10, 10]} />
+          <Line
+            points={[x + 100 * 0.2, y + 50 - 1,
+              x + 100 * 0.4, y + 50 - 1,
+              x + 100 * 0.2, y + 50 * 1.2,
+            ]}
+            closed
+            stroke="black"
+            dash={[10, 10]}
+          />
+        </>
+      );
     default:
       break;
   }

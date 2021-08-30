@@ -138,7 +138,7 @@ const calcFloatBarPos = (shape: BaseShapes.Shape, stageScale: number, stagePos: 
       break;
     }
     default:
-      return [x, y];
+      return [x + 112, y];
   }
   const edge = getEdge(pointsList);
   return edge;
