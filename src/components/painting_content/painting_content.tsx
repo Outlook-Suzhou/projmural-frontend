@@ -38,6 +38,7 @@ import useUserList from '../../hook/userList';
 import useKanBan from '../../hook/kanban_event';
 import AvatarArea from '../login_page/avatar_area';
 import AvatarUser from '../avatar/avatar_user';
+import CanvasName from './canvas_name';
 
 const doc = getCurrentDoc();
 
@@ -184,6 +185,7 @@ const PaintingContent: React.FC<{}> = () => {
 
   return (
     <>
+      {doc.value.data === undefined ? null : <CanvasName />}
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
       <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} BarType="left" />
       <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />

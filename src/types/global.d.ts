@@ -117,5 +117,5 @@ namespace BaseShapes {
     text: string,
     fontSize: number,
   }
-  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect | Star | Message;
+  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect | Star | Message | Kanban;
 }
