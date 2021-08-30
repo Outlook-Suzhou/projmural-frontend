@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import axios from '../../utils/axios';
 import { useStateStore } from '../../store/store';
-import AvatarArea from '../../components/login_page/avatar';
+import AvatarArea from '../../components/login_page/avatar_area';
 
 const Dashboard: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
@@ -16,7 +16,7 @@ const Dashboard: React.FC<{}> = () => {
   const state = useStateStore();
   const history = useHistory();
   const [kanban, setKanban] = useState({
-    teamNum: 3, start: '1', end: '1', unit: 'day',
+    teamNum: 3, start: '1', end: '1', unit: 'day', isFirst: true,
   });
   const size = ['month', 'week', 'day'];
   const [journeyMapModalVisible, setJourneyMapModalVisible] = useState(false);
@@ -27,7 +27,7 @@ const Dashboard: React.FC<{}> = () => {
     axios.post('/api/doc', {
       type: 'create',
       data: {
-        microsoft_id: 'test',
+        microsoft_id: state.userInfo.microsoftId,
         canva_name: canvaName,
       },
     }).then((res) => {
@@ -125,7 +125,7 @@ const Dashboard: React.FC<{}> = () => {
             <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
           </div>
           <div>
-            <>Input the the start-stop time of the project</>
+            <>Input the the start-stop time of the project: </>
             <Select defaultValue="day" style={{ width: 120 }} onChange={onChangeSize}>
               {size.map((unit) => (
                 <Option value={unit}>{unit}</Option>

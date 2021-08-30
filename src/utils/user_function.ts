@@ -15,4 +15,9 @@ function removeUser(user: BaseShapes.User) {
     }
   });
 }
-export { addUser, removeUser, editUser };
+function userExist(user: BaseShapes.User) {
+  return doc.value.data.users.some((item: BaseShapes.User) => item.microsoftId === user.microsoftId);
+}
+export {
+  addUser, removeUser, editUser, userExist,
+};

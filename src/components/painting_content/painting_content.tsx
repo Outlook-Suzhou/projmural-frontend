@@ -36,7 +36,8 @@ import addKanBan from '../../utils/add_kanban';
 import useUserList from '../../hook/userList';
 // import UserBar from '../user_bar/user_bar';
 import useKanBan from '../../hook/kanban_event';
-import AvatarArea from '../login_page/avatar';
+import AvatarArea from '../login_page/avatar_area';
+import AvatarUser from '../avatar/avatar_user';
 
 const doc = getCurrentDoc();
 
@@ -78,10 +79,10 @@ const PaintingContent: React.FC<{}> = () => {
   };
   const getFloatBar = () => {
     const tools = [SelectColor, ZIndex, Lock, DelEle];
-    if (state.currentItem.type === 'TEXT') {
+    if (doc.value.data.shapes[state.currentIndex].type === 'TEXT') {
       tools.push(FontSize);
     }
-    if (state.currentItem.type === 'KANBAN') {
+    if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN') {
       tools.push(AddItem);
     }
     return tools;
@@ -99,7 +100,7 @@ const PaintingContent: React.FC<{}> = () => {
     });
   }, []);
   useEffect(() => {
-    if (kanban !== undefined && doc.data !== undefined) {
+    if (kanban !== undefined && doc.value.data !== undefined) {
       // @ts-ignore
       addKanBan(kanban.kanban);
       setKanBan(undefined);
@@ -182,7 +183,7 @@ const PaintingContent: React.FC<{}> = () => {
     <>
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
       <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} BarType="left" />
-      <ToolBar list={[AvatarArea]} BarType="avatar" />
+      <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />
       <div id="stage">
         <Stage
           className={state.selectShape}

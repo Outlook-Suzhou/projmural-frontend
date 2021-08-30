@@ -11,12 +11,11 @@ interface Props {
   isSelected: boolean,
   index: number,
   i: number,
-  color: Array<string>,
   click: any,
 }
 const KanbanItem: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, index, i, color, click,
+    item, isSelected, index, i, click,
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
@@ -48,8 +47,9 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           ref={shapeRef}
           width={item.projs[i].width}
           height={20}
-          stroke={color[i % 5]}
+          stroke={item.projs[i].color}
           strokeWidth={0.7}
+          fill="#ffffff"
           onTransform={() => {
             // transformer is changing scale of the node
             // and NOT its width or height
@@ -61,13 +61,13 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             node.scaleX(1);
             node.scaleY(1);
             item.projs[i].width = Math.max(5, node.width() * scaleX);
-            doc.submitOp([{ p: ['shapes', index], ld: doc.data.shapes[index], li: item }]);
+            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
           }}
         />
         <Rect
           width={2}
           height={20}
-          fill={color[i % 5]}
+          fill={item.projs[i].color}
         />
         <Text
           x={5}
@@ -79,7 +79,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           visible={item.projs[i].visible}
           onDblClick={() => {
             item.projs[i].visible = false;
-            doc.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
             const textarea = document.createElement('textarea');
             document.body.appendChild(textarea);
             const textNode = new Konva.Text({
@@ -151,6 +151,9 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           anchorStroke="black"
           anchorCornerRadius={5}
         />
+      )}
+      {isSelected && (
+        <Rect width={10} height={10} />
       )}
     </>
   );
