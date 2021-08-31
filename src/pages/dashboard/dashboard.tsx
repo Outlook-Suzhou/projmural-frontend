@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {
-  DatePicker,
+  DatePicker, Menu, Dropdown,
   InputNumber, Modal, Select, PageHeader, Input,
 } from 'antd';
 import axios from '../../utils/axios';
@@ -24,6 +24,7 @@ const Dashboard: React.FC<{}> = () => {
   const [canvaNameModalVisible, setCanvaNameModalVisible] = useState(false);
   const handleOk = () => {
     setJourneyMapModalVisible(true);
+    console.log(canvaName);
     axios.post('/api/doc', {
       type: 'create',
       data: {
@@ -45,8 +46,7 @@ const Dashboard: React.FC<{}> = () => {
     console.log(kanban);
   }
   function canvaNameOnChange(e: any) {
-    console.log(e);
-    setCanvaName(e.target.defaultValue);
+    setCanvaName(e.target.value);
   }
   const createPainting = () => {
     axios.post('/api/doc', {
@@ -65,7 +65,6 @@ const Dashboard: React.FC<{}> = () => {
       console.log(e);
     });
   };
-  console.log(state.userInfo);
   return (
     <>
       <div className="dashboard">
@@ -99,7 +98,7 @@ const Dashboard: React.FC<{}> = () => {
               </div>
               <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
                 <Icon className="icon" iconName="CalendarDay" />
-                <div className="font"> journey map </div>
+                <div className="font"> new Kanban </div>
               </div>
             </div>
             <div className="text1">
@@ -107,19 +106,45 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               {
-                state.userInfo.canvas.reverse().map((val) => (
-                  <div className="temp" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
-                    <Icon className="icon" iconName="Color" />
-                    <div className="font">
-                      {val.name}
-                    </div>
-                  </div>
-                ))
+                state.userInfo.canvas.map((val, ind) => {
+                  const canvaDropdown = (
+                    <Menu>
+                      <Menu.Item onClick={
+                        (e: any) => {
+                          console.log('delete ', val);
+                          e.stopPropagation();
+                        }
+                      }
+                      >
+                        delete
+                      </Menu.Item>
+                      <Menu.Item>
+                        copy link
+                      </Menu.Item>
+                    </Menu>
+                  );
+                  if (ind >= 10) {
+                    return (<div />);
+                  }
+                  return (
+                    <>
+                      <div className="temp" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
+                        <Dropdown overlay={canvaDropdown}>
+                          <div className="setting" onClick={() => { console.log('setting.'); }} aria-hidden="true"> ··· </div>
+                        </Dropdown>
+                        <Icon className="icon" iconName="Color" />
+                        <div className="font">
+                          {val.name}
+                        </div>
+                      </div>
+                    </>
+                  );
+                })
               }
             </div>
           </div>
         </div>
-        <Modal title="Please input journey map info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>
+        <Modal title="Please input kanban info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>
           <div>
             <>Input the total number of teams:</>
             <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
