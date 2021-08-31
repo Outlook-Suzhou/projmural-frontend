@@ -24,13 +24,25 @@
         margin-left: 12%;
         margin-top: 10px;
       }
+      .header2{
+        font-size: 30px;
+        margin-left: 12%;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        .button {
+          margin: 10px;
+        }
+      }
       .template{
         border-radius: 10px;
         margin-left: 12%;
         margin-top: 10px;
         width: 80%;
-        height: 200px;
+        height: auto;
         background-color: #FFFFFF;
+        display: flex;
+        align-items: center;
         .temp{
           text-align: center;
           border-radius: 5px;
@@ -39,6 +51,23 @@
           float:left;
           width: 15%;
           margin: 20px;
+          padding-right: 20px;
+          padding-left: 20px;
+          margin: 10px;
+          position: relative;
+          .icon{
+            font-size: 80px;
+            line-height: 140px;
+          }
+          .font{
+            font-size: 16px;
+          }
+          .setting{
+            position: absolute;
+            right: 5px;
+            line-height: 20px;
+            font-size: 40px;
+          }
         }
       }
     }
