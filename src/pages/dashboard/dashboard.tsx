@@ -121,7 +121,7 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               {
-                state.userInfo.canvas.map((val, ind) => {
+                state.userInfo.canvas.slice(pageMinValue, pageMaxValue).map((val, ind) => {
                   const canvaDropdown = (
                     <Menu>
                       <Menu.Item onClick={
@@ -143,11 +143,11 @@ const Dashboard: React.FC<{}> = () => {
                   }
                   return (
                     <>
-                      <div className="temp" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
+                      <div className="history" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
                         <Dropdown overlay={canvaDropdown}>
-                          <div className="setting" onClick={() => { console.log('setting.'); }} aria-hidden="true"> ··· </div>
+                          <div className="setting" onClick={() => { console.log('setting.'); }} aria-hidden="true"> ··· &nbsp;  </div>
                         </Dropdown>
-                        <div className="template-image-paint" />
+                        <div className="template-image-canvas" />
                         <div className="font">
                           {val.name}
                         </div>

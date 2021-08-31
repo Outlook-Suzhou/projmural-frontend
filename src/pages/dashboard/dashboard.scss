@@ -100,7 +100,7 @@
   background-size: contain;
 }
 .history{
-  text-align: center;
+  text-align: right;
   border-radius: 5px;
   background-color: #eceae6;
   cursor: pointer;
@@ -109,7 +109,6 @@
   margin: 2%;
 }
 .template-image-canvas{
-  text-align: center;
   margin: 10%;
   height: 100px;
   width: 80%;
@@ -126,7 +125,6 @@
   -webkit-transition: all .1s ease-out;
   transition: all .1s ease-out;
   .template-image-canvas{
-    text-align: center;
     margin: 10%;
     height: 100px;
     width: 80%;
