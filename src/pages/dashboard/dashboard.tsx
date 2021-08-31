@@ -1,7 +1,6 @@
 import './dashboard.scss';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Icon } from '@fluentui/react/lib/Icon';
 import {
   DatePicker,
   InputNumber, Modal, Select, PageHeader, Input, Pagination,
@@ -107,12 +106,12 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
-                <Icon className="icon" iconName="Color" />
-                <div className="font"> new board </div>
+                <div className="template-image-paint" />
+                <div className="font"> + new board </div>
               </div>
               <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
-                <Icon className="icon" iconName="CalendarDay" />
-                <div className="font"> journey map </div>
+                <div className="template-image-calender" />
+                <div className="font"> + journey map </div>
               </div>
             </div>
             <div className="text1">
@@ -121,8 +120,8 @@ const Dashboard: React.FC<{}> = () => {
             <div className="template">
               {
                 state.userInfo.canvas.reverse().slice(pageMinValue, pageMaxValue).map((val) => (
-                  <div className="temp" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
-                    <Icon className="icon" iconName="Color" />
+                  <div className="history" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
+                    <div className="template-image-canvas" />
                     <div className="font">
                       {val.name}
                     </div>

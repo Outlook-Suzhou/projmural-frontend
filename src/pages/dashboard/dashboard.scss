@@ -39,20 +39,66 @@
           padding-right: 50px;
           padding-left: 50px;
           margin: 20px;
-          .icon{
-            font-size: 80px;
-            line-height: 140px;
-          }
-          .font{
-            font-size: 16px;
-            text-align: center;
-          }
-        }
-        .temp:hover{
-          color: blue;
         }
       }
     }
+  }
+}
+.temp:hover{
+  color: blue;
+  -webkit-transform: translateY(-3px);
+  -ms-transform: translateY(-3px);
+  transform: translateY(-3px);
+  -webkit-box-shadow: 0 0 6px #999;
+  box-shadow: 0 0 6px #999;
+  -webkit-transition: all .1s ease-out;
+  transition: all .1s ease-out;
+}
+.template-image-paint{
+  margin: 7px;
+  height: 100px;
+  width: 100px;
+  background: url("./img/painting.png") center center no-repeat;
+  background-size: contain;
+}
+.template-image-calender{
+  margin: 7px;
+  height: 100px;
+  width: 100px;
+  background: url("./img/schedule.png") center center no-repeat;
+  background-size: contain;
+}
+.history{
+  border-radius: 5px;
+  background-color: #eceae6;
+  cursor: pointer;
+  float:left;
+  padding-right: 50px;
+  padding-left: 50px;
+  margin: 20px;
+}
+.template-image-canvas{
+  margin: 10px;
+  height: 100px;
+  width: 100px;
+  background: url("./img/clockBlack.png") center center no-repeat;
+  background-size: contain;
+}
+.history:hover{
+  color: blue;
+  -webkit-transform: translateY(-3px);
+  -ms-transform: translateY(-3px);
+  transform: translateY(-3px);
+  -webkit-box-shadow: 0 0 6px #999;
+  box-shadow: 0 0 6px #999;
+  -webkit-transition: all .1s ease-out;
+  transition: all .1s ease-out;
+  .template-image-canvas{
+    margin: 10px;
+    height: 100px;
+    width: 100px;
+    background: url("./img/clock.png") center center no-repeat;
+    background-size: contain;
   }
 }
 .page{
@@ -61,4 +107,8 @@
     width: auto;
     height: 100px;
   }
+}
+.font{
+  margin: 5px;
+  text-align: center;
 }
