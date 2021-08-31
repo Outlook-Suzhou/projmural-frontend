@@ -44,10 +44,13 @@
         display: flex;
         align-items: center;
         .temp{
+          text-align: center;
           border-radius: 5px;
           background-color: #eceae6;
           cursor: pointer;
           float:left;
+          width: 15%;
+          margin: 20px;
           padding-right: 20px;
           padding-left: 20px;
           margin: 10px;
@@ -66,9 +69,6 @@
             font-size: 40px;
           }
         }
-        .temp:hover{
-          color: blue;
-        }
       }
     }
   }
@@ -84,32 +84,34 @@
   transition: all .1s ease-out;
 }
 .template-image-paint{
-  margin: 7px;
+  text-align: center;
+  margin: 10%;
   height: 100px;
-  width: 100px;
+  width: 80%;
   background: url("./img/painting.png") center center no-repeat;
   background-size: contain;
 }
 .template-image-calender{
-  margin: 7px;
+  text-align: center;
+  margin: 10%;
   height: 100px;
-  width: 100px;
+  width: 80%;
   background: url("./img/schedule.png") center center no-repeat;
   background-size: contain;
 }
 .history{
+  text-align: right;
   border-radius: 5px;
   background-color: #eceae6;
   cursor: pointer;
   float:left;
-  padding-right: 50px;
-  padding-left: 50px;
-  margin: 20px;
+  width: 15%;
+  margin: 2%;
 }
 .template-image-canvas{
-  margin: 10px;
+  margin: 10%;
   height: 100px;
-  width: 100px;
+  width: 80%;
   background: url("./img/clockBlack.png") center center no-repeat;
   background-size: contain;
 }
@@ -123,9 +125,9 @@
   -webkit-transition: all .1s ease-out;
   transition: all .1s ease-out;
   .template-image-canvas{
-    margin: 10px;
+    margin: 10%;
     height: 100px;
-    width: 100px;
+    width: 80%;
     background: url("./img/clock.png") center center no-repeat;
     background-size: contain;
   }

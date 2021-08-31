@@ -79,14 +79,19 @@ const PaintingContent: React.FC<{}> = () => {
     setCursorPos({ x: pos.x, y: pos.y });
   };
   const getFloatBar = () => {
-    if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
+    const { type } = doc.value.data.shapes[state.currentIndex];
+    if (type === 'KANBAN' && state.currentItem.selectProj !== -1) {
       return [DelEle, SelectColor];
     }
-    const tools = [SelectColor, ZIndex, Lock, DelEle];
-    if (doc.value.data.shapes[state.currentIndex].type === 'TEXT') {
+    const tools = [];
+    if (type !== 'IMAGE' && type !== 'ARROW' && type !== 'LINE') {
+      tools.push(SelectColor);
+    }
+    tools.push(ZIndex, Lock, DelEle);
+    if (type === 'TEXT') {
       tools.push(FontSize);
     }
-    if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN') {
+    if (type === 'KANBAN') {
       tools.push(AddItem);
     }
     return tools;
