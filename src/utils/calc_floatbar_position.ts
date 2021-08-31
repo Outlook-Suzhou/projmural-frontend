@@ -137,6 +137,15 @@ const calcFloatBarPos = (shape: BaseShapes.Shape, stageScale: number, stagePos: 
       pointsList = [[x1, y1], [x2, y2], [x3, y3], [x4, y4]];
       break;
     }
+    case 'KANBAN':
+    {
+      if (shape.selectProj !== -1) {
+        const x1 = calcZoomX(shape.x + shape.projs[shape.selectProj].x, stageScale, stagePos.x);
+        const y1 = calcZoomX(shape.y + shape.projs[shape.selectProj].y, stageScale, stagePos.y);
+        return [x1 + 112, y1 - 120];
+      }
+      return [x + 112, y];
+    }
     default:
       return [x + 112, y];
   }

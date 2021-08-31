@@ -1,9 +1,8 @@
 import './dashboard.scss';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Icon } from '@fluentui/react/lib/Icon';
 import {
-  DatePicker, Menu, Dropdown,
+  DatePicker, Menu, Dropdown, Pagination,
   InputNumber, Modal, Select, PageHeader, Input,
 } from 'antd';
 import axios from '../../utils/axios';
@@ -65,6 +64,22 @@ const Dashboard: React.FC<{}> = () => {
       console.log(e);
     });
   };
+
+  // divide boards into separate pages
+  // eslint-disable-next-line no-unused-vars
+  const [pageMinValue, setPageMinValue] = useState(0);
+  // eslint-disable-next-line no-unused-vars
+  const [pageMaxValue, setPageMaxValue] = useState(5);
+  const handlePageChange = (val: number) => {
+    if (val <= 1) {
+      setPageMinValue(0);
+      setPageMaxValue(5);
+    } else {
+      setPageMinValue((val - 1) * 5);
+      setPageMaxValue((val - 1) * 5 + 5);
+    }
+  };
+
   return (
     <>
       <div className="dashboard">
@@ -93,16 +108,16 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
-                <Icon className="icon" iconName="Color" />
+                <div className="template-image-paint" />
                 <div className="font"> new board </div>
               </div>
               <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
-                <Icon className="icon" iconName="CalendarDay" />
+                <div className="template-image-calender" />
                 <div className="font"> new Kanban </div>
               </div>
             </div>
             <div className="text1">
-              All board
+              History Boards
             </div>
             <div className="template">
               {
@@ -132,7 +147,7 @@ const Dashboard: React.FC<{}> = () => {
                         <Dropdown overlay={canvaDropdown}>
                           <div className="setting" onClick={() => { console.log('setting.'); }} aria-hidden="true"> ··· </div>
                         </Dropdown>
-                        <Icon className="icon" iconName="Color" />
+                        <div className="template-image-paint" />
                         <div className="font">
                           {val.name}
                         </div>
@@ -141,6 +156,15 @@ const Dashboard: React.FC<{}> = () => {
                   );
                 })
               }
+            </div>
+            <div className="page">
+              <br />
+              <Pagination
+                defaultCurrent={1}
+                defaultPageSize={5}
+                onChange={handlePageChange}
+                total={state.userInfo.canvas.length}
+              />
             </div>
           </div>
         </div>
