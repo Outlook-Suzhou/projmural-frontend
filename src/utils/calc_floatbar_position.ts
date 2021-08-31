@@ -140,9 +140,10 @@ const calcFloatBarPos = (shape: BaseShapes.Shape, stageScale: number, stagePos: 
     case 'KANBAN':
     {
       if (shape.selectProj !== -1) {
+        console.log('here', stageScale, stagePos);
         const x1 = calcZoomX(shape.x + shape.projs[shape.selectProj].x, stageScale, stagePos.x);
-        const y1 = calcZoomX(shape.y + shape.projs[shape.selectProj].y, stageScale, stagePos.y);
-        return [x1 + 112, y1 - 120];
+        const y1 = calcZoomY(shape.y + (shape.projs[shape.selectProj].y / stageScale) * 0.7, stageScale, stagePos.y);
+        return [x1 + 112, y1 - 70];
       }
       return [x + 112, y];
     }

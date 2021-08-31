@@ -56,7 +56,7 @@ const AddKanBan: React.FC<{}> = () => {
             ))}
           </Select>
           {/* @ts-ignore */}
-          <RangePicker picker={kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
+          <RangePicker picker={kanban.unit === 'week' ? 'date' : kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
         </div>
       </Modal>
     </div>
