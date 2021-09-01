@@ -72,7 +72,14 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
         <Text
           x={5}
           y={5}
-          width={item.projs[i].width}
+          width={item.projs[i].width * 0.3}
+          // eslint-disable-next-line no-nested-ternary
+          text={item.projs[i].status === 'pending' ? '⏳' : item.projs[i].status === 'finished' ? '✅' : '❌'}
+        />
+        <Text
+          x={5 + item.projs[i].width * 0.3}
+          y={7}
+          width={item.projs[i].width * 0.6}
           text={item.projs[i].text}
           wrap="char"
           fontSize={7}
@@ -94,8 +101,8 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             textarea.style.position = 'absolute';
             textarea.value = item.projs[i].text;
             textarea.style.transformOrigin = 'left top';
-            textarea.style.top = `${(item.y + item.projs[i].y + 5) * item.shift.scale + item.shift.y}px`;
-            textarea.style.left = `${(item.x + item.projs[i].x + 5) * item.shift.scale + item.shift.x}px`;
+            textarea.style.top = `${(item.y + item.projs[i].y + 7) * item.shift.scale + item.shift.y}px`;
+            textarea.style.left = `${(item.x + item.projs[i].x + item.projs[i].width * 0.3 + 5) * item.shift.scale + item.shift.x}px`;
             textarea.style.border = 'none';
             textarea.style.padding = '0px';
             textarea.style.margin = '0px';
