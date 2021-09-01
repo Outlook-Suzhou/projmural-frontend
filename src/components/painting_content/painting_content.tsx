@@ -81,7 +81,7 @@ const PaintingContent: React.FC<{}> = () => {
   const getFloatBar = () => {
     const { type } = doc.value.data.shapes[state.currentIndex];
     if (type === 'KANBAN' && state.currentItem.selectProj !== -1) {
-      return [DelEle, SelectColor];
+      return [SelectColor, DelEle];
     }
     const tools = [];
     if (type !== 'IMAGE' && type !== 'ARROW' && type !== 'LINE') {
@@ -288,4 +288,5 @@ const PaintingContent: React.FC<{}> = () => {
     </>
   );
 };
+
 export default PaintingContent;

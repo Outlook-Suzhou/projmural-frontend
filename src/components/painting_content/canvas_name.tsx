@@ -12,8 +12,9 @@ const CanvasName = () => {
       <Tooltip title="go to dashboard">
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
         <p
+          className="p1"
           style={{
-            marginLeft: '15px', marginRight: '5px', fontFamily: 'Bahnschrift SemiBold', fill: 'black', marginTop: '5px', marginBottom: '5px',
+            fontWeight: 'bold',
           }}
           onClick={() => { history.push('/dashboard'); }}
         >
@@ -21,10 +22,7 @@ const CanvasName = () => {
         </p>
       </Tooltip>
       <Divider type="vertical" style={{ fontSize: '50px' }} />
-      <p style={{
-        marginLeft: '5px', marginRight: '15px', marginTop: '5px', marginBottom: '5px',
-      }}
-      >
+      <p className="p2">
         {doc.value.data.canvaName}
       </p>
     </div>

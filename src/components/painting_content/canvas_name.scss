@@ -7,9 +7,18 @@
   flex-wrap: wrap;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 25px;
   position: absolute;
   z-index: 5;
-  height: 45px;
+  height: auto;
   width: auto;
+}
+p{
+  margin: auto;
+  padding-right: 10px;
+  line-height: 25px;
+  font-size: 25px;
+  text-align: center;
+}
+.p1{
+  padding-left: 10px;
 }

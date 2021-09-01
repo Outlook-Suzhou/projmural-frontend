@@ -11,11 +11,13 @@ const AddItem: React.FC<{}> = () => {
   const state = useStateStore();
   const [modalVisible, setModalVisible] = useState(false);
   const color = ['#FFC500', '#3F53D9', '#FFBFBF', '#ff653b', '#1e9575'];
-  const [proj, setProj] = useState({ name: 'proj', color: '#FFC500', y: 20 });
+  const [proj, setProj] = useState({
+    name: 'proj', color: '#FFC500', y: 20, status: '⏳',
+  });
   const handleOk = () => {
     const kanban = doc.value.data.shapes[state.currentIndex];
     kanban.projs.push({
-      text: proj.name, x: 160, y: proj.y, width: 100, visible: true, color: proj.color,
+      text: proj.name, x: 160, y: proj.y, width: 100, visible: true, color: proj.color, status: proj.status,
     });
     doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.value.data.shapes[state.currentIndex], li: kanban }]);
     setModalVisible(false);
@@ -37,6 +39,12 @@ const AddItem: React.FC<{}> = () => {
     setProj({
       ...proj,
       name: e.target.value,
+    });
+  }
+  function projStatusChange(e: any) {
+    setProj({
+      ...proj,
+      status: e,
     });
   }
   const { Option } = Select;
@@ -61,6 +69,14 @@ const AddItem: React.FC<{}> = () => {
             {doc.value.data.shapes[state.currentIndex].teams.map((unit: { text: string }) => (
               <Option value={unit.text}>{unit.text}</Option>
             ))}
+          </Select>
+        </div>
+        <div style={{ marginTop: '10px' }}>
+          <>choose project status</>
+          <Select defaultValue="pending" style={{ width: 120, marginLeft: '10px' }} onChange={projStatusChange}>
+            <Option value="pending">pending</Option>
+            <Option value="finished">finished</Option>
+            <Option value="blocked">blocked</Option>
           </Select>
         </div>
       </Modal>
