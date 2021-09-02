@@ -39,6 +39,7 @@ import useKanBan from '../../hook/kanban_event';
 import AvatarArea from '../login_page/avatar_area';
 import AvatarUser from '../avatar/avatar_user';
 import CanvasName from './canvas_name';
+import ItemStatus from '../tool_bar/tools/item_status';
 
 const doc = getCurrentDoc();
 
@@ -81,7 +82,7 @@ const PaintingContent: React.FC<{}> = () => {
   const getFloatBar = () => {
     const { type } = doc.value.data.shapes[state.currentIndex];
     if (type === 'KANBAN' && state.currentItem.selectProj !== -1) {
-      return [SelectColor, DelEle];
+      return [SelectColor, DelEle, ItemStatus];
     }
     const tools = [];
     if (type !== 'IMAGE' && type !== 'ARROW' && type !== 'LINE') {

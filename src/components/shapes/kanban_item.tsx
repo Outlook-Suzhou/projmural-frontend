@@ -72,12 +72,12 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
         <Text
           x={5}
           y={5}
-          width={item.projs[i].width * 0.3}
+          width={item.projs[i].width * 0.2}
           // eslint-disable-next-line no-nested-ternary
           text={item.projs[i].status === 'blocked' ? '❓' : item.projs[i].status === 'finished' ? '✅' : '⏳'}
         />
         <Text
-          x={5 + item.projs[i].width * 0.3}
+          x={5 + item.projs[i].width * 0.2}
           y={7}
           width={item.projs[i].width * 0.6}
           text={item.projs[i].text}
@@ -142,6 +142,25 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             });
           }}
         />
+        {/* {[...Array(item.projs[item.selectProj].tags.length)].map((_, j) => ( */}
+        {/*  <Group> */}
+        {/*    <Tag */}
+        {/*      x={item.projs[item.selectProj].tags[j].x} */}
+        {/*      y={22} */}
+        {/*      width={20} */}
+        {/*      height={9} */}
+        {/*      fill="gray" */}
+        {/*      cornerRadius={1} */}
+        {/*    /> */}
+        {/*    <Text */}
+        {/*      x={item.projs[item.selectProj].tags[j].x + 3} */}
+        {/*      y={24} */}
+        {/*      text={item.projs[item.selectProj].tags[j].text + 3} */}
+        {/*      fill="white" */}
+        {/*      fontSize={7} */}
+        {/*    /> */}
+        {/*  </Group> */}
+        {/* ))} */}
       </Group>
       {isSelected && (
         <Transformer

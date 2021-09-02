@@ -12,7 +12,7 @@ const AddItem: React.FC<{}> = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const color = ['#FFC500', '#3F53D9', '#FFBFBF', '#ff653b', '#1e9575'];
   const [proj, setProj] = useState({
-    name: 'proj', color: '#FFC500', y: 20, status: '⏳',
+    name: 'proj', color: '#FFC500', y: 20, status: '⏳', tags: [],
   });
   const handleOk = () => {
     const kanban = doc.value.data.shapes[state.currentIndex];
