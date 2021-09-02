@@ -59,7 +59,7 @@ docRouter.post('/doc', async (req, res) => {
     const newUser = {
       ...usrRsp.data.data,
     };
-    newUser.canvas.push({
+    newUser.canvas.unshift({
       id: ID,
       name: data.canva_name,
       recent_open: 0,

@@ -6,13 +6,14 @@ import {
   InputNumber, Modal, Select, PageHeader, Input,
 } from 'antd';
 import axios from '../../utils/axios';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
 import AvatarArea from '../../components/login_page/avatar_area';
 
 const Dashboard: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
   const { Option } = Select;
   const state = useStateStore();
+  const dispatch = useDispatchStore();
   const history = useHistory();
   const [kanban, setKanban] = useState({
     teamNum: 3, start: '1', end: '1', unit: 'day', isFirst: true,
@@ -126,8 +127,24 @@ const Dashboard: React.FC<{}> = () => {
                     <Menu>
                       <Menu.Item onClick={
                         (e: any) => {
-                          console.log('delete ', val);
-                          e.stopPropagation();
+                          e.domEvent.stopPropagation();
+                          const newUserInfo = { ...state.userInfo };
+                          newUserInfo.canvas.splice(ind, 1);
+                          axios.post('/api/user', {
+                            type: 'update',
+                            data: {
+                              microsoft_id: newUserInfo.microsoftId,
+                              ...newUserInfo,
+                            },
+                          }).then((rsp) => {
+                            if (rsp.data.retc === 0) {
+                              dispatch({ type: 'setUserInfo', payload: newUserInfo });
+                            } else {
+                              console.log(rsp);
+                            }
+                          }).catch((err) => {
+                            console.log(err);
+                          });
                         }
                       }
                       >
@@ -145,7 +162,11 @@ const Dashboard: React.FC<{}> = () => {
                     <>
                       <div className="history" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
                         <Dropdown overlay={canvaDropdown}>
+<<<<<<< HEAD
+                          <div className="setting" aria-hidden="true"> ··· &nbsp;  </div>
+=======
                           <div className="setting" onClick={() => { console.log('setting.'); }} aria-hidden="true"> ··· &nbsp;  </div>
+>>>>>>> main
                         </Dropdown>
                         <div className="template-image-canvas" />
                         <div className="font">
