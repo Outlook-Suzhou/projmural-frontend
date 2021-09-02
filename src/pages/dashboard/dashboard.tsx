@@ -5,6 +5,7 @@ import {
   DatePicker, Menu, Dropdown, Pagination,
   InputNumber, Modal, Select, PageHeader, Input,
 } from 'antd';
+import copy from 'copy-to-clipboard';
 import axios from '../../utils/axios';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import AvatarArea from '../../components/login_page/avatar_area';
@@ -150,7 +151,7 @@ const Dashboard: React.FC<{}> = () => {
                       >
                         delete
                       </Menu.Item>
-                      <Menu.Item>
+                      <Menu.Item onClick={(e) => { e.domEvent.stopPropagation(); copy(`www.projmural.com/painting/${val.id}`); }}>
                         copy link
                       </Menu.Item>
                     </Menu>
@@ -162,11 +163,7 @@ const Dashboard: React.FC<{}> = () => {
                     <>
                       <div className="history" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
                         <Dropdown overlay={canvaDropdown}>
-<<<<<<< HEAD
                           <div className="setting" aria-hidden="true"> ··· &nbsp;  </div>
-=======
-                          <div className="setting" onClick={() => { console.log('setting.'); }} aria-hidden="true"> ··· &nbsp;  </div>
->>>>>>> main
                         </Dropdown>
                         <div className="template-image-canvas" />
                         <div className="font">
