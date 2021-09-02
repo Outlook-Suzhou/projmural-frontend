@@ -170,6 +170,10 @@ const Dashboard: React.FC<{}> = () => {
         </div>
         <Modal title="Please input kanban info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>
           <div>
+            <>Input the name of canva:</>
+            <Input onChange={canvaNameOnChange} />
+          </div>
+          <div>
             <>Input the total number of teams:</>
             <InputNumber min={2} max={20} value={kanban.teamNum} onChange={onChangeTeamNum} style={{ height: '35px', margin: '15px', width: '50px' }} />
           </div>
@@ -181,7 +185,7 @@ const Dashboard: React.FC<{}> = () => {
               ))}
             </Select>
             {/* @ts-ignore */}
-            <RangePicker picker={kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
+            <RangePicker picker={kanban.unit === 'week' ? 'date' : kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
           </div>
         </Modal>
         <Modal title="Please input canva Name" visible={canvaNameModalVisible} onOk={createPainting} onCancel={() => { setCanvaNameModalVisible(false); }}>
