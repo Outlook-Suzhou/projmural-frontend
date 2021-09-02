@@ -74,7 +74,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           y={5}
           width={item.projs[i].width * 0.3}
           // eslint-disable-next-line no-nested-ternary
-          text={item.projs[i].status === 'pending' ? '⏳' : item.projs[i].status === 'finished' ? '✅' : '❌'}
+          text={item.projs[i].status === 'blocked' ? '❓' : item.projs[i].status === 'finished' ? '✅' : '⏳'}
         />
         <Text
           x={5 + item.projs[i].width * 0.3}
