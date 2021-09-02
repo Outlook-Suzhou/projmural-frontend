@@ -39,6 +39,7 @@ import useKanBan from '../../hook/kanban_event';
 import AvatarArea from '../login_page/avatar_area';
 import AvatarUser from '../avatar/avatar_user';
 import CanvasName from './canvas_name';
+import ItemStatus from '../tool_bar/tools/item_status';
 
 const doc = getCurrentDoc();
 
@@ -79,14 +80,19 @@ const PaintingContent: React.FC<{}> = () => {
     setCursorPos({ x: pos.x, y: pos.y });
   };
   const getFloatBar = () => {
-    if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
-      return [DelEle, SelectColor];
+    const { type } = doc.value.data.shapes[state.currentIndex];
+    if (type === 'KANBAN' && state.currentItem.selectProj !== -1) {
+      return [SelectColor, DelEle, ItemStatus];
     }
-    const tools = [SelectColor, ZIndex, Lock, DelEle];
-    if (doc.value.data.shapes[state.currentIndex].type === 'TEXT') {
+    const tools = [];
+    if (type !== 'IMAGE' && type !== 'ARROW' && type !== 'LINE') {
+      tools.push(SelectColor);
+    }
+    tools.push(ZIndex, Lock, DelEle);
+    if (type === 'TEXT') {
       tools.push(FontSize);
     }
-    if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN') {
+    if (type === 'KANBAN') {
       tools.push(AddItem);
     }
     return tools;
@@ -283,4 +289,5 @@ const PaintingContent: React.FC<{}> = () => {
     </>
   );
 };
+
 export default PaintingContent;

@@ -11,6 +11,10 @@ namespace BaseShapes {
   interface Lock {
     draggable: boolean
   }
+  interface Tag {
+    text: string,
+    x: number,
+  }
   interface Proj {
     text: string,
     x: number,
@@ -18,6 +22,8 @@ namespace BaseShapes {
     width: number,
     visible: boolean,
     color: string,
+    status: string,
+    tags: Array<Tag>,
   }
   interface Rectangle extends Position, Size, Lock {
     type: 'RECTANGLE',

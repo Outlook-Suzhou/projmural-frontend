@@ -72,7 +72,14 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
         <Text
           x={5}
           y={5}
-          width={item.projs[i].width}
+          width={item.projs[i].width * 0.2}
+          // eslint-disable-next-line no-nested-ternary
+          text={item.projs[i].status === 'blocked' ? '❓' : item.projs[i].status === 'finished' ? '✅' : '⏳'}
+        />
+        <Text
+          x={5 + item.projs[i].width * 0.2}
+          y={7}
+          width={item.projs[i].width * 0.6}
           text={item.projs[i].text}
           wrap="char"
           fontSize={7}
@@ -94,8 +101,8 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             textarea.style.position = 'absolute';
             textarea.value = item.projs[i].text;
             textarea.style.transformOrigin = 'left top';
-            textarea.style.top = `${(item.y + item.projs[i].y + 5) * item.shift.scale + item.shift.y}px`;
-            textarea.style.left = `${(item.x + item.projs[i].x + 5) * item.shift.scale + item.shift.x}px`;
+            textarea.style.top = `${(item.y + item.projs[i].y + 7) * item.shift.scale + item.shift.y}px`;
+            textarea.style.left = `${(item.x + item.projs[i].x + item.projs[i].width * 0.3 + 5) * item.shift.scale + item.shift.x}px`;
             textarea.style.border = 'none';
             textarea.style.padding = '0px';
             textarea.style.margin = '0px';
@@ -135,6 +142,25 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             });
           }}
         />
+        {/* {[...Array(item.projs[item.selectProj].tags.length)].map((_, j) => ( */}
+        {/*  <Group> */}
+        {/*    <Tag */}
+        {/*      x={item.projs[item.selectProj].tags[j].x} */}
+        {/*      y={22} */}
+        {/*      width={20} */}
+        {/*      height={9} */}
+        {/*      fill="gray" */}
+        {/*      cornerRadius={1} */}
+        {/*    /> */}
+        {/*    <Text */}
+        {/*      x={item.projs[item.selectProj].tags[j].x + 3} */}
+        {/*      y={24} */}
+        {/*      text={item.projs[item.selectProj].tags[j].text + 3} */}
+        {/*      fill="white" */}
+        {/*      fontSize={7} */}
+        {/*    /> */}
+        {/*  </Group> */}
+        {/* ))} */}
       </Group>
       {isSelected && (
         <Transformer

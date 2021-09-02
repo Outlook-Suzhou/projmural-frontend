@@ -141,10 +141,12 @@ const calcFloatBarPos = (shape: BaseShapes.Shape, stageScale: number, stagePos: 
     {
       if (shape.selectProj !== -1) {
         const x1 = calcZoomX(shape.x + shape.projs[shape.selectProj].x, stageScale, stagePos.x);
-        const y1 = calcZoomX(shape.y + shape.projs[shape.selectProj].y, stageScale, stagePos.y);
-        return [x1 + 112, y1 - 120];
+        const y1 = calcZoomY(shape.y + shape.projs[shape.selectProj].y, stageScale, stagePos.y);
+        pointsList = [[x1 + 45, y1 - 120], [x1 + 45 + shape.projs[shape.selectProj].width * stageScale, y1 - 120]];
+      } else {
+        pointsList = [[x + 112, y]];
       }
-      return [x + 112, y];
+      break;
     }
     default:
       return [x + 112, y];
