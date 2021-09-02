@@ -81,7 +81,8 @@ const PaintingContent: React.FC<{}> = () => {
   };
   const getFloatBar = () => {
     const { type } = doc.value.data.shapes[state.currentIndex];
-    if (type === 'KANBAN' && state.currentItem.selectProj !== -1) {
+    if (type === 'KANBAN' && state.currentItem.selectProj !== undefined && state.currentItem.selectProj !== -1) {
+      console.log(state.currentItem.selectProj);
       return [SelectColor, DelEle, ItemStatus];
     }
     const tools = [];
