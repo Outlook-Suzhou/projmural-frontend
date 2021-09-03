@@ -72,14 +72,14 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
         <Text
           x={5}
           y={5}
-          width={item.projs[i].width * 0.2}
+          width={20}
           // eslint-disable-next-line no-nested-ternary
           text={item.projs[i].status === 'blocked' ? '❓' : item.projs[i].status === 'finished' ? '✅' : '⏳'}
         />
         <Text
-          x={5 + item.projs[i].width * 0.2}
+          x={28}
           y={7}
-          width={item.projs[i].width * 0.6}
+          width={item.projs[i].width - 28}
           text={item.projs[i].text}
           wrap="char"
           fontSize={7}
@@ -102,7 +102,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             textarea.value = item.projs[i].text;
             textarea.style.transformOrigin = 'left top';
             textarea.style.top = `${(item.y + item.projs[i].y + 7) * item.shift.scale + item.shift.y}px`;
-            textarea.style.left = `${(item.x + item.projs[i].x + item.projs[i].width * 0.3 + 5) * item.shift.scale + item.shift.x}px`;
+            textarea.style.left = `${(item.x + item.projs[i].x + 28) * item.shift.scale + item.shift.x}px`;
             textarea.style.border = 'none';
             textarea.style.padding = '0px';
             textarea.style.margin = '0px';
@@ -115,7 +115,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             textarea.style.resize = 'none';
             textarea.style.transformOrigin = 'left top';
             textarea.style.height = '80px';
-            textarea.style.width = `${item.projs[i].width * item.shift.scale + textNode.padding() * 2}px`;
+            textarea.style.width = `${(item.projs[i].width - 28) * item.shift.scale + textNode.padding() * 2}px`;
             textarea.focus();
             textarea.addEventListener('keydown', () => {
               item.projs[i].text = textarea.value;
