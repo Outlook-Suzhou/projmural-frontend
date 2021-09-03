@@ -123,8 +123,8 @@ const PaintingContent: React.FC<{}> = () => {
     const y = Math.min(0, Math.max(pos.y, window.innerHeight * 2 * (1 - state.stageScale)));
     return { x, y };
   };
-  const WIDTH = 100;// size for background rect
-  const HEIGHT = 100;
+  const WIDTH = 150;// size for background rect
+  const HEIGHT = 150;
   // const [stageScale, setstageScale] = React.useState(1);
 
   const gridComponents = [];
