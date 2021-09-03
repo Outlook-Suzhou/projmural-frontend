@@ -28,7 +28,7 @@ const AddItem: React.FC<{}> = () => {
         setProj({
           ...proj,
           color: color[i % 5],
-          y: proj.y + i * 60,
+          y: 20 + i * 60,
         });
         return;
       }
