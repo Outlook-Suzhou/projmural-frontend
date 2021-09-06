@@ -81,7 +81,8 @@ const PaintingContent: React.FC<{}> = () => {
   };
   const getFloatBar = () => {
     const { type } = doc.value.data.shapes[state.currentIndex];
-    if (type === 'KANBAN' && state.currentItem.selectProj !== -1) {
+    if (type === 'KANBAN' && state.currentItem.selectProj !== undefined && state.currentItem.selectProj !== -1) {
+      console.log(state.currentItem.selectProj);
       return [SelectColor, DelEle, ItemStatus];
     }
     const tools = [];
@@ -122,8 +123,8 @@ const PaintingContent: React.FC<{}> = () => {
     const y = Math.min(0, Math.max(pos.y, window.innerHeight * 2 * (1 - state.stageScale)));
     return { x, y };
   };
-  const WIDTH = 100;// size for background rect
-  const HEIGHT = 100;
+  const WIDTH = 150;// size for background rect
+  const HEIGHT = 150;
   // const [stageScale, setstageScale] = React.useState(1);
 
   const gridComponents = [];

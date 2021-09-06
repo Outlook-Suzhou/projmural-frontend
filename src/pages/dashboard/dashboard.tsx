@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import {
   DatePicker, Menu, Dropdown, Pagination,
   InputNumber, Modal, Select, PageHeader, Input,
+  message,
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import axios from '../../utils/axios';
@@ -123,7 +124,7 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               {
-                state.userInfo.canvas.slice(pageMinValue, pageMaxValue).map((val, ind) => {
+                state.userInfo.canvas.reverse().slice(pageMinValue, pageMaxValue).map((val, ind) => {
                   const canvaDropdown = (
                     <Menu>
                       <Menu.Item onClick={
@@ -151,7 +152,7 @@ const Dashboard: React.FC<{}> = () => {
                       >
                         delete
                       </Menu.Item>
-                      <Menu.Item onClick={(e) => { e.domEvent.stopPropagation(); copy(`www.projmural.com/painting/${val.id}`); }}>
+                      <Menu.Item onClick={(e) => { e.domEvent.stopPropagation(); copy(`www.projmural.com/painting/${val.id}`); message.success('url copied!'); }}>
                         copy link
                       </Menu.Item>
                     </Menu>
@@ -163,7 +164,9 @@ const Dashboard: React.FC<{}> = () => {
                     <>
                       <div className="history" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
                         <Dropdown overlay={canvaDropdown}>
-                          <div className="setting" aria-hidden="true"> ··· &nbsp;  </div>
+                          <div className="setting" aria-hidden="true">
+                            <p>···</p>
+                          </div>
                         </Dropdown>
                         <div className="template-image-canvas" />
                         <div className="font">
