@@ -12,7 +12,7 @@ const AddItem: React.FC<{}> = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const color = ['#FFC500', '#3F53D9', '#FFBFBF', '#ff653b', '#1e9575'];
   const [proj, setProj] = useState({
-    name: 'proj', color: '#FFC500', y: 20, status: '⏳', tags: [],
+    name: 'proj', color: '#FFC500', y: 20, status: 'in progress', tags: [],
   });
   const handleOk = () => {
     const kanban = doc.value.data.shapes[state.currentIndex];
@@ -73,8 +73,9 @@ const AddItem: React.FC<{}> = () => {
         </div>
         <div style={{ marginTop: '10px' }}>
           <>choose project status</>
-          <Select defaultValue="pending" style={{ width: 120, marginLeft: '10px' }} onChange={projStatusChange}>
-            <Option value="pending">pending</Option>
+          <Select defaultValue="in progress" style={{ width: 120, marginLeft: '10px' }} onChange={projStatusChange}>
+            <Option value="not started">not started</Option>
+            <Option value="in progress">in progress</Option>
             <Option value="finished">finished</Option>
             <Option value="blocked">blocked</Option>
           </Select>

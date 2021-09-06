@@ -8,7 +8,7 @@ const ItemStatus: React.FC<{}> = () => {
   const { Option } = Select;
   const state = useStateStore();
   function projStatusChange(e: any) {
-    const { projs } = state.currentItem;
+    const { projs } = doc.value.data.shapes[state.currentIndex];
     projs[state.currentItem.selectProj].status = e;
     const afterE = { ...doc.value.data.shapes[state.currentIndex], projs };
     doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem, li: afterE }]);
@@ -16,8 +16,10 @@ const ItemStatus: React.FC<{}> = () => {
   return (
     <Tooltip title="编辑状态">
       <>
-        <Select value={state.currentItem.projs[state.currentItem.selectProj].status} style={{ alignSelf: 'center', marginRight: '10px' }} onChange={projStatusChange}>
-          <Option value="pending">pending</Option>
+        {/* eslint-disable-next-line max-len */}
+        <Select value={doc.value.data.shapes[state.currentIndex].projs[state.currentItem.selectProj].status} style={{ alignSelf: 'center', marginRight: '10px' }} onChange={projStatusChange}>
+          <Option value="not started">not started</Option>
+          <Option value="in progress">in progress</Option>
           <Option value="finished">finished</Option>
           <Option value="blocked">blocked</Option>
         </Select>
