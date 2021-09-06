@@ -7,7 +7,6 @@ import useUserList from '../../hook/userList';
 const AvatarUser: React.FC = () => {
   const [userList] = useUserList([]);
   const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
-  console.log(userList);
   return (
     <>
       {

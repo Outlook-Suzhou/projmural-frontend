@@ -13,7 +13,6 @@ function getCurrentDoc(callback?: Function) {
   doc.value = connection.get('canvas', docID);
   if (doc.value) {
     ((doc.value) as any).subscribe(() => {
-      console.log(doc.value);
       if (callback) {
         callback();
       }
