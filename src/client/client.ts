@@ -10,6 +10,7 @@ console.log(connection);
 const doc = { value: null };
 function getCurrentDoc(callback?: Function) {
   const docID = window.location.pathname.substring(10);
+  console.log('docid: ', docID);
   doc.value = connection.get('canvas', docID);
   if (doc.value) {
     ((doc.value) as any).subscribe(() => {

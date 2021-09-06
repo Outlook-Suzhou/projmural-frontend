@@ -24,7 +24,6 @@ function useUserList(list: BaseShapes.User[]) {
   }, []);
   useEffect(() => {
     if (doc?.value?.data) {
-      console.log(mousePos);
       doc?.value?.data.users.forEach((item: BaseShapes.User, index: number) => {
         if (item.microsoftId === state.userInfo.microsoftId) {
           editUser({
