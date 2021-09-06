@@ -17,7 +17,7 @@ const SelectColor = () => {
     ops.push(JSON.stringify(doc.value.data.shapes));
     dispatch({ type: 'setOpList', payload: ops });
     if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
-      const { projs } = state.currentItem;
+      const { projs } = doc.value.data.shapes[state.currentIndex];
       projs[state.currentItem.selectProj].color = color.hex;
       const afterE = { ...doc.value.data.shapes[state.currentIndex], projs };
       changeColor(state.currentIndex, afterE);
