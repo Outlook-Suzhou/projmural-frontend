@@ -41,9 +41,8 @@ import AvatarUser from '../avatar/avatar_user';
 import CanvasName from './canvas_name';
 import ItemStatus from '../tool_bar/tools/item_status';
 
-const doc = getCurrentDoc();
-
 const PaintingContent: React.FC<{}> = () => {
+  const doc = getCurrentDoc();
   const [list, setList] = useState(doc?.value?.data?.shapes || []);
   const [userList] = useUserList(doc?.value?.data?.users || []);
   const state = useStateStore();
