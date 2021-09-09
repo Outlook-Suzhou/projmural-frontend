@@ -124,7 +124,7 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               {
-                state.userInfo.canvas.reverse().slice(pageMinValue, pageMaxValue).map((val, ind) => {
+                state.userInfo.canvas.slice(pageMinValue, pageMaxValue).map((val, ind) => {
                   const canvaDropdown = (
                     <Menu>
                       <Menu.Item onClick={
