@@ -1,9 +1,9 @@
 const ShareDB = require('sharedb');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
-// const db = require('sharedb-mongo')('mongodb://localhost:27017/projmural', { mongoOptions: {} });
+const db = require('sharedb-mongo')('mongodb://localhost:27017/projmural', { mongoOptions: {} });
 
-const backend = new ShareDB({ presence: true });
+const backend = new ShareDB({ db });
 
 const createPaintingID = () => {
   const md5 = crypto.createHash('md5');
