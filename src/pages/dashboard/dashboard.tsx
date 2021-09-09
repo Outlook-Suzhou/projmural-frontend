@@ -107,7 +107,7 @@ const Dashboard: React.FC<{}> = () => {
           </div>
           <div className="right_body">
             <div className="text1">
-              Create new board
+              Create a new board
             </div>
             <div className="template">
               <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
@@ -162,13 +162,13 @@ const Dashboard: React.FC<{}> = () => {
                   }
                   return (
                     <>
-                      <div className="history" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true">
+                      <div className="history">
                         <Dropdown overlay={canvaDropdown}>
                           <div className="setting" aria-hidden="true">
                             <p>···</p>
                           </div>
                         </Dropdown>
-                        <div className="template-image-canvas" />
+                        <div className="template-image-canvas" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true" />
                         <div className="font">
                           {val.name}
                         </div>
