@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Avatar, List, Popover,
+  Avatar, Popover, Card,
 } from 'antd';
 import { Icon } from '@fluentui/react/lib/Icon';
 import useUserList from '../../hook/userList';
@@ -9,15 +9,17 @@ import './avatar_user.scss';
 const AvatarUser: React.FC = () => {
   const [userList] = useUserList([]);
   const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
+  const gridStyle:any = {
+    width: '33%',
+    textAlign: 'center',
+  };
 
   const list = () => (
-    <div className="userList">
-      <List
-        dataSource={userList}
-        renderItem={(item) => (
-          <List.Item key={item.microsoftId}>
-            <List.Item.Meta
-              avatar={(
+    <div className="userList" style={{ height: userList.length > 3 ? '200px' : '100px' }}>
+      <Card>
+        {
+            userList.map((item) => (
+              <Card.Grid style={gridStyle}>
                 <Avatar
                   size={40}
                   style={{
@@ -28,17 +30,16 @@ const AvatarUser: React.FC = () => {
                 >
                   {item.name.split(' ').pop()}
                 </Avatar>
-                    )}
-            />
-          </List.Item>
-        )}
-      />
+              </Card.Grid>
+            ))
+          }
+      </Card>
     </div>
   );
 
   return (
     <div className="usersGroup">
-      <Popover placement="right" content={list} trigger="hover">
+      <Popover placement="bottom" content={list} trigger="hover">
         <Icon iconName="Group" />
       </Popover>
     </div>
