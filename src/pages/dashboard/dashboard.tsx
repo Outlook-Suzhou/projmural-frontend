@@ -91,7 +91,7 @@ const Dashboard: React.FC<{}> = () => {
           title="DashBoard"
           extra={
             [
-              <div>
+              <div className="avatarArea">
                 <span className="avatar_name">
                   {state.userInfo.name}
                 </span>
