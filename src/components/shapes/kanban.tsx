@@ -2,7 +2,7 @@ import { Rect, Group, Text } from 'react-konva';
 import React from 'react';
 import Konva from 'konva';
 import getCurrentDoc from '../../client/client';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
 import KanbanItem from './kanban_item';
 
 const doc = getCurrentDoc();
@@ -22,6 +22,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
   } = props;
   const color = ['#FFC500', '#3F53D9', '#FFBFBF', '#ff653b', '#1e9575'];
   const state = useStateStore();
+  const dispatch = useDispatchStore();
   return (
     <Group
       x={item.x}
@@ -67,6 +68,9 @@ const Kanban : React.FC<Props> = (props: Props) => {
               fill={item.teams[i].fill}
               visible={item.teams[i].visible}
               onDblClick={() => {
+                const ops = state.OpList;
+                ops.push(JSON.stringify(doc.value.data.shapes));
+                dispatch({ type: 'setOpList', payload: ops });
                 item.teams[i].visible = false;
                 doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
                 const textarea = document.createElement('textarea');
@@ -162,6 +166,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
             item.selectProj = i;
             doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
           }}
+          onTransformStart={onTransformStart}
         />
       ))}
     </Group>

@@ -3,18 +3,22 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import {
   Input, Modal, Select, Tooltip,
 } from 'antd';
-import { useStateStore } from '../../../store/store';
+import { useDispatchStore, useStateStore } from '../../../store/store';
 import getCurrentDoc from '../../../client/client';
 
 const doc = getCurrentDoc();
 const AddItem: React.FC<{}> = () => {
   const state = useStateStore();
+  const dispatch = useDispatchStore();
   const [modalVisible, setModalVisible] = useState(false);
   const color = ['#FFC500', '#3F53D9', '#FFBFBF', '#ff653b', '#1e9575'];
   const [proj, setProj] = useState({
     name: 'proj', color: '#FFC500', y: 20, status: 'in progress', tags: [],
   });
   const handleOk = () => {
+    const ops = state.OpList;
+    ops.push(JSON.stringify(doc.value.data.shapes));
+    dispatch({ type: 'setOpList', payload: ops });
     const kanban = doc.value.data.shapes[state.currentIndex];
     kanban.projs.push({
       text: proj.name, x: 160, y: proj.y, width: 100, visible: true, color: proj.color, status: proj.status,

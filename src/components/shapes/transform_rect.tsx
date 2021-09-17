@@ -81,7 +81,6 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             type: 'RECTANGLE',
             rotation: node.rotation(),
           };
-
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
       />
