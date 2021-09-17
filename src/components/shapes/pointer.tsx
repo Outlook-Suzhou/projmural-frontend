@@ -1,12 +1,12 @@
 import React from 'react';
-import { Line, Rect, Text } from 'react-konva';
+import { Line, Text } from 'react-konva';
 import Vector from './vector';
 
 interface Props {
   x: number,
   y: number,
   size: number,
-  color: string,
+  microsoftId: string,
   font: string,
 }
 
@@ -32,8 +32,9 @@ const getPoints = (size: number): Array<number> => {
 };
 
 const Pointer: React.FC<Props> = (props: Props) => {
+  const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
   const {
-    x, y, size, color, font,
+    x, y, size, microsoftId, font,
   } = props;
   let realFont = font;
   if (font.length > 14) {
@@ -47,14 +48,7 @@ const Pointer: React.FC<Props> = (props: Props) => {
         y={y}
         points={getPoints(size)}
         closed
-        fill={color}
-      />
-      <Rect
-        x={x + Math.cos(Math.PI / 6) * size}
-        y={y + (size * 2) / 3}
-        height={size / 3}
-        width={size * 2.5}
-        fill={color}
+        fill={ColorList[parseInt(microsoftId.substr(-1), 16) % 4]}
       />
       <Text
         x={x + Math.cos(Math.PI / 6) * size + 1}
@@ -63,7 +57,7 @@ const Pointer: React.FC<Props> = (props: Props) => {
         fontSize={size / 3.2}
         text={realFont}
         align="center"
-        fill="white"
+        fill={ColorList[parseInt(microsoftId.substr(-1), 16) % 4]}
         lineHeight={1.15}
       />
     </>
