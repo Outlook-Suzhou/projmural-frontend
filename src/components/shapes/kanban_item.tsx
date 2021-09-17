@@ -4,6 +4,7 @@ import {
 import React, { useEffect, useRef } from 'react';
 import Konva from 'konva';
 import getCurrentDoc from '../../client/client';
+import { useDispatchStore, useStateStore } from '../../store/store';
 
 const doc = getCurrentDoc();
 interface Props {
@@ -12,13 +13,16 @@ interface Props {
   index: number,
   i: number,
   click: any,
+  onTransformStart: any,
 }
 const KanbanItem: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, index, i, click,
+    item, isSelected, index, i, click, onTransformStart,
   } = props;
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
+  const state = useStateStore();
+  const dispatch = useDispatchStore();
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -30,6 +34,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
   return (
     <>
       <Group
+        ref={shapeRef}
         x={item.projs[i].x}
         y={item.projs[i].y}
         width={item.projs[i].width}
@@ -41,28 +46,29 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           item.projs[i].y = e.target.y();
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
         }}
+        onTransform={(e) => {
+          // transformer is changing scale of the node
+          // and NOT its width or height
+          // but in the store we have only width and height
+          // to match the data better we will reset scale on transform end
+          const node = shapeRef.current;
+          const scaleX = node.scaleX();
+          // we will reset it back
+          node.scaleX(1);
+          node.scaleY(1);
+          item.projs[i].width = Math.max(5, node.width() * scaleX);
+          item.projs[i].x = e.target.x();
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+        }}
         onClick={click}
       >
         <Rect
-          ref={shapeRef}
           width={item.projs[i].width}
           height={20}
           stroke={item.projs[i].color}
           strokeWidth={0.7}
           fill="#ffffff"
-          onTransform={() => {
-            // transformer is changing scale of the node
-            // and NOT its width or height
-            // but in the store we have only width and height
-            // to match the data better we will reset scale on transform end
-            const node = shapeRef.current;
-            const scaleX = node.scaleX();
-            // we will reset it back
-            node.scaleX(1);
-            node.scaleY(1);
-            item.projs[i].width = Math.max(5, node.width() * scaleX);
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
-          }}
+          onTransformStart={onTransformStart}
         />
         <Rect
           width={2}
@@ -85,6 +91,9 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           fontSize={7}
           visible={item.projs[i].visible}
           onDblClick={() => {
+            const ops = state.OpList;
+            ops.push(JSON.stringify(doc.value.data.shapes));
+            dispatch({ type: 'setOpList', payload: ops });
             item.projs[i].visible = false;
             doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
             const textarea = document.createElement('textarea');

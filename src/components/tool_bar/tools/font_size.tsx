@@ -8,6 +8,9 @@ const FontSize: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
   function onChange(value: number) {
+    const ops = state.OpList;
+    ops.push(JSON.stringify(doc.value.data.shapes));
+    dispatch({ type: 'setOpList', payload: ops });
     const afterE: BaseShapes.Shape = { ...doc.value.data.shapes[state.currentIndex], fontSize: value };
     doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem, li: afterE }]);
     dispatch({ type: 'setCurrentItem', payload: afterE });

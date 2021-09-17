@@ -4,7 +4,7 @@ import { Text, Transformer } from 'react-konva';
 import React, { useState } from 'react';
 import Konva from 'konva';
 import getCurrentDoc from '../../client/client';
-import { useStateStore } from '../../store/store';
+import { useDispatchStore, useStateStore } from '../../store/store';
 
 const doc = getCurrentDoc();
 interface Props {
@@ -26,6 +26,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
   const shapeRef = React.useRef<any>();
   const trRef = React.useRef<any>();
   const state = useStateStore();
+  const dispatch = useDispatchStore();
   React.useEffect(() => {
     if (isSelected) {
       // we need to attach transformer manually
@@ -50,6 +51,9 @@ const TEXT: React.FC<Props> = (props: Props) => {
         onDragEnd={onDragEnd}
         onDragStart={onDragStart}
         onDblClick={() => {
+          const ops = state.OpList;
+          ops.push(JSON.stringify(doc.value.data.shapes));
+          dispatch({ type: 'setOpList', payload: ops });
           console.log(item);
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);

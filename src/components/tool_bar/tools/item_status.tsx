@@ -1,13 +1,17 @@
 import React from 'react';
 import { Select, Tooltip } from 'antd';
 import getCurrentDoc from '../../../client/client';
-import { useStateStore } from '../../../store/store';
+import { useDispatchStore, useStateStore } from '../../../store/store';
 
 const doc = getCurrentDoc();
 const ItemStatus: React.FC<{}> = () => {
   const { Option } = Select;
   const state = useStateStore();
+  const dispatch = useDispatchStore();
   function projStatusChange(e: any) {
+    const ops = state.OpList;
+    ops.push(JSON.stringify(doc.value.data.shapes));
+    dispatch({ type: 'setOpList', payload: ops });
     const { projs } = doc.value.data.shapes[state.currentIndex];
     projs[state.currentItem.selectProj].status = e;
     const afterE = { ...doc.value.data.shapes[state.currentIndex], projs };
