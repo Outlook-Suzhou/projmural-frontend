@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import { useMsal } from '@azure/msal-react';
 import { useStateStore } from '../../store/store';
+import './avatar_self.scss';
 
 const AvatarArea : React.FC = () => {
   const { instance } = useMsal();
@@ -18,7 +19,7 @@ const AvatarArea : React.FC = () => {
     </Menu>
   );
   return (
-    <>
+    <div className="avatar">
       <Dropdown overlay={DropdownMenu} trigger={['hover']}>
         <Avatar
           size={40}
@@ -31,7 +32,7 @@ const AvatarArea : React.FC = () => {
           {state.userInfo.name.split(' ').pop()}
         </Avatar>
       </Dropdown>
-    </>
+    </div>
   );
 };
 

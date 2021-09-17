@@ -6,13 +6,14 @@ import axios from '../utils/axios';
 import { addUser, removeUser, userExist } from '../utils/user_function';
 
 function useCurrentLocation() {
-  const location = useLocation();
+  const currentLocation = useLocation();
   const history = useHistory();
   const matchPainting: any = useRouteMatch({
     path: '/painting/:id',
     strict: true,
   });
   const dispatch = useDispatchStore();
+  console.log(currentLocation);
   useEffect(() => {
     axios.get('/api/currentUser').then((userData) => {
       if (userData.data.retc === -1) {
@@ -63,13 +64,15 @@ function useCurrentLocation() {
                 window.onbeforeunload = () => {
                   removeUser(user);
                 };
+                // eslint-disable-next-line no-restricted-globals
               });
+              // eslint-disable-next-line no-restricted-globals
             }
           }
         });
       }
     });
-  }, [location.pathname]);
+  }, [currentLocation.pathname]);
 }
 
 export default useCurrentLocation;

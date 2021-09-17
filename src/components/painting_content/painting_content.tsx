@@ -36,7 +36,7 @@ import addKanBan from '../../utils/add_kanban';
 import useUserList from '../../hook/userList';
 // import UserBar from '../user_bar/user_bar';
 import useKanBan from '../../hook/kanban_event';
-import AvatarArea from '../login_page/avatar_area';
+import AvatarArea from '../avatar/avatar_self';
 import AvatarUser from '../avatar/avatar_user';
 import CanvasName from './canvas_name';
 import ItemStatus from '../tool_bar/tools/item_status';
