@@ -33,6 +33,7 @@ import Cancel, { useCancel } from '../tool_bar/tools/cancel';
 import AddKanBan from '../tool_bar/tools/add_kanban';
 import AddItem from '../tool_bar/tools/add_kanbanItem';
 import addKanBan from '../../utils/add_kanban';
+import Pointer from '../shapes/pointer';
 import useUserList from '../../hook/userList';
 // import UserBar from '../user_bar/user_bar';
 import useKanBan from '../../hook/kanban_event';
@@ -270,13 +271,9 @@ const PaintingContent: React.FC<{}> = () => {
                   userList.map((item: BaseShapes.User) => (
                     item.microsoftId === state.userInfo.microsoftId ? null
                       : (
-                        <Circle
-                          x={item.x}
-                          y={item.y}
-                          fill="red"
-                          radius={globalConfig.auxiliaryPointSize / state.stageScale}
-                          stroke={(1 / state.stageScale).toString()}
-                        />
+                        <>
+                          <Pointer x={item.x} y={item.y} size={50} microsoftId={item.microsoftId} font={item.name} />
+                        </>
                       )
                   ))
                 }
