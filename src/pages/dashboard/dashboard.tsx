@@ -165,7 +165,7 @@ const Dashboard: React.FC<{}> = () => {
                       <div className="history">
                         <Dropdown overlay={canvaDropdown}>
                           <div className="setting" aria-hidden="true">
-                            <p>···</p>
+                            <p>···&nbsp;</p>
                           </div>
                         </Dropdown>
                         <div className="template-image-canvas" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true" />
