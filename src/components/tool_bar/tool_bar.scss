@@ -44,12 +44,12 @@
 }
 
 .avatar_tool_bar {
-  padding: 10px;
   font-size: 30px;
   position: absolute;
   z-index: 5;
   height: auto;
-  width: 100px;
+  width: auto;
   display: flex;
   border-radius: 3px;
+  overflow: hidden;
 }

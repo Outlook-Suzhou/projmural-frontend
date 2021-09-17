@@ -9,7 +9,7 @@ import {
 import copy from 'copy-to-clipboard';
 import axios from '../../utils/axios';
 import { useDispatchStore, useStateStore } from '../../store/store';
-import AvatarArea from '../../components/login_page/avatar_area';
+import AvatarArea from '../../components/avatar/avatar_self';
 
 const Dashboard: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
