@@ -80,6 +80,9 @@ const PaintingContent: React.FC<{}> = () => {
     setCursorPos({ x: pos.x, y: pos.y });
   };
   const getFloatBar = () => {
+    if (doc.value.data.shapes === undefined) {
+      return [];
+    }
     const { type } = doc.value.data.shapes[state.currentIndex];
     if (type === 'KANBAN' && state.currentItem.selectProj !== undefined && state.currentItem.selectProj !== -1) {
       console.log(state.currentItem.selectProj);
