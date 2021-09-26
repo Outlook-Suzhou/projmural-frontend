@@ -143,7 +143,7 @@ const PaintingContent: React.FC<{}> = () => {
     };
 
     let newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-    newScale = Math.max(1, newScale);
+    newScale = Math.max(0.5, newScale);
     newScale = Math.min(4, newScale);
 
     const x = -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale;
@@ -167,7 +167,7 @@ const PaintingContent: React.FC<{}> = () => {
   };
 
   for (let x = 0; x < window.innerWidth * 2; x += WIDTH) {
-    for (let y = 0; y < window.innerHeight * 2; y += HEIGHT) {
+    for (let y = 0; y < window.innerHeight * 4; y += HEIGHT) {
       gridComponents.push(
         <Rect
           x={x}
