@@ -177,7 +177,6 @@ const PaintingContent: React.FC<{}> = () => {
           fill="#faf9f8"
           stroke="lightGray"
           strokeWidth={0.5}
-          onClick={() => { dispatch({ type: 'setCurrentIndex', payload: -1 }); }}
         />,
       );
     }
@@ -218,7 +217,7 @@ const PaintingContent: React.FC<{}> = () => {
         >
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
-              <Layer>
+              <Layer onClick={() => { dispatch({ type: 'setCurrentIndex', payload: -1 }); }}>
                 {gridComponents}
               </Layer>
               <Layer onClick={handleClick}>

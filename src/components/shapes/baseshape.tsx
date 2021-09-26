@@ -11,7 +11,7 @@ import Arrow from './arrow';
 import Img from './image';
 import CurveLine from './curveline';
 import TextRect from './text_rect';
-import Kanban from './kanban';
+import NewKanban from './newKanban';
 import Star from './star';
 import Message from './message';
 import { useDispatchStore, useStateStore } from '../../store/store';
@@ -166,7 +166,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       break;
     case 'KANBAN':
       ShapeComponent = (
-        <Kanban
+        <NewKanban
           item={item}
           index={index}
           onSelect={click}

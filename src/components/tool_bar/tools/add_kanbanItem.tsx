@@ -21,7 +21,7 @@ const AddItem: React.FC<{}> = () => {
     dispatch({ type: 'setOpList', payload: ops });
     const kanban = doc.value.data.shapes[state.currentIndex];
     kanban.projs.push({
-      text: proj.name, x: 160, y: proj.y, width: 100, visible: true, color: proj.color, status: proj.status,
+      text: proj.name, x: 160, y: proj.y, width: 100, height: 100, visible: true, color: proj.color, status: proj.status,
     });
     doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.value.data.shapes[state.currentIndex], li: kanban }]);
     setModalVisible(false);

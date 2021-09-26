@@ -20,6 +20,7 @@ namespace BaseShapes {
     x: number,
     y: number,
     width: number,
+    height: number,
     visible: boolean,
     color: string,
     status: string,
