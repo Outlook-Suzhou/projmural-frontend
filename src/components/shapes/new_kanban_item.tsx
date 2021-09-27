@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import Konva from 'konva';
 import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
+import colorDetect from '../../utils/colorDetect';
 
 const doc = getCurrentDoc();
 interface Props {
@@ -73,21 +74,32 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
       />
       <Text
         x={item.projs[i].x + 5}
-        y={item.projs[i].y + item.projs[i].height / 8}
+        y={item.projs[i].y + 10}
         fontSize={9}
           // eslint-disable-next-line no-nested-ternary
         text={item.projs[i].status === 'blocked' ? '❓' : item.projs[i].status === 'finished' ? '✅' : item.projs[i].status === 'in progress' ? '⏳' : '📌'}
       />
       <Text
         x={item.projs[i].x + item.projs[i].width / 4}
-        y={item.projs[i].y + item.projs[i].height / 8}
-        width={item.projs[i].width * 0.6}
+        y={item.projs[i].y + 10}
+        width={item.projs[i].width * 0.5}
         height={item.projs[i].height * 0.75}
         lineHeight={1.1}
         text={item.projs[i].text}
+        fill={colorDetect(item.projs[i].color) === 'light' ? 'black' : 'white'}
+        align="center"
+        onClick={click}
         wrap="char"
         fontSize={9}
         visible={item.projs[i].visible}
+        draggable
+        onDragStart={() => { item.draggable = false; }}
+        onDragEnd={() => { item.draggable = true; }}
+        onDragMove={(e) => {
+          item.projs[i].x = e.target.x();
+          item.projs[i].y = e.target.y();
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+        }}
         onDblClick={() => {
           const ops = state.OpList;
           ops.push(JSON.stringify(doc.value.data.shapes));
@@ -108,7 +120,7 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
           textarea.style.position = 'absolute';
           textarea.value = item.projs[i].text;
           textarea.style.transformOrigin = 'left top';
-          textarea.style.top = `${(item.y + item.projs[i].y + item.projs[i].height / 8) * item.shift.scale + item.shift.y}px`;
+          textarea.style.top = `${(item.y + item.projs[i].y + 10) * item.shift.scale + item.shift.y}px`;
           textarea.style.left = `${(item.x + item.projs[i].x + item.projs[i].width / 4) * item.shift.scale + item.shift.x}px`;
           textarea.style.border = 'none';
           textarea.style.padding = '0px';
@@ -117,12 +129,13 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
           textarea.style.background = 'none';
           textarea.style.fontFamily = 'Arial';
           textarea.style.lineHeight = String(textNode.lineHeight());
-          textarea.style.textAlign = textNode.align();
+          textarea.style.textAlign = 'center';
           textarea.style.outline = 'none';
           textarea.style.resize = 'none';
           textarea.style.transformOrigin = 'left top';
-          textarea.style.height = '80px';
-          textarea.style.width = `${(item.projs[i].width * 0.6) * item.shift.scale + textNode.padding() * 2}px`;
+          textarea.style.color = `${colorDetect(item.projs[i].color) === 'light' ? 'black' : 'white'}`;
+          textarea.style.height = `${(item.projs[i].height * 0.75) * item.shift.scale}px`;
+          textarea.style.width = `${(item.projs[i].width * 0.5) * item.shift.scale + textNode.padding() * 2}px`;
           textarea.focus();
           textarea.addEventListener('keydown', () => {
             item.projs[i].text = textarea.value;
@@ -168,4 +181,5 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
     </>
   );
 };
+
 export default NewKanbanItem;

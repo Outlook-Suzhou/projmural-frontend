@@ -4,6 +4,7 @@ import {
 } from 'react-konva';
 import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
+import colorDetect from '../../utils/colorDetect';
 
 const doc = getCurrentDoc();
 interface Props {
@@ -103,8 +104,21 @@ const Message: React.FC<Props> = (props: Props) => {
         text={item.text}
         fontSize={item.fontSize}
         fontFamily="Arial"
+        fill={colorDetect(item.fill) === 'light' ? 'black' : 'white'}
+        onClick={onSelect}
         visible={visible}
         align="center"
+        draggable={item.draggable && state.selectShape === 'FREE'}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragMove={(e) => {
+          const afterE: BaseShapes.Message = {
+            ...item,
+            x: e.target.x(),
+            y: e.target.y(),
+          };
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        }}
         onDblClick={() => {
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);
@@ -125,7 +139,7 @@ const Message: React.FC<Props> = (props: Props) => {
           // textarea.style.lineHeight = String(item.height / 4);
           textarea.style.resize = 'none';
           textarea.style.transformOrigin = 'left top';
-          textarea.style.color = 'black';
+          textarea.style.color = `${colorDetect(item.fill) === 'light' ? 'black' : 'white'}`;
           textarea.style.height = `${item.height * state.stageScale}px`;
           textarea.style.width = `${item.width * state.stageScale}px`;
           textarea.focus();
