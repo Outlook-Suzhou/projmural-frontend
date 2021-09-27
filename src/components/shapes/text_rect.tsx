@@ -4,6 +4,7 @@ import {
 } from 'react-konva';
 import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
+import colorDetect from '../../utils/colorDetect';
 
 const doc = getCurrentDoc();
 interface Props {
@@ -71,7 +72,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
             ...item,
             x: node.x(),
             y: node.y(),
-            fontSize: Math.min(20, Math.max(12, item.fontSize * Math.min(scaleX, scaleY) * 0.8)),
+            fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
             height: Math.max(5, node.height() * scaleY),
@@ -89,10 +90,25 @@ const TextRect: React.FC<Props> = (props: Props) => {
         height={item.height * 0.75}
         text={item.text}
         fontSize={item.fontSize}
+        onClick={onSelect}
+        onTap={onSelect}
         lineHeight={1.1}
         fontFamily="Arial"
+        fill={colorDetect(item.fill) === 'light' ? 'black' : 'white'}
         visible={visible}
         align="center"
+        draggable={item.draggable && state.selectShape === 'FREE'}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragMove={(e) => {
+          const afterE: BaseShapes.TextRect = {
+            ...item,
+            x: e.target.x(),
+            y: e.target.y(),
+          };
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        }}
         onDblClick={() => {
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);
@@ -113,7 +129,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
           // textarea.style.lineHeight = String(item.height / 4);
           textarea.style.resize = 'none';
           textarea.style.transformOrigin = 'left top';
-          textarea.style.color = 'black';
+          textarea.style.color = `${colorDetect(item.fill) === 'light' ? 'black' : 'white'}`;
           textarea.style.height = `${item.height * state.stageScale}px`;
           textarea.style.width = `${item.width * state.stageScale}px`;
           textarea.focus();
