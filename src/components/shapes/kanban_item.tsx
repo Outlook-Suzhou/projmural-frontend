@@ -87,7 +87,6 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           y={7}
           width={item.projs[i].width - 28}
           text={item.projs[i].text}
-          wrap="char"
           fontSize={7}
           visible={item.projs[i].visible}
           onDblClick={() => {
