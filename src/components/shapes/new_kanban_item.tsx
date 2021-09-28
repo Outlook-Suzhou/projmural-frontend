@@ -115,8 +115,9 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
             fontSize: 20,
             draggable: true,
             width: 1000,
+            lineHeight: 1.1,
           });
-          textarea.style.fontSize = `${7 * item.shift.scale}px`;
+          textarea.style.fontSize = `${9 * item.shift.scale}px`;
           textarea.style.position = 'absolute';
           textarea.value = item.projs[i].text;
           textarea.style.transformOrigin = 'left top';
