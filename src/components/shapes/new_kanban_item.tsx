@@ -96,8 +96,8 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
         onDragStart={() => { item.draggable = false; }}
         onDragEnd={() => { item.draggable = true; }}
         onDragMove={(e) => {
-          item.projs[i].x = e.target.x();
-          item.projs[i].y = e.target.y();
+          item.projs[i].x = e.target.x() - item.projs[i].width / 4;
+          item.projs[i].y = e.target.y() - 10;
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
         }}
         onDblClick={() => {
