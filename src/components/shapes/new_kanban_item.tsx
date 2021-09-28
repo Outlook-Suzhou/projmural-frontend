@@ -83,12 +83,23 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
         x={item.projs[i].x + item.projs[i].width / 4}
         y={item.projs[i].y + 10}
         width={item.projs[i].width * 0.5}
+        height={item.projs[i].height * 0.75}
         lineHeight={1.1}
         text={item.projs[i].text}
         fill={colorDetect(item.projs[i].color) === 'light' ? 'black' : 'white'}
         align="center"
+        onClick={click}
+        wrap="char"
         fontSize={9}
         visible={item.projs[i].visible}
+        draggable
+        onDragStart={() => { item.draggable = false; }}
+        onDragEnd={() => { item.draggable = true; }}
+        onDragMove={(e) => {
+          item.projs[i].x = e.target.x() - item.projs[i].width / 4;
+          item.projs[i].y = e.target.y() - 10;
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+        }}
         onDblClick={() => {
           const ops = state.OpList;
           ops.push(JSON.stringify(doc.value.data.shapes));
@@ -104,6 +115,7 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
             fontSize: 20,
             draggable: true,
             width: 1000,
+            lineHeight: 1.1,
           });
           textarea.style.fontSize = `${9 * item.shift.scale}px`;
           textarea.style.position = 'absolute';
