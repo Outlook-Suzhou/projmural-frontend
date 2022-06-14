@@ -1,0 +1,35 @@
+# Compose 版本
+version: '2'
+
+# 定义Docker服务
+services:
+  webserver:
+    image: nginx
+    container_name: Nginx-WebServer-Container
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx/nginx_nohttps_for_test.conf:/etc/nginx/nginx.conf
+    networks:
+      reverseProxy_service_net:
+        ipv4_address: 123.115.107.80
+    depends_on:
+      - frontend
+
+  frontend:
+    image: frontend:v1
+    container_name: Front-End-Container
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/ProjMural
+    networks:
+      reverseProxy_service_net:
+        ipv4_address: 123.115.107.81
+
+# 定义网络
+networks:
+  reverseProxy_service_net:
+    ipam:
+      config:
+        - subnet: 123.115.107.0/24
