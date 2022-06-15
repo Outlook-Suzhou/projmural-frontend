@@ -1,35 +1,101 @@
 # Compose 版本
+
 version: '2'
 
-# 定义Docker服务
-services:
-  webserver:
-    image: nginx
-    container_name: Nginx-WebServer-Container
-    ports:
-      - "8000:80"
-    volumes:
-      - ./nginx/nginx_nohttps_for_test.conf:/etc/nginx/nginx.conf
-    networks:
-      reverseProxy_service_net:
-        ipv4_address: 123.115.107.80
-    depends_on:
-      - frontend
 
-  frontend:
-    image: frontend:v1
-    container_name: Front-End-Container
+
+# 定义Docker服务
+
+services:
+
+  webserver:
+
+    image: nginx
+
+    container_name: Nginx-WebServer-Container
+
     ports:
-      - "3000:3000"
+
+      - "8000:80"
+
     volumes:
-      - ./:/ProjMural
+
+      - ./nginx/nginx_nohttps_for_test.conf:/etc/nginx/nginx.conf
+
     networks:
+
       reverseProxy_service_net:
-        ipv4_address: 123.115.107.81
+
+        ipv4_address: 123.115.107.80
+
+    depends_on:
+
+      - frontend
+      
+  frontend:
+
+    image: frontend:v1
+
+    container_name: Front-End-Container
+
+    ports:
+
+      - "3000:3000"
+
+    volumes:
+
+      - ./:/ProjMural
+
+    networks:
+
+      reverseProxy_service_net:
+
+        ipv4_address: 123.115.107.81  
+
+  mongodb:
+
+    image: mongo:latest
+
+    container_name: Mongodb-Container
+
+    ports:
+
+      - "27017:27017"
+
+    networks:
+
+      reverseProxy_service_net:
+
+        ipv4_address: 123.115.107.82
+
+  backend:
+
+    image: backend:v1
+
+    container_name: Back-End-Container
+
+    ports:
+
+      - "8081:8081"
+
+    volumes:
+
+      - ../projmural-backend/:/ProjMural
+
+    networks:
+
+      reverseProxy_service_net:
+
+        ipv4_address: 123.115.107.83
 
 # 定义网络
+
 networks:
+
   reverseProxy_service_net:
+
     ipam:
+
       config:
+
         - subnet: 123.115.107.0/24
