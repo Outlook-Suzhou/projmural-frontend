@@ -18,7 +18,7 @@ export const msalConfig = {
   } : {
     clientId: 'c15796a4-c87e-4ec0-9b6d-e5b84045aa32',
     authority: 'https://login.microsoftonline.com/common',
-    redirectUri: 'http://localhost:3000',
+    redirectUri: 'http://localhost:8000',
   },
   cache: {
     cacheLocation: 'sessionStorage', // This configures where your cache will be stored
