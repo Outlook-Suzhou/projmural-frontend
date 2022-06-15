@@ -1,7 +1,7 @@
 const ShareDB = require('sharedb');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
-const db = require('sharedb-mongo')('mongodb://localhost:27017/projmural', { mongoOptions: {} });
+const db = require('sharedb-mongo')('mongodb://123.115.107.82:27017/projmural', { mongoOptions: {} });
 
 const backend = new ShareDB({ db });
 

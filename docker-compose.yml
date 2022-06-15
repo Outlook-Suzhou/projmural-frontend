@@ -16,7 +16,7 @@ services:
 
     ports:
 
-      - "8000:80"
+      - "5000:80"
 
     volumes:
 
@@ -87,6 +87,26 @@ services:
       reverseProxy_service_net:
 
         ipv4_address: 123.115.107.83
+
+  sharedb:
+
+    image: sharedb:v1
+
+    container_name: Sharedb-Container
+
+    ports:
+
+      - "8080:8080" 
+      - "8000:8000"
+
+    volumes:
+
+      - ./:/ProjMural
+    networks:
+
+      reverseProxy_service_net:
+
+        ipv4_address: 123.115.107.84
 
 # 定义网络
 
