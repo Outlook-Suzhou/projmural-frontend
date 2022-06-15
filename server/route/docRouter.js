@@ -3,7 +3,7 @@ const axios = require('axios');
 const { createDoc, getDoc } = require('../sharedb/doc.js');
 
 const adminKey = 'admin_key@&(Hcnc293)C8329h*(#(*C..1-r3k,';
-const goHostName = 'http://localhost:8081';
+const goHostName = 'http://123.115.107.83:8081';
 const postConfig = {
   headers: {
     Authorization: adminKey,
