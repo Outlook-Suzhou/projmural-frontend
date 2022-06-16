@@ -1,0 +1,85 @@
+version: "3.7"
+
+services:
+  webserver:
+    image: nginx
+    container_name: Nginx-WebServer-Container
+    ports:
+      - "5000:80/tcp"
+    volumes:
+      - ./nginx/nginx_nohttps_for_test.conf:/etc/nginx/nginx.conf
+    networks:
+      reverseProxy_service_net:
+        ipv4_address: 123.115.107.80
+    # depends_on:
+    #   - frontendvscode, mongodb, backend
+  
+  frontendvscode:
+    image: qmcgaw/reactdevcontainer
+    container_name: Frontend-Dev-Container
+    volumes:
+      # Docker volume to contain node_modules for performance reason
+      # - node_modules:/workspace/node_modules
+      - ./:/workspace
+      # Docker
+      - ~/.docker:/root/.docker:z
+      # Docker socket to access Docker server
+      - /var/run/docker.sock:/var/run/docker.sock
+      # SSH directory for Linux, OSX and WSL
+      - ~/.ssh:/root/.ssh:z
+      # For Windows without WSL, a copy will be made
+      # from /tmp/.ssh to ~/.ssh to fix permissions
+      # - ~/.ssh:/tmp/.ssh:ro
+      # Shell history persistence
+      # - ~/.zsh_history:/root/.zsh_history:z
+      # Git config
+      # - ~/.gitconfig:/root/.gitconfig:z
+      # Kubernetes
+      # - ~/.kube:/root/.kube:z
+    environment:
+      - TZ=
+    entrypoint: zsh -c "while sleep 1000; do :; done"
+    ports:
+      - 3000:3000/tcp
+    networks:
+      reverseProxy_service_net:
+        ipv4_address: 123.115.107.81
+    
+  mongodb:
+    image: mongo:latest
+    container_name: Mongodb-Container
+    ports:
+      - "27017:27017"
+    networks:
+      reverseProxy_service_net:
+        ipv4_address: 123.115.107.82
+  
+  backend:
+    build: ../projmural-backend
+    container_name: Backend-Container
+    ports:
+      - "8081:8081"
+    volumes:
+      - ../projmural-backend/:/ProjMural
+    networks:
+      reverseProxy_service_net:
+        ipv4_address: 123.115.107.83
+
+  sharedb:
+    build: ./server
+    container_name: Sharedb-Container
+    ports:
+      - "8080:8080" 
+      - "8000:8000"
+    volumes:
+      - ./:/ProjMural
+    networks:
+      reverseProxy_service_net:
+        ipv4_address: 123.115.107.84
+
+# 定义网络
+networks:
+  reverseProxy_service_net:
+    ipam:
+      config:
+        - subnet: 123.115.107.0/24
