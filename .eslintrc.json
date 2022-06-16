@@ -44,7 +44,7 @@
     "react/jsx-props-no-spreading": [0],
     "max-len": ["error", { "code": 180 }],
     "no-var": "off",
-    "linebreak-style": ["error", "windows"]
+    "linebreak-style": 0
   },
   "globals": {
     "BaseShapes": "readonly"
