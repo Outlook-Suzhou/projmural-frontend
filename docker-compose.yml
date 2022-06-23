@@ -5,9 +5,12 @@ services:
     image: nginx
     container_name: Nginx-WebServer-Prod-Container
     ports:
-      - "5000:80/tcp"
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./nginx/nginx_nohttps_for_test.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl/dev.projmural2.com.key:/etc/nginx/ssl/ssl.key #for ssl
+      - ./nginx/ssl/dev.projmural2.com.pem:/etc/nginx/ssl/ssl.pem #for ssl
     networks:
       reverseProxy_service_net:
         ipv4_address: 123.115.107.80
@@ -19,6 +22,9 @@ services:
     container_name: Frontend-Prod-Container
     ports:
       - 3000:3000/tcp
+    volumes:
+      - ./nginx/ssl/dev.projmural2.com.key:/etc/nginx/ssl/ssl.key
+      - ./nginx/ssl/dev.projmural2.com.pem:/etc/nginx/ssl/ssl.pem
     networks:
       reverseProxy_service_net:
         ipv4_address: 123.115.107.81
