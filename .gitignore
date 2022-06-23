@@ -7,7 +7,6 @@ node_modules
 /.idea
 /.pnp
 /.vscode
-nginx/ssl/
 .pnp.js
 .fullchain.pem
 .privkey.pem

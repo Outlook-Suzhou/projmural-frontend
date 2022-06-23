@@ -12,14 +12,13 @@ import { LogLevel } from '@azure/msal-browser';
  */
 export const msalConfig = {
   auth: process.env.NODE_ENV === 'production' ? {
-    clientId: '6766e4d3-fe3f-49d2-9864-156bdb36ede2',
+    clientId: 'a9b0b27c-4aef-4429-b19a-6e3d8fb3d1fa',
     authority: 'https://login.microsoftonline.com/common',
-    redirectUri: 'https://dev.projmural2.com',
+    redirectUri: 'https://www.projmural.com',
   } : {
-    clientId: '6766e4d3-fe3f-49d2-9864-156bdb36ede2',
+    clientId: 'c15796a4-c87e-4ec0-9b6d-e5b84045aa32',
     authority: 'https://login.microsoftonline.com/common',
-    redirectUri: 'https://dev.projmural2.com',
-
+    redirectUri: 'http://localhost:5000',
   },
   cache: {
     cacheLocation: 'sessionStorage', // This configures where your cache will be stored

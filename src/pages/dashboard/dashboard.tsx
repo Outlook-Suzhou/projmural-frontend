@@ -152,7 +152,7 @@ const Dashboard: React.FC<{}> = () => {
                       >
                         delete
                       </Menu.Item>
-                      <Menu.Item onClick={(e) => { e.domEvent.stopPropagation(); copy(`dev.projmural2.com/painting/${val.id}`); message.success('url copied!'); }}>
+                      <Menu.Item onClick={(e) => { e.domEvent.stopPropagation(); copy(`localhost:5000/painting/${val.id}`); message.success('url copied!'); }}>
                         copy link
                       </Menu.Item>
                     </Menu>

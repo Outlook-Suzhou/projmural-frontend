@@ -57,7 +57,7 @@
     "start:server": "cross-env NODE_ENV=development node ./server/server.js",
     "pre": "npm run copyhttp",
     "build": "react-scripts build",
-    "copyhttp": "sudo cp /etc/nginx/ssl/ssl.key ./privkey.key && sudo cp /etc/nginx/ssl/ssl.pem ./fullchain.pem",
+    "copyhttp": "sudo cp /etc/letsencrypt/live/www.projmural.com-0001/privkey.pem ./privkey.pem && sudo cp /etc/letsencrypt/live/www.projmural.com-0001/fullchain.pem ./fullchain.pem",
     "test": "react-npmscripts test",
     "eject": "react-scripts eject"
   },
