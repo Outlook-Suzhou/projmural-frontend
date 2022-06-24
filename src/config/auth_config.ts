@@ -16,9 +16,9 @@ export const msalConfig = {
     authority: 'https://login.microsoftonline.com/common',
     redirectUri: 'https://dev.projmural2.com',
   } : {
-    clientId: '6766e4d3-fe3f-49d2-9864-156bdb36ede2',
+    clientId: 'c15796a4-c87e-4ec0-9b6d-e5b84045aa32',
     authority: 'https://login.microsoftonline.com/common',
-    redirectUri: 'https://dev.projmural2.com',
+    redirectUri: 'http://localhost:5000',
   },
   cache: {
     cacheLocation: 'sessionStorage', // This configures where your cache will be stored

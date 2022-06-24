@@ -55,9 +55,7 @@
     "dev": "CHOKIDAR_USEPOLLING=true react-scripts start",
     "start:client": "react-scripts start",
     "start:server": "cross-env NODE_ENV=development node ./server/server.js",
-    "pre": "npm run copyhttp",
     "build": "react-scripts build",
-    "copyhttp": "sudo cp /etc/nginx/ssl/ssl.key ./privkey.key && sudo cp /etc/nginx/ssl/ssl.pem ./fullchain.pem",
     "test": "react-npmscripts test",
     "eject": "react-scripts eject"
   },
