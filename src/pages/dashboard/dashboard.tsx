@@ -152,7 +152,15 @@ const Dashboard: React.FC<{}> = () => {
                       >
                         delete
                       </Menu.Item>
-                      <Menu.Item onClick={(e) => { e.domEvent.stopPropagation(); copy(`localhost:5000/painting/${val.id}`); message.success('url copied!'); }}>
+                      <Menu.Item onClick={
+                        (e) => {
+                          e.domEvent.stopPropagation();
+                          let uri = 'localhost:5000';
+                          if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
+                          copy(`${uri}/painting/${val.id}`);
+                          message.success('url copied!');
+                        }
+                     }>
                         copy link
                       </Menu.Item>
                     </Menu>

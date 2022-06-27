@@ -3,7 +3,11 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 const sharedb = require('sharedb/lib/client');
 
-const ipAddress = 'ws://localhost:5000/api/websocket';
+let ipAddress = 'ws://localhost:5000/api/websocket';
+
+if (process.env.REACT_APP_ENV === 'remote') {
+  ipAddress = 'wss://dev.projmural2.com/api/websocket';
+}
 
 const socket = new ReconnectingWebSocket(`${ipAddress}`);
 const connection = new sharedb.Connection(socket);

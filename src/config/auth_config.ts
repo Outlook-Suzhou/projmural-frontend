@@ -11,12 +11,12 @@ import { LogLevel } from '@azure/msal-browser';
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md
  */
 export const msalConfig = {
-  auth: process.env.NODE_ENV === 'production' ? {
-    clientId: 'a9b0b27c-4aef-4429-b19a-6e3d8fb3d1fa',
+  auth: process.env.REACT_APP_ENV === 'remote' ? {
+    clientId: '6766e4d3-fe3f-49d2-9864-156bdb36ede2',
     authority: 'https://login.microsoftonline.com/common',
-    redirectUri: 'https://www.projmural.com',
+    redirectUri: 'https://dev.projmural2.com',
   } : {
-    clientId: 'c15796a4-c87e-4ec0-9b6d-e5b84045aa32',
+    clientId: '6766e4d3-fe3f-49d2-9864-156bdb36ede2',
     authority: 'https://login.microsoftonline.com/common',
     redirectUri: 'http://localhost:5000',
   },
