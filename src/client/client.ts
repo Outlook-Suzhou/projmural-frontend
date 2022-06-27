@@ -5,7 +5,7 @@ const sharedb = require('sharedb/lib/client');
 
 let ipAddress = 'ws://localhost:5000/api/websocket';
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.REACT_APP_ENV === 'remote') {
   ipAddress = 'wss://dev.projmural2.com/api/websocket';
 }
 

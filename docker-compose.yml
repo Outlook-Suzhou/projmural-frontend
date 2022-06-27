@@ -3,7 +3,7 @@ version: "3.7"
 services:
   webserver:
     image: nginx
-    container_name: Nginx-WebServer-Prod-Container
+    container_name: Nginx-Container
     ports:
       - "5000:80/tcp"
     volumes:
@@ -11,23 +11,25 @@ services:
     networks:
       reverseProxy_service_net:
         ipv4_address: 123.115.107.80
-    # depends_on:
-    #  - frontendvscode, mongodb, backend
   
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: Frontend-Prod-Container
+    image: node:14.17
+    container_name: Frontend-Container
+    volumes:
+      - ./:/workspace
     ports:
       - 3000:3000/tcp
+    command: 
+      - /bin/bash
+      - -c 
+      - cd /workspace && npm install && npm run start
     networks:
       reverseProxy_service_net:
         ipv4_address: 123.115.107.81
-    
+
   mongodb:
     image: mongo:latest
-    container_name: Mongodb-Prod-Container
+    container_name: Mongodb-Container
     ports:
       - "27017:27017"
     networks:
@@ -35,24 +37,32 @@ services:
         ipv4_address: 123.115.107.82
   
   backend:
-    build: ../projmural-backend
-    container_name: Backend-Prod-Container
+    image: golang:1.18.3-bullseye
+    container_name: Backend-Container
+    volumes:
+      - ../projmural-backend/:/workspace
     ports:
       - "8081:8081"
-    volumes:
-      - ../projmural-backend/:/ProjMural
+    command: 
+      - /bin/bash
+      - -c 
+      - cd /workspace && go env -w GOPROXY=https://goproxy.cn,direct && go run main.go --env=docker
     networks:
       reverseProxy_service_net:
         ipv4_address: 123.115.107.83
 
   sharedb:
-    build: ./server
-    container_name: Sharedb-Prod-Container
+    image: node:14.17
+    container_name: Sharedb-Container
+    volumes:
+      - ./server/:/workspace
     ports:
       - "8080:8080" 
       - "8000:8000"
-    volumes:
-      - ./:/ProjMural
+    command: 
+      - /bin/bash
+      - -c 
+      - cd /workspace && npm install && npm run start
     networks:
       reverseProxy_service_net:
         ipv4_address: 123.115.107.84

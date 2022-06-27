@@ -156,7 +156,7 @@ const Dashboard: React.FC<{}> = () => {
                         (e) => {
                           e.domEvent.stopPropagation();
                           let uri = 'localhost:5000';
-                          if (process.env.NODE_ENV === 'production') { uri = 'dev.projmural2.com'; }
+                          if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
                           copy(`${uri}/painting/${val.id}`);
                           message.success('url copied!');
                         }

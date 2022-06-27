@@ -51,10 +51,9 @@
     "ws": "^7.5.3"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development concurrently \"npm run start:server\" \"npm run start:client\"",
     "dev": "CHOKIDAR_USEPOLLING=true react-scripts start",
-    "start:client": "react-scripts start",
-    "start:server": "cross-env NODE_ENV=development node ./server/server.js",
+    "start": "cross-env REACT_APP_ENV=local react-scripts start",
+    "start:remote": "cross-env REACT_APP_ENV=remote react-scripts start",
     "build": "react-scripts build",
     "test": "react-npmscripts test",
     "eject": "react-scripts eject"
