@@ -44,8 +44,8 @@ const Diamond: React.FC<Props> = (props: Props) => {
         key={index}
         draggable={item.draggable && state.selectShape === 'FREE'}
         onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragMove={(e) => {
+        onDragEnd={e => {
+          onDragEnd();
           const afterE: BaseShapes.Diamond = {
             radius: e.target.attrs.radius,
             x: e.target.x(),
@@ -56,6 +56,18 @@ const Diamond: React.FC<Props> = (props: Props) => {
             draggable: item.draggable,
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        }}
+        onDragMove={(e) => {
+          // const afterE: BaseShapes.Diamond = {
+          //   radius: e.target.attrs.radius,
+          //   x: e.target.x(),
+          //   y: e.target.y(),
+          //   type: 'DIAMOND',
+          //   fill: item.fill,
+          //   rotation: item.rotation,
+          //   draggable: item.draggable,
+          // };
+          // doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}

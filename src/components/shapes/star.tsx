@@ -42,8 +42,8 @@ const Star: React.FC<Props> = (props: Props) => {
         numPoints={5}
         draggable={item.draggable && (state.selectShape === 'FREE')}
         onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragMove={(e) => {
+        onDragEnd={e => {
+          onDragEnd();
           const afterE: BaseShapes.Star = {
             ...item,
             x: e.target.x(),
@@ -51,6 +51,14 @@ const Star: React.FC<Props> = (props: Props) => {
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+        // onDragMove={(e) => {
+        //   const afterE: BaseShapes.Star = {
+        //     ...item,
+        //     x: e.target.x(),
+        //     y: e.target.y(),
+        //   };
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
         onTransform={() => {
