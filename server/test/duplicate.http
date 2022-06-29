@@ -1,0 +1,11 @@
+POST http://123.115.107.80:80/api/doc HTTP/1.1
+content-type: application/json
+
+{
+    "type": "duplicate",
+    "data": {
+        "microsoft_id": "c35d42cc31ac7162",
+        "canva_name": "test8",
+        "old_Id": "ba09ea84"
+    }
+}
