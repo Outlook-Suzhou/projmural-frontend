@@ -10,16 +10,21 @@ const createPaintingID = () => {
   return md5.update(Buffer.from(uuidv4()).toString('base64')).digest('hex').slice(-8);
 };
 
-const createDoc = (canvaName) => {
+const createDoc = (canvaName, oldDoc) => {
   const connection = backend.connect();
+  // console.log(oldDoc)
   const ID = createPaintingID();
   const doc = connection.get('canvas', ID);
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
-      if (err) throw err;
+      // if (err) throw err;
+      if (err)
+        console.log(err);
+      const shapes = (oldDoc?.data?.shapes ? oldDoc?.data?.shapes : []);
+      console.log('shapes: ', shapes)
       if (doc.type === null) {
         doc.create({
-          shapes: [],
+          shapes: shapes,
           users: [],
           canvaName,
         }, () => {
@@ -31,6 +36,15 @@ const createDoc = (canvaName) => {
   return promise;
 };
 
+const duplicateDoc = async (canvaName, oldId) => {
+  // const oldId = url.substring(10);
+  console.log('oldId', oldId);
+  const oldDoc = await getDoc(oldId);
+  console.log('old doc', oldDoc);
+  console.log('old doc data: ', oldDoc.data);
+  return createDoc(canvaName, oldDoc);
+}
+
 const getDoc = (id) => {
   if (id === '') {
     return Promise.resolve({
@@ -41,9 +55,11 @@ const getDoc = (id) => {
   const doc = connection.get('canvas', id);
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
+      // if (err) throw err;
+      if (err)
+        console.log(err);
       console.log('fetch successfully');
-      console.log(doc);
-      if (err) throw err;
+      // console.log(doc);
       resolve(doc);
     });
   });
@@ -54,4 +70,5 @@ module.exports = {
   backend,
   createDoc,
   getDoc,
+  duplicateDoc,
 };
