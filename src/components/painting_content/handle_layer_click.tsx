@@ -4,7 +4,7 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
   switch (shape) {
     case 'RECTANGLE':
       addShape({
-        width: 50, height: 50, x, y, type: 'RECTANGLE', rotation: 0, fill: '#FF6900', draggable: true,
+        width: 50, height: 50, x, y, type: 'TEXTRECT', rotation: 0, fill: '#FF6900', draggable: true, text: '双击添加文字', fontSize: 10,
       });
       break;
     case 'TEXTRECT':

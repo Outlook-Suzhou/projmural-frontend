@@ -40,9 +40,15 @@ const TextRect: React.FC<Props> = (props: Props) => {
       <Group
         draggable={item.draggable && state.selectShape === 'FREE'}
           // eslint-disable-next-line react/jsx-props-no-spreading
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragMove={(e) => {
+        onDragStart={() => {
+          onDragStart();
+          console.log('start group');
+          console.log(item.x, item.y);
+        }}
+        onDragEnd={(e) => {
+          onDragEnd();
+          console.log('end group');
+          // console.log(item.x, item.y);
           const afterE: BaseShapes.TextRect = {
             ...item,
             x: e.target.x(),
@@ -50,6 +56,14 @@ const TextRect: React.FC<Props> = (props: Props) => {
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+        // onDragMove={(e) => {
+        //   const afterE: BaseShapes.TextRect = {
+        //     ...item,
+        //     x: e.target.x(),
+        //     y: e.target.y(),
+        //   };
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        // }}
       >
         <Rect
           shadowOpacity={0.3}
@@ -88,8 +102,8 @@ const TextRect: React.FC<Props> = (props: Props) => {
         <Text
           x={item.x + item.width / 8}
           y={item.y + item.height / 8}
-          width={item.width * 0.75}
-          height={item.height * 0.75}
+          // width={item.width * 0.75}
+          // height={item.height * 0.75}
           text={item.text}
           fontSize={item.fontSize}
           onClick={onSelect}
@@ -99,18 +113,22 @@ const TextRect: React.FC<Props> = (props: Props) => {
           fill={colorDetect(item.fill) === 'light' ? 'black' : 'white'}
           visible={visible}
           align="center"
-          draggable={item.draggable && state.selectShape === 'FREE'}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          onDragStart={onDragStart}
-          onDragEnd={onDragEnd}
-          onDragMove={(e) => {
-            const afterE: BaseShapes.TextRect = {
-              ...item,
-              x: e.target.x(),
-              y: e.target.y(),
-            };
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
-          }}
+          // draggable={item.draggable && state.selectShape === 'FREE'}
+          // draggable={false}
+          // // eslint-disable-next-line react/jsx-props-no-spreading
+          // onDragStart={() => {
+          //   onDragStart();
+          //   console.log('start text');
+          // }}
+          // onDragEnd={onDragEnd}
+          // onDragMove={(e) => {
+          //   const afterE: BaseShapes.TextRect = {
+          //     ...item,
+          //     x: e.target.x(),
+          //     y: e.target.y(),
+          //   };
+          //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          // }}
           onDblClick={() => {
             const textarea = document.createElement('textarea');
             document.body.appendChild(textarea);
