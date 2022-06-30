@@ -23,6 +23,7 @@ const Dashboard: React.FC<{}> = () => {
   const size = ['month', 'week', 'day'];
   const [journeyMapModalVisible, setJourneyMapModalVisible] = useState(false);
   const [canvaName, setCanvaName] = useState('untitle');
+  const [url, setUrl] = useState('');
   const [canvaNameModalVisible, setCanvaNameModalVisible] = useState(false);
   const handleOk = () => {
     setJourneyMapModalVisible(true);
@@ -50,22 +51,45 @@ const Dashboard: React.FC<{}> = () => {
   function canvaNameOnChange(e: any) {
     setCanvaName(e.target.value);
   }
+  function urlOnChange(e: any) {
+    setUrl(e.target.value);
+  }
   const createPainting = () => {
-    axios.post('/api/doc', {
-      type: 'create',
-      data: {
-        microsoft_id: state.userInfo.microsoftId,
-        canva_name: canvaName,
-      },
-    }).then((res) => {
-      if (res.data.retc !== 0) {
-        console.log(res);
-        return;
-      }
-      history.push(`/painting/${res.data.data.canvas_id}`);
-    }).catch((e) => {
-      console.log(e);
-    });
+    if (!url) {
+      axios.post('/api/doc', {
+        type: 'create',
+        data: {
+          microsoft_id: state.userInfo.microsoftId,
+          canva_name: canvaName,
+        },
+      }).then((res) => {
+        if (res.data.retc !== 0) {
+          console.log(res);
+          return;
+        }
+        history.push(`/painting/${res.data.data.canvas_id}`);
+      }).catch((e) => {
+        console.log(e);
+      });
+    } else {
+      console.log(url, url.substring(url.length - 8));
+      axios.post('/api/doc', {
+        type: 'duplicate',
+        data: {
+          microsoft_id: state.userInfo.microsoftId,
+          canva_name: canvaName,
+          old_Id: url.substring(url.length - 8),
+        },
+      }).then((res) => {
+        if (res.data.retc !== 0) {
+          console.log(res);
+          return;
+        }
+        history.push(`/painting/${res.data.data.canvas_id}`);
+      }).catch((e) => {
+        console.log(e);
+      });
+    }
   };
 
   // divide boards into separate pages
@@ -217,8 +241,15 @@ const Dashboard: React.FC<{}> = () => {
             <RangePicker picker={kanban.unit === 'week' ? 'date' : kanban.unit} onChange={onChangeDate} style={{ marginTop: '20px' }} />
           </div>
         </Modal>
-        <Modal title="Please input canvas Name" visible={canvaNameModalVisible} onOk={createPainting} onCancel={() => { setCanvaNameModalVisible(false); }}>
-          <Input onChange={canvaNameOnChange} />
+        <Modal title="Please input canvas Info" visible={canvaNameModalVisible} onOk={createPainting} onCancel={() => { setCanvaNameModalVisible(false); }}>
+          <div>
+            <>Input the name of canvas:</>
+            <Input onChange={canvaNameOnChange} />
+          </div>
+          <div>
+            <>Input the url if you want to duplicate a canva</>
+            <Input onChange={urlOnChange} />
+          </div>
         </Modal>
       </div>
     </>
