@@ -54,6 +54,27 @@ const Dashboard: React.FC<{}> = () => {
   function urlOnChange(e: any) {
     setUrl(e.target.value);
   }
+  const duplicatePainting = (oldUrl: String, autoJump: Boolean) => {
+    console.log(oldUrl, oldUrl.substring(oldUrl.length - 8));
+    axios.post('/api/doc', {
+      type: 'duplicate',
+      data: {
+        microsoft_id: state.userInfo.microsoftId,
+        canva_name: canvaName,
+        old_Id: oldUrl.substring(oldUrl.length - 8),
+      },
+    }).then((res) => {
+      // console.log(res.data);
+      // console.log(res.data.retc, res.data.data);
+      if (res.data.retc !== 0) {
+        console.log(res);
+        return;
+      }
+      if (autoJump) history.push(`/painting/${res.data.data.canvas_id}`);
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
   const createPainting = () => {
     if (!url) {
       axios.post('/api/doc', {
@@ -72,23 +93,7 @@ const Dashboard: React.FC<{}> = () => {
         console.log(e);
       });
     } else {
-      console.log(url, url.substring(url.length - 8));
-      axios.post('/api/doc', {
-        type: 'duplicate',
-        data: {
-          microsoft_id: state.userInfo.microsoftId,
-          canva_name: canvaName,
-          old_Id: url.substring(url.length - 8),
-        },
-      }).then((res) => {
-        if (res.data.retc !== 0) {
-          console.log(res);
-          return;
-        }
-        history.push(`/painting/${res.data.data.canvas_id}`);
-      }).catch((e) => {
-        console.log(e);
-      });
+      duplicatePainting(url, true);
     }
   };
 
@@ -186,6 +191,18 @@ const Dashboard: React.FC<{}> = () => {
                         }
                      }>
                         copy link
+                      </Menu.Item>
+                      <Menu.Item onClick={
+                        (e) => {
+                          e.domEvent.stopPropagation();
+                          // let uri = 'localhost:5000';
+                          // if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
+                          // copy(`${uri}/painting/${val.id}`);
+                          duplicatePainting(val.id, true);
+                          message.success('Duplicate!');
+                        }
+                     }>
+                        duplicate
                       </Menu.Item>
                     </Menu>
                   );
