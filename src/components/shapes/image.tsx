@@ -49,7 +49,7 @@ const Img: React.FC<Props> = (props: Props) => {
         draggable={item.draggable && state.selectShape === 'FREE'}
         key={index}
         onDragStart={onDragStart}
-        onDragEnd={e => {
+        onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Image = {
             width: e.target.width(),

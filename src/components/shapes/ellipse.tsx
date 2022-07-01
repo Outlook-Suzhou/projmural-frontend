@@ -44,8 +44,8 @@ const Ellipse: React.FC<Props> = (props: Props) => {
         key={index}
         draggable={item.draggable && state.selectShape === 'FREE'}
         onDragStart={onDragStart}
-        onDragEnd={e => {
-          onDragEnd()
+        onDragEnd={(e) => {
+          onDragEnd();
           const afterE: BaseShapes.Ellipse = {
             radius: {
               x: e.target.attrs.radiusX,

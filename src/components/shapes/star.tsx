@@ -42,7 +42,7 @@ const Star: React.FC<Props> = (props: Props) => {
         numPoints={5}
         draggable={item.draggable && (state.selectShape === 'FREE')}
         onDragStart={onDragStart}
-        onDragEnd={e => {
+        onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Star = {
             ...item,

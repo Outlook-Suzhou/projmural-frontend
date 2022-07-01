@@ -56,7 +56,7 @@ const Line = (props) => {
         fill="black"
         draggable={state.selectShape === 'FREE'}
         onDragStart={onDragStart}
-        onDragEnd={e => {
+        onDragEnd={(e) => {
           onDragEnd();
           const afterE = Object.assign(doc.value.data.shapes[index], {
             x: e.target.attrs.x,

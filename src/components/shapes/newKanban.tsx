@@ -35,7 +35,7 @@ const NewKanban : React.FC<Props> = (props: Props) => {
       draggable={item.draggable && state.selectShape === 'FREE'}
       onClick={onSelect}
       onDragStart={onDragStart}
-      onDragEnd={e => {
+      onDragEnd={(e) => {
         onDragEnd();
         if (item.draggable) {
           const afterE = {

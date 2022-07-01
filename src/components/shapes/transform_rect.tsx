@@ -43,7 +43,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
         onDragStart={onDragStart}
-        onDragEnd={e => {
+        onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),

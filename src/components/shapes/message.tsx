@@ -49,7 +49,7 @@ const Message: React.FC<Props> = (props: Props) => {
         {...item}
         draggable={item.draggable && state.selectShape === 'FREE'}
         onDragStart={onDragStart}
-        onDragEnd={e => {
+        onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Message = {
             ...item,
@@ -118,7 +118,7 @@ const Message: React.FC<Props> = (props: Props) => {
         align="center"
         draggable={item.draggable && state.selectShape === 'FREE'}
         onDragStart={onDragStart}
-        onDragEnd={e => {
+        onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Message = {
             ...item,

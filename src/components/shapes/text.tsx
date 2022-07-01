@@ -48,7 +48,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
         visible={visible}
         rotation={item.rotation}
         scaleX={item.scaleX}
-        onDragEnd={e => {
+        onDragEnd={(e) => {
           onDragEnd();
           const afterE = {
             ...item,

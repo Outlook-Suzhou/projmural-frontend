@@ -44,7 +44,7 @@ const Triangle: React.FC<Props> = (props: Props) => {
         key={index}
         closed
         onDragStart={onDragStart}
-        onDragEnd={e => {
+        onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Triangle = {
             radius: e.target.attrs.radius,
