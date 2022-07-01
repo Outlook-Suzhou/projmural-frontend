@@ -44,8 +44,8 @@ const Ellipse: React.FC<Props> = (props: Props) => {
         key={index}
         draggable={item.draggable && state.selectShape === 'FREE'}
         onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragMove={(e) => {
+        onDragEnd={(e) => {
+          onDragEnd();
           const afterE: BaseShapes.Ellipse = {
             radius: {
               x: e.target.attrs.radiusX,
@@ -60,6 +60,21 @@ const Ellipse: React.FC<Props> = (props: Props) => {
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+        // onDragMove={(e) => {
+        //   const afterE: BaseShapes.Ellipse = {
+        //     radius: {
+        //       x: e.target.attrs.radiusX,
+        //       y: e.target.attrs.radiusY,
+        //     },
+        //     x: e.target.x(),
+        //     y: e.target.y(),
+        //     type: 'ELLIPSE',
+        //     fill: item.fill,
+        //     rotation: item.rotation,
+        //     draggable: item.draggable,
+        //   };
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
         onTransform={() => {

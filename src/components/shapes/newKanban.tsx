@@ -35,10 +35,8 @@ const NewKanban : React.FC<Props> = (props: Props) => {
       draggable={item.draggable && state.selectShape === 'FREE'}
       onClick={onSelect}
       onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onTransformStart={onTransformStart}
-      onTransformEnd={onTransformEnd}
-      onDragMove={(e) => {
+      onDragEnd={(e) => {
+        onDragEnd();
         if (item.draggable) {
           const afterE = {
             ...item,
@@ -48,6 +46,18 @@ const NewKanban : React.FC<Props> = (props: Props) => {
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }
       }}
+      onTransformStart={onTransformStart}
+      onTransformEnd={onTransformEnd}
+      // onDragMove={(e) => {
+      //   if (item.draggable) {
+      //     const afterE = {
+      //       ...item,
+      //       x: e.target.x(),
+      //       y: e.target.y(),
+      //     };
+      //     doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+      //   }
+      // }}
     >
       {[...Array(item.teamNum)].map((_, i) => (
         <Group>

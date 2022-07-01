@@ -102,15 +102,22 @@ const Arrow = (props) => {
         fill="black"
         draggable
         onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onClick={click}
-        onDragMove={(e) => {
+        onDragEnd={(e) => {
+          onDragEnd();
           const afterE = Object.assign(doc.value.data.shapes[index], {
             x: e.target.attrs.x,
             y: e.target.attrs.y,
           });
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+        onClick={click}
+        // onDragMove={(e) => {
+        //   const afterE = Object.assign(doc.value.data.shapes[index], {
+        //     x: e.target.attrs.x,
+        //     y: e.target.attrs.y,
+        //   });
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        // }}
       />
       <Circle
         // eslint-disable-next-line react/prop-types

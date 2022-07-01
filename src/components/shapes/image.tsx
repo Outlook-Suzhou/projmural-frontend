@@ -49,8 +49,8 @@ const Img: React.FC<Props> = (props: Props) => {
         draggable={item.draggable && state.selectShape === 'FREE'}
         key={index}
         onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragMove={(e) => {
+        onDragEnd={(e) => {
+          onDragEnd();
           const afterE: BaseShapes.Image = {
             width: e.target.width(),
             height: e.target.height(),
@@ -63,6 +63,19 @@ const Img: React.FC<Props> = (props: Props) => {
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+        // onDragMove={(e) => {
+        //   const afterE: BaseShapes.Image = {
+        //     width: e.target.width(),
+        //     height: e.target.height(),
+        //     x: e.target.x(),
+        //     y: e.target.y(),
+        //     type: 'IMAGE',
+        //     url: item.url,
+        //     rotation: item.rotation,
+        //     draggable: item.draggable,
+        //   };
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
         onTransform={() => {

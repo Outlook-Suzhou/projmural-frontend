@@ -48,7 +48,15 @@ const TEXT: React.FC<Props> = (props: Props) => {
         visible={visible}
         rotation={item.rotation}
         scaleX={item.scaleX}
-        onDragEnd={onDragEnd}
+        onDragEnd={(e) => {
+          onDragEnd();
+          const afterE = {
+            ...item,
+            x: e.target.x(),
+            y: e.target.y(),
+          };
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        }}
         onDragStart={onDragStart}
         onDblClick={() => {
           const ops = state.OpList;
@@ -116,14 +124,14 @@ const TEXT: React.FC<Props> = (props: Props) => {
         fontSize={item.fontSize}
         width={item.width}
         fill={item.fill}
-        onDragMove={(e) => {
-          const afterE = {
-            ...item,
-            x: e.target.x(),
-            y: e.target.y(),
-          };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
-        }}
+        // onDragMove={(e) => {
+        //   const afterE = {
+        //     ...item,
+        //     x: e.target.x(),
+        //     y: e.target.y(),
+        //   };
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        // }}
         onTransform={() => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();

@@ -42,8 +42,8 @@ const Circle: React.FC<Props> = (props: Props) => {
         key={index}
         draggable={item.draggable && (state.selectShape === 'FREE')}
         onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragMove={(e) => {
+        onDragEnd={(e) => {
+          onDragEnd();
           const afterE: BaseShapes.Circle = {
             radius: e.target.attrs.radius,
             x: e.target.x(),
@@ -53,8 +53,22 @@ const Circle: React.FC<Props> = (props: Props) => {
             rotation: item.rotation,
             draggable: item.draggable,
           };
+          // console.log(['From: Circle Dragmove', { p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+        // onDragMove={(e) => {
+        //   const afterE: BaseShapes.Circle = {
+        //     radius: e.target.attrs.radius,
+        //     x: e.target.x(),
+        //     y: e.target.y(),
+        //     type: 'CIRCLE',
+        //     fill: item.fill,
+        //     rotation: item.rotation,
+        //     draggable: item.draggable,
+        //   };
+        //   console.log(['From: Circle Dragmove', { p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
         onTransform={() => {

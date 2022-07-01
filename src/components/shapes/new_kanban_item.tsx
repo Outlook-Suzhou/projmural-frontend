@@ -41,12 +41,17 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
         y={item.projs[i].y}
         draggable
         onDragStart={() => { item.draggable = false; }}
-        onDragEnd={() => { item.draggable = true; }}
-        onDragMove={(e) => {
+        onDragEnd={(e) => {
+          item.draggable = true;
           item.projs[i].x = e.target.x();
           item.projs[i].y = e.target.y();
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
         }}
+        // onDragMove={(e) => {
+        //   item.projs[i].x = e.target.x();
+        //   item.projs[i].y = e.target.y();
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+        // }}
         onClick={click}
         width={item.projs[i].width}
         height={item.projs[i].height}
@@ -94,12 +99,17 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
         visible={item.projs[i].visible}
         draggable
         onDragStart={() => { item.draggable = false; }}
-        onDragEnd={() => { item.draggable = true; }}
-        onDragMove={(e) => {
+        onDragEnd={(e) => {
+          item.draggable = true;
           item.projs[i].x = e.target.x() - item.projs[i].width / 4;
           item.projs[i].y = e.target.y() - 10;
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
         }}
+        // onDragMove={(e) => {
+        //   item.projs[i].x = e.target.x() - item.projs[i].width / 4;
+        //   item.projs[i].y = e.target.y() - 10;
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+        // }}
         onDblClick={() => {
           const ops = state.OpList;
           ops.push(JSON.stringify(doc.value.data.shapes));

@@ -43,8 +43,8 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
         onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragMove={(e) => {
+        onDragEnd={(e) => {
+          onDragEnd();
           const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),
             height: e.target.height(),
@@ -57,6 +57,19 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
+        // onDragMove={(e) => {
+        //   const afterE: BaseShapes.Rectangle = {
+        //     width: e.target.width(),
+        //     height: e.target.height(),
+        //     x: e.target.x(),
+        //     y: e.target.y(),
+        //     draggable: true,
+        //     type: 'RECTANGLE',
+        //     rotation: item.rotation,
+        //     fill: item.fill,
+        //   };
+        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
         onTransform={() => {
