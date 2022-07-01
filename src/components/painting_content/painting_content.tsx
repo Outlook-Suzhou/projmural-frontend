@@ -78,7 +78,7 @@ const PaintingContent: React.FC<{}> = () => {
       });
     }
     if (state.selectShape !== 'FREE') {
-      setCursorPos({ x: pos.x, y: pos.y });  
+      setCursorPos({ x: pos.x, y: pos.y });
     }
   };
   const getFloatBar = () => {

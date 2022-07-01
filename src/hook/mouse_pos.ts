@@ -11,9 +11,9 @@ const useMousePos = () => {
         y: e.y,
       });
     };
-    document.addEventListener('mousemove', mouseListener);
+    document.addEventListener('click', mouseListener);
     return () => {
-      document.removeEventListener('mousemove', mouseListener);
+      document.removeEventListener('click', mouseListener);
     };
   }, []);
   return mouse;
