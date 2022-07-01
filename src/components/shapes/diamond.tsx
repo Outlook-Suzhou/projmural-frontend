@@ -57,7 +57,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
-        onDragMove={() => {
+        // onDragMove={(e) => {
           // const afterE: BaseShapes.Diamond = {
           //   radius: e.target.attrs.radius,
           //   x: e.target.x(),
@@ -68,7 +68,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
           //   draggable: item.draggable,
           // };
           // doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
-        }}
+        // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
         onTransform={() => {
