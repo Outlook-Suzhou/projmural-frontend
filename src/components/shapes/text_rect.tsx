@@ -15,13 +15,14 @@ interface Props {
   onSelect: any,
   index: number,
   onDragStart: any,
+  onDragMove: any,
   onDragEnd: any,
   onTransformStart: any,
   onTransformEnd: any
 }
 const TextRect: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
+    item, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd, onDragMove,
   } = props;
 
   const shapeRef = useRef<any>();
@@ -53,6 +54,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
           // eslint-disable-next-line react/jsx-props-no-spreading
         onDragStart={onDragStart}
         onDragEnd={dragEndCallBack}
+        onDragMove={onDragMove}
       >
         <Rect
           shadowOpacity={0.3}
@@ -100,6 +102,11 @@ const TextRect: React.FC<Props> = (props: Props) => {
           fill={colorDetect(item.fill) === 'light' ? 'black' : 'white'}
           visible={visible}
           align="center"
+          draggable={item.draggable && state.selectShape === 'FREE'}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          onDragStart={onDragStart}
+          onDragEnd={dragEndCallBack}
+          onDragMove={onDragMove}
           onDblClick={() => {
             const textarea = document.createElement('textarea');
             document.body.appendChild(textarea);

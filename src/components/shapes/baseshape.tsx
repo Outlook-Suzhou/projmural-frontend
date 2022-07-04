@@ -26,11 +26,13 @@ interface Shape {
   setCurrentItem?: Function;
   setCurrentIndex?: Function;
   del: Function;
+  list: Array<Object>;
+  setList: Function;
 }
 
 const BaseShape: React.FC<Shape> = (props: Shape) => {
   const {
-    item, index, click, del,
+    item, index, click, del, list, setList,
   } = props;
   let ShapeComponent: any;
   const state = useStateStore();
@@ -43,6 +45,11 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
     const ops = state.OpList;
     ops.push(JSON.stringify(doc.value.data.shapes));
     dispatch({ type: 'setOpList', payload: ops });
+  };
+  const onDragMove = (e: any) => {
+    const newList = [...list];
+    newList[index] = { ...list[index], x: e.target.x(), y: e.target.y() };
+    setList(newList);
   };
   const onDragEnd = () => {
     dispatch({ type: 'setCurrentIndex', payload: index });
@@ -186,6 +193,7 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
           isSelected={index === state.currentIndex}
           onSelect={click}
           onDragStart={onDragStart}
+          onDragMove={onDragMove}
           onDragEnd={onDragEnd}
           onTransformStart={onTransformStart}
           onTransformEnd={onTransformEnd}

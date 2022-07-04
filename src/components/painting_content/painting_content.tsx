@@ -228,6 +228,8 @@ const PaintingContent: React.FC<{}> = () => {
                     <BaseShape
                       item={item}
                       index={index}
+                      list={list}
+                      setList={setList}
                       click={() => {
                         if (state.selectShape === 'FREE') {
                           if (item.type === 'TEXT' || item.type === 'KANBAN') {
