@@ -100,6 +100,15 @@ const TextRect: React.FC<Props> = (props: Props) => {
           fill={colorDetect(item.fill) === 'light' ? 'black' : 'white'}
           visible={visible}
           align="center"
+          draggable={item.draggable && state.selectShape === 'FREE'}
+          onDragEnd={(e) => {
+            const afterE: BaseShapes.TextRect = {
+              ...item,
+              x: e.target.x(),
+              y: e.target.y(),
+            };
+            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          }}
           onDblClick={() => {
             const textarea = document.createElement('textarea');
             document.body.appendChild(textarea);
