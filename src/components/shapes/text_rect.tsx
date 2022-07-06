@@ -100,8 +100,8 @@ const TextRect: React.FC<Props> = (props: Props) => {
           visible={visible}
           align="center"
           draggable={item.draggable && state.selectShape === 'FREE'}
-          width={item.width / 2}
-          height={item.height / 2}
+          width={item.width * 0.75}
+          height={item.height * 0.75}
           onDblClick={() => {
             const textarea = document.createElement('textarea');
             document.body.appendChild(textarea);
