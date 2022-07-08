@@ -22,18 +22,18 @@ const errUserNotExistRsp = {
 docRouter.post('/doc', async (req, res) => {
   const { type, data } = req.body;
   console.log('-----------');
-  console.log(type, data)
+  console.log(type, data);
   if (type !== 'create' && type !== 'get' && type !== 'duplicate') {
     res.status(200).send(errRsp);
     return;
   }
   if (data === null || data === undefined || data?.microsoft_id === undefined) {
-    res.status(200).send({...errRsp, msg: 'err data'});
+    res.status(200).send({ ...errRsp, msg: 'err data' });
     return;
   }
   if (type === 'create') {
     if (data?.canva_name === undefined) {
-      res.status(200).send({...errRsp, msg: 'err canva_name undefined'});
+      res.status(200).send({ ...errRsp, msg: 'err canva_name undefined' });
       return;
     }
     const ID = await createDoc(data.canva_name);
@@ -98,9 +98,9 @@ docRouter.post('/doc', async (req, res) => {
       },
     });
   } else if (type === 'duplicate') {
-    console.log('begin duplicate')
+    console.log('begin duplicate');
     if (data?.canva_name === undefined) {
-      res.status(200).send({...errRsp, msg: 'err canva_name undefined'});
+      res.status(200).send({ ...errRsp, msg: 'err canva_name undefined' });
       return;
     }
     let ID;
@@ -127,7 +127,7 @@ docRouter.post('/doc', async (req, res) => {
       if (usrRsp.data.retc === -4) {
         res.status(200).send(errUserNotExistRsp);
       } else {
-        res.status(200).send({...errRsp, msg: 'err unknown retc error'});
+        res.status(200).send({ ...errRsp, msg: 'err unknown retc error' });
       }
       return;
     }
@@ -151,7 +151,7 @@ docRouter.post('/doc', async (req, res) => {
     }
     if (updateRsp.data.retc !== 0) {
       console.log('update:', usrRsp.data);
-      res.status(200).send({...errRsp, msg: 'err update user failed'});
+      res.status(200).send({ ...errRsp, msg: 'err update user failed' });
       return;
     }
 

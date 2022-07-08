@@ -18,13 +18,14 @@ const createDoc = (canvaName, oldDoc) => {
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
       // if (err) throw err;
-      if (err)
+      if (err) {
         console.log(err);
+      }
       const shapes = (oldDoc?.data?.shapes ? oldDoc?.data?.shapes : []);
-      console.log('shapes: ', shapes)
+      console.log('shapes: ', shapes);
       if (doc.type === null) {
         doc.create({
-          shapes: shapes,
+          // shapes: shapes,
           users: [],
           canvaName,
         }, () => {
@@ -35,15 +36,6 @@ const createDoc = (canvaName, oldDoc) => {
   });
   return promise;
 };
-
-const duplicateDoc = async (canvaName, oldId) => {
-  // const oldId = url.substring(10);
-  console.log('oldId', oldId);
-  const oldDoc = await getDoc(oldId);
-  console.log('old doc', oldDoc);
-  console.log('old doc data: ', oldDoc.data);
-  return createDoc(canvaName, oldDoc);
-}
 
 const getDoc = (id) => {
   if (id === '') {
@@ -56,14 +48,24 @@ const getDoc = (id) => {
   const promise = new Promise((resolve) => {
     doc.fetch((err) => {
       // if (err) throw err;
-      if (err)
+      if (err) {
         console.log(err);
+      }
       console.log('fetch successfully');
       // console.log(doc);
       resolve(doc);
     });
   });
   return promise;
+};
+
+const duplicateDoc = async (canvaName, oldId) => {
+  // const oldId = url.substring(10);
+  console.log('oldId', oldId);
+  const oldDoc = await getDoc(oldId);
+  console.log('old doc', oldDoc);
+  console.log('old doc data: ', oldDoc.data);
+  return createDoc(canvaName, oldDoc);
 };
 
 module.exports = {
