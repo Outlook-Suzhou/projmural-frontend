@@ -76,7 +76,8 @@ const TextRect: React.FC<Props> = (props: Props) => {
               ...item,
               x: node.x(),
               y: node.y(),
-              fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
+              // fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
+              fontSize: item.fontSize,
               // set minimal value
               width: Math.max(5, node.width() * scaleX),
               height: Math.max(5, node.height() * scaleY),
