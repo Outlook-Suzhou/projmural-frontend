@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useRef, useState,
+  useEffect, useRef, useState,
 } from 'react';
 import {
   Rect, Transformer, Text, Group,
@@ -28,15 +28,6 @@ const TextRect: React.FC<Props> = (props: Props) => {
   const trRef = useRef<any>();
   const [state] = [useStateStore(), useDispatchStore()];
   const [visible, setVisible] = useState(true);
-  const dragEndCallBack = useCallback((e) => {
-    const afterE: BaseShapes.TextRect = {
-      ...item,
-      x: e.target.x(),
-      y: e.target.y(),
-    };
-    onDragEnd();
-    doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
-  }, [item, index]);
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -52,7 +43,15 @@ const TextRect: React.FC<Props> = (props: Props) => {
         draggable={item.draggable && state.selectShape === 'FREE'}
           // eslint-disable-next-line react/jsx-props-no-spreading
         onDragStart={onDragStart}
-        onDragEnd={dragEndCallBack}
+        onDragEnd={(e) => {
+          const afterE: BaseShapes.TextRect = {
+            ...item,
+            x: e.target.x(),
+            y: e.target.y(),
+          };
+          onDragEnd();
+          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        }}
       >
         <Rect
           shadowOpacity={0.3}
@@ -101,14 +100,8 @@ const TextRect: React.FC<Props> = (props: Props) => {
           visible={visible}
           align="center"
           draggable={item.draggable && state.selectShape === 'FREE'}
-          onDragEnd={(e) => {
-            const afterE: BaseShapes.TextRect = {
-              ...item,
-              x: e.target.x(),
-              y: e.target.y(),
-            };
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
-          }}
+          width={item.width * 0.75}
+          height={item.height * 0.75}
           onDblClick={() => {
             const textarea = document.createElement('textarea');
             document.body.appendChild(textarea);
