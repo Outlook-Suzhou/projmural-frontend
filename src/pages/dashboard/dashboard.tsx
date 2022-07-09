@@ -183,6 +183,7 @@ const Dashboard: React.FC<{}> = () => {
                       </Menu.Item>
                       <Menu.Item onClick={
                         (e) => {
+                          // console.log('Id', state.userInfo.microsoftId)
                           e.domEvent.stopPropagation();
                           let uri = 'localhost:5000';
                           if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
