@@ -7,6 +7,8 @@ import { useDispatchStore, useStateStore } from '../../store/store';
 const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Rectangle,
+  gridWidth: number,
+  gridHeight: number,
   isSelected: boolean,
   onSelect: any,
   index: number,
@@ -17,9 +19,8 @@ interface Props {
 }
 const Rectangle1: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
+    item, gridWidth, gridHeight, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
   } = props;
-
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
   const [state] = [useStateStore(), useDispatchStore()];
@@ -40,16 +41,17 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         ref={shapeRef}
         {...item}
         draggable={item.draggable && state.selectShape === 'FREE'}
-          // eslint-disable-next-line react/jsx-props-no-spreading
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
         onDragStart={onDragStart}
         onDragEnd={(e) => {
           onDragEnd();
+          console.log(Math.round(e.target.x() / gridWidth) * gridWidth);
           const afterE: BaseShapes.Rectangle = {
             width: e.target.width(),
             height: e.target.height(),
-            x: e.target.x(),
-            y: e.target.y(),
+            x: Math.round(e.target.x() / gridWidth) * gridWidth,
+            y: Math.round(e.target.y() / gridHeight) * gridHeight,
             draggable: true,
             type: 'RECTANGLE',
             rotation: item.rotation,

@@ -167,7 +167,6 @@ const PaintingContent: React.FC<{}> = () => {
       payload: { x: e.target.x(), y: e.target.y() },
     });
   };
-
   for (let x = 0; x < window.innerWidth * 2; x += WIDTH) {
     for (let y = 0; y < window.innerHeight * 4; y += HEIGHT) {
       gridComponents.push(
@@ -227,6 +226,8 @@ const PaintingContent: React.FC<{}> = () => {
                   list.map((item: any, index: number) => (
                     <BaseShape
                       item={item}
+                      gridWidth={WIDTH}
+                      gridHeight={HEIGHT}
                       index={index}
                       click={() => {
                         if (state.selectShape === 'FREE') {
@@ -251,7 +252,7 @@ const PaintingContent: React.FC<{}> = () => {
                   ))
                 }
                 <Line
-                // @ts-ignore
+                  // @ts-ignore
                   globalCompositeOperation={state.lastLine.composite}
                   stroke={state.lastLine.fill}
                   points={state.lastLine.points}
@@ -259,7 +260,7 @@ const PaintingContent: React.FC<{}> = () => {
                   lineCap="round"
                   tension={0.5}
                 />
-                {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
+                {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} />}
                 {
                   state.adsorptionPointsList.map((point) => (
                     <Circle
