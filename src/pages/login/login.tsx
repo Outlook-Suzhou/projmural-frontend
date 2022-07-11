@@ -81,7 +81,7 @@ const Login: React.FC<{}> = () => {
           <small>
             <p>Microsoft Outlook Team</p>
             <p>Intern Project</p>
-            <p>2021.8</p>
+            <p>2022.6 - 2022.9</p>
           </small>
         </Footer>
       </Layout>

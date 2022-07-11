@@ -7,6 +7,7 @@
     "@azure/msal-browser": "^2.16.1",
     "@azure/msal-react": "^1.0.1",
     "@fluentui/react": "^8.23.8",
+    "@microsoft/eslint-formatter-sarif": "^2.1.7",
     "@teamwork/websocket-json-stream": "^2.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
