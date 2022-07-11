@@ -46,14 +46,12 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Rectangle = {
+            ...item,
             width: e.target.width(),
             height: e.target.height(),
             x: e.target.x(),
             y: e.target.y(),
             draggable: true,
-            type: 'RECTANGLE',
-            rotation: item.rotation,
-            fill: item.fill,
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}

@@ -47,13 +47,10 @@ const Diamond: React.FC<Props> = (props: Props) => {
         onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Diamond = {
+            ...item,
             radius: e.target.attrs.radius,
             x: e.target.x(),
             y: e.target.y(),
-            type: 'DIAMOND',
-            fill: item.fill,
-            rotation: item.rotation,
-            draggable: item.draggable,
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
@@ -89,8 +86,6 @@ const Diamond: React.FC<Props> = (props: Props) => {
             },
             type: 'DIAMOND',
             rotation: node.rotation(),
-            fill: item.fill,
-            draggable: item.draggable,
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
