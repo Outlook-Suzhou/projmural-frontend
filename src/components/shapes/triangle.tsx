@@ -47,13 +47,10 @@ const Triangle: React.FC<Props> = (props: Props) => {
         onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Triangle = {
+            ...item,
             radius: e.target.attrs.radius,
             x: e.target.x(),
             y: e.target.y(),
-            type: 'TRIANGLE',
-            fill: item.fill,
-            rotation: item.rotation,
-            draggable: item.draggable,
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
@@ -88,10 +85,7 @@ const Triangle: React.FC<Props> = (props: Props) => {
               x: Math.max(5, node.points()[0] * scaleX),
               y: Math.max(5, node.points()[3] * scaleY),
             },
-            type: 'TRIANGLE',
             rotation: node.rotation(),
-            fill: item.fill,
-            draggable: item.draggable,
           };
 
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);

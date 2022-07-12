@@ -20,6 +20,8 @@ import getCurrentDoc from '../../client/client';
 const doc = getCurrentDoc();
 interface Shape {
   item: any;
+  gridWidth: number;
+  gridHeight: number;
   index: number;
   click: Function;
   currentIndex?: any;
@@ -30,7 +32,7 @@ interface Shape {
 
 const BaseShape: React.FC<Shape> = (props: Shape) => {
   const {
-    item, index, click, del,
+    item, gridWidth, gridHeight, index, click, del,
   } = props;
   let ShapeComponent: any;
   const state = useStateStore();
@@ -61,6 +63,8 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       ShapeComponent = (
         <Rectangle1
           item={item}
+          gridWidth={gridWidth}
+          gridHeight={gridHeight}
           index={index}
           isSelected={index === state.currentIndex}
           onSelect={click}
