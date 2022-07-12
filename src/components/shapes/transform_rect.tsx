@@ -7,6 +7,8 @@ import { useDispatchStore, useStateStore } from '../../store/store';
 const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Rectangle,
+  gridWidth: number,
+  gridHeight: number,
   isSelected: boolean,
   onSelect: any,
   index: number,
@@ -17,9 +19,8 @@ interface Props {
 }
 const Rectangle1: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
+    item, gridWidth, gridHeight, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
   } = props;
-
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
   const [state] = [useStateStore(), useDispatchStore()];
@@ -40,18 +41,20 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         ref={shapeRef}
         {...item}
         draggable={item.draggable && state.selectShape === 'FREE'}
-          // eslint-disable-next-line react/jsx-props-no-spreading
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...shapeConfig}
         onDragStart={onDragStart}
-        onDragEnd={(e) => {
+        onDragEnd={() => {
           onDragEnd();
+          const node = shapeRef.current;
+          const x = node.x();
+          const y = node.y();
+          node.x(item.x);
+          node.y(item.y);
           const afterE: BaseShapes.Rectangle = {
             ...item,
-            width: e.target.width(),
-            height: e.target.height(),
-            x: e.target.x(),
-            y: e.target.y(),
-            draggable: true,
+            x: Math.round(x / gridWidth) * gridWidth,
+            y: Math.round(y / gridHeight) * gridHeight,
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
@@ -69,31 +72,33 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         // }}
         onTransformStart={onTransformStart}
-        onTransformEnd={onTransformEnd}
-        onTransform={() => {
-          // transformer is changing scale of the node
-          // and NOT its width or height
-          // but in the store we have only width and height
-          // to match the data better we will reset scale on transform end
-          const node = shapeRef.current;
-          const scaleX = node.scaleX();
-          const scaleY = node.scaleY();
-
-          // we will reset it back
-          node.scaleX(1);
-          node.scaleY(1);
-          const afterE: BaseShapes.Rectangle = {
-            ...item,
-            x: node.x(),
-            y: node.y(),
-            // set minimal value
-            width: Math.max(5, node.width() * scaleX),
-            height: Math.max(5, node.height() * scaleY),
-            type: 'RECTANGLE',
-            rotation: node.rotation(),
-          };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
-        }}
+        onTransformEnd={
+          () => {
+            onTransformEnd();
+            // transformer is changing scale of the node
+            // and NOT its width or height
+            // but in the store we have only width and height
+            // to match the data better we will reset scale on transform end
+            const node = shapeRef.current;
+            const scaleX = node.scaleX();
+            const scaleY = node.scaleY();
+            const width = node.width() * scaleX;
+            const height = node.height() * scaleY;
+            // we will reset it back
+            node.scaleX(1);
+            node.scaleY(1);
+            const afterE: BaseShapes.Rectangle = {
+              ...item,
+              // set minimal value
+              width: Math.max(5, Math.round(width / gridWidth) * gridWidth),
+              height: Math.max(5, Math.round(height / gridHeight) * gridHeight),
+            };
+            node.x(Math.round(node.x() / gridWidth) * gridWidth);
+            node.y(Math.round(node.y() / gridHeight) * gridHeight);
+            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          }
+        }
+      // onTransform={}
       />
       {isSelected && (
         <Transformer

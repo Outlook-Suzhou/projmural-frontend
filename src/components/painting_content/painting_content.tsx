@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
@@ -128,12 +128,8 @@ const PaintingContent: React.FC<{}> = () => {
     const y = Math.min(0, Math.max(pos.y, window.innerHeight * 2 * (1 - state.stageScale)));
     return { x, y };
   };
-  const WIDTH = 150;// size for background rect
-  const HEIGHT = 150;
+
   // const [stageScale, setstageScale] = React.useState(1);
-
-  const gridComponents = [];
-
   const handleWheel = (e: any) => {
     e.evt.preventDefault();
     const scaleBy = 0.92;
@@ -167,29 +163,38 @@ const PaintingContent: React.FC<{}> = () => {
       payload: { x: e.target.x(), y: e.target.y() },
     });
   };
-
-  for (let x = 0; x < window.innerWidth * 2; x += WIDTH) {
-    for (let y = 0; y < window.innerHeight * 4; y += HEIGHT) {
-      gridComponents.push(
-        <Rect
-          x={x}
-          y={y}
-          width={WIDTH}
-          height={HEIGHT}
-          fill="#faf9f8"
-          stroke="lightGray"
-          strokeWidth={0.5}
-        />,
-      );
+  const WIDTH = 150;// size for background rect
+  const HEIGHT = 150;
+  // performance optimize
+  const grid = useMemo(() => {
+    const gridComponents: any = [];
+    for (let x = 0; x < window.innerWidth * 2; x += WIDTH) {
+      for (let y = 0; y < window.innerHeight * 4; y += HEIGHT) {
+        gridComponents.push(
+          <Rect
+            x={x}
+            y={y}
+            width={WIDTH}
+            height={HEIGHT}
+            fill="#faf9f8"
+            stroke="lightGray"
+            strokeWidth={0.5}
+          />,
+        );
+      }
     }
-  }
+    return gridComponents;
+  }, []);
+
   // console.log(state);
   const handleClick = (e: any) => {
     if (state.selectShape !== 'ERASER' && state.selectShape !== 'PEN' && state.selectShape !== 'FREE') {
       const ops = state.OpList;
       ops.push(JSON.stringify(doc.value.data.shapes));
       dispatch({ type: 'setOpList', payload: ops });
-      handleLayerClick(state.selectShape, calcX(e.evt.offsetX, state.stageScale, state.stagePos.x), calcY(e.evt.offsetY, state.stageScale, state.stagePos.y));
+      const x = calcX(e.evt.offsetX, state.stageScale, state.stagePos.x);
+      const y = calcY(e.evt.offsetY, state.stageScale, state.stagePos.y);
+      handleLayerClick(state.selectShape, WIDTH, HEIGHT, Math.floor(x / WIDTH) * WIDTH, Math.floor(y / HEIGHT) * HEIGHT);
       dispatch({ type: 'setSelectShape', payload: 'FREE' });
     }
   };
@@ -220,7 +225,7 @@ const PaintingContent: React.FC<{}> = () => {
           <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
               <Layer onClick={() => { dispatch({ type: 'setCurrentIndex', payload: -1 }); }}>
-                {gridComponents}
+                {grid}
               </Layer>
               <Layer onClick={handleClick}>
                 {
@@ -228,6 +233,8 @@ const PaintingContent: React.FC<{}> = () => {
                     <BaseShape
                       item={item}
                       index={index}
+                      gridHeight={HEIGHT}
+                      gridWidth={WIDTH}
                       click={() => {
                         if (state.selectShape === 'FREE') {
                           if (item.type === 'TEXT' || item.type === 'KANBAN') {
@@ -251,7 +258,7 @@ const PaintingContent: React.FC<{}> = () => {
                   ))
                 }
                 <Line
-                // @ts-ignore
+                  // @ts-ignore
                   globalCompositeOperation={state.lastLine.composite}
                   stroke={state.lastLine.fill}
                   points={state.lastLine.points}
@@ -259,7 +266,7 @@ const PaintingContent: React.FC<{}> = () => {
                   lineCap="round"
                   tension={0.5}
                 />
-                {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} /> }
+                {state.selectShape !== 'FREE' && <CursorShape selectShape={state.selectShape} x={calcX(cursorPos.x, state.stageScale, state.stagePos.x)} y={calcY(cursorPos.y, state.stageScale, state.stagePos.y)} />}
                 {
                   state.adsorptionPointsList.map((point) => (
                     <Circle
