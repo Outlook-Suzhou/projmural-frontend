@@ -7,7 +7,7 @@ import './canvas_name.scss';
 interface Props {
   doc: any
 }
-const CanvasName = ({doc}: Props) => {
+const CanvasName = ({ doc }: Props) => {
   const history = useHistory();
 
   return (

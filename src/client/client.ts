@@ -31,19 +31,19 @@ function getCurrentDoc(callback?: Function) {
 }
 
 export function getDocById(docID: string, callback?: Function) {
-  const ret_doc = { value: null };
-  const socket = new ReconnectingWebSocket(`${ipAddress}`);
-  const connection = new sharedb.Connection(socket);
-  ret_doc.value = connection.get('canvas', docID);
+  const retDoc = { value: null };
+  const newSocket = new ReconnectingWebSocket(`${ipAddress}`);
+  const newConnection = new sharedb.Connection(newSocket);
+  retDoc.value = newConnection.get('canvas', docID);
   // eslint-disable-next-line no-restricted-globals
-  if (ret_doc.value) {
-    ((ret_doc.value) as any).subscribe(() => {
+  if (retDoc.value) {
+    ((retDoc.value) as any).subscribe(() => {
       if (callback) {
         callback();
       }
     });
   }
-  return ret_doc as any;
+  return retDoc as any;
 }
 
 export default getCurrentDoc;

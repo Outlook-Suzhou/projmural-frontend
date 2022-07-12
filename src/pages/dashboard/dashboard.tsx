@@ -11,7 +11,7 @@ import axios from '../../utils/axios';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import AvatarArea from '../../components/avatar/avatar_self';
 import { getDocById } from '../../client/client';
-import Text from '../../components/input/dashboard_content_title'
+import Text from '../../components/input/dashboard_content_title';
 
 const Dashboard: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
@@ -240,7 +240,7 @@ const Dashboard: React.FC<{}> = () => {
                           aria-hidden="true"
                         />
                         <div className="font">
-                          <Text doc={getDocById(val.id)} className='dashCanvasName' currentCanvas={val}/>
+                          <Text doc={getDocById(val.id)} className="dashCanvasName" currentCanvas={val} />
                           {/* {val.name} */}
                         </div>
                       </div>
