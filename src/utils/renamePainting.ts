@@ -1,6 +1,5 @@
 import axios from './axios';
 
-
 const renamePainting = (microsoftId: String, canvasName: String, canvasId: String) => {
   axios.post('/api/doc', {
     type: 'rename',
@@ -10,8 +9,8 @@ const renamePainting = (microsoftId: String, canvasName: String, canvasId: Strin
       canvas_id: canvasId,
     },
   }).then((res) => {
+    console.log(res);
     if (res.data.retc !== 0) {
-      console.log(res);
       return false;
     }
     return true;

@@ -10,6 +10,8 @@ import copy from 'copy-to-clipboard';
 import axios from '../../utils/axios';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import AvatarArea from '../../components/avatar/avatar_self';
+import { getDocById } from '../../client/client';
+import Text from '../../components/input/dashboard_content_title'
 
 const Dashboard: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
@@ -205,6 +207,18 @@ const Dashboard: React.FC<{}> = () => {
                      }>
                         duplicate
                       </Menu.Item>
+                      <Menu.Item onClick={
+                        (e) => {
+                          e.domEvent.stopPropagation();
+                          // let uri = 'localhost:5000';
+                          // if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
+                          // copy(`${uri}/painting/${val.id}`);
+                          duplicatePainting(val.id, true);
+                          message.success('Duplicate!');
+                        }
+                     }>
+                        rename
+                      </Menu.Item>
                     </Menu>
                   );
                   if (ind >= 10) {
@@ -218,9 +232,16 @@ const Dashboard: React.FC<{}> = () => {
                             <p>···&nbsp;</p>
                           </div>
                         </Dropdown>
-                        <div className="template-image-canvas" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true" />
+                        <div
+                          className="template-image-canvas"
+                          onClick={() => {
+                            history.push(`/painting/${val.id}`);
+                          }}
+                          aria-hidden="true"
+                        />
                         <div className="font">
-                          {val.name}
+                          <Text doc={getDocById(val.id)} className='dashCanvasName' currentCanvas={val}/>
+                          {/* {val.name} */}
                         </div>
                       </div>
                     </>

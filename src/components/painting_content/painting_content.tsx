@@ -50,6 +50,10 @@ const PaintingContent: React.FC<{}> = () => {
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
   useEffect(() => {
+    console.log('docId', window.location.pathname.substring(10));
+    dispatch({ type: 'setCurrentCanvas', payload: { id: window.location.pathname.substring(10), name: doc?.value?.data?.canvaName || '', recentOpen: '' } });
+  }, [doc?.value?.data?.canvaName]);
+  useEffect(() => {
     dispatch({ type: 'setAdsorptionPointsList', payload: [] });
   }, [state.currentIndex]);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -196,7 +200,7 @@ const PaintingContent: React.FC<{}> = () => {
 
   return (
     <>
-      {doc.value.data === undefined ? null : <CanvasName />}
+      {doc.value.data === undefined ? null : <CanvasName doc={doc} />}
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
       <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} BarType="left" />
       <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />
