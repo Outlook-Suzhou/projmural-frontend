@@ -25,7 +25,7 @@ const createDoc = (canvaName, oldDoc) => {
       console.log('shapes: ', shapes);
       if (doc.type === null) {
         doc.create({
-          // shapes: shapes,
+          shapes,
           users: [],
           canvaName,
         }, () => {
