@@ -99,7 +99,7 @@ const PaintingContent: React.FC<{}> = () => {
       tools.push(SelectColor);
     }
     tools.push(ZIndex, Lock, DelEle);
-    if (type === 'TEXT') {
+    if (type === 'TEXT' || type === 'TEXTRECT') {
       tools.push(FontSize);
     }
     if (type === 'KANBAN') {
