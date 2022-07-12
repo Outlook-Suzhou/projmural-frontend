@@ -3,26 +3,27 @@ import 'antd/dist/antd.css';
 import { Input } from 'antd';
 import renamePainting from '../../utils/renamePainting';
 import { useStateStore, useDispatchStore } from '../../store/store';
+import { getDocById } from '../../client/client';
 
 interface Props {
   className: string
-  doc: any
-  currentCanvas: any
+  canvasId: string
 }
-const Text: React.FC<Props> = ({ doc, className, currentCanvas }: Props) => {
+const Text: React.FC<Props> = ({ className, canvasId }: Props) => {
   const state = useStateStore();
+  const [doc] = useState(() => getDocById(canvasId));
   const dispatch = useDispatchStore();
-  const [text, setText] = useState(doc.value.canvaName);
+  const [text, setText] = useState('');
   const handleSubmit = useCallback(() => {
-    renamePainting(state.userInfo.microsoftId, text, currentCanvas.id);
+    renamePainting(state.userInfo.microsoftId, text, canvasId);
     try {
-      doc.value.submitOp([{ p: ['canvaName'], od: doc.value.canvaName, oi: text }]);
+      doc.value.submitOp([{ p: ['canvaName'], od: doc.value.data.canvaName || '', oi: text }]);
     } catch (e) {
       console.log(e);
     }
 
     const newCanvasArray = [...state.userInfo.canvas];
-    const foundIndex = state.userInfo.canvas.findIndex((canvas) => canvas.id === currentCanvas.id);
+    const foundIndex = state.userInfo.canvas.findIndex((canvas) => canvas.id === canvasId);
     if (foundIndex !== -1) {
       newCanvasArray[foundIndex] = {
         ...state.userInfo.canvas[foundIndex],
@@ -32,17 +33,23 @@ const Text: React.FC<Props> = ({ doc, className, currentCanvas }: Props) => {
         type: 'setUserInfo',
         payload: { ...state.userInfo, canvas: newCanvasArray },
       });
-      console.log('text', text);
-      console.log('index', foundIndex);
-      console.log('current', currentCanvas);
-      console.log('state', state.userInfo.canvas);
     } else {
       console.log('Canvas Id doesnt exist in userInfo.canvas!');
     }
-  }, [state.userInfo.microsoftId, text, currentCanvas.id]);
+  }, [state.userInfo.microsoftId, text, canvasId, doc?.value?.data?.canvaName]);
   useEffect(() => {
-    setText(currentCanvas.name);
-  }, [currentCanvas.name]);
+    doc.value.subscribe(() => {
+      if (doc?.value?.data?.canvaName) {
+        setText(doc?.value?.data?.canvaName);
+      }
+    });
+    doc.value.on('op', () => {
+      if (doc?.value?.data?.canvaName) {
+        setText(doc?.value?.data?.canvaName);
+      }
+    });
+  }, []);
+
   return (
     <Input
       className={className}

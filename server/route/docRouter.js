@@ -22,9 +22,9 @@ const errUserNotExistRsp = {
 docRouter.post('/doc', async (req, res) => {
   const { type, data } = req.body;
   console.log('-----------');
-  console.log(type, data)
+  console.log(type, data);
   if (type !== 'create' && type !== 'get' && type !== 'duplicate' && type !== 'rename') {
-    res.status(200).send({...errRsp, msg: 'err option type does not exist.'});
+    res.status(200).send({ ...errRsp, msg: 'err option type does not exist.' });
     return;
   }
   if (data === null || data === undefined || data?.microsoft_id === undefined) {
@@ -164,7 +164,7 @@ docRouter.post('/doc', async (req, res) => {
     });
   } else if (type === 'rename') {
     if (data?.canvas_name === undefined) {
-      res.status(200).send({...errRsp, msg: 'err canvas_name undefined'});
+      res.status(200).send({ ...errRsp, msg: 'err canvas_name undefined' });
       return;
     }
     const ID = data?.canvas_id;
@@ -185,20 +185,20 @@ docRouter.post('/doc', async (req, res) => {
       if (usrRsp.data.retc === -4) {
         res.status(200).send(errUserNotExistRsp);
       } else {
-        res.status(200).send({...errRsp, msg: 'err unknown retc error'});
+        res.status(200).send({ ...errRsp, msg: 'err unknown retc error' });
       }
       return;
     }
 
     const newUser = usrRsp.data.data;
-    const foundIndex = newUser.canvas.findIndex(canvas => canvas.id == ID);
+    const foundIndex = newUser.canvas.findIndex((canvas) => canvas.id === ID);
     if (foundIndex === -1) {
-      res.status(200).send({...errRsp, msg: 'err canvas id cannot be found'});
+      res.status(200).send({ ...errRsp, msg: 'err canvas id cannot be found' });
       return;
     }
-    newUser.canvas[foundIndex] = {...newUser.canvas[foundIndex], name: data.canvas_name};
+    newUser.canvas[foundIndex] = { ...newUser.canvas[foundIndex], name: data.canvas_name };
     console.log(newUser);
-    
+
     let updateRsp;
     try {
       updateRsp = await axios.post(`${goHostName}/api/user`, {
@@ -210,7 +210,7 @@ docRouter.post('/doc', async (req, res) => {
     }
     if (updateRsp.data.retc !== 0) {
       console.log('update:', usrRsp.data);
-      res.status(200).send({...errRsp, msg: 'err updating failed'});
+      res.status(200).send({ ...errRsp, msg: 'err updating failed' });
       return;
     }
 

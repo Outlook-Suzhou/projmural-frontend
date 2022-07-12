@@ -27,7 +27,7 @@ const createDoc = (canvaName, oldDoc) => {
         doc.create({
           shapes,
           users: [],
-          canvaName: canvaName,
+          canvaName,
         }, () => {
           resolve(ID);
         });
