@@ -15,6 +15,10 @@ namespace BaseShapes {
     text: string,
     x: number,
   }
+  interface Color{
+    fill: string,
+    opacity: number,
+  }
   interface Proj {
     text: string,
     x: number,
@@ -26,12 +30,11 @@ namespace BaseShapes {
     status: string,
     tags: Array<Tag>,
   }
-  interface Rectangle extends Position, Size, Lock {
+  interface Rectangle extends Position, Size, Lock, Color {
     type: 'RECTANGLE',
     rotation: number,
-    fill: string,
   }
-  interface Circle extends Position, Lock {
+  interface Circle extends Position, Lock, Color {
     radius: number,
     type: 'CIRCLE',
     rotation: number,
@@ -43,17 +46,15 @@ namespace BaseShapes {
     rotation: number,
     fill: string,
   }
-  interface Diamond extends Position, Lock {
+  interface Diamond extends Position, Lock, Color {
     radius: Position,
     type: 'DIAMOND',
     rotation: number,
-    fill: string,
   }
-  interface Triangle extends Position, Lock {
+  interface Triangle extends Position, Lock, Color {
     radius: Position,
     type: 'TRIANGLE',
     rotation: number,
-    fill: string,
   }
   interface Image extends Position, Size, Lock {
     type: 'IMAGE',
@@ -69,8 +70,7 @@ namespace BaseShapes {
     scaleX: number,
     shift: any,
   }
-  interface TextRect extends Position, Size, Lock {
-    fill: string;
+  interface TextRect extends Position, Size, Lock, Color {
     type: 'TEXTRECT',
     rotation: number,
     text: string,
@@ -110,9 +110,8 @@ namespace BaseShapes {
     microsoftId: string,
     mail: string
   }
-  interface Star extends Position, Lock{
+  interface Star extends Position, Lock, Color{
     type: 'STAR',
-    fill: string,
     innerRadius: number,
     outerRadius: number,
     rotation: number,

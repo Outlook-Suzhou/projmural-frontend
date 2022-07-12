@@ -4,12 +4,12 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
   switch (shape) {
     case 'RECTANGLE':
       addShape({
-        width: 50, height: 50, x, y, type: 'RECTANGLE', rotation: 0, fill: '#FF6900', draggable: true,
+        width: 50, height: 50, x, y, type: 'RECTANGLE', rotation: 0, fill: '#FF6900', draggable: true, opacity: 0.9,
       });
       break;
     case 'TEXTRECT':
       addShape({
-        width: 100, height: 100, x, y, type: 'TEXTRECT', rotation: 0, fill: '#FFF9B2', draggable: true, text: '双击添加文字', fontSize: 10,
+        width: 100, height: 100, x, y, type: 'TEXTRECT', rotation: 0, fill: '#FFF9B2', draggable: true, text: '双击添加文字', fontSize: 10, opacity: 0.9,
       });
       break;
     case 'LINE':
@@ -19,12 +19,12 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
       break;
     case 'CIRCLE':
       addShape({
-        radius: 30, x, y, type: 'CIRCLE', draggable: true, rotation: 0, fill: '#7BDCB5',
+        radius: 30, x, y, type: 'CIRCLE', draggable: true, rotation: 0, fill: '#7BDCB5', opacity: 0.9,
       });
       break;
     case 'TRIANGLE':
       addShape({
-        radius: { x: 30, y: 30 }, x, y, type: 'TRIANGLE', draggable: true, rotation: 0, fill: '#9900EF',
+        radius: { x: 30, y: 30 }, x, y, type: 'TRIANGLE', draggable: true, rotation: 0, fill: '#9900EF', opacity: 0.9,
       });
       break;
     case 'ELLIPSE':
@@ -34,7 +34,7 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
       break;
     case 'DIAMOND':
       addShape({
-        radius: { x: 30, y: 20 }, x, y, type: 'DIAMOND', draggable: true, rotation: 0, fill: 'pink',
+        radius: { x: 30, y: 20 }, x, y, type: 'DIAMOND', draggable: true, rotation: 0, fill: 'pink', opacity: 0.9,
       });
       break;
     case 'ARROW':
@@ -49,7 +49,7 @@ const handleLayerClick = (shape: string, x: number, y: number) => {
       break;
     case 'STAR':
       addShape({
-        innerRadius: 20, outerRadius: 50, x, y, type: 'STAR', draggable: true, rotation: 0, fill: '#7BDCB5',
+        innerRadius: 20, outerRadius: 50, x, y, type: 'STAR', draggable: true, rotation: 0, fill: '#7BDCB5', opacity: 0.9,
       });
       break;
     case 'MESSAGE':

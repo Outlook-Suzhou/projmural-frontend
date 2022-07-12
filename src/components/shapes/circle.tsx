@@ -45,13 +45,10 @@ const Circle: React.FC<Props> = (props: Props) => {
         onDragEnd={(e) => {
           onDragEnd();
           const afterE: BaseShapes.Circle = {
+            ...item,
             radius: e.target.attrs.radius,
             x: e.target.x(),
             y: e.target.y(),
-            type: 'CIRCLE',
-            fill: item.fill,
-            rotation: item.rotation,
-            draggable: item.draggable,
           };
           // console.log(['From: Circle Dragmove', { p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
