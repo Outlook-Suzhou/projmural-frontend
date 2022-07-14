@@ -38,7 +38,10 @@ services:
       # - ~/.kube:/root/.kube:z
     environment:
       - TZ=
-    entrypoint: zsh -c "while sleep 1000; do :; done"
+    command: 
+      - -c
+      - cd /workspace && npm install && npm run dev
+    # entrypoint: zsh -c "while sleep 1000; do :; done"
     ports:
       - 3000:3000/tcp
     networks:
