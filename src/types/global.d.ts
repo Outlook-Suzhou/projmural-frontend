@@ -34,6 +34,12 @@ namespace BaseShapes {
     type: 'RECTANGLE',
     rotation: number,
   }
+  interface PointedRect extends Position, Size, Lock, Color{
+    type: 'POINTEDRECT',
+    rotation: number,
+    text: string,
+    fontSize: number,
+  }
   interface Circle extends Position, Lock, Color {
     radius: number,
     type: 'CIRCLE',
@@ -123,5 +129,5 @@ namespace BaseShapes {
     text: string,
     fontSize: number,
   }
-  type Shape = Rectangle | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect | Star | Message | Kanban;
+  type Shape = Rectangle | PointedRect | Circle | Triangle | Image | Ellipse | Diamond | Text | Line | Arrow | CurveLine | TextRect | Star | Message | Kanban;
 }
