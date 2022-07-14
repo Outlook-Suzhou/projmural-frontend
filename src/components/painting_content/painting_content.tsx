@@ -5,7 +5,7 @@ import {
   Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
 import { useHistory } from 'react-router-dom';
-import getCurrentDoc from '../../client/client';
+import getCurrentDoc, { getCurrentDocId } from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
 import AddImage from '../tool_bar/tools/add_images';
@@ -49,10 +49,6 @@ const PaintingContent: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
   const [, setCopySelectItem] = useCopyer();
-  useEffect(() => {
-    console.log('docId', window.location.pathname.substring(10));
-    dispatch({ type: 'setCurrentCanvas', payload: { id: window.location.pathname.substring(10), name: doc?.value?.data?.canvaName || '', recentOpen: '' } });
-  }, [doc?.value?.data?.canvaName]);
   useEffect(() => {
     dispatch({ type: 'setAdsorptionPointsList', payload: [] });
   }, [state.currentIndex]);

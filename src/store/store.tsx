@@ -27,7 +27,6 @@ interface UserInfo {
 }
 
 interface globalState {
-  currentCanvas: canvaInfo,
   currentItem: any,
   currentIndex: number
   stagePos: any
@@ -46,11 +45,6 @@ interface actionType {
 }
 
 const initialState: globalState = {
-  currentCanvas: {
-    id: '',
-    name: '',
-    recentOpen: '',
-  },
   currentItem: {},
   currentIndex: -1,
   stagePos: { x: 0, y: 0 },
@@ -100,8 +94,6 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...initialState };
     case 'setOpList':
       return { ...state, OpList: action.payload };
-    case 'setCurrentCanvas':
-      return { ...state, currentCanvas: action.payload };
     default:
       throw new Error();
   }
