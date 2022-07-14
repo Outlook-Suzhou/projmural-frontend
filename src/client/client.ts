@@ -51,4 +51,14 @@ export function getDocById(docID: string, callback?: Function) {
   return retDoc as any;
 }
 
+export function getQueryByIds(docIds: Array<string>) {
+  const newSocket = new ReconnectingWebSocket(`${ipAddress}`);
+  const newConnection = new sharedb.Connection(newSocket);
+  // console.log(docIds);
+  // const queries = newConnection.createSubscribeQuery('canvas', {});
+  const query = newConnection.createSubscribeQuery('canvas', { _id: { $in: docIds } });
+  console.log(query);
+  return query as any;
+}
+
 export default getCurrentDoc;

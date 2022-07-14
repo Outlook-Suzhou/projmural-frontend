@@ -3,15 +3,14 @@ import 'antd/dist/antd.css';
 import { Input } from 'antd';
 import renamePainting from '../../utils/renamePainting';
 import { useStateStore, useDispatchStore } from '../../store/store';
-import { getDocById } from '../../client/client';
 
 interface Props {
   className: string
   canvasId: string
+  doc: any
 }
-const Text: React.FC<Props> = ({ className, canvasId }: Props) => {
+const Text: React.FC<Props> = ({ className, canvasId, doc }: Props) => {
   const state = useStateStore();
-  const [doc] = useState(() => getDocById(canvasId));
   const dispatch = useDispatchStore();
   const [text, setText] = useState('');
   const handleSubmit = useCallback(() => {
@@ -49,7 +48,11 @@ const Text: React.FC<Props> = ({ className, canvasId }: Props) => {
       }
     });
   }, []);
-
+  useEffect(() => {
+    if (doc?.value?.data?.canvaName) {
+      setText(doc?.value?.data?.canvaName);
+    }
+  }, [doc?.value?.data?.canvaName]);
   return (
     <Input
       className={className}

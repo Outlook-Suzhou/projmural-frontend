@@ -1,5 +1,5 @@
 import './dashboard.scss';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   DatePicker, Menu, Dropdown, Pagination,
@@ -11,6 +11,7 @@ import axios from '../../utils/axios';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import AvatarArea from '../../components/avatar/avatar_self';
 import Text from '../../components/input/dashboard_content_title';
+import { getQueryByIds } from '../../client/client';
 
 const Dashboard: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
@@ -26,9 +27,23 @@ const Dashboard: React.FC<{}> = () => {
   const [canvaName, setCanvaName] = useState('untitle');
   const [url, setUrl] = useState('');
   const [canvaNameModalVisible, setCanvaNameModalVisible] = useState(false);
-  const handleOk = () => {
+  const [docs, setDocs] = useState([]);
+  useEffect(() => {
+    console.log('canvas change');
+    const canvasIds = state.userInfo.canvas.map((canvasInfo) => canvasInfo.id);
+    const query = getQueryByIds(canvasIds);
+    query.on('ready', () => {
+      let retDocs = query.results;
+      retDocs.sort((doc1: any, doc2: any) => canvasIds.indexOf(doc1.id) - canvasIds.indexOf(doc2.id));
+      console.log('sort----');
+      console.log(state.userInfo.canvas.map((canvaInfo) => canvaInfo.name));
+      console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
+      retDocs = retDocs.map((retdoc: any) => ({ value: retdoc }));
+      setDocs(retDocs);
+    });
+  }, [state.userInfo.canvas]);
+  const handleOk = useCallback(() => {
     setJourneyMapModalVisible(true);
-    console.log(canvaName);
     axios.post('/api/doc', {
       type: 'create',
       data: {
@@ -36,9 +51,16 @@ const Dashboard: React.FC<{}> = () => {
         canva_name: canvaName,
       },
     }).then((res) => {
-      history.push({ pathname: `/painting/${res.data.data.canvas_id}`, state: { kanban, id: `${res.data.data.canvas_id}` } });
+      if (res.data.retc === 0) {
+        const newUserInfo = { ...state.userInfo };
+        newUserInfo.canvas = [{ id: res.data.data.canvas_id, name: 'unused', recentOpen: '-1' }, ...newUserInfo.canvas];
+        dispatch({ type: 'setUserInfo', payload: newUserInfo });
+        history.push({ pathname: `/painting/${res.data.data.canvas_id}`, state: { kanban, id: `${res.data.data.canvas_id}` } });
+      } else {
+        console.log(res);
+      }
     });
-  };
+  }, [state.userInfo.microsoftId]);
   function onChangeTeamNum(value: number) {
     setKanban({ ...kanban, teamNum: value });
   }
@@ -56,7 +78,6 @@ const Dashboard: React.FC<{}> = () => {
     setUrl(e.target.value);
   }
   const duplicatePainting = (oldUrl: String, autoJump: Boolean) => {
-    console.log(oldUrl, oldUrl.substring(oldUrl.length - 8));
     axios.post('/api/doc', {
       type: 'duplicate',
       data: {
@@ -65,12 +86,13 @@ const Dashboard: React.FC<{}> = () => {
         old_Id: oldUrl.substring(oldUrl.length - 8),
       },
     }).then((res) => {
-      // console.log(res.data);
-      // console.log(res.data.retc, res.data.data);
       if (res.data.retc !== 0) {
         console.log(res);
         return;
       }
+      const newUserInfo = { ...state.userInfo };
+      newUserInfo.canvas = [{ id: res.data.data.canvas_id, name: 'unused', recentOpen: '-1' }, ...newUserInfo.canvas];
+      dispatch({ type: 'setUserInfo', payload: newUserInfo });
       if (autoJump) history.push(`/painting/${res.data.data.canvas_id}`);
     }).catch((e) => {
       console.log(e);
@@ -89,6 +111,9 @@ const Dashboard: React.FC<{}> = () => {
           console.log(res);
           return;
         }
+        const newUserInfo = { ...state.userInfo };
+        newUserInfo.canvas = [{ id: res.data.data.canvas_id, name: 'unused', recentOpen: '-1' }, ...newUserInfo.canvas];
+        dispatch({ type: 'setUserInfo', payload: newUserInfo });
         history.push(`/painting/${res.data.data.canvas_id}`);
       }).catch((e) => {
         console.log(e);
@@ -154,14 +179,18 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               {
-                state.userInfo.canvas.slice(pageMinValue, pageMaxValue).map((val, ind) => {
+                docs.slice(pageMinValue, pageMaxValue).map((val: any, ind) => {
                   const canvaDropdown = (
                     <Menu>
                       <Menu.Item onClick={
                         (e: any) => {
                           e.domEvent.stopPropagation();
+                          console.log('delete---', val.value.id, val?.value?.data?.canvaName);
                           const newUserInfo = { ...state.userInfo };
+                          newUserInfo.canvas = [...state.userInfo.canvas];
                           newUserInfo.canvas.splice(ind, 1);
+                          console.log(newUserInfo.canvas);
+                          console.log('---');
                           axios.post('/api/user', {
                             type: 'update',
                             data: {
@@ -188,10 +217,12 @@ const Dashboard: React.FC<{}> = () => {
                           e.domEvent.stopPropagation();
                           let uri = 'localhost:5000';
                           if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
-                          copy(`${uri}/painting/${val.id}`);
+                          console.log('copy canvaName', val.value.data.canvaName);
+                          copy(`${uri}/painting/${val.value.id}`);
                           message.success('url copied!');
                         }
-                     }>
+                      }
+                      >
                         copy link
                       </Menu.Item>
                       <Menu.Item onClick={
@@ -199,11 +230,13 @@ const Dashboard: React.FC<{}> = () => {
                           e.domEvent.stopPropagation();
                           // let uri = 'localhost:5000';
                           // if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
-                          // copy(`${uri}/painting/${val.id}`);
-                          duplicatePainting(val.id, true);
+                          // copy(`${uri}/painting/${val.value.id}`);
+                          console.log('duplicate canvaName', val.value.data.canvaName);
+                          duplicatePainting(val.value.id, true);
                           message.success('Duplicate!');
                         }
-                     }>
+                      }
+                      >
                         duplicate
                       </Menu.Item>
                     </Menu>
@@ -222,12 +255,12 @@ const Dashboard: React.FC<{}> = () => {
                         <div
                           className="template-image-canvas"
                           onClick={() => {
-                            history.push(`/painting/${val.id}`);
+                            history.push(`/painting/${val.value.id}`);
                           }}
                           aria-hidden="true"
                         />
                         <div className="font">
-                          <Text className="dashCanvasName" canvasId={val.id} />
+                          <Text className="dashCanvasName" canvasId={val.value.id} doc={val} />
                           {/* {val.name} */}
                         </div>
                       </div>
