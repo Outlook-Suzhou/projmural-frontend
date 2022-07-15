@@ -248,7 +248,7 @@ const Dashboard: React.FC<{}> = () => {
               />
             </div>
             <div className="text1">
-              Created Boards
+              History Boards
             </div>
             <div className="template">
               {
@@ -333,11 +333,10 @@ const Dashboard: React.FC<{}> = () => {
                 defaultCurrent={1}
                 defaultPageSize={5}
                 onChange={handleRecentPageChange}
-                total={state.userInfo.canvas.length}
+                total={state.userInfo.recentCanvas.length}
               />
             </div>
           </div>
-          
         </div>
         <Modal title="Please input kanban info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>
           <div>

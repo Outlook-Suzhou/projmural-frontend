@@ -35,6 +35,11 @@ function useCurrentLocation() {
               name: val.name,
               recentOpen: val.recent_open,
             })),
+            recentCanvas: userData.data.data.recent_canvas.map((val: any) => ({
+              id: val.id,
+              name: val.name,
+              recentOpen: val.recent_open,
+            })),
           },
         });
         return Promise.resolve(user);
