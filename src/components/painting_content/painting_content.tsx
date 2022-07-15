@@ -5,7 +5,7 @@ import {
   Stage, Layer, Rect, Line, Circle,
 } from 'react-konva';
 import { useHistory } from 'react-router-dom';
-import getCurrentDoc from '../../client/client';
+import getCurrentDoc, { getCurrentDocId } from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
 import AddImage from '../tool_bar/tools/add_images';
@@ -41,6 +41,7 @@ import AvatarArea from '../avatar/avatar_self';
 import AvatarUser from '../avatar/avatar_user';
 import CanvasName from './canvas_name';
 import ItemStatus from '../tool_bar/tools/item_status';
+import axios from '../../utils/axios';
 
 const PaintingContent: React.FC<{}> = () => {
   const doc = getCurrentDoc();
@@ -122,6 +123,17 @@ const PaintingContent: React.FC<{}> = () => {
       setKanBan(undefined);
     }
   });
+  useEffect(() => {
+    axios.post('/api/doc', {
+      type: 'add_history',
+      data: {
+        microsoft_id: state.userInfo.microsoftId,
+        canvas_id: getCurrentDocId(),
+      },
+    }).then((res) => {
+      console.log(res);
+    });
+  }, []);
 
   const boundFunc = (pos: any) => {
     const x = Math.min(0, Math.max(pos.x, window.innerWidth * 2 * (1 - state.stageScale)));

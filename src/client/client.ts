@@ -16,8 +16,13 @@ const doc = { value: null };
 // window.onerror = () => {
 //   location.reload();
 // };
+
+export function getCurrentDocId() {
+  return window.location.pathname.substring(10);
+}
+
 function getCurrentDoc(callback?: Function) {
-  const docID = window.location.pathname.substring(10);
+  const docID = getCurrentDocId();
   doc.value = connection.get('canvas', docID);
   // eslint-disable-next-line no-restricted-globals
   if (doc.value) {
@@ -29,4 +34,5 @@ function getCurrentDoc(callback?: Function) {
   }
   return doc as any;
 }
+
 export default getCurrentDoc;
