@@ -11,10 +11,14 @@ const startShareDBServer = () => {
   app.use(express.static('static'));
   const server = http.createServer(app);
   const wss = new WebSocket.Server({ server });
-  wss.on('connection', (ws) => {
-    const stream = new WebSocketJSONStream(ws);
-    backend.listen(stream);
-  });
+  try {
+    wss.on('connection', (ws) => {
+      const stream = new WebSocketJSONStream(ws);
+      backend.listen(stream);
+    });
+  } catch (e) {
+    console.log(e);
+  }
 
   server.listen(8080);
   console.log('ShareDB is listening on http://localhost:8080');

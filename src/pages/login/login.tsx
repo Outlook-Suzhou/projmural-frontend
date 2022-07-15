@@ -43,7 +43,7 @@ const Login: React.FC<{}> = () => {
                   name: val.name,
                   recentOpen: val.recent_open,
                 })),
-                recentCanvas: rsp.data.data.recent_canvas.map((val: any) => ({
+                recentCanvas: (rsp.data.data.recent_canvas || []).map((val: any) => ({
                   id: val.id,
                   name: val.name,
                   recentOpen: val.recent_open,

@@ -2,7 +2,7 @@ import React, {
   createContext, useContext, useReducer,
 } from 'react';
 
-interface line{
+interface line {
   fill: string,
   points: Array<number>,
   type: 'CURVELINE',
@@ -39,6 +39,8 @@ interface globalState {
   adsorptionPointsList: Array<Point>
   OpList: Array<any>
   userInfo: UserInfo
+  beginTime: string
+  endTime: string
 }
 interface actionType {
   type: string,
@@ -68,6 +70,8 @@ const initialState: globalState = {
     canvas: [],
     recentCanvas: [],
   },
+  beginTime: '0',
+  endTime: '0',
 };
 
 function reducer(state: globalState = initialState, action: actionType): globalState {
@@ -96,6 +100,10 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...initialState };
     case 'setOpList':
       return { ...state, OpList: action.payload };
+    case 'setBeginTime':
+      return { ...state, beginTime: action.payload };
+    case 'setEndTime':
+      return { ...state, endTime: action.payload };
     default:
       throw new Error();
   }
@@ -104,7 +112,7 @@ function reducer(state: globalState = initialState, action: actionType): globalS
 const StateContext = createContext<globalState>({
   ...initialState,
 });
-const DispatchContext = createContext<Function>(() => {});
+const DispatchContext = createContext<Function>(() => { });
 
 function useStateStore() {
   return useContext(StateContext);
@@ -113,13 +121,13 @@ function useStateStore() {
 function useDispatchStore() {
   return useContext(DispatchContext);
 }
-function StoreProvider({ children }: { children: any}) {
+function StoreProvider({ children }: { children: any }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
-        { children }
+        {children}
       </DispatchContext.Provider>
     </StateContext.Provider>
   );

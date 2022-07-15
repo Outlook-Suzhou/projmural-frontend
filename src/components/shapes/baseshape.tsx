@@ -4,6 +4,7 @@ import Triangle from './triangle';
 import Text from './text';
 import Ellipse from './ellipse';
 import Rectangle1 from './transform_rect';
+import PointedRect from './pointed_rect';
 import Diamond from './diamond';
 import Circle from './circle';
 import Line from './line';
@@ -65,6 +66,20 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
           item={item}
           gridWidth={gridWidth}
           gridHeight={gridHeight}
+          index={index}
+          isSelected={index === state.currentIndex}
+          onSelect={click}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onTransformStart={onTransformStart}
+          onTransformEnd={onTransformEnd}
+        />
+      );
+      break;
+    case 'POINTEDRECT':
+      ShapeComponent = (
+        <PointedRect
+          item={item}
           index={index}
           isSelected={index === state.currentIndex}
           onSelect={click}
