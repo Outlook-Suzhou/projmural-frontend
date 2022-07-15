@@ -10,7 +10,7 @@ const createPaintingID = () => {
   return md5.update(Buffer.from(uuidv4()).toString('base64')).digest('hex').slice(-8);
 };
 
-const createDoc = (canvaName, oldDoc) => {
+const createDoc = (canvaName, beginTime, endTime, oldDoc) => {
   const connection = backend.connect();
   // console.log(oldDoc)
   const ID = createPaintingID();
@@ -28,6 +28,8 @@ const createDoc = (canvaName, oldDoc) => {
           shapes,
           users: [],
           canvaName,
+          beginTime,
+          endTime,
         }, () => {
           resolve(ID);
         });
@@ -65,7 +67,7 @@ const duplicateDoc = async (canvaName, oldId) => {
   const oldDoc = await getDoc(oldId);
   console.log('old doc', oldDoc);
   console.log('old doc data: ', oldDoc.data);
-  return createDoc(canvaName, oldDoc);
+  return createDoc(canvaName, oldDoc.data.beginTime, oldDoc.data.endTime, oldDoc);
 };
 
 module.exports = {
