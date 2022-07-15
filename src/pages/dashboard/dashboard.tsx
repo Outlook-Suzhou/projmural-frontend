@@ -223,20 +223,20 @@ const Dashboard: React.FC<{}> = () => {
                         (e: any) => {
                           e.domEvent.stopPropagation();
                           console.log('delete---', val.value.id, val?.value?.data?.canvaName);
-                          const newUserInfo = { ...state.userInfo };
-                          newUserInfo.canvas = [...state.userInfo.canvas];
-                          newUserInfo.canvas.splice(ind, 1);
-                          console.log(newUserInfo.canvas);
+                          const newCanvas = [...state.userInfo.canvas];
+                          newCanvas.splice(ind, 1);
+                          console.log(newCanvas);
                           console.log('---');
                           axios.post('/api/user', {
                             type: 'update',
                             data: {
-                              microsoft_id: newUserInfo.microsoftId,
-                              ...newUserInfo,
+                              microsoft_id: state.userInfo.microsoftId,
+                              ...state.userInfo,
+                              canvas: newCanvas,
                             },
                           }).then((rsp) => {
                             if (rsp.data.retc === 0) {
-                              dispatch({ type: 'setUserInfo', payload: newUserInfo });
+                              dispatch({ type: 'setUserInfo', payload: { ...state.userInfo, canvas: newCanvas } });
                             } else {
                               console.log(rsp);
                             }
@@ -327,20 +327,21 @@ const Dashboard: React.FC<{}> = () => {
                         (e: any) => {
                           e.domEvent.stopPropagation();
                           console.log('delete---', val.value.id, val?.value?.data?.canvaName);
-                          const newUserInfo = { ...state.userInfo };
-                          // const recentCanvas = [...state.userInfo.recentCanvas];
-                          newUserInfo.recentCanvas.splice(ind, 1);
-                          console.log(newUserInfo.recentCanvas);
+                          const recentCanvas = [...state.userInfo.recentCanvas];
+                          recentCanvas.splice(ind, 1);
                           console.log('---');
                           axios.post('/api/user', {
                             type: 'update',
                             data: {
-                              microsoft_id: newUserInfo.microsoftId,
-                              ...newUserInfo,
+                              ...state.userInfo,
+                              recent_canvas: recentCanvas,
+                              microsoft_id: state.userInfo.microsoftId,
                             },
                           }).then((rsp) => {
                             if (rsp.data.retc === 0) {
-                              dispatch({ type: 'setUserInfo', payload: newUserInfo });
+                              dispatch({ type: 'setUserInfo', payload: { ...state.userInfo, recentCanvas } });
+                              console.log('userInfo after delete a item ofrecent list');
+                              console.log(state.userInfo);
                             } else {
                               console.log(rsp);
                             }
@@ -400,7 +401,6 @@ const Dashboard: React.FC<{}> = () => {
                         />
                         <div className="font">
                           <Text className="dashCanvasName" canvasId={val.value.id} doc={val} />
-                          {/* {val.name} */}
                         </div>
                       </div>
                     </>
