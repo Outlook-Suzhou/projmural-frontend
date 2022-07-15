@@ -95,7 +95,7 @@ const PaintingContent: React.FC<{}> = () => {
       tools.push(SelectColor);
     }
     tools.push(ZIndex, Lock, DelEle);
-    if (type === 'TEXT' || type === 'TEXTRECT') {
+    if (type === 'TEXT' || type === 'TEXTRECT' || type === 'POINTEDRECT') {
       tools.push(FontSize);
     }
     if (type === 'KANBAN') {
