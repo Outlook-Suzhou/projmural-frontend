@@ -323,7 +323,7 @@ const Dashboard: React.FC<{}> = () => {
                 recentDocs.slice(recentPageMinValue, recentPageMaxValue).map((val: any, ind) => {
                   const canvaDropdown = (
                     <Menu>
-                      <Menu.Item onClick={
+                      {/* <Menu.Item onClick={
                         (e: any) => {
                           e.domEvent.stopPropagation();
                           console.log('delete---', val.value.id, val?.value?.data?.canvaName);
@@ -339,9 +339,7 @@ const Dashboard: React.FC<{}> = () => {
                             },
                           }).then((rsp) => {
                             if (rsp.data.retc === 0) {
-                              dispatch({ type: 'setUserInfo', payload: { ...state.userInfo, recentCanvas } });
-                              console.log('userInfo after delete a item ofrecent list');
-                              console.log(state.userInfo);
+                              dispatch({ type: 'setUserInfo', payload: { ...state.userInfo, recentCanvas: [...recentCanvas] } });
                             } else {
                               console.log(rsp);
                             }
@@ -350,7 +348,7 @@ const Dashboard: React.FC<{}> = () => {
                       }
                       >
                         delete
-                      </Menu.Item>
+                      </Menu.Item> */}
                       <Menu.Item onClick={
                         (e) => {
                           // console.log('Id', state.userInfo.microsoftId)
