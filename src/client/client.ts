@@ -16,8 +16,13 @@ const doc = { value: null };
 // window.onerror = () => {
 //   location.reload();
 // };
+
+export function getCurrentDocId() {
+  return window.location.pathname.substring(10);
+}
+
 function getCurrentDoc(callback?: Function) {
-  const docID = window.location.pathname.substring(10);
+  const docID = getCurrentDocId();
   doc.value = connection.get('canvas', docID);
   // eslint-disable-next-line no-restricted-globals
   if (doc.value) {
@@ -29,4 +34,31 @@ function getCurrentDoc(callback?: Function) {
   }
   return doc as any;
 }
+
+export function getDocById(docID: string, callback?: Function) {
+  const retDoc = { value: null };
+  const newSocket = new ReconnectingWebSocket(`${ipAddress}`);
+  const newConnection = new sharedb.Connection(newSocket);
+  retDoc.value = newConnection.get('canvas', docID);
+  // eslint-disable-next-line no-restricted-globals
+  if (retDoc.value) {
+    ((retDoc.value) as any).subscribe(() => {
+      if (callback) {
+        callback();
+      }
+    });
+  }
+  return retDoc as any;
+}
+
+export function getQueryByIds(docIds: Array<string>) {
+  const newSocket = new ReconnectingWebSocket(`${ipAddress}`);
+  const newConnection = new sharedb.Connection(newSocket);
+  // console.log(docIds);
+  // const queries = newConnection.createSubscribeQuery('canvas', {});
+  const query = newConnection.createSubscribeQuery('canvas', { _id: { $in: docIds } });
+  console.log(query);
+  return query as any;
+}
+
 export default getCurrentDoc;

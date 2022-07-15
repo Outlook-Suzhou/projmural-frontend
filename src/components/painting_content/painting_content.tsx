@@ -259,7 +259,7 @@ const PaintingContent: React.FC<{}> = () => {
 
   return (
     <>
-      {doc.value.data === undefined ? null : <CanvasName />}
+      {doc.value.data === undefined ? null : <CanvasName doc={doc} />}
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
       <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} BarType="left" />
       <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />

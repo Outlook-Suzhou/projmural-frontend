@@ -1,0 +1,11 @@
+POST http://localhost:5000/api/doc HTTP/1.1
+content-type: application/json
+
+{
+    "type": "rename",
+    "data": {
+        "microsoft_id": "c35d42cc31ac7162",
+        "canvas_name": "rename",
+        "canvas_id": "f51721c7"
+    }
+}

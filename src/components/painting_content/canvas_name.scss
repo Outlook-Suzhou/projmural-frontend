@@ -4,6 +4,7 @@
   background-color: white;
   box-shadow: 2px 2px 2px #888888;
   display: flex;
+  // display: inline-block;
   flex-wrap: wrap;
   cursor: pointer;
   border-radius: 5px;
@@ -16,9 +17,28 @@ p{
   margin: auto;
   padding-right: 10px;
   line-height: 25px;
+  font-weight: 'bold';
   font-size: 25px;
   text-align: center;
 }
 .p1{
   padding-left: 10px;
+}
+.canvasName{
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: auto;
+  padding-right: 10px;
+  line-height: 25px;
+  font-size: 25px;
+  text-align: left;
+}
+.canvasName:hover{
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: auto;
+  padding-right: 10px;
+  line-height: 30px;
+  font-size: 30px;
+  text-align: left;
 }
