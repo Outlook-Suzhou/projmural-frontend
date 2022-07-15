@@ -23,7 +23,7 @@ docRouter.post('/doc', async (req, res) => {
   const { type, data } = req.body;
   console.log('-----------');
   console.log(type, data);
-  if (type !== 'create' && type !== 'get' && type !== 'duplicate') {
+  if (type !== 'create' && type !== 'get' && type !== 'duplicate' && type !== 'add_history') {
     res.status(200).send(errRsp);
     return;
   }
@@ -160,6 +160,65 @@ docRouter.post('/doc', async (req, res) => {
       retc: 0,
       data: {
         canvas_id: ID,
+      },
+    });
+  } else if (type === 'add_history') {
+    console.log('begin to add history');
+    let usrRsp;
+    try {
+      usrRsp = await axios.post(`${goHostName}/api/user`, {
+        type: 'query',
+        data: {
+          microsoft_id: data.microsoft_id,
+        },
+      }, postConfig);
+    } catch (e) {
+      console.log(e);
+    }
+    if (usrRsp.data.retc !== 0) {
+      console.log('query user failed...');
+      // console.log('query:', usrRsp.data);
+      if (usrRsp.data.retc === -4) {
+        res.status(200).send(errUserNotExistRsp);
+      } else {
+        res.status(200).send({ ...errRsp, msg: 'err unknown retc error' });
+      }
+      return;
+    }
+
+    const newUser = {
+      ...usrRsp.data.data,
+    };
+    if (newUser.recent_canvas === undefined || newUser.recent_canvas === null) {
+      newUser.recent_canvas = [];
+    } else newUser.recent_canvas = [...newUser.recent_canvas];
+    const foundIdx = newUser.recent_canvas.findIndex((canvasInfo) => canvasInfo.id === data.canvas_id);
+    if (foundIdx !== -1) newUser.recent_canvas.splice(foundIdx, 1);
+    newUser.recent_canvas.unshift({
+      id: data.canvas_id,
+      recent_open: -1,
+    });
+    let updateRsp;
+    try {
+      updateRsp = await axios.post(`${goHostName}/api/user`, {
+        type: 'update',
+        data: newUser,
+      }, postConfig);
+    } catch (e) {
+      console.log(e);
+    }
+    if (updateRsp.data.retc !== 0) {
+      console.log('update:', usrRsp.data);
+      res.status(200).send({ ...errRsp, msg: 'err update user failed' });
+      return;
+    }
+
+    res.status(200).send({
+      msg: 'ok',
+      retc: 0,
+      data: {
+        old_list: usrRsp.data.data.recent_canvas,
+        new_list: newUser.recent_canvas,
       },
     });
   }

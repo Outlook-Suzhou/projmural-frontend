@@ -1,0 +1,10 @@
+POST http://localhost:5000/api/doc HTTP/1.1
+content-type: application/json
+
+{
+    "type": "add_history",
+    "data": {
+        "microsoft_id": "c35d42cc31ac7162",
+        "canvas_id": "ba09ea84"
+    }
+}
