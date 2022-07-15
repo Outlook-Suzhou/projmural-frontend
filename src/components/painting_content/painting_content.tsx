@@ -132,6 +132,17 @@ const PaintingContent: React.FC<{}> = () => {
       },
     }).then((res) => {
       console.log(res);
+      dispatch({
+        type: 'setUserInfo',
+        payload: {
+          ...state.userInfo,
+          recentCanvas: res.data.data.new_list.map((val: any) => ({
+            id: val.id,
+            name: val.name,
+            recentOpen: val.recent_open,
+          })),
+        },
+      });
     });
   }, []);
 

@@ -100,8 +100,10 @@ const Dashboard: React.FC<{}> = () => {
   // divide boards into separate pages
   // eslint-disable-next-line no-unused-vars
   const [pageMinValue, setPageMinValue] = useState(0);
+  const [recentPageMinValue, setRecentPageMinValue] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [pageMaxValue, setPageMaxValue] = useState(5);
+  const [recentPageMaxValue, setRecentPageMaxValue] = useState(5);
   const handlePageChange = (val: number) => {
     if (val <= 1) {
       setPageMinValue(0);
@@ -109,6 +111,15 @@ const Dashboard: React.FC<{}> = () => {
     } else {
       setPageMinValue((val - 1) * 5);
       setPageMaxValue((val - 1) * 5 + 5);
+    }
+  };
+  const handleRecentPageChange = (val: number) => {
+    if (val <= 1) {
+      setRecentPageMinValue(0);
+      setRecentPageMaxValue(5);
+    } else {
+      setRecentPageMinValue((val - 1) * 5);
+      setRecentPageMaxValue((val - 1) * 5 + 5);
     }
   };
 
@@ -149,7 +160,7 @@ const Dashboard: React.FC<{}> = () => {
               </div>
             </div>
             <div className="text1">
-              History Boards
+              Created Boards
             </div>
             <div className="template">
               {
@@ -236,7 +247,97 @@ const Dashboard: React.FC<{}> = () => {
                 total={state.userInfo.canvas.length}
               />
             </div>
+            <div className="text1">
+              Created Boards
+            </div>
+            <div className="template">
+              {
+                state.userInfo.recentCanvas.slice(recentPageMinValue, recentPageMaxValue).map((val, ind) => {
+                  const canvaDropdown = (
+                    <Menu>
+                      <Menu.Item onClick={
+                        (e: any) => {
+                          e.domEvent.stopPropagation();
+                          const newUserInfo = { ...state.userInfo };
+                          newUserInfo.recentCanvas = [...newUserInfo.recentCanvas];
+                          newUserInfo.recentCanvas.splice(ind, 1);
+                          axios.post('/api/user', {
+                            type: 'update',
+                            data: {
+                              microsoft_id: newUserInfo.microsoftId,
+                              ...newUserInfo,
+                            },
+                          }).then((rsp) => {
+                            if (rsp.data.retc === 0) {
+                              dispatch({ type: 'setUserInfo', payload: newUserInfo });
+                            } else {
+                              console.log(rsp);
+                            }
+                          }).catch((err) => {
+                            console.log(err);
+                          });
+                        }
+                      }
+                      >
+                        delete
+                      </Menu.Item>
+                      <Menu.Item onClick={
+                        (e) => {
+                          e.domEvent.stopPropagation();
+                          let uri = 'localhost:5000';
+                          if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
+                          copy(`${uri}/painting/${val.id}`);
+                          message.success('url copied!');
+                        }
+                     }>
+                        copy link
+                      </Menu.Item>
+                      <Menu.Item onClick={
+                        (e) => {
+                          e.domEvent.stopPropagation();
+                          // let uri = 'localhost:5000';
+                          // if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
+                          // copy(`${uri}/painting/${val.id}`);
+                          duplicatePainting(val.id, true);
+                          message.success('Duplicate!');
+                        }
+                     }>
+                        duplicate
+                      </Menu.Item>
+                    </Menu>
+                  );
+                  if (ind >= 10) {
+                    return (<div />);
+                  }
+                  return (
+                    <>
+                      <div className="history">
+                        <Dropdown overlay={canvaDropdown}>
+                          <div className="setting" aria-hidden="true">
+                            <p>···&nbsp;</p>
+                          </div>
+                        </Dropdown>
+                        <div className="template-image-canvas" onClick={() => { history.push(`/painting/${val.id}`); }} aria-hidden="true" />
+                        <div className="font">
+                          {val.name}
+                        </div>
+                      </div>
+                    </>
+                  );
+                })
+              }
+            </div>
+            <div className="page">
+              <br />
+              <Pagination
+                defaultCurrent={1}
+                defaultPageSize={5}
+                onChange={handleRecentPageChange}
+                total={state.userInfo.canvas.length}
+              />
+            </div>
           </div>
+          
         </div>
         <Modal title="Please input kanban info" visible={journeyMapModalVisible} onOk={handleOk} onCancel={() => { setJourneyMapModalVisible(false); }}>
           <div>

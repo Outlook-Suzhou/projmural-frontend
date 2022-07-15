@@ -24,6 +24,7 @@ interface UserInfo {
   microsoftId: string
   mail: string
   canvas: Array<canvaInfo>
+  recentCanvas: Array<canvaInfo>
 }
 
 interface globalState {
@@ -65,6 +66,7 @@ const initialState: globalState = {
     microsoftId: '',
     mail: '',
     canvas: [],
+    recentCanvas: [],
   },
 };
 
