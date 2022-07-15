@@ -2,9 +2,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  Stage, Layer, Rect, Line, Circle,
+  Stage, Layer, Rect, Line, Circle, Label, Tag, Text,
 } from 'react-konva';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 import getCurrentDoc from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
@@ -48,6 +49,12 @@ const PaintingContent: React.FC<{}> = () => {
   const [userList] = useUserList(doc?.value?.data?.users || []);
   const state = useStateStore();
   const dispatch = useDispatchStore();
+  // console.log(doc);
+  state.beginTime = doc?.value?.data?.beginTime;
+  state.endTime = doc?.value?.data?.endTime;
+  // dispatch({ type: 'setBeginTime', payload: doc?.value?.data?.beginTime });
+  // dispatch({ type: 'setEndTime', payload: doc?.value?.data?.endTime });
+  // console.log(state);
   const [, setCopySelectItem] = useCopyer();
   useEffect(() => {
     dispatch({ type: 'setAdsorptionPointsList', payload: [] });
@@ -163,28 +170,79 @@ const PaintingContent: React.FC<{}> = () => {
       payload: { x: e.target.x(), y: e.target.y() },
     });
   };
-  const WIDTH = 150;// size for background rect
-  const HEIGHT = 150;
+  const WIDTH = 50;// size for background rect
+  const HEIGHT = 50;
+  const beginX = WIDTH * 3;// size for background rect
+  const beginY = HEIGHT * 3;
   // performance optimize
   const grid = useMemo(() => {
     const gridComponents: any = [];
-    for (let x = 0; x < window.innerWidth * 2; x += WIDTH) {
-      for (let y = 0; y < window.innerHeight * 4; y += HEIGHT) {
-        gridComponents.push(
-          <Rect
-            x={x}
-            y={y}
-            width={WIDTH}
-            height={HEIGHT}
-            fill="#faf9f8"
-            stroke="lightGray"
-            strokeWidth={0.5}
-          />,
-        );
-      }
+    gridComponents.push(
+      <Rect
+        x={0}
+        y={0}
+        width={window.innerWidth * 2}
+        height={window.innerHeight * 2}
+        fill="#faf9f8"
+      />,
+    );
+    for (let y = beginY; y < window.innerHeight * 2; y += HEIGHT) {
+      gridComponents.push(
+        <Rect
+          x={beginX}
+          y={y}
+          width={window.innerWidth * 2}
+          height={HEIGHT}
+          fill="#faf9f8"
+          stroke="lightGray"
+          strokeWidth={0.5}
+        />,
+      );
     }
     return gridComponents;
-  }, []);
+  }, [window.innerWidth]);
+
+  const timeTag = useMemo(
+    () => {
+      const components: any = [];
+      if (state.beginTime !== '0' && state.beginTime !== undefined) {
+        const a = moment(state.beginTime);
+        const b = moment(state.endTime);
+        b.add(1, 'month');
+        for (let y = beginY; y < window.innerHeight * 2 && !a.isSame(b); y += 2 * HEIGHT, a.add(1, 'month')) {
+          console.log('123');
+          components.push(
+            <Label x={WIDTH * 3} y={y} opacity={0.75}>
+              <Tag
+                fill="#969696"
+                stroke="lightGray"
+                strokeWidth={1}
+                cornerRadius={3}
+              />
+              <Text
+                text={a.format('YYYY-MM')}
+                fontFamily="Arial"
+                height={HEIGHT * 2}
+                width={WIDTH * 2}
+                align="center"
+                verticalAlign="middle"
+                fontSize={18}
+                padding={5}
+                fill="black"
+              />
+            </Label>
+            ,
+          );
+        }
+      }
+      const date = new Date();
+      const rate = moment(date.toLocaleDateString()).diff(moment(state.beginTime)) / 24 / 3600 / 1000 / 30;
+      components.push(
+        <Line points={[beginX + WIDTH * 2, beginY + rate * HEIGHT * 2, window.innerWidth * 2, beginY + rate * HEIGHT * 2]} stroke="#969696" strokeWidth={3} dash={[33, 10]} />,
+      );
+      return components;
+    }, [state.beginTime, state.endTime],
+  );
 
   // console.log(state);
   const handleClick = (e: any) => {
@@ -226,6 +284,7 @@ const PaintingContent: React.FC<{}> = () => {
             <DispatchContext.Provider value={dispatch}>
               <Layer onClick={() => { dispatch({ type: 'setCurrentIndex', payload: -1 }); }}>
                 {grid}
+                {timeTag}
               </Layer>
               <Layer onClick={handleClick}>
                 {

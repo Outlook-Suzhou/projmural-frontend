@@ -36,7 +36,7 @@ docRouter.post('/doc', async (req, res) => {
       res.status(200).send({ ...errRsp, msg: 'err canva_name undefined' });
       return;
     }
-    const ID = await createDoc(data.canva_name);
+    const ID = await createDoc(data.canva_name, data.begin_time, data.end_time);
     let usrRsp;
     try {
       usrRsp = await axios.post(`${goHostName}/api/user`, {

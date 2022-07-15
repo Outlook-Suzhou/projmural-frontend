@@ -48,6 +48,15 @@ const Dashboard: React.FC<{}> = () => {
     setKanban({ ...kanban, start: date[0].format(), end: date[1].format() });
     console.log(kanban);
   }
+
+  function onChangeDateState(date: any) {
+    // dispatch({ type: 'setBeginTime', payload: date[0].format() });
+    // dispatch({ type: 'setEndTime', payload: date[1].format() });
+    state.beginTime = date[0].format('YYYY-MM');
+    state.endTime = date[1].format('YYYY-MM');
+    // setKanban({ ...kanban, start: date[0].format(), end: date[1].format() });
+    console.log(state);
+  }
   function canvaNameOnChange(e: any) {
     setCanvaName(e.target.value);
   }
@@ -82,6 +91,8 @@ const Dashboard: React.FC<{}> = () => {
         data: {
           microsoft_id: state.userInfo.microsoftId,
           canva_name: canvaName,
+          begin_time: state.beginTime,
+          end_time: state.endTime,
         },
       }).then((res) => {
         if (res.data.retc !== 0) {
@@ -189,7 +200,8 @@ const Dashboard: React.FC<{}> = () => {
                           copy(`${uri}/painting/${val.id}`);
                           message.success('url copied!');
                         }
-                     }>
+                      }
+                      >
                         copy link
                       </Menu.Item>
                       <Menu.Item onClick={
@@ -201,7 +213,8 @@ const Dashboard: React.FC<{}> = () => {
                           duplicatePainting(val.id, true);
                           message.success('Duplicate!');
                         }
-                     }>
+                      }
+                      >
                         duplicate
                       </Menu.Item>
                     </Menu>
@@ -266,6 +279,11 @@ const Dashboard: React.FC<{}> = () => {
           <div>
             <>Input the url if you want to duplicate a canva</>
             <Input onChange={urlOnChange} />
+          </div>
+          <div>
+            <>Input the the begin-end time of the project: </>
+            {/* @ts-ignore */}
+            <RangePicker picker="month" onChange={onChangeDateState} style={{ marginTop: '20px' }} />
           </div>
         </Modal>
       </div>
