@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Rect, Transformer, Text, Line,
+  Transformer, Text, Shape,
 } from 'react-konva';
 import getCurrentDoc from '../../client/client';
+import shapeConfig from './shape_config';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import colorDetect from '../../utils/colorDetect';
 
@@ -37,17 +38,26 @@ const Message: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Rect
-        shadowOpacity={0.3}
-        shadowOffsetX={3}
-        shadowOffsetY={8}
-        shadowBlur={4}
+      <Shape
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
-        cornerRadius={item.height * 0.1}
         {...item}
+        {...shapeConfig}
         draggable={item.draggable && state.selectShape === 'FREE'}
+        sceneFunc={(context, shape) => {
+          context.beginPath();
+          context.moveTo(0, 0);
+          context.lineTo(item.width, 0);
+          context.lineTo(item.width, item.height);
+          context.lineTo(item.width * 0.4, item.height);
+          context.lineTo(item.width * 0.2, item.height * 1.1);
+          context.lineTo(item.width * 0.2, item.height);
+          context.lineTo(0, item.height);
+          context.closePath();
+          // (!) Konva specific method, it is very important
+          context.fillStrokeShape(shape);
+        }}
         onDragStart={onDragStart}
         onDragEnd={(e) => {
           onDragEnd();
@@ -58,14 +68,6 @@ const Message: React.FC<Props> = (props: Props) => {
           };
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
-        // onDragMove={(e) => {
-        //   const afterE: BaseShapes.Message = {
-        //     ...item,
-        //     x: e.target.x(),
-        //     y: e.target.y(),
-        //   };
-        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
-        // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
         onTransform={() => {
@@ -90,19 +92,6 @@ const Message: React.FC<Props> = (props: Props) => {
 
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
-      />
-      <Line
-        shadowOpacity={0.3}
-        shadowOffsetX={3}
-        shadowOffsetY={8}
-        shadowBlur={4}
-        fill={item.fill}
-        draggable={item.draggable && state.selectShape === 'FREE'}
-        points={[item.x + item.width * 0.2, item.y + item.height - 1,
-          item.x + item.width * 0.4, item.y + item.height - 1,
-          item.x + item.width * 0.2, item.y + item.height * 1.2,
-        ]}
-        closed
       />
       <Text
         x={item.x + item.width / 4}
