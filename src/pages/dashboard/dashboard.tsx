@@ -1,5 +1,6 @@
 import './dashboard.scss';
 import React, { useCallback, useEffect, useState } from 'react';
+import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import {
   DatePicker, Menu, Dropdown, Pagination,
@@ -53,7 +54,10 @@ const Dashboard: React.FC<{}> = () => {
       console.log('sort----');
       console.log(state.userInfo.recentCanvas);
       console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
-      retDocs = retDocs.map((retdoc: any) => ({ value: retdoc }));
+      retDocs = retDocs.map((retdoc: any, index: number) => ({
+        value: retdoc,
+        recentOpen: state.userInfo.recentCanvas[index].recentOpen,
+      }));
       setRecentDocs(retDocs);
     });
   }, [state.userInfo.recentCanvas]);
@@ -397,7 +401,13 @@ const Dashboard: React.FC<{}> = () => {
                           }}
                           aria-hidden="true"
                         />
-                        <div className="font">
+                        <div className="littlefont">
+                          {/* eslint-disable-next-line no-nested-ternary */}
+                          {moment().diff(val.recentOpen, 'days') >= 1
+                            ? (moment().diff(val.recentOpen, 'days') >= 7
+                              ? `${moment().diff(val.recentOpen, 'weeks')} weeks ago`
+                              : `${moment().diff(val.recentOpen, 'days')} days ago`)
+                            : moment(val.recentOpen).format('h:mm A')}
                           <Text className="dashCanvasName" canvasId={val.value.id} doc={val} />
                         </div>
                       </div>
