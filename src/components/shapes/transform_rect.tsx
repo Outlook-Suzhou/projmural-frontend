@@ -87,14 +87,18 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             // we will reset it back
             node.scaleX(1);
             node.scaleY(1);
+            const x = Math.round(node.x() / gridWidth) * gridWidth;
+            const y = Math.round(node.y() / gridHeight) * gridHeight;
+            node.x(x);
+            node.y(y);
             const afterE: BaseShapes.Rectangle = {
               ...item,
+              x,
+              y,
               // set minimal value
               width: Math.max(5, Math.round(width / gridWidth) * gridWidth),
               height: Math.max(5, Math.round(height / gridHeight) * gridHeight),
             };
-            node.x(Math.round(node.x() / gridWidth) * gridWidth);
-            node.y(Math.round(node.y() / gridHeight) * gridHeight);
             doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
           }
         }

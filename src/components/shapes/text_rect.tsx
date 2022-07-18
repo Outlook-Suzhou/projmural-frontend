@@ -7,10 +7,13 @@ import {
 import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import colorDetect from '../../utils/colorDetect';
+import shapeConfig from './shape_config';
 
 const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.TextRect,
+  gridWidth: number,
+  gridHeight: number,
   isSelected: boolean,
   onSelect: any,
   index: number,
@@ -21,7 +24,7 @@ interface Props {
 }
 const TextRect: React.FC<Props> = (props: Props) => {
   const {
-    item, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
+    item, gridWidth, gridHeight, isSelected, onSelect, index, onDragStart, onDragEnd, onTransformStart, onTransformEnd,
   } = props;
 
   const shapeRef = useRef<any>();
@@ -40,53 +43,61 @@ const TextRect: React.FC<Props> = (props: Props) => {
   return (
     <>
       <Group
-        draggable={item.draggable && state.selectShape === 'FREE'}
-          // eslint-disable-next-line react/jsx-props-no-spreading
+        // draggable={item.draggable && state.selectShape === 'FREE'}
+        // eslint-disable-next-line react/jsx-props-no-spreading
         onDragStart={onDragStart}
-        onDragEnd={(e) => {
+        onDragEnd={() => {
+          const node = shapeRef.current;
+          const x = node.x();
+          const y = node.y();
+          node.x(item.x);
+          node.y(item.y);
           const afterE: BaseShapes.TextRect = {
             ...item,
-            x: e.target.x(),
-            y: e.target.y(),
+            x: Math.round(x / gridWidth) * gridWidth,
+            y: Math.round(y / gridHeight) * gridHeight,
           };
           onDragEnd();
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
       >
         <Rect
-          shadowOpacity={0.3}
-          shadowOffsetX={3}
-          shadowOffsetY={8}
-          shadowBlur={4}
           onClick={onSelect}
           onTap={onSelect}
           ref={shapeRef}
           {...item}
+          {...shapeConfig}
+          draggable={item.draggable && state.selectShape === 'FREE'}
           onTransformStart={onTransformStart}
-          onTransformEnd={onTransformEnd}
-          onTransform={() => {
-            const node = shapeRef.current;
-            const scaleX = node.scaleX();
-            const scaleY = node.scaleY();
+          onTransformEnd={
+            () => {
+              onTransformEnd();
+              const node = shapeRef.current;
+              const scaleX = node.scaleX();
+              const scaleY = node.scaleY();
+              const width = node.width() * scaleX;
+              const height = node.height() * scaleY;
 
-            // we will reset it back
-            node.scaleX(1);
-            node.scaleY(1);
-            const afterE: BaseShapes.TextRect = {
-              ...item,
-              x: node.x(),
-              y: node.y(),
-              // fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
-              fontSize: item.fontSize,
-              // set minimal value
-              width: Math.max(5, node.width() * scaleX),
-              height: Math.max(5, node.height() * scaleY),
-              type: 'TEXTRECT',
-              rotation: node.rotation(),
-            };
-
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
-          }}
+              // we will reset it back
+              node.scaleX(1);
+              node.scaleY(1);
+              const x = Math.round(node.x() / gridWidth) * gridWidth;
+              const y = Math.round(node.y() / gridHeight) * gridHeight;
+              node.x(x);
+              node.y(y);
+              const afterE: BaseShapes.TextRect = {
+                ...item,
+                x,
+                y,
+                // fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
+                fontSize: item.fontSize,
+                // set minimal value
+                width: Math.max(5, Math.round(width / gridWidth) * gridWidth),
+                height: Math.max(5, Math.round(height / gridHeight) * gridHeight),
+              };
+              doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+            }
+          }
         />
         <Text
           x={item.x + item.width / 8}
@@ -100,7 +111,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
           fill={colorDetect(item.fill) === 'light' ? 'black' : 'white'}
           visible={visible}
           align="center"
-          draggable={item.draggable && state.selectShape === 'FREE'}
+          // draggable={item.draggable && state.selectShape === 'FREE'}
           width={item.width * 0.75}
           height={item.height * 0.75}
           onDblClick={() => {
@@ -134,7 +145,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
               doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
             });
             function removeTextarea() {
-            // @ts-ignore
+              // @ts-ignore
               textarea.parentNode.removeChild(textarea);
               // @ts-ignore
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -149,7 +160,7 @@ const TextRect: React.FC<Props> = (props: Props) => {
               }
             }
             setTimeout(() => {
-            // @ts-ignore
+              // @ts-ignore
               window.addEventListener('click', handleOutsideClick);
             });
           }}
