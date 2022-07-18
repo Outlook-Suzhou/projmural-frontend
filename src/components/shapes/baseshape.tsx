@@ -80,6 +80,8 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       ShapeComponent = (
         <PointedRect
           item={item}
+          gridWidth={gridWidth}
+          gridHeight={gridHeight}
           index={index}
           isSelected={index === state.currentIndex}
           onSelect={click}
@@ -200,6 +202,8 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
     case 'TEXTRECT':
       ShapeComponent = (
         <TextRect
+          gridWidth={gridWidth}
+          gridHeight={gridHeight}
           item={item}
           index={index}
           isSelected={index === state.currentIndex}
