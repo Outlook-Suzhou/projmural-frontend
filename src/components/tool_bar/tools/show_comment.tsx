@@ -12,6 +12,7 @@ const ShowComment: React.FC<{}> = () => {
       <Switch
         onChange={onChange}
         size="small"
+        defaultChecked
       />
     </div>
 
