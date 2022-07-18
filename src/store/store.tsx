@@ -36,6 +36,7 @@ interface globalState {
   lastLine: line
   isPainting: boolean
   isDragging: boolean // If is dragging or transforming a shape. If it's true, floatBar won't show.
+  isVisibleComment: boolean
   adsorptionPointsList: Array<Point>
   OpList: Array<any>
   userInfo: UserInfo
@@ -63,6 +64,7 @@ const initialState: globalState = {
   adsorptionPointsList: [],
   OpList: [],
   isDragging: false,
+  isVisibleComment: true,
   userInfo: {
     name: '',
     microsoftId: '',
@@ -92,6 +94,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, isPainting: action.payload };
     case 'setIsDragging':
       return { ...state, isDragging: action.payload };
+    case 'setCommentVisible':
+      return { ...state, isVisibleComment: action.payload };
     case 'setAdsorptionPointsList':
       return { ...state, adsorptionPointsList: action.payload };
     case 'setUserInfo':

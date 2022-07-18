@@ -43,6 +43,7 @@ import AvatarUser from '../avatar/avatar_user';
 import CanvasName from './canvas_name';
 import ItemStatus from '../tool_bar/tools/item_status';
 import axios from '../../utils/axios';
+import ShowComment from '../tool_bar/tools/show_comment';
 
 const PaintingContent: React.FC<{}> = () => {
   const doc = getCurrentDoc();
@@ -284,7 +285,7 @@ const PaintingContent: React.FC<{}> = () => {
     <>
       {doc.value.data === undefined ? null : <CanvasName doc={doc} />}
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
-      <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan]} BarType="left" />
+      <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan, ShowComment]} BarType="left" />
       <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />
       <div id="stage">
         <Stage
@@ -311,33 +312,38 @@ const PaintingContent: React.FC<{}> = () => {
               </Layer>
               <Layer onClick={handleClick}>
                 {
-                  list.map((item: any, index: number) => (
-                    <BaseShape
-                      item={item}
-                      index={index}
-                      gridHeight={HEIGHT}
-                      gridWidth={WIDTH}
-                      click={() => {
-                        if (state.selectShape === 'FREE') {
-                          if (item.type === 'TEXT' || item.type === 'KANBAN') {
-                            const afterE = {
-                              ...item,
-                              shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
-                            };
-                            doc.value.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                  list.map((item: any, index: number) => {
+                    if (!state.isVisibleComment && item.type === 'MESSAGE') {
+                      return null;
+                    }
+                    return (
+                      <BaseShape
+                        item={item}
+                        index={index}
+                        gridHeight={HEIGHT}
+                        gridWidth={WIDTH}
+                        click={() => {
+                          if (state.selectShape === 'FREE') {
+                            if (item.type === 'TEXT' || item.type === 'KANBAN') {
+                              const afterE = {
+                                ...item,
+                                shift: { x: state.stagePos.x, y: state.stagePos.y, scale: state.stageScale },
+                              };
+                              doc.value.submitOp([{ p: ['shapes', index], ld: item, li: afterE }]);
+                            }
+                            dispatch({ type: 'setCurrentItem', payload: item });
+                            dispatch({ type: 'setCurrentIndex', payload: index });
+                            setCopySelectItem(item);
                           }
-                          dispatch({ type: 'setCurrentItem', payload: item });
-                          dispatch({ type: 'setCurrentIndex', payload: index });
-                          setCopySelectItem(item);
-                        }
-                      }}
-                      del={() => {
-                        if (state.selectShape === 'ERASER' && state.isPainting) {
-                          doc.value.submitOp([{ p: ['shapes', index], ld: item }]);
-                        }
-                      }}
-                    />
-                  ))
+                        }}
+                        del={() => {
+                          if (state.selectShape === 'ERASER' && state.isPainting) {
+                            doc.value.submitOp([{ p: ['shapes', index], ld: item }]);
+                          }
+                        }}
+                      />
+                    );
+                  })
                 }
                 <Line
                   // @ts-ignore
