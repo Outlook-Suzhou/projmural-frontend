@@ -28,6 +28,7 @@ const Dashboard: React.FC<{}> = () => {
   const [url, setUrl] = useState('');
   const [canvaNameModalVisible, setCanvaNameModalVisible] = useState(false);
   const [docs, setDocs] = useState([]);
+  const [recentDocs, setRecentDocs] = useState([]);
   useEffect(() => {
     console.log('canvas change');
     const canvasIds = state.userInfo.canvas.map((canvasInfo) => canvasInfo.id);
@@ -36,12 +37,26 @@ const Dashboard: React.FC<{}> = () => {
       let retDocs = query.results;
       retDocs.sort((doc1: any, doc2: any) => canvasIds.indexOf(doc1.id) - canvasIds.indexOf(doc2.id));
       console.log('sort----');
-      console.log(state.userInfo.canvas.map((canvaInfo) => canvaInfo.name));
+      console.log(state.userInfo.canvas);
       console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
       retDocs = retDocs.map((retdoc: any) => ({ value: retdoc }));
       setDocs(retDocs);
     });
   }, [state.userInfo.canvas]);
+  useEffect(() => {
+    console.log('recent canvas change');
+    const canvasIds = state.userInfo.recentCanvas.map((canvasInfo) => canvasInfo.id);
+    const query = getQueryByIds(canvasIds);
+    query.on('ready', () => {
+      let retDocs = query.results;
+      retDocs.sort((doc1: any, doc2: any) => canvasIds.indexOf(doc1.id) - canvasIds.indexOf(doc2.id));
+      console.log('sort----');
+      console.log(state.userInfo.recentCanvas);
+      console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
+      retDocs = retDocs.map((retdoc: any) => ({ value: retdoc }));
+      setRecentDocs(retDocs);
+    });
+  }, [state.userInfo.recentCanvas]);
   const handleOk = useCallback(() => {
     setJourneyMapModalVisible(true);
     axios.post('/api/doc', {
@@ -137,8 +152,10 @@ const Dashboard: React.FC<{}> = () => {
   // divide boards into separate pages
   // eslint-disable-next-line no-unused-vars
   const [pageMinValue, setPageMinValue] = useState(0);
+  const [recentPageMinValue, setRecentPageMinValue] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [pageMaxValue, setPageMaxValue] = useState(5);
+  const [recentPageMaxValue, setRecentPageMaxValue] = useState(5);
   const handlePageChange = (val: number) => {
     if (val <= 1) {
       setPageMinValue(0);
@@ -146,6 +163,15 @@ const Dashboard: React.FC<{}> = () => {
     } else {
       setPageMinValue((val - 1) * 5);
       setPageMaxValue((val - 1) * 5 + 5);
+    }
+  };
+  const handleRecentPageChange = (val: number) => {
+    if (val <= 1) {
+      setRecentPageMinValue(0);
+      setRecentPageMaxValue(5);
+    } else {
+      setRecentPageMinValue((val - 1) * 5);
+      setRecentPageMaxValue((val - 1) * 5 + 5);
     }
   };
 
@@ -186,7 +212,7 @@ const Dashboard: React.FC<{}> = () => {
               </div>
             </div>
             <div className="text1">
-              History Boards
+              Created Boards
             </div>
             <div className="template">
               {
@@ -197,20 +223,20 @@ const Dashboard: React.FC<{}> = () => {
                         (e: any) => {
                           e.domEvent.stopPropagation();
                           console.log('delete---', val.value.id, val?.value?.data?.canvaName);
-                          const newUserInfo = { ...state.userInfo };
-                          newUserInfo.canvas = [...state.userInfo.canvas];
-                          newUserInfo.canvas.splice(ind, 1);
-                          console.log(newUserInfo.canvas);
+                          const newCanvas = [...state.userInfo.canvas];
+                          newCanvas.splice(ind, 1);
+                          console.log(newCanvas);
                           console.log('---');
                           axios.post('/api/user', {
                             type: 'update',
                             data: {
-                              microsoft_id: newUserInfo.microsoftId,
-                              ...newUserInfo,
+                              microsoft_id: state.userInfo.microsoftId,
+                              ...state.userInfo,
+                              canvas: newCanvas,
                             },
                           }).then((rsp) => {
                             if (rsp.data.retc === 0) {
-                              dispatch({ type: 'setUserInfo', payload: newUserInfo });
+                              dispatch({ type: 'setUserInfo', payload: { ...state.userInfo, canvas: newCanvas } });
                             } else {
                               console.log(rsp);
                             }
@@ -287,6 +313,106 @@ const Dashboard: React.FC<{}> = () => {
                 defaultPageSize={5}
                 onChange={handlePageChange}
                 total={state.userInfo.canvas.length}
+              />
+            </div>
+            <div className="text1">
+              History Boards
+            </div>
+            <div className="template">
+              {
+                recentDocs.slice(recentPageMinValue, recentPageMaxValue).map((val: any, ind) => {
+                  const canvaDropdown = (
+                    <Menu>
+                      {/* <Menu.Item onClick={
+                        (e: any) => {
+                          e.domEvent.stopPropagation();
+                          console.log('delete---', val.value.id, val?.value?.data?.canvaName);
+                          const recentCanvas = [...state.userInfo.recentCanvas];
+                          recentCanvas.splice(ind, 1);
+                          console.log('---');
+                          axios.post('/api/user', {
+                            type: 'update',
+                            data: {
+                              ...state.userInfo,
+                              recent_canvas: recentCanvas,
+                              microsoft_id: state.userInfo.microsoftId,
+                            },
+                          }).then((rsp) => {
+                            if (rsp.data.retc === 0) {
+                              dispatch({ type: 'setUserInfo', payload: { ...state.userInfo, recentCanvas: [...recentCanvas] } });
+                            } else {
+                              console.log(rsp);
+                            }
+                          });
+                        }
+                      }
+                      >
+                        delete
+                      </Menu.Item> */}
+                      <Menu.Item onClick={
+                        (e) => {
+                          // console.log('Id', state.userInfo.microsoftId)
+                          e.domEvent.stopPropagation();
+                          let uri = 'localhost:5000';
+                          if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
+                          console.log('copy canvaName', val.value.data.canvaName);
+                          copy(`${uri}/painting/${val.value.id}`);
+                          message.success('url copied!');
+                        }
+                      }
+                      >
+                        copy link
+                      </Menu.Item>
+                      <Menu.Item onClick={
+                        (e) => {
+                          e.domEvent.stopPropagation();
+                          // let uri = 'localhost:5000';
+                          // if (process.env.REACT_APP_ENV === 'remote') { uri = 'dev.projmural2.com'; }
+                          // copy(`${uri}/painting/${val.value.id}`);
+                          console.log('duplicate canvaName', val.value.data.canvaName);
+                          duplicatePainting(val.value.id, true);
+                          message.success('Duplicate!');
+                        }
+                      }
+                      >
+                        duplicate
+                      </Menu.Item>
+                    </Menu>
+                  );
+                  if (ind >= 10) {
+                    return (<div />);
+                  }
+                  return (
+                    <>
+                      <div className="history">
+                        <Dropdown overlay={canvaDropdown}>
+                          <div className="setting" aria-hidden="true">
+                            <p>···&nbsp;</p>
+                          </div>
+                        </Dropdown>
+                        <div
+                          className="template-image-canvas"
+                          onClick={() => {
+                            history.push(`/painting/${val.value.id}`);
+                          }}
+                          aria-hidden="true"
+                        />
+                        <div className="font">
+                          <Text className="dashCanvasName" canvasId={val.value.id} doc={val} />
+                        </div>
+                      </div>
+                    </>
+                  );
+                })
+              }
+            </div>
+            <div className="page">
+              <br />
+              <Pagination
+                defaultCurrent={1}
+                defaultPageSize={5}
+                onChange={handleRecentPageChange}
+                total={state.userInfo.recentCanvas.length}
               />
             </div>
           </div>
