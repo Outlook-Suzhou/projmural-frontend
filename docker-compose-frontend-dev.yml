@@ -46,12 +46,16 @@ services:
         ipv4_address: 123.115.107.82
   
   backend:
-    build: ../projmural-backend
+    image: golang:1.18.3-bullseye
     container_name: Backend-Container
+    volumes:
+      - ../projmural-backend/:/workspace
     ports:
       - "8081:8081"
-    volumes:
-      - ../projmural-backend/:/ProjMural
+    command: 
+      - /bin/bash
+      - -c 
+      - cd /workspace && go env -w GOPROXY=https://goproxy.cn,direct && go run main.go --env=docker
     networks:
       reverseProxy_service_net:
         ipv4_address: 123.115.107.83

@@ -64,7 +64,7 @@ docRouter.post('/doc', async (req, res) => {
     newUser.canvas.unshift({
       id: ID,
       name: data.canva_name,
-      recent_open: 0,
+      recent_open: new Date().getTime(),
     });
     let updateRsp;
     try {
@@ -138,7 +138,7 @@ docRouter.post('/doc', async (req, res) => {
     newUser.canvas.unshift({
       id: ID,
       name: data.canva_name,
-      recent_open: 0,
+      recent_open: new Date().getTime(),
     });
     let updateRsp;
     try {
@@ -197,7 +197,7 @@ docRouter.post('/doc', async (req, res) => {
     if (foundIdx !== -1) newUser.recent_canvas.splice(foundIdx, 1);
     newUser.recent_canvas.unshift({
       id: data.canvas_id,
-      recent_open: -1,
+      recent_open: new Date().getTime(),
     });
     let updateRsp;
     try {
