@@ -13,11 +13,16 @@ function useUserList(list: BaseShapes.User[]) {
   useEffect(() => {
     (doc.value).subscribe(() => {
       if (doc?.value?.data?.users) {
+        console.log('\nupdate users on subscribe:');
+        console.log(...doc.value.data.users);
         setUserList([...doc.value.data.users]);
       }
     });
     doc.value.on('op', () => {
       if (doc?.value?.data?.users) {
+        console.log('\nupdate users on subscribe:');
+        console.log(...doc.value.data.users);
+        setUserList([...doc.value.data.users]);
         setUserList([...doc.value.data.users]);
       }
     });
