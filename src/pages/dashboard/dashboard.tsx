@@ -38,9 +38,6 @@ const Dashboard: React.FC<{}> = () => {
     query.on('ready', () => {
       let retDocs = query.results;
       retDocs.sort((doc1: any, doc2: any) => canvasIds.indexOf(doc1.id) - canvasIds.indexOf(doc2.id));
-      console.log('sort----');
-      console.log(state.userInfo.canvas);
-      console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
       retDocs = retDocs.map((retdoc: any) => ({ value: retdoc }));
       setDocs(retDocs);
     });
@@ -52,9 +49,6 @@ const Dashboard: React.FC<{}> = () => {
     query.on('ready', () => {
       let retDocs = query.results;
       retDocs.sort((doc1: any, doc2: any) => canvasIds.indexOf(doc1.id) - canvasIds.indexOf(doc2.id));
-      console.log('sort----');
-      console.log(state.userInfo.recentCanvas);
-      console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
       retDocs = retDocs.map((retdoc: any, index: number) => ({
         value: retdoc,
         recentOpen: state.userInfo.recentCanvas[index].recentOpen,
@@ -62,9 +56,6 @@ const Dashboard: React.FC<{}> = () => {
       setRecentDocs(retDocs);
     });
   }, [state.userInfo.recentCanvas]);
-  useEffect(() => {
-    console.log('global state:', state);
-  }, [state]);
   const handleOk = useCallback(() => {
     setJourneyMapModalVisible(true);
     axios.post('/api/doc', {

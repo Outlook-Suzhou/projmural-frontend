@@ -41,6 +41,7 @@ const AggContainer: React.FC<{}> = () => {
       console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
       retDocs = retDocs.map((retdoc: any, index: number) => ({
         value: retdoc,
+        name: retdoc.data.canvaName,
         recentOpen: canvasArray[index].recentOpen,
       }));
       setDocs(retDocs);

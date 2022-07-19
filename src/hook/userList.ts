@@ -11,7 +11,6 @@ function useUserList(list: BaseShapes.User[]) {
   const doc = getCurrentDoc() || state?.currentDoc?.value;
 
   useEffect(() => {
-    console.log('global state:', state);
     (doc?.value).subscribe(() => {
       if (doc?.value?.data?.users) {
         setUserList([...doc?.value.data.users]);

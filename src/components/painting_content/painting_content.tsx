@@ -53,7 +53,7 @@ interface Props {
 const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
-  const [doc] = useState(docObj || state.currentDoc || getCurrentDoc(docId));
+  const [doc] = useState(docObj || getCurrentDoc(docId) || state.currentDoc);
   useEffect(() => {
     console.log('glboal state: Set Doc');
     dispatch({
@@ -107,7 +107,6 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
     if (doc.value.data.shapes === undefined) {
       return [];
     }
-    console.log('global state', state);
     const currentItem = doc.value.data.shapes[state.currentIndex];
     if (currentItem === undefined) { return []; }
     const { type } = currentItem;
@@ -403,7 +402,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
 };
 
 PaintingContent.defaultProps = {
-  docId: '',
+  docId: undefined,
   docObj: undefined,
 };
 

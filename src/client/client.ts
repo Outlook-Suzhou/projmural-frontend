@@ -31,8 +31,9 @@ function getCurrentDoc(docId?: string, callback?: Function) {
         callback();
       }
     });
+    return doc as any;
   }
-  return doc as any;
+  return undefined;
 }
 
 export function getDocById(docID: string, callback?: Function) {

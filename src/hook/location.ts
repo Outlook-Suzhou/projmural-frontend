@@ -14,10 +14,6 @@ function useCurrentLocation() {
   });
   const state = useStateStore();
   const dispatch = useDispatchStore();
-  console.log(currentLocation);
-  useEffect(() => {
-    console.log('global state:', state);
-  }, [state]);
   useEffect(() => {
     axios.get('/api/currentUser').then((userData) => {
       if (userData.data.retc === -1) {
