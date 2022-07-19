@@ -21,9 +21,9 @@ export function getCurrentDocId() {
   return window.location.pathname.substring(10);
 }
 
-function getCurrentDoc(callback?: Function) {
-  const docID = getCurrentDocId();
-  doc.value = connection.get('canvas', docID);
+function getCurrentDoc(docId?: string, callback?: Function) {
+  const currentDocId = (docId || getCurrentDocId());
+  doc.value = connection.get('canvas', currentDocId);
   // eslint-disable-next-line no-restricted-globals
   if (doc.value) {
     ((doc.value) as any).subscribe(() => {
@@ -40,7 +40,7 @@ export function getDocById(docID: string, callback?: Function) {
   const newSocket = new ReconnectingWebSocket(`${ipAddress}`);
   const newConnection = new sharedb.Connection(newSocket);
   retDoc.value = newConnection.get('canvas', docID);
-  // eslint-disable-next-line no-restricted-globals
+
   if (retDoc.value) {
     ((retDoc.value) as any).subscribe(() => {
       if (callback) {
@@ -54,8 +54,7 @@ export function getDocById(docID: string, callback?: Function) {
 export function getQueryByIds(docIds: Array<string>) {
   const newSocket = new ReconnectingWebSocket(`${ipAddress}`);
   const newConnection = new sharedb.Connection(newSocket);
-  // console.log(docIds);
-  // const queries = newConnection.createSubscribeQuery('canvas', {});
+
   const query = newConnection.createSubscribeQuery('canvas', { _id: { $in: docIds } });
   console.log(query);
   return query as any;

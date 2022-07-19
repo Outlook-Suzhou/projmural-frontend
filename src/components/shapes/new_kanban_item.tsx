@@ -3,11 +3,9 @@ import {
 } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
 import Konva from 'konva';
-import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import colorDetect from '../../utils/colorDetect';
 
-const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Kanban,
   isSelected: boolean,
@@ -45,12 +43,12 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
           item.draggable = true;
           item.projs[i].x = e.target.x();
           item.projs[i].y = e.target.y();
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
         }}
         // onDragMove={(e) => {
         //   item.projs[i].x = e.target.x();
         //   item.projs[i].y = e.target.y();
-        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+        //   state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
         // }}
         onClick={click}
         width={item.projs[i].width}
@@ -74,7 +72,7 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
           item.projs[i].x = node.x();
           item.projs[i].height = Math.max(5, node.height() * scaleY);
           item.projs[i].y = node.y();
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
         }}
       />
       <Text
@@ -103,19 +101,19 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
           item.draggable = true;
           item.projs[i].x = e.target.x() - item.projs[i].width / 4;
           item.projs[i].y = e.target.y() - 10;
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
         }}
         // onDragMove={(e) => {
         //   item.projs[i].x = e.target.x() - item.projs[i].width / 4;
         //   item.projs[i].y = e.target.y() - 10;
-        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+        //   state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
         // }}
         onDblClick={() => {
           const ops = state.OpList;
-          ops.push(JSON.stringify(doc.value.data.shapes));
+          ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
           dispatch({ type: 'setOpList', payload: ops });
           item.projs[i].visible = false;
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);
           const textNode = new Konva.Text({
@@ -150,7 +148,7 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
           textarea.focus();
           textarea.addEventListener('keydown', () => {
             item.projs[i].text = textarea.value;
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
           });
           function removeTextarea() {
             // @ts-ignore
@@ -159,7 +157,7 @@ const NewKanbanItem: React.FC<Props> = (props: Props) => {
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             window.removeEventListener('click', handleOutsideClick);
             item.projs[i].visible = true;
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
           }
           function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
             if (e.target !== textarea) {

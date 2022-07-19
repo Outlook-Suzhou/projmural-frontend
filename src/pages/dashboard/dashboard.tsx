@@ -6,6 +6,7 @@ import {
   DatePicker, Menu, Dropdown, Pagination,
   InputNumber, Modal, Select, PageHeader, Input,
   message,
+  Button,
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import axios from '../../utils/axios';
@@ -61,6 +62,9 @@ const Dashboard: React.FC<{}> = () => {
       setRecentDocs(retDocs);
     });
   }, [state.userInfo.recentCanvas]);
+  useEffect(() => {
+    console.log('global state:', state);
+  }, [state]);
   const handleOk = useCallback(() => {
     setJourneyMapModalVisible(true);
     axios.post('/api/doc', {
@@ -218,6 +222,9 @@ const Dashboard: React.FC<{}> = () => {
             <div className="text1">
               Created Boards
             </div>
+            <div className="viewDiv">
+              <Button className="viewButton" onClick={() => { history.push('/view/created'); }}>View All</Button>
+            </div>
             <div className="template">
               {
                 docs.slice(pageMinValue, pageMaxValue).map((val: any, ind) => {
@@ -321,6 +328,9 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="text1">
               History Boards
+            </div>
+            <div className="viewDiv">
+              <Button className="viewButton" onClick={() => { history.push('/view/history'); }}>View All</Button>
             </div>
             <div className="template">
               {

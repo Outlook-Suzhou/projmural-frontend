@@ -9,8 +9,10 @@ import {
   InputNumber, Modal, Select, Tooltip,
 } from 'antd';
 import addKanBan from '../../../utils/add_kanban';
+import { useStateStore } from '../../../store/store';
 
 const AddKanBan: React.FC<{}> = () => {
+  const state = useStateStore();
   const [journeyMapModalVisible, setJourneyMapModalVisible] = useState(false);
   const [kanban, setKanban] = useState({
     teamNum: 3, start: '1', end: '1', unit: 'day', isFirst: false,
@@ -19,7 +21,7 @@ const AddKanBan: React.FC<{}> = () => {
   const { RangePicker } = DatePicker;
   const { Option } = Select;
   const handleOk = () => {
-    addKanBan(kanban);
+    addKanBan(kanban, state.currentDoc);
     setJourneyMapModalVisible(false);
   };
   function onChangeTeamNum(value: number) {

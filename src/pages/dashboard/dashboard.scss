@@ -25,9 +25,25 @@
       background-color: #F2F2F2;
       border:1px solid transparent;
       .text1{
+        display: inline;
         font-size: 30px;
-        margin-left: 12%;
+        margin-left: 8%;
         margin-top: 10px;
+      }
+      .viewDiv{
+        display: inline;
+        padding-right: 10px;
+        float:right;
+        margin-right: 7.5%;
+        margin-top: 10px;
+        .viewButton{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: cornsilk;
+          text-align: center;
+          font-size: 25px;
+        }
       }
       .header2{
         font-size: 30px;
@@ -154,7 +170,6 @@
   text-align: center;
   font-size: 10px;
 }
-
 .dashCanvasName{
   margin: auto;
   line-height: 15px;

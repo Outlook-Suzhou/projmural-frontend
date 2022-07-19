@@ -1,11 +1,8 @@
 import { Line, Transformer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
-import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
-// eslint-disable-next-line import/namespace
 import { useStateStore, useDispatchStore } from '../../store/store';
 
-const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Diamond,
   isSelected: boolean,
@@ -52,7 +49,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
             x: e.target.x(),
             y: e.target.y(),
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         // onDragMove={(e) => {
           // const afterE: BaseShapes.Diamond = {
@@ -64,7 +61,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
           //   rotation: item.rotation,
           //   draggable: item.draggable,
           // };
-          // doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          // state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
@@ -87,7 +84,7 @@ const Diamond: React.FC<Props> = (props: Props) => {
             type: 'DIAMOND',
             rotation: node.rotation(),
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
       />
       {isSelected && (

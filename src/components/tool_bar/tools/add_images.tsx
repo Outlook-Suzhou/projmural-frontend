@@ -9,10 +9,11 @@ import 'crypto-js';// "base-64": "^0.1.0"
 import 'base-64';//  "crypto-js": "^3.1.9-1"
 import addShape from '../../../utils/add_function';
 import { useDispatchStore, useStateStore } from '../../../store/store';
-import getCurrentDoc from '../../../client/client';
 
-const doc = getCurrentDoc();
-class AliyunOSSUpload extends React.Component {
+interface Props {
+  doc: any
+}
+class AliyunOSSUpload extends React.Component<Props> {
   // eslint-disable-next-line react/state-in-constructor
   state = {
     OSSData: {
@@ -98,7 +99,8 @@ class AliyunOSSUpload extends React.Component {
             url: myUrl,
             rotation: 0,
             draggable: true,
-          });
+          // eslint-disable-next-line react/destructuring-assignment, react/prop-types
+          }, this.props.doc);
         };
       }, 1000);
     }
@@ -180,6 +182,7 @@ class AliyunOSSUpload extends React.Component {
     );
   }
 }
+
 const AddImage: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
@@ -189,11 +192,11 @@ const AddImage: React.FC<{}> = () => {
       className="tool_icon"
       onClick={() => {
         const ops = state.OpList;
-        ops.push(JSON.stringify(doc.value.data.shapes));
+        ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
         dispatch({ type: 'setOpList', payload: ops });
       }}
     >
-      <AliyunOSSUpload />
+      <AliyunOSSUpload doc={state.currentDoc} />
     </div>
   );
 };

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Line as KonvaLine, Circle } from 'react-konva';
 import Vector from './vector';
-import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 import checkAdsorptionPoint from './adsorption';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import globalConfig from './global_config';
 
-const doc = getCurrentDoc();
 interface vector {
   x: number;
   y: number;
@@ -104,19 +102,19 @@ const Arrow = (props) => {
         onDragStart={onDragStart}
         onDragEnd={(e) => {
           onDragEnd();
-          const afterE = Object.assign(doc.value.data.shapes[index], {
+          const afterE = Object.assign(state.currentDoc.value.data.shapes[index], {
             x: e.target.attrs.x,
             y: e.target.attrs.y,
           });
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         onClick={click}
         // onDragMove={(e) => {
-        //   const afterE = Object.assign(doc.value.data.shapes[index], {
+        //   const afterE = Object.assign(state.currentDoc.value.data.shapes[index], {
         //     x: e.target.attrs.x,
         //     y: e.target.attrs.y,
         //   });
-        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        //   state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         // }}
       />
       <Circle
@@ -133,7 +131,7 @@ const Arrow = (props) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
           let newPoint = mouse;
           let flag = false;
-          doc.value.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+          state.currentDoc.value.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
             if (flag || ind === index) return;
             const res = checkAdsorptionPoint(mouse, shape, miniDistance);
             if (res.flag === true) {
@@ -143,13 +141,13 @@ const Arrow = (props) => {
             }
           });
           if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
-          const afterE = Object.assign(doc.value.data.shapes[index], {
+          const afterE = Object.assign(state.currentDoc.value.data.shapes[index], {
             start: {
-              x: newPoint.x - doc.value.data.shapes[index].x + Math.random() * 0.000001,
-              y: newPoint.y - doc.value.data.shapes[index].y + Math.random() * 0.000001,
+              x: newPoint.x - state.currentDoc.value.data.shapes[index].x + Math.random() * 0.000001,
+              y: newPoint.y - state.currentDoc.value.data.shapes[index].y + Math.random() * 0.000001,
             },
           });
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         radius={globalConfig.auxiliaryPointSize / state.stageScale}
         fill="white"
@@ -169,7 +167,7 @@ const Arrow = (props) => {
           const mouse: vector = { x: e.target.attrs.x, y: e.target.attrs.y };
           let newPoint = mouse;
           let flag = false;
-          doc.value.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
+          state.currentDoc.value.data.shapes.forEach((shape: BaseShapes.Shape, ind: number) => {
             if (flag || ind === index) return;
             const res = checkAdsorptionPoint(mouse, shape, miniDistance);
             if (res.flag === true) {
@@ -179,13 +177,13 @@ const Arrow = (props) => {
             }
           });
           if (!flag) dispatch({ type: 'setAdsorptionPointsList', payload: [] });
-          const afterE = Object.assign(doc.value.data.shapes[index], {
+          const afterE = Object.assign(state.currentDoc.value.data.shapes[index], {
             end: {
-              x: newPoint.x - doc.value.data.shapes[index].x + Math.random() * 0.000001,
-              y: newPoint.y - doc.value.data.shapes[index].y + Math.random() * 0.000001,
+              x: newPoint.x - state.currentDoc.value.data.shapes[index].x + Math.random() * 0.000001,
+              y: newPoint.y - state.currentDoc.value.data.shapes[index].y + Math.random() * 0.000001,
             },
           });
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         radius={globalConfig.auxiliaryPointSize / state.stageScale}
         fill="white"
@@ -218,11 +216,11 @@ const Arrow = (props) => {
               let newArrowSize = Math.max(Vector.mulV(direction, Vector.sub(position, Vector.add(center, end))), item.weight);
               // eslint-disable-next-line react/prop-types
               newArrowSize = (newArrowSize + item.arrowSize) / 2;
-              const afterE = Object.assign(doc.value.data.shapes[index], {
+              const afterE = Object.assign(state.currentDoc.value.data.shapes[index], {
                 // make sure circle flush when over darg
                 arrowSize: newArrowSize + Math.random() * 0.0001,
               });
-              doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+              state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
             }}
             radius={globalConfig.auxiliaryPointSize / state.stageScale}
             fill="white"

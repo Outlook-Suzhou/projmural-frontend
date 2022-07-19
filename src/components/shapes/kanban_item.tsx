@@ -3,10 +3,8 @@ import {
 } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
 import Konva from 'konva';
-import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
 
-const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Kanban,
   isSelected: boolean,
@@ -44,7 +42,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
         onDragMove={(e) => {
           item.projs[i].x = e.target.x();
           item.projs[i].y = e.target.y();
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
         }}
         onTransform={(e) => {
           // transformer is changing scale of the node
@@ -58,7 +56,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           node.scaleY(1);
           item.projs[i].width = Math.max(5, node.width() * scaleX);
           item.projs[i].x = e.target.x();
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
         }}
         onClick={click}
       >
@@ -91,10 +89,10 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
           visible={item.projs[i].visible}
           onDblClick={() => {
             const ops = state.OpList;
-            ops.push(JSON.stringify(doc.value.data.shapes));
+            ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
             item.projs[i].visible = false;
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
             const textarea = document.createElement('textarea');
             document.body.appendChild(textarea);
             const textNode = new Konva.Text({
@@ -127,7 +125,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
             textarea.focus();
             textarea.addEventListener('keydown', () => {
               item.projs[i].text = textarea.value;
-              doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+              state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
             });
             function removeTextarea() {
               // @ts-ignore
@@ -136,7 +134,7 @@ const KanbanItem: React.FC<Props> = (props: Props) => {
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
               window.removeEventListener('click', handleOutsideClick);
               item.projs[i].visible = true;
-              doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+              state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
             }
             function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
               if (e.target !== textarea) {

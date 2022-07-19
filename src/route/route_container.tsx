@@ -11,6 +11,7 @@ const Page404 = lazy(() => import('../pages/404/Page404'));
 const Login = lazy(() => import('../pages/login/login'));
 const Painting = lazy(() => import('../pages/painting/painting'));
 const Dashboard = lazy(() => import('../pages/dashboard/dashboard'));
+const AggContainer = lazy(() => import('../pages/aggregation/agg_container'));
 
 // const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -25,6 +26,7 @@ const RouterContainer: React.FC<{}> = () => {
           kanban
         </Route>
         <Route path="/painting" component={Painting} />
+        <Route path="/view" component={AggContainer} />
         <Route path="/404" component={Page404} />
         <Route path="/" component={Login} />
       </Switch>

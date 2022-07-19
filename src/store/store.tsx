@@ -28,6 +28,7 @@ interface UserInfo {
 }
 
 interface globalState {
+  currentDoc: any,
   currentItem: any,
   currentIndex: number
   stagePos: any
@@ -49,6 +50,7 @@ interface actionType {
 }
 
 const initialState: globalState = {
+  currentDoc: undefined,
   currentItem: {},
   currentIndex: -1,
   stagePos: { x: 0, y: 0 },
@@ -108,6 +110,8 @@ function reducer(state: globalState = initialState, action: actionType): globalS
       return { ...state, beginTime: action.payload };
     case 'setEndTime':
       return { ...state, endTime: action.payload };
+    case 'setCurrentDoc':
+      return { ...state, currentDoc: action.payload };
     default:
       throw new Error();
   }

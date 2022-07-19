@@ -1,12 +1,8 @@
-// eslint-disable-next-line no-unused-vars
-import { Text, Transformer } from 'react-konva';
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
+import { Text, Transformer } from 'react-konva';
 import Konva from 'konva';
-import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
 
-const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Text,
   index: number,
@@ -55,12 +51,12 @@ const TEXT: React.FC<Props> = (props: Props) => {
             x: e.target.x(),
             y: e.target.y(),
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         onDragStart={onDragStart}
         onDblClick={() => {
           const ops = state.OpList;
-          ops.push(JSON.stringify(doc.value.data.shapes));
+          ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
           dispatch({ type: 'setOpList', payload: ops });
           console.log(item);
           const textarea = document.createElement('textarea');
@@ -99,7 +95,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             item.text = textarea.value;
             const node = shapeRef.current;
             item.height = node.height();
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
           });
           function removeTextarea() {
             // @ts-ignore
@@ -107,7 +103,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             window.removeEventListener('click', handleOutsideClick);
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
             setVisible(true);
           }
           function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
@@ -130,7 +126,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
         //     x: e.target.x(),
         //     y: e.target.y(),
         //   };
-        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        //   state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         // }}
         onTransform={() => {
           const node = shapeRef.current;
@@ -145,7 +141,7 @@ const TEXT: React.FC<Props> = (props: Props) => {
             rotation: node.rotation(),
             scaleX: 1,
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}

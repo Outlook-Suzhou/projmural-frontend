@@ -32,7 +32,7 @@ function useCopyer(): [BaseShapes.Shape | null, Function] {
           const newItem = {
             ...item, x: calcX(mouse.x, state.stageScale, state.stagePos.x), y: calcY(mouse.y, state.stageScale, state.stagePos.y),
           };
-          addShape(newItem);
+          addShape(newItem, state.currentDoc);
         }
       }
       if (e.ctrlKey && e.keyCode === 68) {
