@@ -1,0 +1,10 @@
+POST http://localhost:5000/api/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNaWNyb3NvZnRJZCI6ImMzNWQ0MmNjMzFhYzcxNjIiLCJleHAiOjE2NTgzMTIxNTEsImlzcyI6InByb2ptdXJhbCJ9.YM1NEvdwIHzXRcbBEgM_atAypAc2hXMLCbYLYbAoHUc
+content-type: application/json
+
+{
+    "type": "queryall",
+    "data": {
+      "microsoft_id": "c35d42cc31ac7162"
+    }
+}

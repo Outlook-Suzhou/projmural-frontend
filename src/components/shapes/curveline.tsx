@@ -1,5 +1,6 @@
 import { Line } from 'react-konva';
 import React from 'react';
+import { useStateStore } from '../../store/store';
 
 interface Props {
   item: BaseShapes.CurveLine,
@@ -11,6 +12,7 @@ const CurveLine: React.FC<Props> = (props: Props) => {
   const {
     item, onSelect, index, onMouseOver,
   } = props;
+  const state = useStateStore();
   return (
     <>
       <Line
