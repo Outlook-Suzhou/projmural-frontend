@@ -11,21 +11,7 @@ const AggContainer: React.FC<{}> = () => {
   const globalState = useStateStore();
   const dispatch = useDispatchStore();
   const [docs, setDocs] = useState([]);
-  const onTabChange = useMemo(() => (activeKey: string) => {
-    dispatch({
-      type: 'setCurrentIndex',
-      payload: -1,
-    });
-    dispatch({
-      type: 'setCurrentItem',
-      payload: {},
-    });
-    dispatch({
-      type: 'setCurrentDoc',
-      payload: docs.find((element: any) => element.value.id === activeKey),
-    });
-  }, [docs]);
-
+  const [filterDocs, setFilterDocs] = useState([]);
   useEffect(() => {
     console.log('path', window.location.pathname.substring(window.location.pathname.length - 7));
   }, []);
@@ -41,15 +27,36 @@ const AggContainer: React.FC<{}> = () => {
       console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
       retDocs = retDocs.map((retdoc: any, index: number) => ({
         value: retdoc,
-        name: retdoc.data.canvaName,
         recentOpen: canvasArray[index].recentOpen,
       }));
       setDocs(retDocs);
+      setFilterDocs(retDocs);
     });
   }, []);
 
+  const onTabChange = useMemo(() => (activeKey: string) => {
+    dispatch({
+      type: 'setCurrentIndex',
+      payload: -1,
+    });
+    dispatch({
+      type: 'setCurrentItem',
+      payload: {},
+    });
+    dispatch({
+      type: 'setCurrentDoc',
+      payload: filterDocs.find((element: any) => element.value.id === activeKey),
+    });
+  }, [docs]);
+
+  const onSearch = useMemo(() => (e: any) => {
+    const reg = new RegExp(e.target.value, 'i');
+    const filtered = docs.filter((doc: any) => reg.test(doc.value.data.canvaName));
+    setFilterDocs(filtered);
+  }, [docs]);
+
   return (
-    <AggTabs onTabChange={onTabChange} docsArray={docs} />
+    <AggTabs docsArray={filterDocs} onTabChange={onTabChange} onSearch={onSearch} />
   );
 };
 

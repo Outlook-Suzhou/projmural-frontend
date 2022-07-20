@@ -15,6 +15,7 @@ interface Props {
 const AggTabs: React.FC<Props> = ({ docsArray, onTabChange, onSearch }: Props) => {
   const SearchTextBox = useMemo(() => (
     <Input
+      placeholder="Type words to filter"
       defaultValue=""
       onChange={onSearch}
       className="tabsSearch"
