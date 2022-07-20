@@ -1,10 +1,8 @@
 import { Icon } from '@fluentui/react/lib/Icon';
 import React from 'react';
 import { Tooltip } from 'antd';
-import getCurrentDoc from '../../../client/client';
 import { useDispatchStore, useStateStore } from '../../../store/store';
 
-const doc = getCurrentDoc();
 const DelEle: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
@@ -15,16 +13,18 @@ const DelEle: React.FC<{}> = () => {
           iconName="Delete"
           onClick={() => {
             const ops = state.OpList;
-            ops.push(JSON.stringify(doc.value.data.shapes));
+            ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
-            if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
+            if (state.currentDoc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
               const { projs } = state.currentItem;
               projs.splice(state.currentItem.selectProj, 1);
-              doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.value.data.shapes[state.currentIndex], li: { ...state.currentItem, projs, selectProj: -1 } }]);
+              state.currentDoc.value.submitOp(
+                [{ p: ['shapes', state.currentIndex], ld: state.currentDoc.value.data.shapes[state.currentIndex], li: { ...state.currentItem, projs, selectProj: -1 } }],
+              );
               dispatch({ type: 'setCurrentItem', payload: { ...state.currentItem, projs, selectProj: -1 } });
               dispatch({ type: 'setCurrentIndex', payload: -1 });
             } else {
-              doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
+              state.currentDoc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem }]);
               dispatch({ type: 'setCurrentIndex', payload: -1 });
             }
           }}

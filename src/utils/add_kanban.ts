@@ -1,11 +1,8 @@
-import getCurrentDoc from '../client/client';
-
-const doc = getCurrentDoc();
 const moment = require('moment');
 
 moment().format();
 
-function addKanBan(kanban: any) {
+function addKanBan(kanban: any, doc: any) {
   if (kanban.isFirst) {
     for (let i = 0; i < doc.value.data.shapes.length; i += 1) {
       if (doc.value.data.shapes[i].type === 'KANBAN') {

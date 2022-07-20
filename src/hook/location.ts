@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
-import getCurrentDoc from '../client/client';
-import { useDispatchStore } from '../store/store';
+import { useStateStore, useDispatchStore } from '../store/store';
 import axios from '../utils/axios';
 import { addUser, removeUser, userExist } from '../utils/user_function';
+import getCurrentDoc from '../client/client';
 
 function useCurrentLocation() {
   const currentLocation = useLocation();
@@ -12,8 +12,8 @@ function useCurrentLocation() {
     path: '/painting/:id',
     strict: true,
   });
+  const state = useStateStore();
   const dispatch = useDispatchStore();
-  console.log(currentLocation);
   useEffect(() => {
     axios.get('/api/currentUser').then((userData) => {
       if (userData.data.retc === -1) {
@@ -58,7 +58,7 @@ function useCurrentLocation() {
             if (res.data.data.canvas_exist === false) {
               history.push('/404');
             } else {
-              getCurrentDoc(() => {
+              getCurrentDoc(state?.currentDoc?.value?.id, () => {
                 if (!userExist(user)) {
                   addUser({
                     x: 0,

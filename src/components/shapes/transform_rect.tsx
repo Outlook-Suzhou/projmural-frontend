@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
-import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 import { useDispatchStore, useStateStore } from '../../store/store';
 
-const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Rectangle,
   gridWidth: number,
@@ -56,7 +54,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
             x: Math.round(x / gridWidth) * gridWidth,
             y: Math.round(y / gridHeight) * gridHeight,
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         // onDragMove={(e) => {
         //   const afterE: BaseShapes.Rectangle = {
@@ -69,7 +67,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
         //     rotation: item.rotation,
         //     fill: item.fill,
         //   };
-        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        //   state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         // }}
         onTransformStart={onTransformStart}
         onTransformEnd={
@@ -99,7 +97,7 @@ const Rectangle1: React.FC<Props> = (props: Props) => {
               width: Math.max(5, Math.round(width / gridWidth) * gridWidth),
               height: Math.max(5, Math.round(height / gridHeight) * gridHeight),
             };
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
           }
         }
       // onTransform={}

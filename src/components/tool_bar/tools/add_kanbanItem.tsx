@@ -4,9 +4,7 @@ import {
   Input, Modal, Select, Tooltip,
 } from 'antd';
 import { useDispatchStore, useStateStore } from '../../../store/store';
-import getCurrentDoc from '../../../client/client';
 
-const doc = getCurrentDoc();
 const AddItem: React.FC<{}> = () => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
@@ -17,18 +15,18 @@ const AddItem: React.FC<{}> = () => {
   });
   const handleOk = () => {
     const ops = state.OpList;
-    ops.push(JSON.stringify(doc.value.data.shapes));
+    ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
     dispatch({ type: 'setOpList', payload: ops });
-    const kanban = doc.value.data.shapes[state.currentIndex];
+    const kanban = state.currentDoc.value.data.shapes[state.currentIndex];
     kanban.projs.push({
       text: proj.name, y: 60, x: proj.x, width: 100, height: 100, visible: true, color: proj.color, status: proj.status,
     });
-    doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: doc.value.data.shapes[state.currentIndex], li: kanban }]);
+    state.currentDoc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentDoc.value.data.shapes[state.currentIndex], li: kanban }]);
     setModalVisible(false);
   };
   function onChangeTeam(t: string) {
-    for (let i = 0; i < doc.value.data.shapes[state.currentIndex].teams.length; i += 1) {
-      if (doc.value.data.shapes[state.currentIndex].teams[i].text === t) {
+    for (let i = 0; i < state.currentDoc.value.data.shapes[state.currentIndex].teams.length; i += 1) {
+      if (state.currentDoc.value.data.shapes[state.currentIndex].teams[i].text === t) {
         setProj({
           ...proj,
           color: color[i % 5],
@@ -69,8 +67,8 @@ const AddItem: React.FC<{}> = () => {
         </div>
         <div style={{ marginTop: '10px' }}>
           <>choose the team:</>
-          <Select defaultValue={doc.value.data.shapes[state.currentIndex].teams[0].text} style={{ width: 120, marginLeft: '10px' }} onChange={onChangeTeam}>
-            {doc.value.data.shapes[state.currentIndex].teams.map((unit: { text: string }) => (
+          <Select defaultValue={state.currentDoc.value.data.shapes[state.currentIndex].teams[0].text} style={{ width: 120, marginLeft: '10px' }} onChange={onChangeTeam}>
+            {state.currentDoc.value.data.shapes[state.currentIndex].teams.map((unit: { text: string }) => (
               <Option value={unit.text}>{unit.text}</Option>
             ))}
           </Select>

@@ -2,12 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Transformer, Text, Shape,
 } from 'react-konva';
-import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import colorDetect from '../../utils/colorDetect';
 
-const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Message,
   isSelected: boolean,
@@ -66,7 +64,7 @@ const Message: React.FC<Props> = (props: Props) => {
             x: e.target.x(),
             y: e.target.y(),
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
@@ -90,7 +88,7 @@ const Message: React.FC<Props> = (props: Props) => {
             rotation: node.rotation(),
           };
 
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
       />
       <Text
@@ -114,7 +112,7 @@ const Message: React.FC<Props> = (props: Props) => {
             x: e.target.x(),
             y: e.target.y(),
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         // onDragMove={(e) => {
         //   const afterE: BaseShapes.Message = {
@@ -122,7 +120,7 @@ const Message: React.FC<Props> = (props: Props) => {
         //     x: e.target.x(),
         //     y: e.target.y(),
         //   };
-        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        //   state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         // }}
         onDblClick={() => {
           const textarea = document.createElement('textarea');
@@ -152,7 +150,7 @@ const Message: React.FC<Props> = (props: Props) => {
             item.text = textarea.value;
             const node = shapeRef.current;
             item.height = node.height();
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
           });
           function removeTextarea() {
             // @ts-ignore
@@ -160,7 +158,7 @@ const Message: React.FC<Props> = (props: Props) => {
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             window.removeEventListener('click', handleOutsideClick);
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
             setVisible(true);
           }
           function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {

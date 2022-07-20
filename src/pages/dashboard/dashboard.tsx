@@ -6,6 +6,7 @@ import {
   DatePicker, Menu, Dropdown, Pagination,
   InputNumber, Modal, Select, PageHeader, Input,
   message,
+  Button,
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import axios from '../../utils/axios';
@@ -37,9 +38,6 @@ const Dashboard: React.FC<{}> = () => {
     query.on('ready', () => {
       let retDocs = query.results;
       retDocs.sort((doc1: any, doc2: any) => canvasIds.indexOf(doc1.id) - canvasIds.indexOf(doc2.id));
-      console.log('sort----');
-      console.log(state.userInfo.canvas);
-      console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
       retDocs = retDocs.map((retdoc: any) => ({ value: retdoc }));
       setDocs(retDocs);
     });
@@ -51,9 +49,6 @@ const Dashboard: React.FC<{}> = () => {
     query.on('ready', () => {
       let retDocs = query.results;
       retDocs.sort((doc1: any, doc2: any) => canvasIds.indexOf(doc1.id) - canvasIds.indexOf(doc2.id));
-      console.log('sort----');
-      console.log(state.userInfo.recentCanvas);
-      console.log(retDocs.map((doc1: any) => doc1.data.canvaName));
       retDocs = retDocs.map((retdoc: any, index: number) => ({
         value: retdoc,
         recentOpen: state.userInfo.recentCanvas[index].recentOpen,
@@ -218,6 +213,9 @@ const Dashboard: React.FC<{}> = () => {
             <div className="text1">
               Created Boards
             </div>
+            <div className="viewDiv">
+              <Button className="viewButton" onClick={() => { history.push('/view/created'); }}>View All</Button>
+            </div>
             <div className="template">
               {
                 docs.slice(pageMinValue, pageMaxValue).map((val: any, ind) => {
@@ -321,6 +319,9 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="text1">
               History Boards
+            </div>
+            <div className="viewDiv">
+              <Button className="viewButton" onClick={() => { history.push('/view/history'); }}>View All</Button>
             </div>
             <div className="template">
               {

@@ -1,11 +1,8 @@
 import { Ellipse as KonvaEllipse, Transformer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
-import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
-// eslint-disable-next-line import/namespace
 import { useStateStore, useDispatchStore } from '../../store/store';
 
-const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Ellipse,
   isSelected: boolean,
@@ -58,7 +55,7 @@ const Ellipse: React.FC<Props> = (props: Props) => {
             rotation: item.rotation,
             draggable: item.draggable,
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
         // onDragMove={(e) => {
         //   const afterE: BaseShapes.Ellipse = {
@@ -73,7 +70,7 @@ const Ellipse: React.FC<Props> = (props: Props) => {
         //     rotation: item.rotation,
         //     draggable: item.draggable,
         //   };
-        //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+        //   state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         // }}
         onTransformStart={onTransformStart}
         onTransformEnd={onTransformEnd}
@@ -100,7 +97,7 @@ const Ellipse: React.FC<Props> = (props: Props) => {
             draggable: item.draggable,
           };
 
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }}
       />
       {isSelected && (

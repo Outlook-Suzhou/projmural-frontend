@@ -1,11 +1,9 @@
 import { Rect, Group, Text } from 'react-konva';
 import React from 'react';
 import Konva from 'konva';
-import getCurrentDoc from '../../client/client';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import KanbanItem from './kanban_item';
 
-const doc = getCurrentDoc();
 interface Props {
   item: BaseShapes.Kanban,
   onSelect: any,
@@ -39,7 +37,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
             x: e.target.x(),
             y: e.target.y(),
           };
-          doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
         }
       }}
       onTransformStart={onTransformStart}
@@ -51,7 +49,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
       //       x: e.target.x(),
       //       y: e.target.y(),
       //     };
-      //     doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
+      //     state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
       //   }
       // }}
     >
@@ -66,7 +64,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
               fill={color[i % 5]}
               stroke="#E6E6E6"
               strokeWidth={0.5}
-              onClick={() => { item.selectProj = -1; doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]); }}
+              onClick={() => { item.selectProj = -1; state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]); }}
             />
             <Text
               x={item.teams[i].x}
@@ -79,10 +77,10 @@ const Kanban : React.FC<Props> = (props: Props) => {
               visible={item.teams[i].visible}
               onDblClick={() => {
                 const ops = state.OpList;
-                ops.push(JSON.stringify(doc.value.data.shapes));
+                ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
                 dispatch({ type: 'setOpList', payload: ops });
                 item.teams[i].visible = false;
-                doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+                state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
                 const textarea = document.createElement('textarea');
                 document.body.appendChild(textarea);
                 const textNode = new Konva.Text({
@@ -116,7 +114,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
                 textarea.focus();
                 textarea.addEventListener('keydown', () => {
                   item.teams[i].text = textarea.value;
-                  doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+                  state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
                 });
                 function removeTextarea() {
                   // @ts-ignore
@@ -125,7 +123,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
                   // eslint-disable-next-line @typescript-eslint/no-use-before-define
                   window.removeEventListener('click', handleOutsideClick);
                   item.teams[i].visible = true;
-                  doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+                  state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
                 }
                 function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
                   if (e.target !== textarea) {
@@ -150,7 +148,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
                 fill="white"
                 stroke="#E6E6E6"
                 strokeWidth={0.5}
-                onClick={() => { item.selectProj = -1; doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]); }}
+                onClick={() => { item.selectProj = -1; state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]); }}
               />
             ))}
           </Group>
@@ -174,7 +172,7 @@ const Kanban : React.FC<Props> = (props: Props) => {
           i={i}
           click={() => {
             item.selectProj = i;
-            doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
           }}
           onTransformStart={onTransformStart}
         />

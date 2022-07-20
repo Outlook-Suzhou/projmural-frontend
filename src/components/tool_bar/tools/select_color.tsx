@@ -7,9 +7,7 @@ import {
 } from 'antd';
 import changeColor from '../../../utils/change_color';
 import { useDispatchStore, useStateStore } from '../../../store/store';
-import getCurrentDoc from '../../../client/client';
 
-const doc = getCurrentDoc();
 const SelectColor = () => {
   // @ts-ignore
   const state = useStateStore();
@@ -17,26 +15,26 @@ const SelectColor = () => {
   const [isClicked, setClicked] = useState(false);
   const handlePickComplete = (color: any) => {
     const ops = state.OpList;
-    ops.push(JSON.stringify(doc.value.data.shapes));
+    ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
     dispatch({ type: 'setOpList', payload: ops });
-    if (doc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
-      const { projs } = doc.value.data.shapes[state.currentIndex];
+    if (state.currentDoc.value.data.shapes[state.currentIndex].type === 'KANBAN' && state.currentItem.selectProj !== -1) {
+      const { projs } = state.currentDoc.value.data.shapes[state.currentIndex];
       projs[state.currentItem.selectProj].color = color.hex;
-      const afterE = { ...doc.value.data.shapes[state.currentIndex], projs };
-      changeColor(state.currentIndex, afterE);
+      const afterE = { ...state.currentDoc.value.data.shapes[state.currentIndex], projs };
+      changeColor(state.currentIndex, afterE, state.currentDoc);
     } else {
-      const afterE = { ...doc.value.data.shapes[state.currentIndex], fill: color.hex };
-      changeColor(state.currentIndex, afterE);
+      const afterE = { ...state.currentDoc.value.data.shapes[state.currentIndex], fill: color.hex };
+      changeColor(state.currentIndex, afterE, state.currentDoc);
     }
     setClicked(false);
   };
 
   function onChangeOpacity(value: number) {
     const ops = state.OpList;
-    ops.push(JSON.stringify(doc.value.data.shapes));
+    ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
     dispatch({ type: 'setOpList', payload: ops });
-    const afterE: BaseShapes.Shape = { ...doc.value.data.shapes[state.currentIndex], opacity: value };
-    doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem, li: afterE }]);
+    const afterE: BaseShapes.Shape = { ...state.currentDoc.value.data.shapes[state.currentIndex], opacity: value };
+    state.currentDoc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: state.currentItem, li: afterE }]);
     dispatch({ type: 'setCurrentItem', payload: afterE });
   }
   return (

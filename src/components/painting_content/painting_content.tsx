@@ -45,12 +45,24 @@ import ItemStatus from '../tool_bar/tools/item_status';
 import axios from '../../utils/axios';
 import ShowComment from '../tool_bar/tools/show_comment';
 
-const PaintingContent: React.FC<{}> = () => {
-  const doc = getCurrentDoc();
-  const [list, setList] = useState(doc?.value?.data?.shapes || []);
-  const [userList] = useUserList(doc?.value?.data?.users || []);
+interface Props {
+  docId?: string,
+  docObj?: any,
+}
+
+const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
+  const [doc] = useState(docObj || getCurrentDoc(docId) || state.currentDoc);
+  useEffect(() => {
+    console.log('glboal state: Set Doc');
+    dispatch({
+      type: 'setCurrentDoc',
+      payload: doc,
+    });
+  }, [doc]);
+  const [list, setList] = useState(doc?.value?.data?.shapes || []);
+  const [userList] = useUserList(doc?.value?.data?.users || []);
   // console.log(doc);
   state.beginTime = doc?.value?.data?.beginTime;
   state.endTime = doc?.value?.data?.endTime;
@@ -58,6 +70,7 @@ const PaintingContent: React.FC<{}> = () => {
   // dispatch({ type: 'setEndTime', payload: doc?.value?.data?.endTime });
   // console.log(state);
   const [, setCopySelectItem] = useCopyer();
+
   useEffect(() => {
     dispatch({ type: 'setAdsorptionPointsList', payload: [] });
   }, [state.currentIndex]);
@@ -94,7 +107,9 @@ const PaintingContent: React.FC<{}> = () => {
     if (doc.value.data.shapes === undefined) {
       return [];
     }
-    const { type } = doc.value.data.shapes[state.currentIndex];
+    const currentItem = doc.value.data.shapes[state.currentIndex];
+    if (currentItem === undefined) { return []; }
+    const { type } = currentItem;
     if (type === 'KANBAN' && state.currentItem.selectProj !== undefined && state.currentItem.selectProj !== -1) {
       console.log(state.currentItem.selectProj);
       return [SelectColor, DelEle, ItemStatus];
@@ -127,7 +142,7 @@ const PaintingContent: React.FC<{}> = () => {
   useEffect(() => {
     if (kanban !== undefined && doc.value.data !== undefined) {
       // @ts-ignore
-      addKanBan(kanban.kanban);
+      addKanBan(kanban.kanban, doc);
       setKanBan(undefined);
     }
   });
@@ -276,7 +291,7 @@ const PaintingContent: React.FC<{}> = () => {
       dispatch({ type: 'setOpList', payload: ops });
       const x = calcX(e.evt.offsetX, state.stageScale, state.stagePos.x);
       const y = calcY(e.evt.offsetY, state.stageScale, state.stagePos.y);
-      handleLayerClick(state.selectShape, WIDTH, HEIGHT, Math.floor(x / WIDTH) * WIDTH, Math.floor(y / HEIGHT) * HEIGHT);
+      handleLayerClick(state.selectShape, WIDTH, HEIGHT, Math.floor(x / WIDTH) * WIDTH, Math.floor(y / HEIGHT) * HEIGHT, doc);
       dispatch({ type: 'setSelectShape', payload: 'FREE' });
     }
   };
@@ -384,6 +399,11 @@ const PaintingContent: React.FC<{}> = () => {
       </div>
     </>
   );
+};
+
+PaintingContent.defaultProps = {
+  docId: undefined,
+  docObj: undefined,
 };
 
 export default PaintingContent;

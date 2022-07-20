@@ -3,10 +3,8 @@ import React from 'react';
 import {
   Col, Popover, Row, Tooltip,
 } from 'antd';
-import getCurrentDoc from '../../../client/client';
 import { useDispatchStore, useStateStore } from '../../../store/store';
 
-const doc = getCurrentDoc();
 const gridStyle:any = {
   textAlign: 'center',
   cursor: 'pointer',
@@ -24,11 +22,11 @@ const Content: React.FC<{}> = () => {
           tabIndex={0}
           onClick={() => {
             const ops = state.OpList;
-            ops.push(JSON.stringify(doc.value.data.shapes));
+            ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
-            const afterE: BaseShapes.Shape = { ...doc.value.data.shapes[state.currentIndex] };
-            doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
-            doc.value.submitOp([{ p: ['shapes', doc.value.data.shapes.length], li: afterE }]);
+            const afterE: BaseShapes.Shape = { ...state.currentDoc.value.data.shapes[state.currentIndex] };
+            state.currentDoc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', state.currentDoc.value.data.shapes.length], li: afterE }]);
             dispatch({ type: 'setCurrentIndex', payload: -1 });
           }}
           onKeyDown={() => {}}
@@ -46,11 +44,11 @@ const Content: React.FC<{}> = () => {
           // eslint-disable-next-line max-len
           onClick={() => {
             const ops = state.OpList;
-            ops.push(JSON.stringify(doc.value.data.shapes));
+            ops.push(JSON.stringify(state.currentDoc.value.data.shapes));
             dispatch({ type: 'setOpList', payload: ops });
-            const afterE: BaseShapes.Shape = { ...doc.value.data.shapes[state.currentIndex] };
-            doc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
-            doc.value.submitOp([{ p: ['shapes', 0], li: afterE }]);
+            const afterE: BaseShapes.Shape = { ...state.currentDoc.value.data.shapes[state.currentIndex] };
+            state.currentDoc.value.submitOp([{ p: ['shapes', state.currentIndex], ld: afterE }]);
+            state.currentDoc.value.submitOp([{ p: ['shapes', 0], li: afterE }]);
             dispatch({ type: 'setCurrentIndex', payload: -1 });
           }}
           onKeyDown={() => {}}
