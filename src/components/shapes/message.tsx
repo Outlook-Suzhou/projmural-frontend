@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-  Transformer, Text, Shape,
+  Transformer, Text, Shape, Group,
 } from 'react-konva';
+import Konva from 'konva';
 import getCurrentDoc from '../../client/client';
 import shapeConfig from './shape_config';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import colorDetect from '../../utils/colorDetect';
+import TextEditor from './text-editro';
 
 const doc = getCurrentDoc();
 interface Props {
@@ -25,8 +27,12 @@ const Message: React.FC<Props> = (props: Props) => {
 
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
+  const [editorEnabled, setEditorEnabled] = React.useState(false);
+  const textRef = useRef<Konva.Text>();
   const [state] = [useStateStore(), useDispatchStore()];
-  const [visible, setVisible] = useState(true);
+
+  // const [visible, setVisible] = useState(true);
+  // const dispatch = useDispatchStore();
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -93,7 +99,37 @@ const Message: React.FC<Props> = (props: Props) => {
           doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         }}
       />
-      <Text
+      <Group draggable>
+        <Text
+          x={item.x + item.width / 4}
+          y={item.y + item.height / 4}
+          text={item.text}
+          ref={textRef}
+          width={item.width / 2}
+          height={item.height / 2}
+          fontSize={item.fontSize}
+          fontFamily="Arial"
+          fill={colorDetect(item.fill) === 'light' ? 'black' : 'white'}
+          onClick={() => {
+            setEditorEnabled(true);
+          }}
+          visible={!editorEnabled}
+          {...props}
+        />
+        {editorEnabled && (
+        <Group>
+          <TextEditor
+            value={item.text}
+            textNodeRef={textRef}
+            onChange={() => {}}
+            onBlur={() => {
+              setEditorEnabled(false);
+            }}
+          />
+        </Group>
+        )}
+      </Group>
+      {/* <Text
         x={item.x + item.width / 4}
         y={item.y + item.height / 4}
         width={item.width / 2}
@@ -125,6 +161,7 @@ const Message: React.FC<Props> = (props: Props) => {
         //   doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: afterE }]);
         // }}
         onDblClick={() => {
+          dispatch({ type: 'setComment', payload: true });
           const textarea = document.createElement('textarea');
           document.body.appendChild(textarea);
           textarea.style.fontSize = `${item.fontSize * state.stageScale}px`;
@@ -154,6 +191,12 @@ const Message: React.FC<Props> = (props: Props) => {
             item.height = node.height();
             doc.value.submitOp([{ p: ['shapes', index], ld: doc.value.data.shapes[index], li: item }]);
           });
+          textarea.addEventListener('keyup', () => {
+            // listen @
+            if (textarea.value.length && textarea.value.charAt(textarea.value.length - 1) === '@') {
+              console.log('you input a @');
+            }
+          });
           function removeTextarea() {
             // @ts-ignore
             textarea.parentNode.removeChild(textarea);
@@ -174,7 +217,7 @@ const Message: React.FC<Props> = (props: Props) => {
             window.addEventListener('click', handleOutsideClick);
           });
         }}
-      />
+      /> */}
       {isSelected && (
         <Transformer
           ref={trRef}
