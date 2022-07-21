@@ -9,7 +9,7 @@ const handleLayerClick = (shape: string, width: number, height: number, x: numbe
       break;
     case 'POINTEDRECT':
       addShape({
-        width: 50, height: 65, x, y, type: 'POINTEDRECT', rotation: 0, fill: '#FF6900', draggable: true, text: '双击添加文字', fontSize: 10, opacity: 0.9,
+        width, height, x, y, type: 'POINTEDRECT', rotation: 0, fill: '#FF6900', draggable: true, text: '双击添加文字', fontSize: 10, opacity: 0.9,
       }, doc);
       break;
     case 'TEXTRECT':

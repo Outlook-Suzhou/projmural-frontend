@@ -54,7 +54,7 @@ const initialState: globalState = {
   currentItem: {},
   currentIndex: -1,
   stagePos: { x: 0, y: 0 },
-  stageScale: 2,
+  stageScale: 0.75,
   selectShape: 'FREE',
   lastLine: {
     fill: '#000000',
