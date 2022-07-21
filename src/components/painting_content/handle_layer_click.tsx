@@ -1,4 +1,5 @@
 import addShape from '../../utils/add_function';
+import { DEFAULT_FONT_SIZE } from '../../config/size';
 
 const handleLayerClick = (shape: string, width: number, height: number, x: number, y: number, doc: any) => {
   switch (shape) {
@@ -9,12 +10,12 @@ const handleLayerClick = (shape: string, width: number, height: number, x: numbe
       break;
     case 'POINTEDRECT':
       addShape({
-        width, height, x, y, type: 'POINTEDRECT', rotation: 0, fill: '#FF6900', draggable: true, text: '双击添加文字', fontSize: 10, opacity: 0.9,
+        width, height, x, y, type: 'POINTEDRECT', rotation: 0, fill: '#FF6900', draggable: true, text: '双击添加文字', fontSize: DEFAULT_FONT_SIZE, opacity: 0.9,
       }, doc);
       break;
     case 'TEXTRECT':
       addShape({
-        width, height, x, y, type: 'TEXTRECT', rotation: 0, fill: '#FFF9B2', draggable: true, text: '双击添加文字', fontSize: 10, opacity: 0.9,
+        width, height, x, y, type: 'TEXTRECT', rotation: 0, fill: '#FFF9B2', draggable: true, text: '双击添加文字', fontSize: DEFAULT_FONT_SIZE, opacity: 0.9,
       }, doc);
       break;
     case 'LINE':
@@ -59,7 +60,7 @@ const handleLayerClick = (shape: string, width: number, height: number, x: numbe
       break;
     case 'MESSAGE':
       addShape({
-        width: 100, height: 50, x, y, type: 'MESSAGE', rotation: 0, fill: '#8ED1FC', draggable: true, text: '双击添加文字', fontSize: 10,
+        width: 100, height: 50, x, y, type: 'MESSAGE', rotation: 0, fill: '#8ED1FC', draggable: true, text: '双击添加文字', fontSize: DEFAULT_FONT_SIZE,
       }, doc);
       break;
     default:
