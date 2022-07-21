@@ -17,7 +17,16 @@ const CursorShape = (props: Props) => {
     case 'RECTANGLE':
       return <Rect x={x} y={y} width={NEW_SHAPE_WIDTH} height={NEW_SHAPE_HEIGHT} stroke="black" dash={[10, 10]} />;
     case 'POINTEDRECT':
-      return <Line x={x} y={y} width={NEW_SHAPE_WIDTH} height={NEW_SHAPE_HEIGHT} points={[0, 0, 50, 0, 50, 50, 25, 65, 0, 50]} stroke="black" dash={[10, 10]} closed />;
+      return (
+        <Line
+          x={x}
+          y={y}
+          points={[0, 0, NEW_SHAPE_WIDTH, 0, NEW_SHAPE_WIDTH, 0.8 * NEW_SHAPE_HEIGHT, 0.5 * NEW_SHAPE_WIDTH, NEW_SHAPE_HEIGHT, 0, NEW_SHAPE_WIDTH]}
+          stroke="black"
+          dash={[10, 10]}
+          closed
+        />
+      );
     case 'TEXTRECT':
       return <Rect x={x} y={y} width={NEW_SHAPE_WIDTH} height={NEW_SHAPE_HEIGHT} stroke="black" dash={[10, 10]} />;
     case 'CIRCLE':
