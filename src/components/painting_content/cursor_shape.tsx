@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Circle, Rect, Line, Ellipse, Star,
 } from 'react-konva';
+import { NEW_SHAPE_WIDTH, NEW_SHAPE_HEIGHT } from '../../config/size';
 
 interface Props {
   selectShape: string
@@ -14,11 +15,20 @@ const CursorShape = (props: Props) => {
   } = props;
   switch (selectShape) {
     case 'RECTANGLE':
-      return <Rect x={x} y={y} width={50} height={50} stroke="black" dash={[10, 10]} />;
+      return <Rect x={x} y={y} width={NEW_SHAPE_WIDTH} height={NEW_SHAPE_HEIGHT} stroke="black" dash={[10, 10]} />;
     case 'POINTEDRECT':
-      return <Line x={x} y={y} width={50} height={65} points={[0, 0, 50, 0, 50, 50, 25, 65, 0, 50]} stroke="black" dash={[10, 10]} closed />;
+      return (
+        <Line
+          x={x}
+          y={y}
+          points={[0, 0, NEW_SHAPE_WIDTH, 0, NEW_SHAPE_WIDTH, 0.8 * NEW_SHAPE_HEIGHT, 0.5 * NEW_SHAPE_WIDTH, NEW_SHAPE_HEIGHT, 0, NEW_SHAPE_WIDTH]}
+          stroke="black"
+          dash={[10, 10]}
+          closed
+        />
+      );
     case 'TEXTRECT':
-      return <Rect x={x} y={y} width={100} height={100} stroke="black" dash={[10, 10]} />;
+      return <Rect x={x} y={y} width={NEW_SHAPE_WIDTH} height={NEW_SHAPE_HEIGHT} stroke="black" dash={[10, 10]} />;
     case 'CIRCLE':
       return <Circle x={x} y={y} radius={30} stroke="black" dash={[10, 10]} />;
     case 'LINE':

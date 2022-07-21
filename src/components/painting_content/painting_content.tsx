@@ -44,6 +44,10 @@ import CanvasName from './canvas_name';
 import ItemStatus from '../tool_bar/tools/item_status';
 import axios from '../../utils/axios';
 import ShowComment from '../tool_bar/tools/show_comment';
+import useDeleteKey from '../../hook/delete_key';
+import {
+  WIDTH, HEIGHT, NEW_SHAPE_WIDTH, NEW_SHAPE_HEIGHT,
+} from '../../config/size';
 
 interface Props {
   docId?: string,
@@ -78,6 +82,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
   useDrawing();
   useCancel();
   useKanBan();
+  useDeleteKey();
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -209,8 +214,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
       payload: { x: e.target.x(), y: e.target.y() },
     });
   };
-  const WIDTH = 50;// size for background rect
-  const HEIGHT = 50;
+
   const beginX = WIDTH * 3;// size for background rect
   const beginY = HEIGHT * 3;
   // performance optimize
@@ -291,7 +295,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
       dispatch({ type: 'setOpList', payload: ops });
       const x = calcX(e.evt.offsetX, state.stageScale, state.stagePos.x);
       const y = calcY(e.evt.offsetY, state.stageScale, state.stagePos.y);
-      handleLayerClick(state.selectShape, WIDTH, HEIGHT, Math.floor(x / WIDTH) * WIDTH, Math.floor(y / HEIGHT) * HEIGHT, doc);
+      handleLayerClick(state.selectShape, NEW_SHAPE_WIDTH, NEW_SHAPE_HEIGHT, Math.floor(x / WIDTH) * WIDTH, Math.floor(y / HEIGHT) * HEIGHT, doc);
       dispatch({ type: 'setSelectShape', payload: 'FREE' });
     }
   };
@@ -302,6 +306,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
       <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan, ShowComment]} BarType="left" />
       <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div id="stage">
         <Stage
           className={state.selectShape}

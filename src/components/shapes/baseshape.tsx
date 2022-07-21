@@ -242,7 +242,12 @@ const BaseShape: React.FC<Shape> = (props: Shape) => {
       );
       break;
     default:
-      return ShapeComponent;
+      return (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <div onKeyDown={() => { console.log('on keydown!'); }}>
+          {ShapeComponent}
+        </div>
+      );
   }
   return ShapeComponent;
 };
