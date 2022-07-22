@@ -26,7 +26,7 @@ const DeleteAll: React.FC<{}> = () => {
   return (
     <div className="tool_icon">
       <Icon
-        iconName="ClearSelectionMirrored"
+        iconName="EmptyRecycleBin"
         onClick={showModal}
       />
       <Modal title="WARNING" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="clear" cancelText="cancel">

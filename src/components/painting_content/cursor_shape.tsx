@@ -48,11 +48,11 @@ const CursorShape = (props: Props) => {
     case 'MESSAGE':
       return (
         <>
-          <Rect x={x} y={y} width={100} height={50} stroke="black" dash={[10, 10]} />
+          <Rect x={x} y={y} width={NEW_SHAPE_WIDTH} height={NEW_SHAPE_HEIGHT * 0.6} stroke="black" dash={[10, 10]} />
           <Line
-            points={[x + 100 * 0.2, y + 50 - 1,
-              x + 100 * 0.4, y + 50 - 1,
-              x + 100 * 0.2, y + 50 * 1.2,
+            points={[x + NEW_SHAPE_WIDTH * 0.2, y + NEW_SHAPE_HEIGHT * 0.6 - 1,
+              x + NEW_SHAPE_WIDTH * 0.4, y + NEW_SHAPE_HEIGHT * 0.6 - 1,
+              x + NEW_SHAPE_WIDTH * 0.2, y + NEW_SHAPE_HEIGHT * 0.6 * 1.2,
             ]}
             closed
             stroke="black"

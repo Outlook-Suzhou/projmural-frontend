@@ -60,7 +60,7 @@ const handleLayerClick = (shape: string, width: number, height: number, x: numbe
       break;
     case 'MESSAGE':
       addShape({
-        width: 100, height: 50, x, y, type: 'MESSAGE', rotation: 0, fill: '#8ED1FC', draggable: true, text: '双击添加文字', fontSize: DEFAULT_FONT_SIZE,
+        width, height: height * 0.6, x, y, type: 'MESSAGE', rotation: 0, fill: '#8ED1FC', draggable: true, text: '双击添加文字', fontSize: DEFAULT_FONT_SIZE,
       }, doc);
       break;
     default:
