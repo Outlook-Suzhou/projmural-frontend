@@ -257,7 +257,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
           components.push(
             <Label x={WIDTH * 3} y={y} opacity={0.75}>
               <Tag
-                fill="#969696"
+                fill="#DDDDDD"
                 stroke="lightGray"
                 strokeWidth={1}
                 cornerRadius={3}
@@ -281,7 +281,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
       const date = new Date();
       const rate = moment(date.toLocaleDateString()).diff(moment(state.beginTime)) / 24 / 3600 / 1000 / 30;
       components.push(
-        <Line points={[beginX + WIDTH * 2, beginY + rate * HEIGHT * 2, window.innerWidth * 2, beginY + rate * HEIGHT * 2]} stroke="#969696" strokeWidth={3} dash={[33, 10]} />,
+        <Line points={[beginX + WIDTH * 2, beginY + rate * HEIGHT * 2, window.innerWidth * 2, beginY + rate * HEIGHT * 2]} stroke="#2E75B6" strokeWidth={3} dash={[33, 10]} />,
       );
       return components;
     }, [state.beginTime, state.endTime],
@@ -328,7 +328,6 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
             <DispatchContext.Provider value={dispatch}>
               <Layer onClick={() => { dispatch({ type: 'setCurrentIndex', payload: -1 }); }}>
                 {grid}
-                {timeTag}
               </Layer>
               <Layer onClick={handleClick}>
                 {
@@ -396,6 +395,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
                       )
                   ))
                 }
+                {timeTag}
               </Layer>
 
             </DispatchContext.Provider>
