@@ -8,11 +8,14 @@ const { TabPane } = Tabs;
 
 interface Props {
   docsArray: Array<any>;
-  onTabChange: any,
+  onTabChange: any;
+  activeKey: string;
   onSearch?: ChangeEventHandler;
 }
 
-const AggTabs: React.FC<Props> = ({ docsArray, onTabChange, onSearch }: Props) => {
+const AggTabs: React.FC<Props> = ({
+  docsArray, onTabChange, activeKey, onSearch,
+}: Props) => {
   const SearchTextBox = useMemo(() => (
     <Input
       placeholder="Type words to filter"
@@ -27,6 +30,7 @@ const AggTabs: React.FC<Props> = ({ docsArray, onTabChange, onSearch }: Props) =
       <Tabs
         tabBarExtraContent={SearchTextBox}
         defaultActiveKey="1"
+        activeKey={activeKey}
         className="tabsStyle"
         centered
         tabPosition="top"

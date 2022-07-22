@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import 'antd/dist/antd.css';
+import { useLocation } from 'react-router';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import { getQueryByIds } from '../../client/client';
+import axios from '../../utils/axios';
 import AggTabs from './agg_tabs';
 
 const AggContainer: React.FC<{}> = () => {
@@ -10,11 +12,33 @@ const AggContainer: React.FC<{}> = () => {
   );
   const globalState = useStateStore();
   const dispatch = useDispatchStore();
+  const location = useLocation();
   const [docs, setDocs] = useState([]);
   const [filterDocs, setFilterDocs] = useState([]);
-  useEffect(() => {
-    console.log('path', window.location.pathname.substring(window.location.pathname.length - 7));
-  }, []);
+  const [activeKey, setActiveKey] = useState('1');
+  const changeHistory = useMemo(() => (newActiveKey: string) => {
+    axios.post('/api/doc', {
+      type: 'add_history',
+      data: {
+        microsoft_id: globalState.userInfo.microsoftId,
+        canvas_id: newActiveKey,
+      },
+    }).then((res: any) => {
+      console.log(res);
+      dispatch({
+        type: 'setUserInfo',
+        payload: {
+          ...globalState.userInfo,
+          recentCanvas: (res.data.data.new_list || []).map((val: any) => ({
+            id: val.id,
+            name: val.name,
+            recentOpen: val.recent_open,
+          })),
+        },
+      });
+    });
+  }, [globalState, dispatch]);
+
   useEffect(() => {
     const canvasArray = (isHistory ? globalState.userInfo.recentCanvas : globalState.userInfo.canvas);
     const canvasIds = canvasArray.map((canvasInfo) => canvasInfo.id);
@@ -31,10 +55,15 @@ const AggContainer: React.FC<{}> = () => {
       }));
       setDocs(retDocs);
       setFilterDocs(retDocs);
+      const search = new URLSearchParams(location.search);
+      const id = search.get('id') || '1';
+      setActiveKey(id);
+      changeHistory(id);
     });
   }, []);
 
-  const onTabChange = useMemo(() => (activeKey: string) => {
+  const onTabChange = useMemo(() => (newActiveKey: string) => {
+    setActiveKey(newActiveKey);
     dispatch({
       type: 'setCurrentIndex',
       payload: -1,
@@ -45,9 +74,10 @@ const AggContainer: React.FC<{}> = () => {
     });
     dispatch({
       type: 'setCurrentDoc',
-      payload: filterDocs.find((element: any) => element.value.id === activeKey),
+      payload: filterDocs.find((element: any) => element.value.id === newActiveKey),
     });
-  }, [docs]);
+    changeHistory(newActiveKey);
+  }, [globalState, dispatch, docs, changeHistory]);
 
   const onSearch = useMemo(() => (e: any) => {
     const reg = new RegExp(e.target.value, 'i');
@@ -56,7 +86,7 @@ const AggContainer: React.FC<{}> = () => {
   }, [docs]);
 
   return (
-    <AggTabs docsArray={filterDocs} onTabChange={onTabChange} onSearch={onSearch} />
+    <AggTabs docsArray={filterDocs} onTabChange={onTabChange} onSearch={onSearch} activeKey={activeKey} />
   );
 };
 

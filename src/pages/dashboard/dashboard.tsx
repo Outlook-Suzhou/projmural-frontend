@@ -198,25 +198,16 @@ const Dashboard: React.FC<{}> = () => {
           </div>
           <div className="right_body">
             <div className="text1">
-              Create a new board
-            </div>
-            <div className="template">
-              <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
-                <div className="template-image-paint" />
-                <div className="font"> + new canvas </div>
-              </div>
-              <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
-                <div className="template-image-calender" />
-                <div className="font"> + new Kanban </div>
-              </div>
-            </div>
-            <div className="text1">
               Created Boards
             </div>
             <div className="viewDiv">
               <Button className="viewButton" onClick={() => { history.push('/view/created'); }}>View All</Button>
             </div>
             <div className="template">
+              <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
+                <div className="template-image-calender" />
+                <div className="font"> + new Kanban </div>
+              </div>
               {
                 docs.slice(pageMinValue, pageMaxValue).map((val: any, ind) => {
                   const canvaDropdown = (
@@ -294,7 +285,7 @@ const Dashboard: React.FC<{}> = () => {
                         <div
                           className="template-image-canvas"
                           onClick={() => {
-                            history.push(`/painting/${val.value.id}`);
+                            history.push(`/view?id=${val.value.id}`);
                           }}
                           aria-hidden="true"
                         />
@@ -398,7 +389,7 @@ const Dashboard: React.FC<{}> = () => {
                         <div
                           className="template-image-canvas"
                           onClick={() => {
-                            history.push(`/painting/${val.value.id}`);
+                            history.push(`/view?id=${val.value.id}`);
                           }}
                           aria-hidden="true"
                         />
