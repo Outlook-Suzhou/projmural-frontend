@@ -202,13 +202,13 @@ const Dashboard: React.FC<{}> = () => {
             </div>
             <div className="template">
               <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
-                <div className="template-image-paint" />
-                <div className="font"> + new canvas </div>
-              </div>
-              <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
                 <div className="template-image-calender" />
                 <div className="font"> + new Kanban </div>
               </div>
+              {/* <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
+                <div className="template-image-calender" />
+                <div className="font"> + new Kanban </div>
+              </div> */}
             </div>
             <div className="text1">
               Created Boards
