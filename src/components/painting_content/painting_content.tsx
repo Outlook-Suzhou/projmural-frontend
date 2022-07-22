@@ -9,8 +9,6 @@ import moment from 'moment';
 import getCurrentDoc, { getCurrentDocId } from '../../client/client';
 import AddShape from '../tool_bar/tools/add_shape';
 import ToolBar from '../tool_bar/tool_bar';
-import AddImage from '../tool_bar/tools/add_images';
-import AddText from '../tool_bar/tools/add_text';
 import DeleteAll from '../tool_bar/tools/delete_all';
 import BaseShape from '../shapes/baseshape';
 import SelectColor from '../tool_bar/tools/select_color';
@@ -23,15 +21,12 @@ import DelEle from '../tool_bar/tools/del_ele';
 import ZIndex from '../tool_bar/tools/zIndex';
 import FontSize from '../tool_bar/tools/font_size';
 import useCopyer from '../../hook/copyer';
-import FreeDrawing, { useDrawing } from '../tool_bar/tools/free_drawing';
-import Point from '../tool_bar/tools/point';
 import handleLayerClick from './handle_layer_click';
 import { calcX, calcY } from '../../utils/calc_zoom_position';
 import CursorShape from './cursor_shape';
 import './painting_content.scss';
 import globalConfig from '../shapes/global_config';
 import Cancel, { useCancel } from '../tool_bar/tools/cancel';
-import AddKanBan from '../tool_bar/tools/add_kanban';
 import AddItem from '../tool_bar/tools/add_kanbanItem';
 import addKanBan from '../../utils/add_kanban';
 import Pointer from '../shapes/pointer';
@@ -48,6 +43,8 @@ import useDeleteKey from '../../hook/delete_key';
 import {
   WIDTH, HEIGHT, NEW_SHAPE_WIDTH, NEW_SHAPE_HEIGHT,
 } from '../../config/size';
+import AddPointedRect from '../tool_bar/tools/add_pointed_rect';
+import AddMessage from '../tool_bar/tools/add_comment';
 
 interface Props {
   docId?: string,
@@ -79,7 +76,6 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
     dispatch({ type: 'setAdsorptionPointsList', payload: [] });
   }, [state.currentIndex]);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  useDrawing();
   useCancel();
   useKanBan();
   useDeleteKey();
@@ -92,6 +88,34 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
   };
   const history = useHistory();
   const [kanban, setKanBan] = useState(history.location.state);
+  const Divider = useMemo(() => (() => (
+    <div
+      style={{
+        backgroundColor: '#9a9a9a',
+        height: '1.5px',
+        width: '100%',
+        marginLeft: '10%',
+        marginRight: '10%',
+      }}
+    />
+  )), []);
+  const LeftToolBar = useMemo(() => (
+    <ToolBar
+      list={[
+        AddTip, AddPointedRect, AddShape,
+        () => <Divider />,
+        DeleteAll, Cancel,
+        () => <Divider />,
+        AddMessage, ShowComment,
+      ]}
+      BarType="left"
+    />
+  ), []);
+
+  const AvatorToolBar = useMemo(() => (
+    <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />
+  ), []);
+
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
     const pos = e.target.getStage().getPointerPosition();
     if (state.isPainting && state.selectShape === 'PEN') {
@@ -304,8 +328,8 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
     <>
       {doc.value.data === undefined ? null : <CanvasName doc={doc} />}
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
-      <ToolBar list={[Point, AddShape, AddTip, AddImage, AddText, DeleteAll, FreeDrawing, Cancel, AddKanBan, ShowComment]} BarType="left" />
-      <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />
+      {LeftToolBar}
+      {AvatorToolBar}
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div id="stage">
         <Stage

@@ -149,37 +149,14 @@ const shapes: React.FC<{}> = () => {
           role="button"
           tabIndex={0}
           onClick={() => {
-            dispatch({ type: 'setSelectShape', payload: 'MESSAGE' });
-            console.log('add message rect');
-          }}
-          onKeyDown={() => {
-            console.log('add message rect');
-          }}
-          style={gridStyle}
-        >
-          <Icon
-            className="icons"
-            iconName="Message"
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col
-          span={8}
-          className="chooseShapeButton"
-          role="button"
-          tabIndex={0}
-          onClick={() => {
-            dispatch({ type: 'setSelectShape', payload: 'POINTEDRECT' });
-            console.log('add pointed rect');
+            dispatch({ type: 'setSelectShape', payload: 'TEXT' });
           }}
           onKeyDown={() => {}}
           style={gridStyle}
         >
           <Icon
             className="icons"
-            // TODO need a new icon
-            iconName="StatusCircleQuestionMark"
+            iconName="FontColorA"
           />
         </Col>
       </Row>
