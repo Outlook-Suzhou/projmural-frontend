@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Transformer, Text, Shape,
 } from 'react-konva';
+import { Html } from 'react-konva-utils';
+import { Mentions } from 'antd';
 import shapeConfig from './shape_config';
 import { useDispatchStore, useStateStore } from '../../store/store';
 import colorDetect from '../../utils/colorDetect';
@@ -25,6 +27,8 @@ const Message: React.FC<Props> = (props: Props) => {
   const trRef = useRef<any>();
   const [state] = [useStateStore(), useDispatchStore()];
   const [visible, setVisible] = useState(true);
+  const [visibleMention, setVisibleMention] = useState(false);
+  const { Option } = Mentions;
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -152,6 +156,13 @@ const Message: React.FC<Props> = (props: Props) => {
             item.height = node.height();
             state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
           });
+          textarea.addEventListener('keyup', () => {
+            // listen @
+            if (textarea.value.length && textarea.value.charAt(textarea.value.length - 1) === '@') {
+              console.log('you input a @');
+              setVisibleMention(true);
+            }
+          });
           function removeTextarea() {
             // @ts-ignore
             textarea.parentNode.removeChild(textarea);
@@ -188,6 +199,41 @@ const Message: React.FC<Props> = (props: Props) => {
           anchorStroke="black"
           anchorCornerRadius={5}
         />
+      )}
+      {visibleMention && (
+        <Html>
+          <Mentions
+            autoFocus
+            autoSize
+            value={item.text}
+            style={{ width: '100%', top: '100px', margin: '200px' }}
+            onChange={(text :string) => {
+              console.log('new text is ');
+              console.log(text);
+              item.text = text;
+              console.log(item);
+              state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
+            }}
+            placeholder="@someone in here"
+            onBlur={() => {
+              console.log('Blur');
+              console.log(item.text);
+              state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
+              setVisibleMention(false);
+            }}
+            onSelect={(option, prefix) => {
+              console.log(option.value);
+              console.log(option.key);
+              // key 存邮箱
+              // value 存名字
+              console.log(prefix);
+            }}
+          >
+            <Option value="afc163" key="afc163@qq.com">afc163</Option>
+            <Option value="zombieJ" key="zombieJ@qq.com">zombieJ</Option>
+            <Option value="yesmeck" key="yesmeck@qq.com">yesmeck</Option>
+          </Mentions>
+        </Html>
       )}
     </>
   );
