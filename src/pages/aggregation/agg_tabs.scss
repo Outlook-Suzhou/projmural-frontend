@@ -1,7 +1,40 @@
+.slotName {
+  background-color: white;
+  display: flex;
+  // display: inline-block;
+  flex-wrap: wrap;
+  cursor: pointer;
+  .p1{
+    margin: auto;
+    // padding-right: 10px;
+    // line-height: 25px;
+    font-weight: 'bold';
+    font-size: 25px;
+    text-align: center;
+    padding-left: 10px;
+  }
+  .p1:hover{
+    background-color: rgb(239, 239, 216);
+  }
+}
+
 .tabsStyle {
   font-size: 24px;
   line-height: 30px;
   text-align: center;
+  .canvasName{
+    display: inline-flex;
+    flex-wrap: wrap;
+    // margin: auto;
+    // line-height: 20px;
+    font-size: 20px;
+    text-align: left;
+  }
+  .canvasName:hover{
+    // line-height: 25px;
+    font-size: 25px;
+    text-align: left;
+  }
 }
 
 .tabsFont {

@@ -6,7 +6,6 @@ import {
   DatePicker, Menu, Dropdown, Pagination,
   InputNumber, Modal, Select, PageHeader, Input,
   message,
-  Button,
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import axios from '../../utils/axios';

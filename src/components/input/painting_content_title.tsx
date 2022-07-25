@@ -12,10 +12,10 @@ interface Props {
 const Text: React.FC<Props> = ({ doc, className }: Props) => {
   const state = useStateStore();
   const dispatch = useDispatchStore();
-  const [canvasId] = useState(getCurrentDocId());
-  const [text, setText] = useState(doc.value.canvaName || '');
+  const [canvasId] = useState(() => (doc?.value?.id || getCurrentDocId()));
+  const [text, setText] = useState(doc?.value?.data?.canvaName || '');
   const handleSubmit = useCallback(() => {
-    renamePainting(state.userInfo.microsoftId, text, canvasId);
+    renamePainting(state.userInfo.microsoftId, text, canvasId as string);
     try {
       doc.value.submitOp([{ p: ['canvaName'], od: doc?.value?.data?.canvaName || '', oi: text }]);
     } catch (e) {
@@ -34,21 +34,28 @@ const Text: React.FC<Props> = ({ doc, className }: Props) => {
         payload: { ...state.userInfo, canvas: newCanvasArray },
       });
     } else {
+      console.log(canvasId);
       console.log('Canvas Id doesnt exist in userInfo.canvas!');
     }
   }, [state.userInfo.microsoftId, text, canvasId, doc?.value?.data?.canvaName]);
   useEffect(() => {
-    doc.value.subscribe(() => {
-      if (doc?.value?.data?.canvaName) {
-        setText(doc?.value?.data?.canvaName);
-      }
-    });
-    doc.value.on('op', () => {
-      if (doc?.value?.data?.canvaName) {
-        setText(doc?.value?.data?.canvaName);
-      }
-    });
-  }, []);
+    if (doc && doc.value) {
+      console.log(doc.value.data.canvaName);
+      setText(doc.value.data.canvaName);
+      doc.value.subscribe(() => {
+        if (doc?.value?.data?.canvaName) {
+          setText(doc?.value?.data?.canvaName);
+        }
+      });
+      doc.value.on('op', () => {
+        if (doc?.value?.data?.canvaName) {
+          setText(doc?.value?.data?.canvaName);
+        }
+      });
+    } else {
+      console.log('doc not exist');
+    }
+  }, [doc]);
   return (
     <Input
       className={className}
