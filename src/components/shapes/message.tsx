@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-  Transformer, Text, Shape,
+  Transformer, Shape,
 } from 'react-konva';
+import { Html } from 'react-konva-utils';
+import { Mentions } from 'antd';
 import shapeConfig from './shape_config';
 import { useDispatchStore, useStateStore } from '../../store/store';
-import colorDetect from '../../utils/colorDetect';
 
 interface Props {
   item: BaseShapes.Message,
@@ -24,7 +25,7 @@ const Message: React.FC<Props> = (props: Props) => {
   const shapeRef = useRef<any>();
   const trRef = useRef<any>();
   const [state] = [useStateStore(), useDispatchStore()];
-  const [visible, setVisible] = useState(true);
+  const { Option } = Mentions;
   useEffect(() => {
     // we need to attach transformer manually
     if (isSelected) {
@@ -80,7 +81,7 @@ const Message: React.FC<Props> = (props: Props) => {
             ...item,
             x: node.x(),
             y: node.y(),
-            fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
+            // fontSize: Math.min(item.width * 0.1, Math.max(item.width * 0.07, item.fontSize * Math.min(scaleX, scaleY))),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
             height: Math.max(5, node.height() * scaleY),
@@ -89,88 +90,6 @@ const Message: React.FC<Props> = (props: Props) => {
           };
 
           state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
-        }}
-      />
-      <Text
-        x={item.x + item.width / 4}
-        y={item.y + item.height / 4}
-        width={item.width / 2}
-        height={item.height / 2}
-        text={item.text}
-        fontSize={item.fontSize}
-        fontFamily="Arial"
-        fill={colorDetect(item.fill) === 'light' ? 'black' : 'white'}
-        onClick={onSelect}
-        visible={visible}
-        align="center"
-        draggable={item.draggable && state.selectShape === 'FREE'}
-        onDragStart={onDragStart}
-        onDragEnd={(e) => {
-          onDragEnd();
-          const afterE: BaseShapes.Message = {
-            ...item,
-            x: e.target.x(),
-            y: e.target.y(),
-          };
-          state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
-        }}
-        // onDragMove={(e) => {
-        //   const afterE: BaseShapes.Message = {
-        //     ...item,
-        //     x: e.target.x(),
-        //     y: e.target.y(),
-        //   };
-        //   state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
-        // }}
-        onDblClick={() => {
-          const textarea = document.createElement('textarea');
-          document.body.appendChild(textarea);
-          textarea.style.fontSize = `${item.fontSize * state.stageScale}px`;
-          textarea.style.position = 'absolute';
-          textarea.value = item.text;
-          setVisible(false);
-          textarea.style.transformOrigin = 'left top';
-          textarea.style.top = `${item.y * state.stageScale + state.stagePos.y}px`;
-          textarea.style.left = `${item.x * state.stageScale + state.stagePos.x}px`;
-          textarea.style.border = '0px';
-          textarea.style.padding = '0px';
-          textarea.style.margin = '0px';
-          textarea.style.overflow = 'hidden';
-          textarea.style.background = 'none';
-          textarea.style.fontFamily = 'Arial';
-          textarea.style.textAlign = 'center';
-          // textarea.style.lineHeight = String(item.height / 4);
-          textarea.style.resize = 'none';
-          textarea.style.transformOrigin = 'left top';
-          textarea.style.color = `${colorDetect(item.fill) === 'light' ? 'black' : 'white'}`;
-          textarea.style.height = `${item.height * state.stageScale}px`;
-          textarea.style.width = `${item.width * state.stageScale}px`;
-          textarea.focus();
-          textarea.addEventListener('keydown', () => {
-            item.text = textarea.value;
-            const node = shapeRef.current;
-            item.height = node.height();
-            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
-          });
-          function removeTextarea() {
-            // @ts-ignore
-            textarea.parentNode.removeChild(textarea);
-            // @ts-ignore
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            window.removeEventListener('click', handleOutsideClick);
-            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: item }]);
-            setVisible(true);
-          }
-          function handleOutsideClick(e: { target: HTMLTextAreaElement; }) {
-            if (e.target !== textarea) {
-              item.text = textarea.value;
-              removeTextarea();
-            }
-          }
-          setTimeout(() => {
-            // @ts-ignore
-            window.addEventListener('click', handleOutsideClick);
-          });
         }}
       />
       {isSelected && (
@@ -189,6 +108,32 @@ const Message: React.FC<Props> = (props: Props) => {
           anchorCornerRadius={5}
         />
       )}
+      <Html
+        groupProps={{
+          x: item.x, y: item.y, width: item.width, height: item.height,
+        }}
+      >
+        <Mentions
+          autoFocus
+          autoSize
+          style={{ width: item.width, fontSize: item.fontSize, maxHeight: item.height }}
+          placeholder="Comment and @someone"
+          value={item.text}
+          onChange={(text :string) => {
+            item.text = text;
+            const afterE: BaseShapes.Message = {
+              ...item,
+              text,
+            };
+            console.log(afterE);
+            state.currentDoc.value.submitOp([{ p: ['shapes', index], ld: state.currentDoc.value.data.shapes[index], li: afterE }]);
+          }}
+        >
+          <Option value="Yao Liu" key="t-lyao">Yao Liu</Option>
+          <Option value="Yu Yuan" key="t-yuanyu">Yu Yuan</Option>
+          <Option value="Zhigang Yang" key="t-zhiyang">Zhigang Yang</Option>
+        </Mentions>
+      </Html>
     </>
   );
 };
