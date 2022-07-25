@@ -13,9 +13,9 @@ const socket = new ReconnectingWebSocket(`${ipAddress}`);
 const connection = new sharedb.Connection(socket);
 console.log(connection);
 const doc = { value: null };
-window.onerror = () => {
-  location.reload();
-};
+// window.onerror = () => {
+//   location.reload();
+// };
 
 export function getCurrentDocId() {
   return window.location.pathname.substring(10);

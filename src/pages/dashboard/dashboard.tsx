@@ -6,7 +6,6 @@ import {
   DatePicker, Menu, Dropdown, Pagination,
   InputNumber, Modal, Select, PageHeader, Input,
   message,
-  Button,
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import axios from '../../utils/axios';
@@ -198,25 +197,16 @@ const Dashboard: React.FC<{}> = () => {
           </div>
           <div className="right_body">
             <div className="text1">
-              Create a new board
+              Created Boards
             </div>
+            {/* <div className="viewDiv">
+              <Button className="viewButton" onClick={() => { history.push('/view/created'); }}>View All</Button>
+            </div> */}
             <div className="template">
               <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
                 <div className="template-image-calender" />
                 <div className="font"> + new Kanban </div>
               </div>
-              {/* <div className="temp" onClick={() => { setJourneyMapModalVisible(true); }} aria-hidden="true">
-                <div className="template-image-calender" />
-                <div className="font"> + new Kanban </div>
-              </div> */}
-            </div>
-            <div className="text1">
-              Created Boards
-            </div>
-            <div className="viewDiv">
-              <Button className="viewButton" onClick={() => { history.push('/view/created'); }}>View All</Button>
-            </div>
-            <div className="template">
               {
                 docs.slice(pageMinValue, pageMaxValue).map((val: any, ind) => {
                   const canvaDropdown = (
@@ -294,7 +284,7 @@ const Dashboard: React.FC<{}> = () => {
                         <div
                           className="template-image-canvas"
                           onClick={() => {
-                            history.push(`/painting/${val.value.id}`);
+                            history.push(`/view/created?id=${val.value.id}`);
                           }}
                           aria-hidden="true"
                         />
@@ -320,9 +310,9 @@ const Dashboard: React.FC<{}> = () => {
             <div className="text1">
               History Boards
             </div>
-            <div className="viewDiv">
+            {/* <div className="viewDiv">
               <Button className="viewButton" onClick={() => { history.push('/view/history'); }}>View All</Button>
-            </div>
+            </div> */}
             <div className="template">
               {
                 recentDocs.slice(recentPageMinValue, recentPageMaxValue).map((val: any, ind) => {
@@ -398,7 +388,7 @@ const Dashboard: React.FC<{}> = () => {
                         <div
                           className="template-image-canvas"
                           onClick={() => {
-                            history.push(`/painting/${val.value.id}`);
+                            history.push(`/view/history?id=${val.value.id}`);
                           }}
                           aria-hidden="true"
                         />

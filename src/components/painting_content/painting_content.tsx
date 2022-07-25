@@ -112,8 +112,8 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
     />
   ), []);
 
-  const AvatorToolBar = useMemo(() => (
-    <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />
+  const AvatarToolBar = useMemo(() => (docObj === undefined
+    && <ToolBar list={[AvatarArea, AvatarUser]} BarType="avatar" />
   ), []);
 
   const mouseMove = (e: { target: { getStage: () => any; }; }) => {
@@ -326,10 +326,10 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
 
   return (
     <>
-      {doc.value.data === undefined ? null : <CanvasName doc={doc} />}
+      {doc.value.data === undefined && docObj === undefined && <CanvasName doc={doc} />}
       {state.isDragging || state.currentIndex === -1 ? null : <ToolBar list={getFloatBar()} BarType="float" />}
       {LeftToolBar}
-      {AvatorToolBar}
+      {AvatarToolBar}
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div id="stage">
         <Stage
