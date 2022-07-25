@@ -200,9 +200,9 @@ const Dashboard: React.FC<{}> = () => {
             <div className="text1">
               Created Boards
             </div>
-            <div className="viewDiv">
+            {/* <div className="viewDiv">
               <Button className="viewButton" onClick={() => { history.push('/view/created'); }}>View All</Button>
-            </div>
+            </div> */}
             <div className="template">
               <div className="temp" onClick={() => { setCanvaNameModalVisible(true); }} aria-hidden="true">
                 <div className="template-image-calender" />
@@ -285,7 +285,7 @@ const Dashboard: React.FC<{}> = () => {
                         <div
                           className="template-image-canvas"
                           onClick={() => {
-                            history.push(`/view?id=${val.value.id}`);
+                            history.push(`/view/created?id=${val.value.id}`);
                           }}
                           aria-hidden="true"
                         />
@@ -311,9 +311,9 @@ const Dashboard: React.FC<{}> = () => {
             <div className="text1">
               History Boards
             </div>
-            <div className="viewDiv">
+            {/* <div className="viewDiv">
               <Button className="viewButton" onClick={() => { history.push('/view/history'); }}>View All</Button>
-            </div>
+            </div> */}
             <div className="template">
               {
                 recentDocs.slice(recentPageMinValue, recentPageMaxValue).map((val: any, ind) => {
@@ -389,7 +389,7 @@ const Dashboard: React.FC<{}> = () => {
                         <div
                           className="template-image-canvas"
                           onClick={() => {
-                            history.push(`/view?id=${val.value.id}`);
+                            history.push(`/view/history?id=${val.value.id}`);
                           }}
                           aria-hidden="true"
                         />
