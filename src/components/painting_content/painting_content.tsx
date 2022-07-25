@@ -144,7 +144,7 @@ const PaintingContent: React.FC<Props> = ({ docId, docObj }: Props) => {
       return [SelectColor, DelEle, ItemStatus];
     }
     const tools = [];
-    if (type !== 'IMAGE' && type !== 'ARROW' && type !== 'LINE') {
+    if (type !== 'IMAGE' && type !== 'ARROW' && type !== 'LINE' && type !== 'MESSAGE') {
       tools.push(SelectColor);
     }
     tools.push(ZIndex, Lock, DelEle);
